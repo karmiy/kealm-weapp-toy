@@ -3,16 +3,16 @@ import { classnames } from '@/utils/base';
 import styles from './index.module.scss';
 
 export default function () {
-    console.log('styles', styles, classnames);
-
     return (
-        <View className={`${styles.wrapper} flex-1`}>
-            <View className='k'>detail</View>
-            <View className={styles.content}>
-                <Text className={styles.a}>1</Text>
-            </View>
-            <View className={styles.info}>
-                <Text className={styles.a}>1</Text>
+        <View>
+            <View className={`${styles.header} flex items-center`}>
+                <View className='flex flex-col items-center px-16 py-12'>
+                    <Text className={styles.label}>2022年</Text>
+                    <View className='mt-8'>
+                        <Text className={styles.strong}>03</Text>
+                        <Text className={styles.secondary}>月</Text>
+                    </View>
+                </View>
             </View>
         </View>
     );

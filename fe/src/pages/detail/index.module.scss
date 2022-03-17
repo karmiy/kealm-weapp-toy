@@ -1,17 +1,20 @@
 @import '../../styles/index.scss';
 
-.wrapper {
-    color: $color-primary;
+/* 头部 */
 
-    .content {
-        .a {
-            color: pink;
-        }
+.header {
+    color: $color-white;
+    background-color: $color-primary;
+
+    .label {
+        font-size: px(12);
     }
 
-    .info {
-        .a {
-            color: red;
-        }
+    .strong {
+        font-size: px(24);
+    }
+
+    .secondary {
+        font-size: px(16);
     }
 }
