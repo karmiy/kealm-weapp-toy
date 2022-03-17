@@ -1,20 +1,7 @@
-@import '../../styles/index.scss';
+@import '@/styles/index.scss';
 
 /* 头部 */
 
 .header {
-    color: $color-white;
     background-color: $color-primary;
-
-    .label {
-        font-size: px(12);
-    }
-
-    .strong {
-        font-size: px(24);
-    }
-
-    .secondary {
-        font-size: px(16);
-    }
 }
