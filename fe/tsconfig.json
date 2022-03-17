@@ -20,7 +20,10 @@
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {                                  // 需要 webpack alias 配合
+      "@/*": ["src/*"],
+    }
   },
   "include": ["./src", "global.d.ts"],
   "compileOnSave": false

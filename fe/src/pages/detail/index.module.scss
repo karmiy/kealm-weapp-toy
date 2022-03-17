@@ -1,0 +1,17 @@
+@import '../../styles/index.scss';
+
+.wrapper {
+    color: $color-primary;
+
+    .content {
+        .a {
+            color: pink;
+        }
+    }
+
+    .info {
+        .a {
+            color: red;
+        }
+    }
+}

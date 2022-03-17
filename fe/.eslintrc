@@ -9,6 +9,7 @@
   ],
   "plugins": ["react-hooks", "@typescript-eslint", "simple-import-sort"],
   "rules": {
+    "react/jsx-indent-props": ["error", 4],
     "import/no-commonjs": "off",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
@@ -44,6 +45,7 @@
                   "^(@router)(/.*|$)",
                   "^(@assets)(/.*|$)",
                   "^(@api)(/.*|$)",
+                  "^(@)(/.*|$)",
                   // Parent imports. Put `..` last.
                   "^\\.\\.(?!/?$)",
                   "^\\.\\./?$",
@@ -52,7 +54,8 @@
                   "^\\.(?!/?$)",
                   "^\\./?$",
                   // Style imports.
-                  "^.+\\.s?css$",
+                  "^.+\\.module\\.s?css$",
+                  "^.+\\.s?css$"
               ]
           ]
       }
