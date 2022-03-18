@@ -1,47 +1,62 @@
 import { useState } from 'react';
-import { Picker, Text, View } from '@tarojs/components';
+import { View } from '@tarojs/components';
+import { format, getMonth, getYear, parseISO } from 'date-fns';
+import { Picker } from '@/components';
 import { HeaderItem } from './components';
+import { getIntegerAndDecimal } from './utils';
 import styles from './index.module.scss';
 
 export default function () {
     /* ------------------------------ 头部：日期 ------------------------------ */
-    const [dateStr, setDateStr] = useState('');
-    const [dateVisible, setDateVisible] = useState(false);
+    const [dateStr, setDateStr] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const date = parseISO(dateStr);
+    const year = getYear(date);
+    const month = getMonth(date) + 1;
 
     const renderDateHeader = () => {
         return (
             <Picker
                 mode='date'
-                onClick={() => setDateVisible(true)}
-                onCancel={() => setDateVisible(false)}
+                fields='month'
                 value={dateStr}
-                onChange={e => {
-                    setDateVisible(false);
-                    setDateStr(e.detail.value);
+                onChange={e => setDateStr(e.detail.value)}
+                render={visible => {
+                    return (
+                        <HeaderItem
+                            label={`${year}年`}
+                            strong={`${month}`.padStart(2, '0')}
+                            secondary='月'
+                            showSelect
+                            isSelect={visible}
+                        />
+                    );
                 }}
-            >
-                <HeaderItem
-                    label='2022年'
-                    strong='03'
-                    secondary='月'
-                    showSelect
-                    isSelect={dateVisible}
-                />
-            </Picker>
+            />
         );
     };
 
     /* ------------------------------ 头部：收入 ------------------------------ */
+    const [income, setIncome] = useState(0);
     const renderIncomeHeader = () => {
-        return <HeaderItem label='收入' strong='5000' secondary='.00' />;
+        const [integer, decimal] = getIntegerAndDecimal(income);
+        return <HeaderItem label='收入' strong={integer} secondary={`.${decimal}`} />;
+    };
+
+    /* ------------------------------ 头部： 支出 ------------------------------ */
+    const [expenditure, setExpenditure] = useState(0);
+    const renderExpenditureHeader = () => {
+        const [integer, decimal] = getIntegerAndDecimal(expenditure);
+        return <HeaderItem label='支出' strong={integer} secondary={`.${decimal}`} />;
     };
 
     return (
-        <View>
+        <View className='flex flex-col h-full'>
             <View className={`${styles.header} flex items-center`}>
                 {renderDateHeader()}
                 {renderIncomeHeader()}
+                {renderExpenditureHeader()}
             </View>
+            <View className='flex-1 bg-red-300' />
         </View>
     );
 }

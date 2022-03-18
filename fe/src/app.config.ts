@@ -22,6 +22,7 @@ export default defineAppConfig({
     },
     window: {
         backgroundTextStyle: 'light',
+        // backgroundColor: '#00B26A',
         navigationBarBackgroundColor: '#00B26A',
         navigationBarTitleText: '记账',
         navigationBarTextStyle: 'white',

@@ -29,6 +29,7 @@ module.exports = {
             except: ['first-nested']
         }], // ⭐多行规则之前要有空行
         'at-rule-empty-line-before': ['always', { except: 'blockless-after-same-name-blockless', ignore: 'after-comment' }], // 在规则之前要求空行
+        'selector-type-no-unknown': [true, { ignore: ['page'] }],
     },
     ignoreFiles: ['node_modules/**/*'],
 }

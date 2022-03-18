@@ -56,3 +56,27 @@ export const classnames = function (...params: ClassNamesParams) {
 
     return classNames.join(' ');
 };
+
+/**
+ * @description 格式化数字
+ * @param price
+ * @param options
+ * @returns
+ */
+export function formatNumber(
+    price?: number,
+    options?: {
+        // 精度，保留几位小数，默认 2
+        precision?: number;
+        // 是否严格保留位数，如 1.2 保留 2 位，isStrict 为 true 时显示 1.20，反之可移除多余 0 即 1.2
+        isStrict?: boolean;
+    },
+) {
+    const { precision = 2, isStrict = true } = options ?? {};
+    price = isEmpty(price) ? 0 : price;
+
+    // (Math.round(price) / 100).toFixed(2);
+    if (isStrict) return (price / 100).toFixed(precision);
+
+    return `${parseFloat((price / 100).toFixed(precision))}`;
+}
