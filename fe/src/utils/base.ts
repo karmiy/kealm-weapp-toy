@@ -1,41 +1,4 @@
-export const toString = Object.prototype.toString;
-
-/**
- * @description 是否为字符串
- * @param value: any
- * @returns {boolean}
- */
-export const isString = function (value: any): value is string {
-    return toString.call(value) === '[object String]';
-};
-
-/**
- * @description 是否为数字
- * @param value: any
- * @returns {boolean}
- */
-export const isNumber = function (value: any): value is number {
-    return toString.call(value) === '[object Number]';
-};
-
-/**
- * @description 是否为空值
- * @param value
- */
-export const isEmpty = function (value: any): value is undefined | null {
-    return value === undefined || value === null;
-};
-
-/**
- * @description 是否为数组
- * @param value: any
- * @returns {boolean}
- */
-export const isArray =
-    Array.isArray ||
-    function (value: any): value is any[] {
-        return toString.call(value) === '[object Array]';
-    };
+import { isArray, isNil, isString } from 'lodash-es';
 
 type ClassNamesItem = string | Record<string, unknown> | undefined | null | ClassNamesParams;
 type ClassNamesParams = Array<ClassNamesItem>;
@@ -47,7 +10,7 @@ type ClassNamesParams = Array<ClassNamesItem>;
 export const classnames = function (...params: ClassNamesParams) {
     const classNames: string[] = [];
     params.forEach(item => {
-        if (isEmpty(item)) return;
+        if (isNil(item)) return;
         if (isString(item)) {
             item && classNames.push(item);
             return;
@@ -82,7 +45,7 @@ export function formatNumber(
     },
 ) {
     const { precision = 2, isStrict = true } = options ?? {};
-    price = isEmpty(price) ? 0 : price;
+    price = isNil(price) ? 0 : price;
 
     // (Math.round(price) / 100).toFixed(2);
     if (isStrict) return (price / 100).toFixed(precision);

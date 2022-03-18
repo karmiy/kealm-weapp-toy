@@ -7,6 +7,7 @@
 
 .form {
     :global(.at-input__input) {
-        padding-right: px(32);
+        // 32 真机 placeholder 有点不对齐
+        padding-right: px(30);
     }
 }

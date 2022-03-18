@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components';
-import { classnames, isNumber } from '@/utils/base';
+import { classnames } from '@/utils/base';
 import styles from './index.module.scss';
 
 interface Props {

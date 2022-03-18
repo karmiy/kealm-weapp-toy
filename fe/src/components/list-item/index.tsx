@@ -21,7 +21,7 @@ export default function (props: Props) {
                 [styles.isEmpty]: !extraText,
             })}
             {...restProps}
-            extraText={extraText ?? placeholder}
+            extraText={extraText || placeholder}
         />
     );
 }
