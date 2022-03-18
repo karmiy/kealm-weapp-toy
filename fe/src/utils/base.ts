@@ -10,6 +10,15 @@ export const isString = function (value: any): value is string {
 };
 
 /**
+ * @description 是否为数字
+ * @param value: any
+ * @returns {boolean}
+ */
+export const isNumber = function (value: any): value is number {
+    return toString.call(value) === '[object Number]';
+};
+
+/**
  * @description 是否为空值
  * @param value
  */

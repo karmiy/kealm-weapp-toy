@@ -1,0 +1,28 @@
+@import '@/styles/index.scss';
+
+/* 头部 */
+
+.listItem {
+    &:global(.at-list__item) {
+        padding: px(12) px(16);
+
+        &::after {
+            left: px(16);
+        }
+
+        :global(.item-extra__info) {
+            padding-right: px(16);
+        }
+
+        :global(.item-extra__icon-arrow) {
+            color: $text-color-secondary;
+            font-size: px(16);
+        }
+    }
+
+    &.isEmpty {
+        :global(.item-extra__info) {
+            color: $color-neutral-8;
+        }
+    }
+}
