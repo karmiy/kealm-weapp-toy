@@ -32,6 +32,33 @@ module.exports = {
             72: '144px',
             80: '160px',
         },
-        extend: {},
+        extend: {
+            colors: {
+                'primary': {
+                    DEFAULT: '#00b26a',
+                },
+                'danger': {
+                    DEFAULT: '#F56C6C',
+                },
+                'neutral': {
+                    1: '#000',
+                    2: '#323232',
+                    DEFAULT: '#323232',
+                    3: '#555',
+                    4: '#666',
+                    5: '#999',
+                    6: '#B2B2B2',
+                    7: '#B5B5B5',
+                    8: '#CCC',
+                    9: '#DDD',
+                    10: '#EBEBEB',
+                    11: '#EEE',
+                    12: '#F2F2F2',
+                    13: '#F5F5F5',
+                    14: '#FAFAFA',
+                    15: '#FCFCFC',
+                },
+            },
+        },
     },
 };
