@@ -1,7 +1,17 @@
 @import '@/styles/index.scss';
 
-/* 头部 */
-
 .header {
     background-color: $color-primary;
+}
+
+.list {
+    .loadMore {
+        height: px(48);
+        font-size: px(14);
+
+        :global(.at-load-more__tip) {
+            color: $text-color-secondary;
+            font-size: px(14);
+        }
+    }
 }

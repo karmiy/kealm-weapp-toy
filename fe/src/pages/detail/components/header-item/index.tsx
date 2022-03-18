@@ -23,6 +23,7 @@ export default function (props: Props) {
                     <AtIcon
                         value={isSelect ? 'chevron-up' : 'chevron-down'}
                         className={styles.icon}
+                        size={28}
                     />
                 )}
             </View>

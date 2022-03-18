@@ -2,25 +2,26 @@ $color-primary: #00b26a;
 $color-primary-5: fade-out($color-primary, 0.5) !default;
 $color-primary-7: fade-out($color-primary, 0.7) !default;
 $color-primary-9: fade-out($color-primary, 0.9) !default;
+$color-danger: #F56C6C !default;
 $color-white: #fff !default;
 $color-black: #000 !default;
 
 // 中立色 neutral
-$color-base-1: #000 !default;
-$color-base-2: #323232 !default;
-$color-base-3: #555 !default;
-$color-base-4: #666 !default;
-$color-base-5: #999 !default;
-$color-base-6: #B2B2B2 !default;
-$color-base-7: #B5B5B5 !default;
-$color-base-8: #CCC !default;
-$color-base-9: #DDD !default;
-$color-base-10: #E8E8E8 !default;
-$color-base-11: #EEE !default;
-$color-base-12: #F2F2F2 !default;
-$color-base-13: #F5F5F5 !default;
-$color-base-14: #FAFAFA !default;
-$color-base-15: #FCFCFC !default;
+$color-neutral-1: #000 !default;
+$color-neutral-2: #323232 !default;
+$color-neutral-3: #555 !default;
+$color-neutral-4: #666 !default;
+$color-neutral-5: #999 !default;
+$color-neutral-6: #B2B2B2 !default;
+$color-neutral-7: #B5B5B5 !default;
+$color-neutral-8: #CCC !default;
+$color-neutral-9: #DDD !default;
+$color-neutral-10: #E8E8E8 !default;
+$color-neutral-11: #EEE !default;
+$color-neutral-12: #F2F2F2 !default;
+$color-neutral-13: #F5F5F5 !default;
+$color-neutral-14: #FAFAFA !default;
+$color-neutral-15: #FCFCFC !default;
 
 /* transparent */
 $color-text-thin-dark-1: rgba(0, 0, 0, .1) !default;
@@ -34,12 +35,12 @@ $color-text-thin-dark-8: rgba(0, 0, 0, .8) !default;
 $color-text-thin-dark-9: rgba(0, 0, 0, .9) !default;
 
 /* text color */
-$text-color-primary: $color-base-2 !default; // #323232
-$text-color-regular: $color-base-4 !default; // #666
-$text-color-secondary: $color-base-5 !default; // #999
+$text-color-primary: $color-neutral-2 !default; // #323232
+$text-color-regular: $color-neutral-4 !default; // #666
+$text-color-secondary: $color-neutral-5 !default; // #999
 
 // border-color
-$border-color-primary: $color-base-10 !default; // #E8E8E8
+$border-color-primary: $color-neutral-10 !default; // #E8E8E8
 
 /* z-index */
 $z-index-negative: -1 !default;

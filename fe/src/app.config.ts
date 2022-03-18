@@ -1,5 +1,5 @@
 export default defineAppConfig({
-    pages: ['pages/detail/index', 'pages/mine/index'],
+    pages: ['pages/detail/index', 'pages/mine/index', 'pages/account/index'],
     tabBar: {
         list: [
             {
@@ -7,6 +7,12 @@ export default defineAppConfig({
                 selectedIconPath: 'images/detail-active.png',
                 pagePath: 'pages/detail/index',
                 text: '明细',
+            },
+            {
+                iconPath: 'images/account-inactive.png',
+                selectedIconPath: 'images/account-active.png',
+                pagePath: 'pages/account/index',
+                text: '记账',
             },
             {
                 iconPath: 'images/mine-inactive.png',

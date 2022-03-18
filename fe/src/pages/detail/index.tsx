@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View } from '@tarojs/components';
+import { ScrollView, View } from '@tarojs/components';
 import { format, getMonth, getYear, parseISO } from 'date-fns';
+import { AtLoadMore } from 'taro-ui';
 import { Picker } from '@/components';
-import { HeaderItem } from './components';
+import { DetailItem, HeaderItem } from './components';
 import { getIntegerAndDecimal } from './utils';
 import styles from './index.module.scss';
 
@@ -56,7 +57,18 @@ export default function () {
                 {renderIncomeHeader()}
                 {renderExpenditureHeader()}
             </View>
-            <View className='flex-1 bg-red-300' />
+            <View className={`${styles.list} flex-1 overflow-hidden`}>
+                <ScrollView className='h-full' scrollY>
+                    <DetailItem />
+                    <DetailItem />
+                    <DetailItem />
+                    <AtLoadMore
+                        className={styles.loadMore}
+                        status='noMore'
+                        noMoreText='没有更多啦~'
+                    />
+                </ScrollView>
+            </View>
         </View>
     );
 }
