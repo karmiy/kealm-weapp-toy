@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Picker, View } from '@tarojs/components';
-import { getUserProfile } from '@tarojs/taro';
+import { useUpdateEffect } from 'ahooks';
+import { format } from 'date-fns';
 import { isNil } from 'lodash-es';
 import { AtAvatar, AtButton, AtForm, AtInput } from 'taro-ui';
 import { ListItem } from '@/components';
 import { login } from '@/services';
+import { useTypeListStore } from '@/store';
 import styles from './index.module.scss';
 
 export default function () {
@@ -16,15 +18,21 @@ export default function () {
     const [modeIndex, setModeIndex] = useState<number>(0);
 
     /* ------------------------------ 类别 ------------------------------ */
-    const [typeList, setTypeList] = useState([
-        { id: 1, name: '工资' },
-        { id: 2, name: '奖金' },
-    ]);
+    const { inComeTypeList, expenditureTypeList } = useTypeListStore();
+    const typeList = modeIndex === 0 ? expenditureTypeList : inComeTypeList;
     const typeNames = typeList.map(item => item.name);
     const [typeIndex, setTypeIndex] = useState<number>();
 
+    /* 更新收支方式时，清空选中 */
+    useUpdateEffect(() => {
+        setTypeIndex(undefined);
+    }, [modeIndex]);
+
     /* ------------------------------ 日期 ------------------------------ */
-    const [createDate, setCreateDate] = useState('');
+    const [createDate, setCreateDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+
+    /* ------------------------------ 时间 ------------------------------ */
+    const [createTime, setCreateTime] = useState(format(new Date(), 'HH:mm'));
 
     /* ------------------------------ 备注 ------------------------------ */
     const [remark, setRemark] = useState('');
@@ -32,7 +40,11 @@ export default function () {
     return (
         <View className='account'>
             <View className={`${styles.banner} flex justify-center items-center`}>
-                <AtAvatar circle image={require('@/images/kirby-1.jpeg')} size='large' />
+                <AtAvatar
+                    circle
+                    image='https://gitee.com/karmiy/static/raw/master/weapp-accounts/imgs/kirby-1.jpeg'
+                    size='large'
+                />
             </View>
             {/* <Image
                 className='w-full'
@@ -91,6 +103,19 @@ export default function () {
                         arrow='right'
                     />
                 </Picker>
+                <Picker
+                    mode='time'
+                    name='createTime'
+                    value={createTime}
+                    onChange={e => setCreateTime(e.detail.value)}
+                >
+                    <ListItem
+                        title='时间'
+                        extraText={createTime}
+                        placeholder='请选择时间'
+                        arrow='right'
+                    />
+                </Picker>
                 <AtInput
                     className='text-right'
                     name='remark'
@@ -105,16 +130,6 @@ export default function () {
                     <AtButton
                         type='primary'
                         onClick={() => {
-                            getUserProfile({
-                                lang: 'zh_CN',
-                                desc: '卡比记账想获取您的用户信息',
-                            })
-                                .then(res => {
-                                    console.log('getUserProfile --- success', res);
-                                })
-                                .catch(err => {
-                                    console.log('getUserProfile --- error', err);
-                                });
                             /* showLoading({
                                 title: '加载中',
                             });
@@ -122,13 +137,13 @@ export default function () {
                                 hideLoading();
                             }, 2000); */
 
-                            /* login()
+                            login()
                                 .then(res => {
                                     console.log('login-----------res', res);
                                 })
                                 .catch(err => {
                                     console.log('login-----------err', err);
-                                }); */
+                                });
                         }}
                     >
                         提交

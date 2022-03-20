@@ -52,3 +52,14 @@ export function formatNumber(
 
     return `${parseFloat((price / 100).toFixed(precision))}`;
 }
+
+/**
+ * @description promise 同步拦截
+ * @param promise
+ * @returns
+ */
+export function asyncWrapper<T>(promise: Promise<T>) {
+    return promise
+        .then(data => [data, null] as [T, null])
+        .catch(err => [null, { res: err }] as [null, { res: any }]);
+}
