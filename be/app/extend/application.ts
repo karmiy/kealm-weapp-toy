@@ -5,4 +5,11 @@ export default {
     get currentTime() {
         return this.getCurrentTime();
     },
+    /* 小程序 ID，Secret */
+    get AppID() {
+        return 'wxc4ebbdebcf45c108';
+    },
+    get AppSecret() {
+        return '81b617b5f5d6ad95829d951f320d27e3';
+    },
 };

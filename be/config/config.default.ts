@@ -8,7 +8,7 @@ export default (appInfo: EggAppInfo) => {
     config.keys = appInfo.name + '_1642605165960_475';
 
     // add your egg config in here
-    config.middleware = [];
+    config.middleware = ['authorization'];
 
     // add your special config in here
     const bizConfig = {
@@ -33,6 +33,11 @@ export default (appInfo: EggAppInfo) => {
             // 数据库名
             database: 'weapp-accounts',
         },
+    };
+
+    config.authorization = {
+        // 忽略的 path
+        ignorePaths: ['/v1/accounts/user/login'],
     };
 
     // the return config will combines to EggAppConfig
