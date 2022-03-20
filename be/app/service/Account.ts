@@ -21,7 +21,7 @@ export default class Account extends Service {
 
         return app.mysql.select('t_account_type', {
             where: { ...accountModeCondition },
-            columns: ['id', 'name'],
+            columns: ['id', 'name', 'account_mode'],
             orders: [['id', 'asc']],
         }) as Promise<Array<AccountType>>;
     }

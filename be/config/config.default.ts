@@ -8,7 +8,7 @@ export default (appInfo: EggAppInfo) => {
     config.keys = appInfo.name + '_1642605165960_475';
 
     // add your egg config in here
-    config.middleware = ['authorization'];
+    config.middleware = ['guardParams', 'authorization'];
 
     // add your special config in here
     const bizConfig = {

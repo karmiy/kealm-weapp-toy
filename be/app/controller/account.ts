@@ -26,7 +26,11 @@ export default class AccountController extends Controller {
             return;
         }
         ctx.body = {
-            data,
+            data: {
+                list: data,
+                size: data.length,
+            },
+            message: '获取成功',
         };
     }
 }
