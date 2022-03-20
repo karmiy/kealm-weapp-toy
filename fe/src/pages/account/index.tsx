@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Picker, View } from '@tarojs/components';
-import { hideLoading, showLoading } from '@tarojs/taro';
+import { getUserProfile } from '@tarojs/taro';
 import { isNil } from 'lodash-es';
 import { AtAvatar, AtButton, AtForm, AtInput } from 'taro-ui';
 import { ListItem } from '@/components';
-import { ACCOUNT_MODE_LIST } from '@/utils/constants';
+import { login } from '@/services';
 import styles from './index.module.scss';
 
 export default function () {
@@ -34,6 +34,12 @@ export default function () {
             <View className={`${styles.banner} flex justify-center items-center`}>
                 <AtAvatar circle image={require('@/images/kirby-1.jpeg')} size='large' />
             </View>
+            {/* <Image
+                className='w-full'
+                src={require('@/images/kirby-3.png')}
+                mode='aspectFill'
+                style={{ height: `${statusBarHeight + 44 + 86}px` }}
+            /> */}
             <AtForm className={styles.form}>
                 <AtInput
                     className='text-right'
@@ -98,14 +104,31 @@ export default function () {
                 <View className='mt-16 px-8'>
                     <AtButton
                         type='primary'
-                        onClick={e => {
-                            console.log(e);
-                            showLoading({
+                        onClick={() => {
+                            getUserProfile({
+                                lang: 'zh_CN',
+                                desc: '卡比记账想获取您的用户信息',
+                            })
+                                .then(res => {
+                                    console.log('getUserProfile --- success', res);
+                                })
+                                .catch(err => {
+                                    console.log('getUserProfile --- error', err);
+                                });
+                            /* showLoading({
                                 title: '加载中',
                             });
                             setTimeout(function () {
                                 hideLoading();
-                            }, 2000);
+                            }, 2000); */
+
+                            /* login()
+                                .then(res => {
+                                    console.log('login-----------res', res);
+                                })
+                                .catch(err => {
+                                    console.log('login-----------err', err);
+                                }); */
                         }}
                     >
                         提交
