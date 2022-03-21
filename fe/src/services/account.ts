@@ -1,4 +1,5 @@
 import { ACCOUNT_MODE } from '@/utils/constants';
+import { PickPartial } from '@/utils/types';
 import httpRequest from './requests/http';
 
 /**
@@ -13,6 +14,19 @@ export async function getTypeList(mode?: ACCOUNT_MODE) {
         url: '/account/getTypeList',
         data: {
             mode,
+        },
+    });
+}
+
+/**
+ * @description 提交账单
+ * @returns
+ */
+export async function addOrUpdateRecord(record?: PickPartial<ModelNS.AccountRecord, 'id'>) {
+    return httpRequest.post({
+        url: '/account/addOrUpdateRecord',
+        data: {
+            ...record,
         },
     });
 }

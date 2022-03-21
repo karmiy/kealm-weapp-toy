@@ -45,7 +45,7 @@ export default function () {
         // 跳转到首页
         navigateToPage({
             pageName: 'detail',
-            isRedirect: true,
+            isSwitchTab: true,
         });
     };
     return (

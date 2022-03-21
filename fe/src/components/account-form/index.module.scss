@@ -1,0 +1,8 @@
+@import '@/styles/index.scss';
+
+.form {
+    :global(.at-input__input) {
+        // 32 真机 placeholder 有点不对齐
+        padding-right: px(30);
+    }
+}

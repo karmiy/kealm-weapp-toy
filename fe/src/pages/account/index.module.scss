@@ -1,13 +1,1 @@
 @import '@/styles/index.scss';
-
-.banner {
-    height: px(86);
-    background-color: $color-primary;
-}
-
-.form {
-    :global(.at-input__input) {
-        // 32 真机 placeholder 有点不对齐
-        padding-right: px(30);
-    }
-}
