@@ -1,12 +1,5 @@
 import { Service } from 'egg';
 
-interface AccountType {
-    id: number;
-    name: string;
-    account_mode: number;
-    open_id: number;
-}
-
 /**
  * Account Service
  */
@@ -23,6 +16,15 @@ export default class Account extends Service {
             where: { ...accountModeCondition },
             columns: ['id', 'name', 'account_mode'],
             orders: [['id', 'asc']],
-        }) as Promise<Array<AccountType>>;
+        }) as Promise<Array<Model.AccountType>>;
+    }
+
+    public async addOrUpdateAccountRecord(record: PickPartial<Model.AccountRecord, 'id'>) {
+        const { ctx, app } = this;
+        const { id, ...restProps } = record;
+
+        return ctx.helper.isEmpty(id)
+            ? app.mysql.insert('t_account_record', { ...restProps })
+            : app.mysql.update('t_account_record', { ...restProps });
     }
 }

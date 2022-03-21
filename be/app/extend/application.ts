@@ -5,7 +5,7 @@ export default {
     get currentTime() {
         return this.getCurrentTime();
     },
-    /* 小程序 ID，Secret */
+    /* 小程序 */
     get AppID() {
         return 'wxc4ebbdebcf45c108';
     },
