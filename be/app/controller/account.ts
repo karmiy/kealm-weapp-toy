@@ -37,8 +37,13 @@ export default class AccountController extends Controller {
     public async addOrUpdateRecord() {
         const { ctx } = this;
         const { isEmpty } = ctx.helper;
-        const { id, amount, account_type, create_time, remark } =
-            ctx.getParams<Partial<Model.AccountRecord>>();
+        const { id, amount, account_type, create_time, remark } = ctx.getParams<{
+            id?: number;
+            amount?: number;
+            account_type?: number;
+            create_time?: Date;
+            remark?: string;
+        }>();
 
         const openId = ctx.getOpenId();
 
@@ -81,11 +86,39 @@ export default class AccountController extends Controller {
         }
         ctx.body = {
             data: {},
-            message: '获取成功',
+            message: '请求成功',
         };
+    }
 
-        /* const [data, err] = await ctx.helper.asyncWrapper(
-            ctx.service.account.getAccountTypeList(mode),
+    public async getRecords() {
+        const { ctx } = this;
+        const { isEmpty } = ctx.helper;
+        const {
+            year,
+            month,
+            page_no,
+            page_size = 20,
+        } = ctx.getParams<{ year: number; month: number; page_no: number; page_size?: number }>();
+
+        const openId = ctx.getOpenId();
+
+        if (isEmpty(year) || isEmpty(month) || isEmpty(page_no) || isEmpty(openId)) {
+            ctx.status = ctx.helper.RESPONSE_STATUS.前端错误;
+            ctx.body = {
+                data: {},
+                message: '参数错误',
+            };
+            return;
+        }
+
+        const [data, err] = await ctx.helper.asyncWrapper(
+            ctx.service.account.getAccountRecords({
+                year,
+                month,
+                page_no,
+                page_size,
+                open_id: openId,
+            }),
         );
 
         if (err) {
@@ -106,11 +139,8 @@ export default class AccountController extends Controller {
             return;
         }
         ctx.body = {
-            data: {
-                list: data,
-                size: data.length,
-            },
-            message: '获取成功',
-        }; */
+            data,
+            message: '请求成功',
+        };
     }
 }

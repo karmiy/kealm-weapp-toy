@@ -15,7 +15,7 @@ export default (appInfo: EggAppInfo) => {
         sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
     };
 
-    config.mysql = {
+    /* config.mysql = {
         // 是否加载到 app 上，默认开启
         app: true,
         // 是否加载到 agent 上，默认关闭
@@ -33,6 +33,20 @@ export default (appInfo: EggAppInfo) => {
             // 数据库名
             database: 'weapp-accounts',
         },
+    }; */
+
+    config.sequelize = {
+        dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
+        database: 'weapp-accounts',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: 'karmiy@123',
+        define: {
+            freezeTableName: true,
+            timestamps: false,
+        },
+        timezone: '+8:00',
     };
 
     config.authorization = {

@@ -22,9 +22,12 @@
     "clean": "ets clean"
   },
   "dependencies": {
+    "date-fns": "^2.28.0",
     "egg": "^2.6.1",
     "egg-mysql": "^3.0.0",
-    "egg-scripts": "^2.6.0"
+    "egg-scripts": "^2.6.0",
+    "egg-sequelize": "^6.0.0",
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.40",
