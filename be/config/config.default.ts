@@ -43,10 +43,19 @@ export default (appInfo: EggAppInfo) => {
         username: 'root',
         password: 'karmiy@123',
         define: {
-            freezeTableName: true,
-            timestamps: false,
+            freezeTableName: true, // false 表名后会自动多加个 s
+            timestamps: false, // true 会自动往表插 create_time 等字段
         },
         timezone: '+8:00',
+        dialectOptions: {
+            /* typeCast(field, next) {
+                if (field.type === 'DATETIME') {
+                    console.log('field', field);
+                    return field.string();
+                }
+                return next();
+            }, */
+        },
     };
 
     config.authorization = {

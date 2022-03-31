@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE, RESPONSE_STATUS } from '../utils/constants';
 
 export default class UserController extends Controller {
     public async login() {
@@ -7,10 +8,10 @@ export default class UserController extends Controller {
         const code = ctx.getParams('code');
 
         if (!code) {
-            ctx.status = ctx.helper.RESPONSE_STATUS.前端错误;
+            ctx.status = RESPONSE_STATUS.前端错误;
             ctx.body = {
                 data: {},
-                message: 'code 参数错误',
+                message: ERROR_MESSAGE.参数,
             };
             return;
         }
@@ -18,19 +19,21 @@ export default class UserController extends Controller {
         const [data, err] = await ctx.helper.asyncWrapper(ctx.service.user.wxLogin(code));
 
         if (err) {
-            ctx.status = ctx.helper.RESPONSE_STATUS.服务端错误;
+            ctx.status = RESPONSE_STATUS.服务端错误;
             ctx.body = {
                 data: {},
-                message: err.res?.message,
+                message: ctx.helper.getErrorMessage({ err }),
             };
             return;
         }
 
         if (!data) {
-            ctx.status = ctx.helper.RESPONSE_STATUS.服务端错误;
+            ctx.status = RESPONSE_STATUS.服务端错误;
             ctx.body = {
                 data: {},
-                message: '微信登录过程中发生未知错误',
+                message: ctx.helper.getErrorMessage({
+                    defaultMessage: '微信登录过程中发生未知错误',
+                }),
             };
             return;
         }
@@ -45,12 +48,12 @@ export default class UserController extends Controller {
             },
         );
 
-        ctx.status = ctx.helper.RESPONSE_STATUS.成功;
+        ctx.status = RESPONSE_STATUS.成功;
         ctx.body = {
             data: {
                 token,
             },
-            message: '登录成功',
+            message: SUCCESS_MESSAGE.登录,
         };
     }
 

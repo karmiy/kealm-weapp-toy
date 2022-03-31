@@ -12,4 +12,6 @@ export default (app: Application) => {
     router.get(getPath('/account/getTypeList'), controller.account.getTypeList);
     router.post(getPath('/account/addOrUpdateRecord'), controller.account.addOrUpdateRecord);
     router.get(getPath('/account/getRecords'), controller.account.getRecords);
+    router.get(getPath('/account/getStatistics'), controller.account.getStatistics);
+    router.get(getPath('/account/getRecordById'), controller.account.getRecordById);
 };
