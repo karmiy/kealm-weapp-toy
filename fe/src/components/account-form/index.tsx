@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Picker, View } from '@tarojs/components';
+import { setStorageSync, showToast } from '@tarojs/taro';
+import { useMount } from 'ahooks';
 import { format, parseISO } from 'date-fns';
 import { isNil } from 'lodash-es';
 import { AtButton, AtForm, AtInput, AtToast } from 'taro-ui';
 import { ListItem } from '@/components';
 import { addOrUpdateRecord } from '@/services';
 import { useTypeListStore } from '@/store';
-import { ACCOUNT_MODE } from '@/utils/constants';
+import { sleep } from '@/utils/base';
+import { ACCOUNT_MODE, STORAGE_KEYS } from '@/utils/constants';
+import { navigateToPage } from '@/utils/utils';
 import styles from './index.module.scss';
 
 interface Props {
@@ -17,8 +21,8 @@ export default function (props: Props) {
     const { mode } = props;
 
     /* ------------------------------ Toast ------------------------------ */
-    const [showToast, setShowToast] = useState(false);
-    const [toastText, setToastText] = useState('');
+    // const [showToast, setShowToast] = useState(false);
+    // const [toastText, setToastText] = useState('');
 
     /* ------------------------------ 金额 ------------------------------ */
     const [amount, setAmount] = useState('');
@@ -39,29 +43,44 @@ export default function (props: Props) {
     const [remark, setRemark] = useState('');
 
     /* ------------------------------ 提交 ------------------------------ */
+    const handleFormClear = () => {
+        setAmount('');
+        setTypeIndex(undefined);
+        setCreateDate(format(new Date(), 'yyyy-MM-dd'));
+        setCreateTime(format(new Date(), 'HH:mm'));
+        setRemark('');
+    };
     const onSubmit = () => {
         if (!amount) {
-            setShowToast(true);
-            setToastText('请输入金额');
+            showToast({
+                title: '请输入金额',
+                icon: 'error',
+            });
             return;
         }
 
         const accountType = typeList[typeIndex ?? 0];
         if (isNil(typeIndex) || !accountType) {
-            setShowToast(true);
-            setToastText('请选择类别');
+            showToast({
+                title: '请选择类别',
+                icon: 'error',
+            });
             return;
         }
 
         if (!createDate) {
-            setShowToast(true);
-            setToastText('请选择日期');
+            showToast({
+                title: '请选择日期',
+                icon: 'error',
+            });
             return;
         }
 
         if (!createTime) {
-            setShowToast(true);
-            setToastText('请选择时间');
+            showToast({
+                title: '请选择时间',
+                icon: 'error',
+            });
             return;
         }
 
@@ -70,7 +89,28 @@ export default function (props: Props) {
             account_type: accountType.id,
             create_time: parseISO(`${createDate} ${createTime}`),
             remark,
-        });
+        })
+            .then(async () => {
+                await showToast({
+                    title: '添加成功',
+                    icon: 'success',
+                });
+                await sleep(1500);
+
+                // 跳转到首页
+                setStorageSync(STORAGE_KEYS.NAVIGATE_TO_DETAIL, { refresh: true });
+                navigateToPage({
+                    pageName: 'detail',
+                    isSwitchTab: true,
+                });
+                handleFormClear();
+            })
+            .catch(() => {
+                showToast({
+                    title: '添加失败',
+                    icon: 'error',
+                });
+            });
     };
 
     return (
@@ -155,13 +195,13 @@ export default function (props: Props) {
                     </AtButton>
                 </View>
             </AtForm>
-            <AtToast
+            {/* <AtToast
                 isOpened={showToast}
                 status='error'
                 onClose={() => setShowToast(false)}
                 text={toastText}
                 duration={1500}
-            />
+            /> */}
         </View>
     );
 }

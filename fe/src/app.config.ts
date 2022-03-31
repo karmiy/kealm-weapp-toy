@@ -1,5 +1,11 @@
 export default defineAppConfig({
-    pages: ['pages/detail/index', 'pages/mine/index', 'pages/account/index', 'pages/login/index'],
+    pages: [
+        'pages/detail/index',
+        'pages/mine/index',
+        'pages/account/index',
+        'pages/login/index',
+        'pages/edit/index',
+    ],
     tabBar: {
         list: [
             {
@@ -30,7 +36,7 @@ export default defineAppConfig({
         backgroundTextStyle: 'light',
         // backgroundColor: '#00B26A',
         navigationBarBackgroundColor: '#00B26A',
-        navigationBarTitleText: '记账',
+        navigationBarTitleText: '卡比记账',
         navigationBarTextStyle: 'white',
     },
 });

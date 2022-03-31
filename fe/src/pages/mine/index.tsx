@@ -23,15 +23,15 @@ export default function () {
                 <View className={`${styles.stat} w-full flex items-center justify-around`}>
                     <View className='flex flex-col items-center'>
                         <Text className={`${styles.count} mt-4`}>0</Text>
-                        <Text className={styles.title}>总打卡天数</Text>
+                        <Text className={styles.title}>使用天数</Text>
                     </View>
                     <View className='flex flex-col items-center'>
                         <Text className={`${styles.count} mt-4`}>0</Text>
-                        <Text className={styles.title}>总打卡天数</Text>
+                        <Text className={styles.title}>记账天数</Text>
                     </View>
                     <View className='flex flex-col items-center'>
                         <Text className={`${styles.count} mt-4`}>0</Text>
-                        <Text className={styles.title}>总打卡天数</Text>
+                        <Text className={styles.title}>记账笔数</Text>
                     </View>
                 </View>
             </View>

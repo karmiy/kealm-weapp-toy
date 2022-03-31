@@ -2,6 +2,10 @@
 
 .header {
     background-color: $color-primary;
+
+    .dateSelect {
+        width: px(100);
+    }
 }
 
 .list {

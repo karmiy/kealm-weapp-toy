@@ -44,13 +44,13 @@ export function formatNumber(
         isStrict?: boolean;
     },
 ) {
-    const { precision = 2, isStrict = true } = options ?? {};
+    const { precision = 2, isStrict = false } = options ?? {};
     price = isNil(price) ? 0 : price;
 
     // (Math.round(price) / 100).toFixed(2);
-    if (isStrict) return (price / 100).toFixed(precision);
+    if (isStrict) return price.toFixed(precision);
 
-    return `${parseFloat((price / 100).toFixed(precision))}`;
+    return `${parseFloat(price.toFixed(precision))}`;
 }
 
 /**
@@ -63,3 +63,9 @@ export function asyncWrapper<T>(promise: Promise<T>) {
         .then(data => [data, null] as [T, null])
         .catch(err => [null, { res: err }] as [null, { res: any }]);
 }
+
+/**
+ * @description mock 时模拟延时的 Promise
+ * @param duration 时长，默认 1s
+ */
+export const sleep = (duration = 1000) => new Promise(r => setTimeout(r, duration));
