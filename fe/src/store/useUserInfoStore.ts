@@ -1,5 +1,6 @@
-import { getStorageSync, setStorageSync } from '@tarojs/taro';
+import { getStorageSync, getUserProfile, setStorageSync } from '@tarojs/taro';
 import { atom, useRecoilState } from 'recoil';
+import { asyncWrapper } from '@/utils/base';
 import { getStorageKey } from '@/utils/utils';
 
 interface UserInfo {
@@ -25,8 +26,26 @@ export function useUserInfoStore() {
         setUserInfo(val);
     };
 
+    const applyForUserInfo = async () => {
+        // 申请获取昵称、头像
+        const [profileData, profileErr] = await asyncWrapper(
+            getUserProfile({
+                lang: 'zh_CN',
+                desc: '卡比记账',
+            }),
+        );
+
+        if (profileErr || !profileData) return;
+
+        // 存到全局 store
+        handleUserInfo({
+            nickName: profileData.userInfo.nickName,
+            avatarUrl: profileData.userInfo.avatarUrl,
+        });
+    };
+
     return {
         userInfo,
-        setUserInfo: handleUserInfo,
+        applyForUserInfo,
     };
 }

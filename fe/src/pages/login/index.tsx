@@ -8,26 +8,10 @@ import { getStorageKey, navigateToPage } from '@/utils/utils';
 import styles from './index.module.scss';
 
 export default function () {
-    const { setUserInfo } = useUserInfoStore();
+    const { applyForUserInfo } = useUserInfoStore();
 
     const handleLogin = async () => {
-        // 申请获取昵称、头像
-        const [profileData, profileErr] = await asyncWrapper(
-            getUserProfile({
-                lang: 'zh_CN',
-                desc: '卡比记账',
-            }),
-        );
-
-        if (profileErr || !profileData) return;
-
-        const { userInfo } = profileData;
-
-        // 存到全局 store
-        setUserInfo({
-            nickName: userInfo.nickName,
-            avatarUrl: userInfo.avatarUrl,
-        });
+        await applyForUserInfo();
 
         // 登录
         const [loginData, loginErr] = await asyncWrapper(login());

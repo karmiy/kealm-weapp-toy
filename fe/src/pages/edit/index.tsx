@@ -2,25 +2,35 @@ import { View } from '@tarojs/components';
 import { getCurrentInstance } from '@tarojs/taro';
 import { useRequest } from 'ahooks';
 import { AtActivityIndicator } from 'taro-ui';
-import { AccountForm } from '@/components';
+import { EditorForm } from '@/components';
 import { getRecordById } from '@/services';
 import { ACCOUNT_MODE } from '@/utils/constants';
 
 export default function () {
-    const { data } = useRequest(async () => {
+    const { data: recordItem } = useRequest(async () => {
         const id = getCurrentInstance().router?.params?.id;
         if (!id) return;
 
-        return getRecordById({
+        const res = await getRecordById({
             id: Number(id),
-        }).then(res => res.data);
+        });
+        const { data } = res;
+
+        return {
+            id: data.id,
+            amount: data.amount,
+            mode: data.account_type.account_mode,
+            createTime: data.create_time,
+            remark: data.remark,
+            accountTypeId: data.account_type.id,
+        };
     });
 
     return (
         <View className='edit'>
             <View className='pt-16'>
-                {data ? (
-                    <AccountForm mode={ACCOUNT_MODE.支出} />
+                {recordItem ? (
+                    <EditorForm item={recordItem} />
                 ) : (
                     <AtActivityIndicator mode='center' content='加载中...' />
                 )}

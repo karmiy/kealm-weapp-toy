@@ -4,21 +4,23 @@ import { useUserInfoStore } from '@/store';
 import styles from './index.module.scss';
 
 export default function () {
-    const { userInfo } = useUserInfoStore();
+    const { userInfo, applyForUserInfo } = useUserInfoStore();
 
     return (
         <View className='mine'>
             <View
                 className={`${styles.header} flex flex-col justify-center items-center pt-8 pb-16`}
             >
-                <AtAvatar
-                    circle
-                    image={
-                        userInfo.avatarUrl ??
-                        'https://gitee.com/karmiy/static/raw/master/weapp-accounts/imgs/kirby-1.jpeg'
-                    }
-                    size='large'
-                />
+                <View onClick={applyForUserInfo}>
+                    <AtAvatar
+                        circle
+                        image={
+                            userInfo.avatarUrl ??
+                            'https://gitee.com/karmiy/static/raw/master/weapp-accounts/imgs/kirby-1.jpeg'
+                        }
+                        size='large'
+                    />
+                </View>
                 <Text className={`${styles.nickname} mt-4`}>{userInfo.nickName ?? '小卡比'}</Text>
                 <View className={`${styles.stat} w-full flex items-center justify-around`}>
                     <View className='flex flex-col items-center'>

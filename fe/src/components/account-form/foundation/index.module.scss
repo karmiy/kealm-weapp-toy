@@ -5,4 +5,8 @@
         // 32 真机 placeholder 有点不对齐
         padding-right: px(30);
     }
+
+    &:global(.at-form)::after {
+        border-top-width: 0;
+    }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
 import { AtTabs, AtTabsPane } from 'taro-ui';
-import { AccountForm } from '@/components';
+import { AdditionForm } from '@/components';
 import { ACCOUNT_MODE } from '@/utils/constants';
 // import styles from './index.module.scss';
 
@@ -19,10 +19,10 @@ export default function () {
                 animated={false}
             >
                 <AtTabsPane current={currentTabIndex} index={0}>
-                    <AccountForm mode={ACCOUNT_MODE.支出} />
+                    <AdditionForm mode={ACCOUNT_MODE.支出} />
                 </AtTabsPane>
                 <AtTabsPane current={currentTabIndex} index={1}>
-                    <AccountForm mode={ACCOUNT_MODE.收入} />
+                    <AdditionForm mode={ACCOUNT_MODE.收入} />
                 </AtTabsPane>
             </AtTabs>
         </View>

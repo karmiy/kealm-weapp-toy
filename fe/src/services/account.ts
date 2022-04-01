@@ -107,3 +107,16 @@ export async function getRecordById(conditions?: { id: number }) {
         },
     });
 }
+
+/**
+ * @description 根据 id 删除账单
+ * @returns
+ */
+export async function destroyRecordById(conditions?: { id: number }) {
+    return httpRequest.post({
+        url: '/account/destroyRecordById',
+        data: {
+            ...conditions,
+        },
+    });
+}

@@ -1,0 +1,17 @@
+@import '@/styles/index.scss';
+
+.formButton {
+    width: px(160);
+}
+
+.modal {
+    :global(.at-modal__content) {
+        display: flex;
+        align-items: center;
+        min-height: px(66);
+    }
+
+    :global(.content-simple) {
+        text-align: center;
+    }
+}
