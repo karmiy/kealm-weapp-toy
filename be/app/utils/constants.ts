@@ -8,6 +8,7 @@ export enum RESPONSE_STATUS {
 export enum ERROR_MESSAGE {
     '参数' = '参数错误',
     '请求' = '请求过程中发生未知错误',
+    'Token 失效' = 'Token 失效',
 }
 
 export enum SUCCESS_MESSAGE {

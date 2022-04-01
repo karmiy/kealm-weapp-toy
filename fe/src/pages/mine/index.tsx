@@ -1,10 +1,21 @@
 import { Text, View } from '@tarojs/components';
+import { useRequest } from 'ahooks';
 import { AtAvatar } from 'taro-ui';
+import { getUserAccountStatistics } from '@/services';
 import { useUserInfoStore } from '@/store';
 import styles from './index.module.scss';
 
 export default function () {
     const { userInfo, applyForUserInfo } = useUserInfoStore();
+
+    const { data: statistics } = useRequest(async () => {
+        const { data } = await getUserAccountStatistics();
+        return {
+            usageDays: data.usage_days,
+            accountDays: data.account_days,
+            accountCount: data.account_count,
+        };
+    });
 
     return (
         <View className='mine'>
@@ -24,15 +35,19 @@ export default function () {
                 <Text className={`${styles.nickname} mt-4`}>{userInfo.nickName ?? '小卡比'}</Text>
                 <View className={`${styles.stat} w-full flex items-center justify-around`}>
                     <View className='flex flex-col items-center'>
-                        <Text className={`${styles.count} mt-4`}>0</Text>
+                        <Text className={`${styles.count} mt-4`}>{statistics?.usageDays ?? 0}</Text>
                         <Text className={styles.title}>使用天数</Text>
                     </View>
                     <View className='flex flex-col items-center'>
-                        <Text className={`${styles.count} mt-4`}>0</Text>
+                        <Text className={`${styles.count} mt-4`}>
+                            {statistics?.accountDays ?? 0}
+                        </Text>
                         <Text className={styles.title}>记账天数</Text>
                     </View>
                     <View className='flex flex-col items-center'>
-                        <Text className={`${styles.count} mt-4`}>0</Text>
+                        <Text className={`${styles.count} mt-4`}>
+                            {statistics?.accountCount ?? 0}
+                        </Text>
                         <Text className={styles.title}>记账笔数</Text>
                     </View>
                 </View>

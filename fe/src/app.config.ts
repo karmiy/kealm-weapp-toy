@@ -1,11 +1,5 @@
 export default defineAppConfig({
-    pages: [
-        'pages/detail/index',
-        'pages/mine/index',
-        'pages/account/index',
-        'pages/login/index',
-        'pages/edit/index',
-    ],
+    pages: ['pages/detail/index', 'pages/account/index', 'pages/mine/index'],
     tabBar: {
         list: [
             {
@@ -39,4 +33,14 @@ export default defineAppConfig({
         navigationBarTitleText: '卡比记账',
         navigationBarTextStyle: 'white',
     },
+    subPackages: [
+        {
+            root: 'pages/login/',
+            pages: ['index'],
+        },
+        {
+            root: 'pages/edit/',
+            pages: ['index'],
+        },
+    ],
 });

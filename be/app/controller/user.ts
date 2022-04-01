@@ -57,6 +57,50 @@ export default class UserController extends Controller {
         };
     }
 
+    public async getAccountStatistics() {
+        const { ctx } = this;
+        const { isEmpty } = ctx.helper;
+
+        const openId = ctx.getOpenId();
+
+        if (isEmpty(openId)) {
+            ctx.status = RESPONSE_STATUS.前端错误;
+            ctx.body = {
+                data: {},
+                message: ERROR_MESSAGE['Token 失效'],
+            };
+            return;
+        }
+
+        const [data, err] = await ctx.helper.asyncWrapper(
+            ctx.service.user.getUserAccountStatistics({ open_id: openId }),
+        );
+
+        if (err) {
+            ctx.status = RESPONSE_STATUS.服务端错误;
+            ctx.body = {
+                data: {},
+                message: ctx.helper.getErrorMessage({ err }),
+            };
+            return;
+        }
+
+        if (!data) {
+            ctx.status = RESPONSE_STATUS.服务端错误;
+            ctx.body = {
+                data: {},
+                message: ctx.helper.getErrorMessage(),
+            };
+            return;
+        }
+
+        ctx.status = RESPONSE_STATUS.成功;
+        ctx.body = {
+            data,
+            message: SUCCESS_MESSAGE.请求,
+        };
+    }
+
     public async test() {
         const { ctx, app } = this;
         const token = app.jwt.sign({ openId: 'xxxxaaaasssssddddfff' }, 'karmiy123', {

@@ -14,3 +14,17 @@ export async function login() {
         },
     });
 }
+
+/**
+ * @description 获取用户记账信息
+ * @returns
+ */
+export async function getUserAccountStatistics() {
+    return httpRequest.get<{
+        usage_days: number;
+        account_days: number;
+        account_count: number;
+    }>({
+        url: '/user/getAccountStatistics',
+    });
+}
