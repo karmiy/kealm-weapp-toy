@@ -151,8 +151,21 @@ export default class Account extends Service {
         // raw: true 后 Model get 会无效，手动转下
         ctx.helper.hackCreateTime(_data);
         ctx.helper.clearSensitive(_data);
+        _data.amount = Number(_data.amount);
 
         return _data;
+    }
+
+    public async deleteAccountRecordById(conditions: { id: number; open_id: string }) {
+        const { ctx } = this;
+        const { id, open_id } = conditions;
+
+        await ctx.model.AccountRecord.destroy({
+            where: {
+                id,
+                open_id,
+            },
+        });
     }
 
     public async getAmountStatistics(conditions: { year: number; month: number; open_id: string }) {

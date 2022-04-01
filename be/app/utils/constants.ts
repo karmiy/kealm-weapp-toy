@@ -12,5 +12,6 @@ export enum ERROR_MESSAGE {
 
 export enum SUCCESS_MESSAGE {
     '请求' = '请求成功',
+    '删除' = '删除成功',
     '登录' = '登录成功',
 }

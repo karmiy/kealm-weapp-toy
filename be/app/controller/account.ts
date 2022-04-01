@@ -193,6 +193,44 @@ export default class AccountController extends Controller {
         };
     }
 
+    public async destroyRecordById() {
+        const { ctx } = this;
+        const { isEmpty } = ctx.helper;
+        const { id } = ctx.getParams<{ id: number }>();
+
+        const openId = ctx.getOpenId();
+
+        if (isEmpty(id) || isEmpty(openId)) {
+            ctx.status = RESPONSE_STATUS.前端错误;
+            ctx.body = {
+                data: {},
+                message: ERROR_MESSAGE.参数,
+            };
+            return;
+        }
+
+        const [, err] = await ctx.helper.asyncWrapper(
+            ctx.service.account.deleteAccountRecordById({
+                id,
+                open_id: openId,
+            }),
+        );
+
+        if (err) {
+            ctx.status = RESPONSE_STATUS.服务端错误;
+            ctx.body = {
+                data: {},
+                message: ctx.helper.getErrorMessage({ err }),
+            };
+            return;
+        }
+
+        ctx.body = {
+            data: {},
+            message: SUCCESS_MESSAGE.删除,
+        };
+    }
+
     public async getStatistics() {
         const { ctx } = this;
         const { isEmpty } = ctx.helper;
