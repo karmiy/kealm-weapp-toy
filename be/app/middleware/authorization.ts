@@ -13,7 +13,8 @@ export default function AuthorizationMiddleware(options: EggAppConfig) {
         const auth = ctx.get('Authorization');
         const path = ctx.path;
 
-        if (ignorePaths.includes(path)) {
+        // 双向判断，可能会有转发
+        if (ignorePaths.find(item => item.includes(path) || path.includes(item))) {
             await next();
             return;
         }
