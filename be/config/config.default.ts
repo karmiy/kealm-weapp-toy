@@ -40,7 +40,7 @@ export default (appInfo: EggAppInfo) => {
         database: 'weapp-accounts',
         host: 'localhost',
         port: 3306,
-        username: 'root',
+        username: 'karmiy',
         password: 'karmiy@123',
         define: {
             freezeTableName: true, // false 表名后会自动多加个 s
