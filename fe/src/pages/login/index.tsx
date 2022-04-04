@@ -34,12 +34,12 @@ export default function () {
     };
     return (
         <View className={`${styles.wrapper} h-full flex flex-col items-center relative`}>
-            <Image
+            {/* <Image
                 className={styles.logo}
                 src='https://gitee.com/karmiy/static/raw/master/weapp-accounts/imgs/kirby-logo.png'
-            />
-            <Text className={styles.title}>卡比记账</Text>
-            <Text className={styles.desc}>记账一键通，让统计更便捷</Text>
+            /> */}
+            {/* <Text className={styles.title}>卡比记账</Text> */}
+            {/* <Text className={styles.desc}>记账一键通，让统计更便捷</Text> */}
             <AtButton type='primary' className={styles.loginBtn} onClick={handleLogin}>
                 微信一键登录
             </AtButton>

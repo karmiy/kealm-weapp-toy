@@ -69,3 +69,18 @@ export function asyncWrapper<T>(promise: Promise<T>) {
  * @param duration 时长，默认 1s
  */
 export const sleep = (duration = 1000) => new Promise(r => setTimeout(r, duration));
+
+/**
+ * @description 安全转换为 number
+ * @param v
+ * @param fallback
+ * @returns
+ */
+export const transToNumber = (v?: string, fallback = 0) => {
+    if (isNil(v)) return fallback;
+
+    const value = Number(v);
+    if (Number.isNaN(value)) return fallback;
+
+    return value;
+};

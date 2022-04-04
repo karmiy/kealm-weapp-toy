@@ -69,9 +69,7 @@ export default function (props: Props) {
                                     +{formatNumber(amount)}
                                 </Text>
                             ) : (
-                                <Text className={`${styles.account} text-danger`}>
-                                    -{formatNumber(amount)}
-                                </Text>
+                                <Text className={`${styles.account}`}>-{formatNumber(amount)}</Text>
                             )}
                             <AtIcon
                                 className={`${styles.arrow} ml-8`}

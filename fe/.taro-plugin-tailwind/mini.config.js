@@ -63,7 +63,7 @@ module.exports = {
         extend: {
             colors: {
                 'primary': {
-                    DEFAULT: '#00b26a',
+                    DEFAULT: '#fe8ebd',
                 },
                 'danger': {
                     DEFAULT: '#F56C6C',

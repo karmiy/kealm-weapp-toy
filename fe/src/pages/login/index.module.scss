@@ -2,6 +2,9 @@
 
 .wrapper {
     color: $text-color-primary;
+    background: url('https://gitee.com/karmiy/static/raw/master/weapp-accounts/imgs/kirby-2.png') no-repeat;
+    background-position: center 80%;
+    background-size: cover;
 
     .logo {
         width: px(100);
@@ -23,7 +26,7 @@
 
     .loginBtn {
         position: absolute;
-        bottom: px(100);
+        bottom: px(80);
         left: px((375 - 300) / 2);
         width: px(300);
     }

@@ -7,6 +7,7 @@ import { isNil } from 'lodash-es';
 import { AtForm, AtInput } from 'taro-ui';
 import { ListItem } from '@/components';
 import { useTypeListStore } from '@/store';
+import { formatNumber, transToNumber } from '@/utils/base';
 import { ACCOUNT_MODE } from '@/utils/constants';
 import styles from './index.module.scss';
 
@@ -175,6 +176,18 @@ export default forwardRef<FormRef, Props>((props, ref) => {
                 name='account'
                 value={amount}
                 onChange={(v: string) => setAmount(v)}
+                onBlur={() => {
+                    const v = transToNumber(amount);
+                    // 保留最多 4 位
+                    setTimeout(() => {
+                        setAmount(
+                            formatNumber(v, {
+                                precision: 4,
+                                isStrict: false,
+                            }),
+                        );
+                    });
+                }}
                 title='金额'
                 type='digit'
                 placeholder='请输入金额'
