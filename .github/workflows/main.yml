@@ -39,7 +39,7 @@ jobs:
       - name: copy file with scp
         uses: appleboy/scp-action@master
         with:
-          host: '81.69.219.242'
+          host: '${{ secrets.REMOTE_HOST }}'
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           port: 22
