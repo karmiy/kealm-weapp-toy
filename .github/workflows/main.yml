@@ -39,9 +39,9 @@ jobs:
       - name: copy file with scp
         uses: appleboy/scp-action@v0.0.1
         with:
-          host: ${{ Secrets.REMOTE_HOST }}
-          username: ${{ Secrets.REMOTE_USERNAME }}
-          password: ${{ Secrets.REMOTE_PASSWORD }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
           port: 22
           source: 'be/config/'
           target: '/deploy'
