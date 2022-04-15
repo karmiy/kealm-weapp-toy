@@ -1,4 +1,5 @@
 import { Text, View } from '@tarojs/components';
+import { useDidShow } from '@tarojs/taro';
 import { useRequest } from 'ahooks';
 import { AtAvatar } from 'taro-ui';
 import { getUserAccountStatistics } from '@/services';
@@ -8,13 +9,22 @@ import styles from './index.module.scss';
 export default function () {
     const { userInfo, applyForUserInfo } = useUserInfoStore();
 
-    const { data: statistics } = useRequest(async () => {
-        const { data } = await getUserAccountStatistics();
-        return {
-            usageDays: data.usage_days,
-            accountDays: data.account_days,
-            accountCount: data.account_count,
-        };
+    const { data: statistics, run } = useRequest(
+        async () => {
+            const { data } = await getUserAccountStatistics();
+            return {
+                usageDays: data.usage_days,
+                accountDays: data.account_days,
+                accountCount: data.account_count,
+            };
+        },
+        {
+            manual: true,
+        },
+    );
+
+    useDidShow(() => {
+        run();
     });
 
     return (
