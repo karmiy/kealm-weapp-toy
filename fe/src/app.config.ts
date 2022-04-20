@@ -42,5 +42,9 @@ export default defineAppConfig({
             root: 'pages/edit/',
             pages: ['index'],
         },
+        {
+            root: 'pages/chart/',
+            pages: ['index'],
+        },
     ],
 });
