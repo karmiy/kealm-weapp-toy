@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { RecoilRoot } from 'recoil';
 import 'windi.css';
-import './custom-theme.scss';
+// import './custom-theme.scss';
 import './app.scss';
 
 // PATCH: 为 recoil 包中判断 Window 打补丁，解决小程序报错

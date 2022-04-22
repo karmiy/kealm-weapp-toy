@@ -54,10 +54,10 @@ const config = {
             },
         },
         webpackChain(chain) {
-            chain
-                .plugin('analyzer')
+            // chain
+            //     .plugin('analyzer')
 
-                .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, []);
+            //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, []);
 
             // chain.optimization.sideEffects(false);
             chain.merge({
@@ -103,6 +103,9 @@ const config = {
     },
     alias: {
         '@': path.resolve(__dirname, '..', 'src'),
+    },
+    sass: {
+        resource: path.resolve(__dirname, '..', 'src/custom-theme.scss'), // 使用 babel-plugin-import 后需要改为再此引入 theme，否则无效
     },
 };
 

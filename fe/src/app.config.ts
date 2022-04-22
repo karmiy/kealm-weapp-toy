@@ -47,4 +47,5 @@ export default defineAppConfig({
             pages: ['index'],
         },
     ],
+    entryPagePath: 'pages/chart/index',
 });
