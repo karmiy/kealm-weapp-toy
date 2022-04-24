@@ -3,11 +3,10 @@ import { BaseEventOrig, PickerDateProps, Text, View } from '@tarojs/components';
 import { showToast } from '@tarojs/taro';
 import { useRequest } from 'ahooks';
 import { format, parseISO } from 'date-fns';
-import { add, divide, multiply } from 'lodash-es';
 import { AtIcon, AtProgress, AtTag } from 'taro-ui';
 import { Picker } from '@/components';
 import { getStatistics, getTypeExpenditureStatistics } from '@/services';
-import { asyncWrapper } from '@/utils/base';
+import { add, asyncWrapper, division, multiplication } from '@/utils/base';
 import { ECharts } from './components';
 import { CHART_TYPE } from './constants';
 import { createChartOptions } from './utils';
@@ -98,7 +97,7 @@ export default function () {
                             total === 0
                                 ? 0
                                 : Math.max(
-                                      Number(multiply(divide(sum, total), 100).toFixed(1)),
+                                      Number(multiplication(division(sum, total), 100).toFixed(1)),
                                       0.01,
                                   ),
                     };

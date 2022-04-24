@@ -84,3 +84,50 @@ export const transToNumber = (v?: string, fallback = 0) => {
 
     return value;
 };
+
+/**
+ * Gets the length after the decimal point
+ */
+export const digitLength = (n: number) => {
+    return (n.toString().split('.')[1] || '').length;
+};
+
+/**
+ * Remove the decimal point from the number
+ */
+export const floatToInt = (n: number) => {
+    return Number(n.toString().replace('.', ''));
+};
+
+/**
+ * Precision computing multiplication
+ */
+export const multiplication = (arg1: number, arg2: number) => {
+    const baseNum = digitLength(arg1) + digitLength(arg2);
+    const result = floatToInt(arg1) * floatToInt(arg2);
+    return result / Math.pow(10, baseNum);
+};
+
+/**
+ * Precision calculation addition
+ */
+export const add = (arg1: number, arg2: number) => {
+    const baseNum = Math.pow(10, Math.max(digitLength(arg1), digitLength(arg2)));
+    return (multiplication(arg1, baseNum) + multiplication(arg2, baseNum)) / baseNum;
+};
+
+/**
+ * Precision calculation subtraction
+ */
+export const subtraction = (arg1: number, arg2: number) => {
+    const baseNum = Math.pow(10, Math.max(digitLength(arg1), digitLength(arg2)));
+    return (multiplication(arg1, baseNum) - multiplication(arg2, baseNum)) / baseNum;
+};
+
+/**
+ * Precision calculation division
+ */
+export const division = (arg1: number, arg2: number) => {
+    const baseNum = Math.pow(10, Math.max(digitLength(arg1), digitLength(arg2)));
+    return multiplication(arg1, baseNum) / multiplication(arg2, baseNum);
+};
