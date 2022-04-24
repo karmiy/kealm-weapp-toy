@@ -9,7 +9,12 @@ export default function ({ options }: Props) {
     const ref = useRef<EChart>(null);
 
     useEffect(() => {
-        ref.current?.refresh(options);
+        ref.current?.refresh(options ?? {});
+        // setTimeout(() => {
+        //     ref.current?.Chart.chart?.on('finished', () => {
+        //         console.log('finished');
+        //     });
+        // }, 1000);
     }, [options]);
 
     return <EChart ref={ref} canvasId='bar-canvas' />;

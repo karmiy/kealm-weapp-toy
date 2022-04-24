@@ -1,4 +1,6 @@
 $color-primary: #fe8ebd; // 254 142 189 => 1 113 66
+$color-primary-light: #feaace;
+$color-primary-dark: #cb7297;
 $color-primary-5: fade-out($color-primary, 0.5) !default;
 $color-primary-7: fade-out($color-primary, 0.7) !default;
 $color-primary-9: fade-out($color-primary, 0.9) !default;
@@ -41,6 +43,9 @@ $text-color-secondary: $color-neutral-5 !default; // #999
 
 // border-color
 $border-color-primary: $color-neutral-10 !default; // #E8E8E8
+
+// background-color
+$background-color-primary: $color-neutral-12 !default; // #F2F2F2
 
 /* z-index */
 $z-index-negative: -1 !default;
