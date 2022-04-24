@@ -113,7 +113,7 @@ export default function () {
     );
 
     return (
-        <View className='min-h-full bg-neutral-12 overflow-hidden'>
+        <View className='min-h-screen bg-neutral-12 overflow-hidden'>
             <View className='mx-12 my-8 bg-white rounded'>
                 <View className='border-bottom px-16 py-12 flex items-center'>
                     <Text className='mr-8'>类型</Text>
