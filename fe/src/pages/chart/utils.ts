@@ -216,23 +216,23 @@ export const createChartOptions = (
                         borderColor: colorList[1],
                     },
                 },
-                markPoint: {
-                    symbol: 'pin', //标记(气泡)的图形
-                    symbolSize: 50, //标记(气泡)的大小
-                    itemStyle: {
-                        color: '#4587E7', //图形的颜色。
-                        borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
-                        borderWidth: 0, //描边线宽。为 0 时无描边。
-                        borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
-                    },
-                    data: [
-                        { type: 'max', name: '最大值' },
-                        { type: 'min', name: '最小值' },
-                    ],
-                },
-                markLine: {
-                    data: [{ type: 'average', name: '平均值' }],
-                },
+                // markPoint: {
+                //     symbol: 'pin', //标记(气泡)的图形
+                //     symbolSize: 50, //标记(气泡)的大小
+                //     itemStyle: {
+                //         color: '#4587E7', //图形的颜色。
+                //         borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
+                //         borderWidth: 0, //描边线宽。为 0 时无描边。
+                //         borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
+                //     },
+                //     data: [
+                //         { type: 'max', name: '最大值' },
+                //         { type: 'min', name: '最小值' },
+                //     ],
+                // },
+                // markLine: {
+                //     data: [{ type: 'average', name: '平均值' }],
+                // },
             },
             {
                 name: '支出',
@@ -268,23 +268,23 @@ export const createChartOptions = (
                         borderColor: colorList[0],
                     },
                 },
-                markPoint: {
-                    symbol: 'pin', //标记(气泡)的图形
-                    symbolSize: 50, //标记(气泡)的大小
-                    itemStyle: {
-                        // color: '#4587E7', //图形的颜色。
-                        borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
-                        borderWidth: 0, //描边线宽。为 0 时无描边。
-                        borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
-                    },
-                    data: [
-                        { type: 'max', name: '最大值' },
-                        { type: 'min', name: '最小值' },
-                    ],
-                },
-                markLine: {
-                    data: [{ type: 'average', name: '平均值' }],
-                },
+                // markPoint: {
+                //     symbol: 'pin', //标记(气泡)的图形
+                //     symbolSize: 50, //标记(气泡)的大小
+                //     itemStyle: {
+                //         // color: '#4587E7', //图形的颜色。
+                //         borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
+                //         borderWidth: 0, //描边线宽。为 0 时无描边。
+                //         borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
+                //     },
+                //     data: [
+                //         { type: 'max', name: '最大值' },
+                //         { type: 'min', name: '最小值' },
+                //     ],
+                // },
+                // markLine: {
+                //     data: [{ type: 'average', name: '平均值' }],
+                // },
             },
             {
                 name: '总计',
@@ -311,23 +311,23 @@ export const createChartOptions = (
                         borderColor: colorList[2],
                     },
                 },
-                markPoint: {
-                    symbol: 'pin', //标记(气泡)的图形
-                    symbolSize: 50, //标记(气泡)的大小
-                    itemStyle: {
-                        // color: '#4587E7', //图形的颜色。
-                        borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
-                        borderWidth: 0, //描边线宽。为 0 时无描边。
-                        borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
-                    },
-                    data: [
-                        { type: 'max', name: '最大值' },
-                        { type: 'min', name: '最小值' },
-                    ],
-                },
-                markLine: {
-                    data: [{ type: 'average', name: '平均值' }],
-                },
+                // markPoint: {
+                //     symbol: 'pin', //标记(气泡)的图形
+                //     symbolSize: 50, //标记(气泡)的大小
+                //     itemStyle: {
+                //         // color: '#4587E7', //图形的颜色。
+                //         borderColor: '#000', //图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
+                //         borderWidth: 0, //描边线宽。为 0 时无描边。
+                //         borderType: 'solid', //柱条的描边类型，默认为实线，支持 ‘solid’, ‘dashed’, ‘dotted’。
+                //     },
+                //     data: [
+                //         { type: 'max', name: '最大值' },
+                //         { type: 'min', name: '最小值' },
+                //     ],
+                // },
+                // markLine: {
+                //     data: [{ type: 'average', name: '平均值' }],
+                // },
             },
         ],
     };
