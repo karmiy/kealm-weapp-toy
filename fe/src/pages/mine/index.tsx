@@ -1,9 +1,12 @@
 import { Text, View } from '@tarojs/components';
 import { useDidShow } from '@tarojs/taro';
 import { useRequest } from 'ahooks';
-import { AtAvatar } from 'taro-ui';
+import { AtAvatar, AtList } from 'taro-ui';
+import { ListItem } from '@/components';
 import { getUserAccountStatistics } from '@/services';
 import { useUserInfoStore } from '@/store';
+import { navigateToPage } from '@/utils/utils';
+import { BASE_FUNC_LIST } from './utils';
 import styles from './index.module.scss';
 
 export default function () {
@@ -28,7 +31,7 @@ export default function () {
     });
 
     return (
-        <View className='mine'>
+        <View className='mine bg-neutral-12 h-full'>
             <View
                 className={`${styles.header} flex flex-col justify-center items-center pt-8 pb-16`}
             >
@@ -62,6 +65,21 @@ export default function () {
                     </View>
                 </View>
             </View>
+            <AtList className='mt-8' hasBorder={false}>
+                {BASE_FUNC_LIST.map((item, index) => {
+                    const isLast = index === BASE_FUNC_LIST.length - 1;
+                    return (
+                        <ListItem
+                            key={item.label}
+                            title='图表统计'
+                            arrow='right'
+                            hasBorder={!isLast}
+                            thumb={item.icon}
+                            onClick={() => navigateToPage({ pageName: item.navigate })}
+                        />
+                    );
+                })}
+            </AtList>
         </View>
     );
 }

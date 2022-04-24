@@ -27,7 +27,7 @@ interface AccountRecord {
 
 export default function () {
     /* ------------------------------ 头部：日期 ------------------------------ */
-    const [dateStr, setDateStr] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [dateStr, setDateStr] = useState(() => format(new Date(), 'yyyy-MM-dd'));
     // const [dateStr, setDateStr] = useState('2022-03-31');
     const date = parseISO(dateStr);
     const year = getYear(date);

@@ -76,9 +76,22 @@ export async function getRecords(conditions?: {
  * @description 获取收支统计
  * @returns
  */
-export async function getStatistics(conditions?: { year: number; month: number }) {
-    return httpRequest.get<Record<string, { income: number; expenditure: number }>>({
+export async function getStatistics(conditions?: { year: number; month?: number }) {
+    return httpRequest.get<Record<string, { income: number; expenditure: number; total: number }>>({
         url: '/account/getStatistics',
+        data: {
+            ...conditions,
+        },
+    });
+}
+
+/**
+ * @description 获取类型支出统计
+ * @returns
+ */
+export async function getTypeExpenditureStatistics(conditions?: { year: number; month?: number }) {
+    return httpRequest.get<Array<{ id: number; name: string; sum: number }>>({
+        url: '/account/getTypeExpenditureStatistics',
         data: {
             ...conditions,
         },

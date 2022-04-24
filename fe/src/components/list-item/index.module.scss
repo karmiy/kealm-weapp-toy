@@ -20,6 +20,11 @@
         }
     }
 
+    &:global(.at-list__item--thumb .item-thumb) {
+        width: px(24);
+        height: px(24);
+    }
+
     &.isEmpty {
         :global(.item-extra__info) {
             color: $color-neutral-8;

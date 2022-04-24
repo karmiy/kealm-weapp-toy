@@ -7,12 +7,12 @@
         height: px(40);
         color: $text-color-secondary;
         font-size: px(12);
-        border-bottom: 1px solid $border-color-primary;
+        border-bottom: 1PX solid $border-color-primary;
     }
 
     .groupItem {
         color: $text-color-primary;
-        border-bottom: 1px solid $border-color-primary;
+        border-bottom: 1PX solid $border-color-primary;
 
         .type {
             overflow: hidden;

@@ -1,13 +1,23 @@
 import { Component } from 'react';
 import { RecoilRoot } from 'recoil';
 import 'windi.css';
-import './custom-theme.scss';
+// import './custom-theme.scss';
 import './app.scss';
 
 // PATCH: 为 recoil 包中判断 Window 打补丁，解决小程序报错
 if (!global.Window) {
     Object.defineProperty(global, 'Window', {
         value: window.constructor,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+    });
+}
+
+// PATCH: 为 lodash global.Date 打补丁，解决小程序报错
+if (!global.Date) {
+    Object.defineProperty(global, 'Date', {
+        value: window.Date,
         writable: true,
         enumerable: true,
         configurable: true,

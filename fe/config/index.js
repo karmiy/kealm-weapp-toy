@@ -1,5 +1,9 @@
 const path = require('path');
 
+const SPLIT_CHUNKS = {
+    TARO_ECHARTS_REACT: 'pages/chart/taro3-echarts-react', // 需要 pages/chart/ 前缀，为了使 splitChunk 后放到子包文件夹里，小程序才会识别为子包一员
+};
+
 const config = {
     projectName: 'fe',
     date: '2022-3-17',
@@ -49,6 +53,35 @@ const config = {
                 },
             },
         },
+        webpackChain(chain) {
+            // chain
+            //     .plugin('analyzer')
+
+            //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, []);
+
+            // chain.optimization.sideEffects(false);
+            chain.merge({
+                optimization: {
+                    splitChunks: {
+                        cacheGroups: {
+                            [SPLIT_CHUNKS.TARO_ECHARTS_REACT]: {
+                                name: SPLIT_CHUNKS.TARO_ECHARTS_REACT,
+                                // minChunks: 2,
+                                test: module => {
+                                    return /node_modules[\\/]taro3-echarts-react/.test(
+                                        module.resource,
+                                    );
+                                },
+                                priority: 200,
+                            },
+                        },
+                    },
+                },
+            });
+        },
+        addChunkPages(pages) {
+            pages.set('pages/chart/index', [SPLIT_CHUNKS.TARO_ECHARTS_REACT]);
+        },
     },
     h5: {
         publicPath: '/',
@@ -70,6 +103,9 @@ const config = {
     },
     alias: {
         '@': path.resolve(__dirname, '..', 'src'),
+    },
+    sass: {
+        resource: path.resolve(__dirname, '..', 'src/custom-theme.scss'), // 使用 babel-plugin-import 后需要改为再此引入 theme，否则无效
     },
 };
 

@@ -1,3 +1,4 @@
+@import './mixins.scss';
 /* 输入框箭头朝右 */
 
 .is-cursor-right {
@@ -8,6 +9,11 @@
     }
 }
 
-.kk {
-    color: red;
+$directions: top, bottom, left, right;
+
+@each $direction in $directions {
+    .border-#{$direction} {
+
+        @include border($direction);
+    }
 }
