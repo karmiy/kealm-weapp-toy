@@ -55,6 +55,7 @@ export default (appInfo: EggAppInfo) => {
         },
         timezone: '+8:00',
         dialectOptions: {
+            decimalNumbers: true, // 解决 SUM 返回 string 类型的问题
             /* typeCast(field, next) {
                 if (field.type === 'DATETIME') {
                     console.log('field', field);

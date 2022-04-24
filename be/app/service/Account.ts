@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-import { Op } from 'sequelize';
+import { Op, fn, col } from 'sequelize';
 // import { fn, col } from 'sequelize';
 
 /**
@@ -168,9 +168,14 @@ export default class Account extends Service {
         });
     }
 
-    public async getAmountStatistics(conditions: { year: number; month: number; open_id: string }) {
+    public async getAmountStatistics(conditions: {
+        year: number;
+        month?: number;
+        open_id: string;
+    }) {
         const { ctx } = this;
         const { year, month, open_id } = conditions;
+        const isGroupByDay = !ctx.helper.isEmpty(month);
 
         // select date_format(create_time,'%Y%m%d')  as group，sum(amout) as sum from table group by date_format(create_time,'%Y%m%d')
         /* const o = {
@@ -190,16 +195,24 @@ export default class Account extends Service {
         } as any;
         const data = await ctx.model.AccountRecord.sum('amount', o); */
 
-        interface AccountArr {
+        const startDate = ctx.helper.getFirstDayOfMonth(year, isGroupByDay ? month ?? 1 : 1);
+
+        const endDate = ctx.helper.getLastDayOfMonth(year, isGroupByDay ? month ?? 12 : 12);
+
+        const formatter = isGroupByDay ? '%Y-%m-%d' : '%Y-%m';
+
+        interface AccountDetail {
             create_time: string;
             income: string;
             expenditure: string;
+            total: string;
         }
 
         const [data = []] = await (ctx.model.query(`SELECT 
-        date_format(t.create_time, '%Y-%m-%d') as create_time, 
+        date_format(t.create_time, '${formatter}') as create_time, 
         sum(case when t.account_mode = 1 then t.amount else 0 end) as 'income',
-        -sum(case when t.account_mode = 0 then t.amount else 0 end) as 'expenditure'
+        -sum(case when t.account_mode = 0 then t.amount else 0 end) as 'expenditure',
+        sum(case when t.account_mode = 0 then t.amount else -t.amount end) as 'total'
         from
         (
             select 
@@ -208,21 +221,82 @@ export default class Account extends Service {
             t.account_mode
             from t_account_record r
             LEFT JOIN t_account_type t on r.account_type_id = t.id 
-            WHERE r.create_time >= '${ctx.helper.getFirstDayOfMonth(year, month).dateStr}' 
-            AND r.create_time <= '${ctx.helper.getLastDayOfMonth(year, month).dateStr}' 
+            WHERE r.create_time >= '${startDate.dateStr}' 
+            AND r.create_time <= '${endDate.dateStr}' 
             AND r.open_id = '${open_id}'
         ) t
-        GROUP BY date_format(t.create_time, '%Y-%m-%d');`) as Promise<[AccountArr[], AccountArr]>);
+        GROUP BY date_format(t.create_time, '${formatter}');`) as Promise<
+            [AccountDetail[], AccountDetail]
+        >);
 
-        const groups: Record<string, { income: number; expenditure: number }> = Object.create(null);
+        const groups: Record<string, { income: number; expenditure: number; total: number }> =
+            Object.create(null);
 
         data.forEach(({ create_time, income, expenditure }) => {
             groups[create_time] = {
                 income: Number(income),
                 expenditure: Number(expenditure),
+                total: Number(income) + Number(expenditure),
             };
         });
 
         return groups;
+    }
+
+    public async getTypeExpenditureStatistics(conditions: {
+        year: number;
+        month?: number;
+        open_id: string;
+    }) {
+        const { ctx, app } = this;
+        const { year, month, open_id } = conditions;
+        const isGroupByDay = !ctx.helper.isEmpty(month);
+        const startDate = ctx.helper.getFirstDayOfMonth(year, isGroupByDay ? month ?? 1 : 1);
+
+        const endDate = ctx.helper.getLastDayOfMonth(year, isGroupByDay ? month ?? 12 : 12);
+
+        interface AccountDetail {
+            id: number;
+            name: string;
+            sum: number;
+        }
+
+        const o = {
+            attributes: [
+                // [fn('SUM', col('amount')), 'kkk'], // 如果不用 AccountRecord.sum，用 findAll，可以用这个取 SUM 然后重命名
+                // cast(fn('SUM', col('amount')), 'SIGNED'),
+                'account_type.id',
+                'account_type.name',
+            ],
+            group: 'account_type.id',
+            order: [[fn('SUM', col('amount')), 'desc']],
+            raw: true,
+            plain: false, // true 会只返回一条数据
+            include: {
+                model: app.model.AccountType,
+                as: 'account_type',
+                where: {
+                    account_mode: 0,
+                },
+                attributes: [], // 不返回这张表的字段
+            },
+            where: {
+                open_id,
+                create_time: {
+                    [Op.gte]: startDate.date,
+                    [Op.lte]: endDate.date,
+                },
+            },
+            fieldMap: {
+                // raw: true 时可映射联合查询的内容
+                'sum(`amount`)': 'k',
+            },
+        } as any;
+        const data = (await ctx.model.AccountRecord.sum(
+            'amount',
+            o,
+        )) as any as Array<AccountDetail>;
+
+        return data;
     }
 }

@@ -234,11 +234,11 @@ export default class AccountController extends Controller {
     public async getStatistics() {
         const { ctx } = this;
         const { isEmpty } = ctx.helper;
-        const { year, month } = ctx.getParams<{ year: number; month: number }>();
+        const { year, month } = ctx.getParams<{ year: number; month?: number }>();
 
         const openId = ctx.getOpenId();
 
-        if (isEmpty(year) || isEmpty(month) || isEmpty(openId)) {
+        if (isEmpty(year) || isEmpty(openId)) {
             ctx.status = RESPONSE_STATUS.前端错误;
             ctx.body = {
                 data: {},
@@ -249,6 +249,54 @@ export default class AccountController extends Controller {
 
         const [data, err] = await ctx.helper.asyncWrapper(
             ctx.service.account.getAmountStatistics({
+                year,
+                month,
+                open_id: openId,
+            }),
+        );
+
+        if (err) {
+            ctx.status = RESPONSE_STATUS.服务端错误;
+            ctx.body = {
+                data: {},
+                message: ctx.helper.getErrorMessage({ err }),
+            };
+            return;
+        }
+
+        if (!data) {
+            ctx.status = RESPONSE_STATUS.服务端错误;
+            ctx.body = {
+                data: {},
+                message: ctx.helper.getErrorMessage(),
+            };
+            return;
+        }
+
+        ctx.body = {
+            data,
+            message: SUCCESS_MESSAGE.请求,
+        };
+    }
+
+    public async getTypeExpenditureStatistics() {
+        const { ctx } = this;
+        const { isEmpty } = ctx.helper;
+        const { year, month } = ctx.getParams<{ year: number; month?: number }>();
+
+        const openId = ctx.getOpenId();
+
+        if (isEmpty(year) || isEmpty(openId)) {
+            ctx.status = RESPONSE_STATUS.前端错误;
+            ctx.body = {
+                data: {},
+                message: ERROR_MESSAGE.参数,
+            };
+            return;
+        }
+
+        const [data, err] = await ctx.helper.asyncWrapper(
+            ctx.service.account.getTypeExpenditureStatistics({
                 year,
                 month,
                 open_id: openId,
