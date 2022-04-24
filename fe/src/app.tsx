@@ -14,6 +14,16 @@ if (!global.Window) {
     });
 }
 
+// PATCH: 为 lodash global.Date 打补丁，解决小程序报错
+if (!global.Date) {
+    Object.defineProperty(global, 'Date', {
+        value: window.Date,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+    });
+}
+
 class App extends Component {
     componentDidMount() {
         //
