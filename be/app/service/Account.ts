@@ -1,5 +1,6 @@
 import { Service } from 'egg';
 import { Op, fn, col } from 'sequelize';
+import { add } from 'lodash';
 // import { fn, col } from 'sequelize';
 
 /**
@@ -236,7 +237,7 @@ export default class Account extends Service {
             groups[create_time] = {
                 income: Number(income),
                 expenditure: Number(expenditure),
-                total: Number(income) + Number(expenditure),
+                total: add(Number(income), Number(expenditure)),
             };
         });
 
