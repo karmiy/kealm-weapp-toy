@@ -198,6 +198,7 @@ export default function () {
                     })}
                 </View>
             </View>
+            <View className='h-8' />
         </View>
     );
 }
