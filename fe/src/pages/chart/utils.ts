@@ -90,19 +90,36 @@ export const createChartOptions = (
         },
         tooltip: {
             trigger: 'axis',
-            axisPointer: {
-                label: {
-                    show: true,
-                    backgroundColor: '#fff',
-                    color: '#556677',
-                    borderColor: 'rgba(0,0,0,0)',
-                    shadowColor: 'rgba(0,0,0,0)',
-                    shadowOffsetY: 0,
-                },
-                lineStyle: {
-                    width: 0,
-                },
-            },
+            // axisPointer: {
+            //     label: {
+            //         show: false,
+            //         backgroundColor: '#fff',
+            //         color: '#556677',
+            //         borderColor: 'rgba(0,0,0,0)',
+            //         shadowColor: 'rgba(0,0,0,0)',
+            //         shadowOffsetY: 0,
+            //     },
+            //     lineStyle: {
+            //         width: 0,
+            //     },
+            // },
+            // formatter( // 小程序好像解析不了 html？待处理
+            //     params: Array<{
+            //         seriesName: string;
+            //         value: string;
+            //         marker: string;
+            //     }>,
+            // ) {
+            //     const size = params.length;
+            //     console.log(params);
+            //     const str = params.reduce((prev, item, index) => {
+            //         const { marker, seriesName, value } = item;
+            //         const isLast = index + 1 === size;
+            //         prev += `${seriesName}: ${value}${!isLast ? '<br />' : ''}`;
+            //         return prev;
+            //     }, '');
+            //     return str;
+            // },
             backgroundColor: '#fff',
             textStyle: {
                 color: '#5c6c7c',
