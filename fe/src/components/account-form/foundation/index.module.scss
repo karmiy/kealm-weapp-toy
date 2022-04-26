@@ -1,7 +1,12 @@
 @import '@/styles/index.scss';
 
 .form {
+    :global(.at-input) {
+        padding: 0;
+    }
+
     :global(.at-input__input) {
+        height: px(48);
         // 32 真机 placeholder 有点不对齐
         padding-right: px(30);
     }

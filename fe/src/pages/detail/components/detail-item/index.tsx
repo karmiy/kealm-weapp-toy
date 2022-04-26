@@ -50,7 +50,7 @@ export default function (props: Props) {
                 </View>
             </View>
             {list.map(item => {
-                const { id, amount, createTime, accountType } = item;
+                const { id, amount, createTime, accountType, remark } = item;
 
                 return (
                     <View
@@ -60,7 +60,7 @@ export default function (props: Props) {
                     >
                         <View className='flex flex-col flex-1 overflow-hidden pr-8'>
                             {/* <Text className={styles.type}>{account.name}</Text> */}
-                            <Text className={styles.type}>{accountType.name}</Text>
+                            <Text className={styles.type}>{remark || accountType.name}</Text>
                             <Text className={styles.time}>{format(createTime, 'HH:mm')}</Text>
                         </View>
                         <View>
