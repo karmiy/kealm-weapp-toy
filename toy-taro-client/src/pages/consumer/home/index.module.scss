@@ -1,8 +1,11 @@
 @import '@/styles/index.scss';
 
 .header {
-  color: $--color-red;
-  background-color: pink;
+  background-color: $--color-red;
+
+  .dateSelect {
+    width: px(100);
+  }
 }
 
 // .list {

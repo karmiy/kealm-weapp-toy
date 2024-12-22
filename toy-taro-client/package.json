@@ -28,7 +28,9 @@
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "open": "weapp open -p .",
-    "postinstall": "weapp-tw patch"
+    "postinstall": "weapp-tw patch",
+    "lint:eslint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+    "lint:stylelint": "stylelint \"src/**/*.{css,scss}\" --fix"
   },
   "browserslist": [
     "last 3 versions",

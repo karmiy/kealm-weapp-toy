@@ -2,7 +2,7 @@ module.exports = {
     extends: ['stylelint-config-recommended', 'stylelint-config-rational-order', 'stylelint-config-recommended-scss'],
     plugins: ['stylelint-order', 'stylelint-declaration-block-no-ignored-properties', 'stylelint-scss'],
     rules: {
-        'indentation': 4,
+        'indentation': 2,
         'declaration-block-no-duplicate-properties': true, // 不能重复声明属性
         'block-no-empty': true, // 禁止空快 .a { // nothing }
         'function-comma-space-after': 'always', // 函数逗号后需要空格 transform: translate(10px, 20px);

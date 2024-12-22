@@ -9,9 +9,9 @@ export const statusBarHeight = getSystemInfoSync().statusBarHeight ?? 44;
  * @returns
  */
 export function asyncWrapper<T>(promise: Promise<T>) {
-    return promise
-        .then(data => [data, null] as [T, null])
-        .catch(err => [null, { res: err }] as [null, { res: any }]);
+  return promise
+    .then(data => [data, null] as [T, null])
+    .catch(err => [null, { res: err }] as [null, { res: any }]);
 }
 
 /**

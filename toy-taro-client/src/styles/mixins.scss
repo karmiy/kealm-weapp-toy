@@ -1,9 +1,9 @@
 @import './var.scss';
 
 @mixin border($directionMaps: bottom, $color: $--color-border-base) {
-    border: 0 solid $color;
+  border: 0 solid $color;
 
-    @each $directionMap in $directionMaps {
-        border-#{$directionMap}-width: 1PX;
-    }
+  @each $directionMap in $directionMaps {
+    border-#{$directionMap}-width: 1PX;
+  }
 }

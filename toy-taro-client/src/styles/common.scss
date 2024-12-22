@@ -2,18 +2,18 @@
 /* 输入框箭头朝右 */
 
 .is-cursor-right {
-    text-align: right;
+  text-align: right;
     
-    input {
-        text-align: right;
-    }
+  input {
+    text-align: right;
+  }
 }
 
 $directions: top, bottom, left, right;
 
 @each $direction in $directions {
-    .border-#{$direction} {
+  .border-#{$direction} {
 
-        @include border($direction);
-    }
+    @include border($direction);
+  }
 }
