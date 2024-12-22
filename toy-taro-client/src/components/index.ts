@@ -1,1 +1,2 @@
-export { default as SafeAreaBar } from './safe-area-bar';
+export * from './safe-area-bar';
+export * from './white-space';

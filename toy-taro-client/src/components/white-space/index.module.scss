@@ -1,0 +1,25 @@
+@import '@/styles/index.scss';
+
+.vWhiteSpace {
+  height: px(8);
+
+  &.isMedium {
+    height: px(12);
+  }
+
+  &.isLarge {
+    height: px(16);
+  }
+}
+
+.hWhiteSpace {
+  width: px(8);
+
+  &.isMedium {
+    width: px(12);
+  }
+
+  &.isLarge {
+    width: px(16);
+  }
+}

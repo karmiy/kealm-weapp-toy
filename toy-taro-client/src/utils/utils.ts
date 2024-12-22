@@ -1,7 +1,17 @@
-import { getSystemInfoSync } from '@tarojs/taro';
+import { getMenuButtonBoundingClientRect, getSystemInfoSync } from '@tarojs/taro';
 
-/* 顶部状态栏高 */
-export const statusBarHeight = getSystemInfoSync().statusBarHeight ?? 44;
+const systemInfo = getSystemInfoSync();
+// 屏幕宽高
+export const SCREEN_INFO = {
+  width: systemInfo.screenWidth,
+  height: systemInfo.screenHeight,
+};
+
+// 顶部状态栏高
+export const STATUS_BAR_HEIGHT = systemInfo.statusBarHeight ?? 44;
+
+// 胶囊按钮
+export const MENU_BUTTON_WIDTH = getMenuButtonBoundingClientRect().width;
 
 /**
  * @description promise 同步拦截

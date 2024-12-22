@@ -1,4 +1,4 @@
 @function px($size) {
-  // 以 375 来看尺寸
+  // 以 375 来看尺寸，不过看起来 taro 都会转 rpx，且 1:1
   @return $size * 2px;
 }

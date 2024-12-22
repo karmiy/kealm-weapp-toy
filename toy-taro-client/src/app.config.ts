@@ -7,16 +7,10 @@ export default defineAppConfig({
   tabBar: {
     list: [
       {
-        iconPath: 'images/detail-inactive.png',
-        selectedIconPath: 'images/detail-active.png',
+        iconPath: 'images/home-inactive.png',
+        selectedIconPath: 'images/home-active.png',
         pagePath: 'pages/consumer/home/index',
         text: '首页',
-      },
-      {
-        iconPath: 'images/detail-inactive.png',
-        selectedIconPath: 'images/detail-active.png',
-        pagePath: 'pages/consumer/toyMarket/index',
-        text: '明细',
       },
       {
         iconPath: 'images/mine-inactive.png',
@@ -26,14 +20,14 @@ export default defineAppConfig({
       },
     ],
     color: '#3232332',
-    selectedColor: '#DD1A21',
+    selectedColor: '#FF69B4',
     backgroundColor: '#fff',
     borderStyle: 'black',
   },
   window: {
     backgroundTextStyle: 'light',
-    // backgroundColor: '#DD1A21',
-    navigationBarBackgroundColor: '#DD1A21',
+    // backgroundColor: '#FF69B4',
+    navigationBarBackgroundColor: '#FF69B4',
     navigationBarTitleText: '美乐蒂玩具工坊',
     navigationBarTextStyle: 'white',
   },

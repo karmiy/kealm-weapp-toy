@@ -1,6 +1,8 @@
 import { View } from '@tarojs/components';
-import { statusBarHeight } from '@/utils/utils';
+import { STATUS_BAR_HEIGHT } from '@/utils/utils';
 
-export default function () {
-  return <View style={{ height: `${statusBarHeight}px` }} />;
-}
+const SafeAreaBar = () => {
+  return <View style={{ height: STATUS_BAR_HEIGHT }} />;
+};
+
+export { SafeAreaBar };
