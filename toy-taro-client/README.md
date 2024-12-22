@@ -42,3 +42,12 @@ taro 会把给 style 的 rpx 转为 px
 ```
 ### 样式
 目前看起来，taro 会把 scss 里的 px 都转 rpx，1:1 的关系，如 2px -> 2rpx
+
+## 图标
+
+https://gitee.com/mirrors/Taro-Iconfont
+
+```
+// 生成图标
+npx iconfont-taro
+```

@@ -11,7 +11,7 @@ export const SCREEN_INFO = {
 export const STATUS_BAR_HEIGHT = systemInfo.statusBarHeight ?? 44;
 
 // 胶囊按钮
-export const MENU_BUTTON_WIDTH = getMenuButtonBoundingClientRect().width;
+export const MENU_BUTTON = getMenuButtonBoundingClientRect();
 
 /**
  * @description promise 同步拦截

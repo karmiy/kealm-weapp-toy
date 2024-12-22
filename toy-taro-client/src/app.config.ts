@@ -1,4 +1,8 @@
+import { useGlobalIconFont } from './utils/icon';
+
 export default defineAppConfig({
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  usingComponents: Object.assign(useGlobalIconFont()),
   pages: [
     'pages/consumer/home/index',
     'pages/consumer/toyMarket/index',

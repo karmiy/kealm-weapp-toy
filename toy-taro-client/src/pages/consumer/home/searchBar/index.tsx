@@ -1,6 +1,6 @@
 import { pxTransform } from '@tarojs/taro';
 import { OsSearch } from 'ossaui';
-import { MENU_BUTTON_WIDTH, SCREEN_INFO } from '@/utils/utils';
+import { MENU_BUTTON, SCREEN_INFO } from '@/utils/utils';
 import styles from './index.module.scss';
 
 const SEARCH_STYLES = {

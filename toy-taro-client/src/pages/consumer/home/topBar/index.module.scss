@@ -3,6 +3,8 @@
 .topBar {
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+  padding-left: px(16);
 
   .checkIn {
     width: px(37);
