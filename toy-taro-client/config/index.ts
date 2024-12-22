@@ -1,4 +1,4 @@
-// import path from "path";
+import path from 'path';
 import { type UserConfigExport, defineConfig } from '@tarojs/cli';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { UnifiedWebpackPluginV5 } from 'weapp-tailwindcss/webpack';
@@ -115,9 +115,12 @@ export default defineConfig(async (merge, {}) => {
                 },
             },
         },
-        // alias: {
-        //   "@": path.resolve(__dirname, "..", "src"),
-        // },
+        alias: {
+            '@': path.resolve(__dirname, '..', 'src'),
+        },
+        sass: {
+            resource: path.resolve(__dirname, '..', 'src/styles/theme.scss'), // 使用 babel-plugin-import 后需要改为再此引入 theme，否则无效
+        },
     };
     if (process.env.NODE_ENV === 'development') {
         // 本地开发构建配置（不混淆压缩）

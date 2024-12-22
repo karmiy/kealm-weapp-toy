@@ -1,0 +1,9 @@
+@import 'ossaui/dist/style/_variable.scss';
+// 颜色参考 https://github.com/NeteaseYanxuan/OSSA/blob/main/packages/ossa/src/style/_variable.scss
+
+/* z-index */
+$z-index-negative: -1 !default;
+$z-index-s: 1 !default;
+$z-index-m: 10 !default;
+$z-index-l: 100 !default;
+$z-index-xl: 1000 !default;

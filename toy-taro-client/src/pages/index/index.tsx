@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
+import { OsButton } from 'ossaui';
 import styles from './index.module.scss';
 import './index.scss';
 
@@ -20,6 +21,7 @@ const Index = () => {
     return (
         <>
             <View className={logoClass} />
+            <OsButton type='primary'>按钮</OsButton>
             <Text className='bg-black'>123123</Text>
             <View className={styles.header}>
                 <Text>312312</Text>
