@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 export default function () {
   return (
     <View className={styles.wrapper}>
-      <SafeAreaBar />
+      <SafeAreaBar isWhiteBg />
       <TopBar />
       <Carousel />
       <WhiteSpace size='large' />
