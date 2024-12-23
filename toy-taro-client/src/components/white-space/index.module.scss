@@ -1,6 +1,7 @@
 @import '@/styles/index.scss';
 
 .vWhiteSpace {
+  flex-shrink: 0;
   height: px(8);
 
   &.isMedium {
@@ -13,6 +14,7 @@
 }
 
 .hWhiteSpace {
+  flex-shrink: 0;
   width: px(8);
 
   &.isMedium {
