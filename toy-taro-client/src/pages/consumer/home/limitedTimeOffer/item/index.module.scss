@@ -27,14 +27,19 @@
     height: px(22);
 
     .normal {
-        margin-right: px(8);
+        margin-right: px(4);
         font-size: px(11);
         text-decoration: line-through;
     }
 
     .emphasize {
+        display: flex;
         color: $--color-red;
-        font-size: px(16);
+        font-size: px(14);
         font-weight: bold;
+
+        text:first-child {
+            margin-right: px(2);
+        }
     }
 }

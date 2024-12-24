@@ -3,13 +3,16 @@ import { OsCarousel } from 'ossaui';
 
 const demoList = [
   {
-    content: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/melody-banner.png',
+    content:
+      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
   },
   {
-    content: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/melody-banner.png',
+    content:
+      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
   },
   {
-    content: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/melody-banner.png',
+    content:
+      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
   },
 ];
 

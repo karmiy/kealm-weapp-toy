@@ -37,7 +37,10 @@ const Item = (props: ItemProps) => {
       <Text className={styles.title}>{title}</Text>
       <View className={styles.pointsWrapper}>
         <Text className={styles.normal}>{normalPrice} 积分</Text>
-        <Text className={styles.emphasize}>{emphasizePrice} 积分</Text>
+        <Text className={styles.emphasize}>
+          <Text>{emphasizePrice}</Text>
+          <Text>积分</Text>
+        </Text>
       </View>
     </View>
   );
