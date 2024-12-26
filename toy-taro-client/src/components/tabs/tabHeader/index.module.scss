@@ -1,0 +1,46 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+    display: flex;
+    background-color: $--fill-default;
+    height: px(48);
+}
+
+
+
+.container {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+.item {
+    box-sizing: content-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 px(18);
+    color: $--text-color-secondary;
+
+    &.isActive {
+        color: $--color-red;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: px(16);
+            height: px(3);
+            bottom: px(6);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: px(1.5);
+            background-color: $--color-red;
+        }
+    }
+}
+
+.title {
+    white-space: nowrap;
+    font-size: px(16);
+}

@@ -1,6 +1,7 @@
 import { ScrollView, View } from '@tarojs/components';
 import { SafeAreaBar, WhiteSpace } from '@/components';
 import { Carousel } from './carousel';
+import { Category } from './category';
 import { Hub } from './hub';
 import { LimitedTimeOffer } from './limitedTimeOffer';
 import { TopBar } from './topBar';
@@ -19,6 +20,8 @@ export default function () {
         <LimitedTimeOffer />
         <WhiteSpace size='large' />
         <Hub />
+        <WhiteSpace size='large' />
+        <Category />
         <WhiteSpace size='large' />
       </ScrollView>
     </View>

@@ -1,5 +1,4 @@
 import { View } from '@tarojs/components';
-import { MENU_BUTTON, SCREEN_INFO } from '@/utils/utils';
 import { Item } from './item';
 import styles from './index.module.scss';
 
