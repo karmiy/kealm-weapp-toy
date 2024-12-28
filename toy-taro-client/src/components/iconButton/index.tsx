@@ -15,8 +15,8 @@ const IconButton = (props: IconButtonProps) => {
   const { className, name, onClick } = props;
 
   return (
-    <View className={clsx(styles.wrapper, className)}>
-      <Icon name='cart-add-fill' color={COLOR_VARIABLES.COLOR_RED} size={16} />
+    <View className={clsx(styles.wrapper, className)} onClick={onClick}>
+      <Icon name={name} color={COLOR_VARIABLES.COLOR_RED} size={16} />
     </View>
   );
 };
