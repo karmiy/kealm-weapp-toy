@@ -6,6 +6,7 @@ export default defineAppConfig({
   pages: [
     'pages/consumer/home/index',
     'pages/consumer/toyMarket/index',
+    'pages/consumer/shopCart/index',
     'pages/consumer/mine/index',
   ],
   tabBar: {
@@ -15,6 +16,12 @@ export default defineAppConfig({
         selectedIconPath: 'images/home-active.png',
         pagePath: 'pages/consumer/home/index',
         text: '首页',
+      },
+      {
+        iconPath: 'images/shop-cart-inactive.png',
+        selectedIconPath: 'images/shop-cart-active.png',
+        pagePath: 'pages/consumer/shopCart/index',
+        text: '购物车',
       },
       {
         iconPath: 'images/mine-inactive.png',
