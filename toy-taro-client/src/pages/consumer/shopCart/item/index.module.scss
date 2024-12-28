@@ -1,0 +1,48 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+  display: flex;
+  padding: px(14);
+  border-radius: px(12);
+  background-color: $--fill-default;
+
+  .select {
+    display: flex;
+    align-items: center;
+    margin-right: px(8);
+    flex-shrink: 0;
+  }
+
+  .coverImage {
+    flex-shrink: 0;
+    width: px(84);
+    height: px(84);
+    border-radius: px(12);
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: px(14);
+    overflow: hidden;
+  }
+
+  .info {
+    .title {
+      width: 100%;
+      font-size: px(16);
+      font-weight: bold;
+      color: $--text-color-base;
+      margin-bottom: px(4);
+      @include single-line-ellipsis;
+    }
+  }
+
+  .operate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

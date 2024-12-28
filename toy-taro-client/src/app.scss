@@ -2,3 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import '@/styles/index.scss';
+
+page {
+    color: $--text-color-base;
+}

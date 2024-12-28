@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { COLOR_VARIABLES } from '@/utils/color';
+import { COLOR_VARIABLES } from '@/utils/constants';
 import { Icon } from '../icon';
 import { IconNames } from '../iconfont';
 import styles from './index.module.scss';

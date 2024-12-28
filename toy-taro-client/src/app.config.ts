@@ -5,8 +5,8 @@ export default defineAppConfig({
   usingComponents: Object.assign(useGlobalIconFont()),
   pages: [
     'pages/consumer/home/index',
-    'pages/consumer/toyMarket/index',
     'pages/consumer/shopCart/index',
+    'pages/consumer/toyMarket/index',
     'pages/consumer/mine/index',
   ],
   tabBar: {

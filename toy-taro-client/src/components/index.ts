@@ -5,3 +5,6 @@ export * from './lazyWrapper';
 export * from './icon';
 export * from './tabs';
 export * from './iconButton';
+export * from './stepper';
+export * from './checkButton';
+export * from './button';

@@ -2,12 +2,12 @@ import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import styles from './index.module.scss';
 
-interface Props {
+interface WhiteSpaceProps {
   size?: 'medium' | 'large';
   isVertical?: boolean;
 }
 
-const WhiteSpace = (props: Props) => {
+const WhiteSpace = (props: WhiteSpaceProps) => {
   const { size, isVertical = true } = props;
 
   return (

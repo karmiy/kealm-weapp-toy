@@ -1,0 +1,29 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    color: $--text-color-base;  
+
+    .action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: px(20);
+        height: px(20);
+        border-radius: px(10);
+        background-color: $--color-red-opacity-1;
+
+        &.isDisabled {
+            background-color: $--fill-body;
+        }
+    }
+
+    .count {
+        width: px(36);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: px(14);
+    }
+}

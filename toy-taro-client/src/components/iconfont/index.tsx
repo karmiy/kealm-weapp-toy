@@ -3,7 +3,7 @@
 
 import React, { FunctionComponent } from 'react';
 
-export type IconNames = 'cart-add-fill' | 'check-in';
+export type IconNames = 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
 
 export interface IconProps {
   name: IconNames;
