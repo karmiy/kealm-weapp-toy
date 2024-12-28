@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
 import { TabPanel, Tabs } from '@/components';
+import { ToyList } from './toyList';
 import styles from './index.module.scss';
 
 // 初始不渲染参考：https://github.com/karmiy/kealm-react-components/blob/master/packages/components/cores/tabs/tab-pane.jsx
@@ -22,7 +23,11 @@ const Category = () => {
   return (
     <Tabs current={current} onChange={setCurrent}>
       {items.map((item, index) => {
-        return <TabPanel key={item} label={item}>{`content-${index + 1}`}</TabPanel>;
+        return (
+          <TabPanel key={item} label={item}>
+            <ToyList />
+          </TabPanel>
+        );
       })}
     </Tabs>
   );

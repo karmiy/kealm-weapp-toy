@@ -12,7 +12,7 @@ const TopBar = () => {
   return (
     <View className={styles.wrapper}>
       <View className={styles.topBar} style={STYLES}>
-        <Icon name='check-in' color='#FF69B4' size={24 * 2} />
+        <Icon name='check-in' color='#FF69B4' size={24} />
         <SearchBar />
       </View>
     </View>

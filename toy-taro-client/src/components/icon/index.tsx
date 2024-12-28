@@ -1,7 +1,8 @@
 import IconFont, { IconProps } from '../iconfont';
 
 const Icon = (props: IconProps) => {
-  return <IconFont {...props} />;
+  const { size = 14 } = props;
+  return <IconFont {...props} size={size * 2} />;
 };
 
 export { Icon };

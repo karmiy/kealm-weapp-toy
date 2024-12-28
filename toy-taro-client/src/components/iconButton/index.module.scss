@@ -1,0 +1,12 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: px(28);
+  height: px(28);
+  border-radius: px(4);
+  background-color: $--color-red-opacity-1;
+  color: $--color-red;
+}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import { ToyScore } from '@/container';
 import { PREVIEW_IMAGE_ID, previewImageManager } from '@/manager/previewImageManager';
 import styles from './index.module.scss';
 
@@ -35,13 +35,7 @@ const Item = (props: ItemProps) => {
         />
       </View>
       <Text className={styles.title}>{title}</Text>
-      <View className={styles.pointsWrapper}>
-        <Text className={styles.normal}>{normalPrice} 积分</Text>
-        <Text className={styles.emphasize}>
-          <Text>{emphasizePrice}</Text>
-          <Text>积分</Text>
-        </Text>
-      </View>
+      <ToyScore current={emphasizePrice} original={normalPrice} colorMode='inverse' />
     </View>
   );
 };

@@ -1,7 +1,9 @@
 @import 'ossaui/dist/style/_variable.scss';
+@import './theme.scss';
 // 颜色参考 https://github.com/NeteaseYanxuan/OSSA/blob/main/packages/ossa/src/style/_variable.scss
 
 $--color-red-1: #FFBBC6;
+$--color-red-opacity-1: rgba($--color-red, 0.1);
 
 /* z-index */
 $z-index-negative: -1 !default;

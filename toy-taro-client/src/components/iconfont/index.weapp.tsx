@@ -4,7 +4,7 @@
 import React, { FunctionComponent } from 'react';
 import Taro from '@tarojs/taro';
 
-export type IconNames = 'check-in';
+export type IconNames = 'cart-add-fill' | 'check-in';
 
 interface Props {
   name: IconNames;
