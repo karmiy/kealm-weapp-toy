@@ -16,13 +16,23 @@
 }
 
 @mixin safe-area-inset-bottom {
-  box-sizing: border-box;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    width: 100%;
+    background-color: inherit;
+  }
 }
 
 @mixin safe-area-inset-top {
-  box-sizing: border-box;
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: constant(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-top);
+    width: 100%;
+    background-color: inherit;
+  }
 }

@@ -1,17 +1,20 @@
+import { useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, SafeAreaBar, WhiteSpace } from '@/components';
-import { ToyCard } from '@/container';
+import { CouponActionSheet, ToyCard } from '@/container';
 import { FormItem } from './formItem';
 import styles from './index.module.scss';
 
 export default function () {
+  const [couponVisible, setCouponVisible] = useState(false);
+
   return (
     <View className={styles.wrapper}>
       <View className={styles.detail}>
         <ScrollView scrollY className={styles.scrollView}>
           <View className={styles.container}>
             <View className={styles.area}>
-              {[...Array(8).keys()].map(index => {
+              {[...Array(4).keys()].map(index => {
                 return (
                   <>
                     {index !== 0 ? <WhiteSpace isVertical line size='large' /> : null}
@@ -31,7 +34,13 @@ export default function () {
             </View>
             <WhiteSpace isVertical size='medium' />
             <View className={styles.area}>
-              <FormItem mode='select' label='优惠券' text='满100减10' highlight />
+              <FormItem
+                mode='select'
+                label='优惠券'
+                text='满100减10'
+                highlight
+                onClick={() => setCouponVisible(true)}
+              />
               <WhiteSpace isVertical size='medium' />
               <FormItem label='商品积分' text='327积分' />
               <WhiteSpace isVertical size='medium' />
@@ -46,6 +55,7 @@ export default function () {
         <Text className={styles.tip}>共3件商品</Text>
         <Button>支付</Button>
       </View>
+      <CouponActionSheet visible={couponVisible} onClose={() => setCouponVisible(false)} />
       <SafeAreaBar isWhiteBg inset='bottom' />
     </View>
   );

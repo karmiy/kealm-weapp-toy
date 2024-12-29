@@ -43,6 +43,6 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  entryPagePath: 'pages/checkout/index',
+  // entryPagePath: 'pages/checkout/index',
   // entryPagePath: 'pages/shopCart/index',
 });

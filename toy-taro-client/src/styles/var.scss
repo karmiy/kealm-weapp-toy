@@ -7,6 +7,8 @@ $--color-red-opacity-1: rgba($--color-red, 0.1);
 
 $--color-divider-base:#F1F1F1 !default;
 
+$--color-mask-disable:rgba(255, 255, 255, 0.7) !default; 
+
 /* z-index */
 $z-index-negative: -1 !default;
 $z-index-s: 1 !default;

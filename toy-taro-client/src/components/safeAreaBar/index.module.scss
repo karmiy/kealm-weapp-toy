@@ -8,7 +8,6 @@
         height: env(safe-area-inset-top);
     }
     &.isBottom {
-        height: constant(safe-area-inset-bottom);
-        height: env(safe-area-inset-bottom);
+        @include safe-area-inset-bottom;
     }
 }

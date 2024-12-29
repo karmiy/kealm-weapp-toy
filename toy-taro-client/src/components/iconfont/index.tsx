@@ -3,7 +3,7 @@
 
 import React, { FunctionComponent } from 'react';
 
-export type IconNames = 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
+export type IconNames = 'close' | 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
 
 export interface IconProps {
   name: IconNames;
