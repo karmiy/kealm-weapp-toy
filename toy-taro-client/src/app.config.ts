@@ -3,30 +3,25 @@ import { useGlobalIconFont } from './utils/icon';
 export default defineAppConfig({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   usingComponents: Object.assign(useGlobalIconFont()),
-  pages: [
-    'pages/consumer/home/index',
-    'pages/consumer/shopCart/index',
-    'pages/consumer/toyMarket/index',
-    'pages/consumer/mine/index',
-  ],
+  pages: ['pages/home/index', 'pages/shopCart/index', 'pages/mine/index'],
   tabBar: {
     list: [
       {
         iconPath: 'images/home-inactive.png',
         selectedIconPath: 'images/home-active.png',
-        pagePath: 'pages/consumer/home/index',
+        pagePath: 'pages/home/index',
         text: '首页',
       },
       {
         iconPath: 'images/shop-cart-inactive.png',
         selectedIconPath: 'images/shop-cart-active.png',
-        pagePath: 'pages/consumer/shopCart/index',
+        pagePath: 'pages/shopCart/index',
         text: '购物车',
       },
       {
         iconPath: 'images/mine-inactive.png',
         selectedIconPath: 'images/mine-active.png',
-        pagePath: 'pages/consumer/mine/index',
+        pagePath: 'pages/mine/index',
         text: '我的',
       },
     ],
@@ -42,15 +37,12 @@ export default defineAppConfig({
     navigationBarTitleText: '美乐蒂玩具工坊',
     navigationBarTextStyle: 'white',
   },
-  // subPackages: [
-  //     // {
-  //     //     root: 'pages/login/',
-  //     //     pages: ['index'],
-  //     // },
-  //     // {
-  //     //     root: 'pages/edit/',
-  //     //     pages: ['index'],
-  //     // },
-  // ],
-  // entryPagePath: 'pages/chart/index',
+  subPackages: [
+    {
+      root: 'pages/checkout/',
+      pages: ['index'],
+    },
+  ],
+  entryPagePath: 'pages/checkout/index',
+  // entryPagePath: 'pages/shopCart/index',
 });

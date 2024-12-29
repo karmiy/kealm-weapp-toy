@@ -1,0 +1,19 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+  display: flex;
+  padding: px(14);
+  border-radius: px(12);
+  background-color: $--fill-default;
+
+  .select {
+    display: flex;
+    align-items: center;
+    margin-right: px(8);
+    flex-shrink: 0;
+  }
+
+  .card {
+    flex: 1;
+  }
+}

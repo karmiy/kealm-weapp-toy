@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '玩具',
+  navigationBarTitleText: '确认订单',
   disableScroll: true,
 });

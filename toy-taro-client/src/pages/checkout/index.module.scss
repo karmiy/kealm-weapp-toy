@@ -1,0 +1,29 @@
+@import '@/styles/index.scss';
+
+.wrapper {
+  height: 100%;
+  // background-color: #F9FAFB;
+  background-color: $--fill-body;
+}
+
+.detail {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+
+  .scrollView {
+    height: 100%;
+
+    .container {
+      padding: px(14);
+    }
+  }
+
+  .area {
+    border-radius: px(12);
+    padding: px(14);
+    background-color: $--fill-default;
+  }
+}

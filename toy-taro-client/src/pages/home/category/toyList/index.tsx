@@ -1,4 +1,5 @@
 import { View } from '@tarojs/components';
+import { IconButton } from '@/components';
 import { ToyCard } from '@/container';
 import styles from './index.module.scss';
 
@@ -27,7 +28,11 @@ const ToyList = () => {
               <ToyCard
                 coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-toy-card-1.png'
                 title='美乐蒂经典款毛绒玩偶'
-                count={1}
+                paddingSize='small'
+                subTitle='库存: 12'
+                currentScore={199}
+                originalScore={299}
+                action={<IconButton name='cart-add-fill' />}
               />
             </View>
           );
