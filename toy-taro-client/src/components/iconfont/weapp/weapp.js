@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // uncheck | check | add | minus | cart-add-fill | check-in
+    // arrow-up | arrow-down | arrow-right | arrow-left | uncheck | check | add | minus | cart-add-fill | check-in
     name: {
       type: String,
     },

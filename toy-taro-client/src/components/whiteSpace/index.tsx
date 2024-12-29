@@ -3,12 +3,13 @@ import { clsx } from 'clsx';
 import styles from './index.module.scss';
 
 interface WhiteSpaceProps {
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
   isVertical?: boolean;
+  line?: boolean;
 }
 
 const WhiteSpace = (props: WhiteSpaceProps) => {
-  const { size, isVertical = true } = props;
+  const { size = 'medium', isVertical = true, line = false } = props;
 
   return (
     <View
@@ -17,6 +18,7 @@ const WhiteSpace = (props: WhiteSpaceProps) => {
         [styles.hWhiteSpace]: !isVertical,
         [styles.isMedium]: size === 'medium',
         [styles.isLarge]: size === 'large',
+        [styles.line]: line,
       })}
     />
   );

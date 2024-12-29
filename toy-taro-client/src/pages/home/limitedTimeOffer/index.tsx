@@ -17,7 +17,7 @@ const LimitedTimeOffer = () => {
           }.png`;
           return (
             <Fragment key={index}>
-              {index !== 0 ? <WhiteSpace isVertical={false} /> : null}
+              {index !== 0 ? <WhiteSpace size='small' isVertical={false} /> : null}
               <Item img={img} title='美乐蒂毛绒玩偶' normalPrice={29} emphasizePrice={19} />
             </Fragment>
           );

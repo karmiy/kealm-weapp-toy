@@ -1,27 +1,54 @@
 @import '@/styles/index.scss';
 
 .vWhiteSpace {
+  position: relative;
   flex-shrink: 0;
-  height: px(8);
+  padding: px(4) 0;
 
   &.isMedium {
-    height: px(12);
+    padding: px(7) 0;
   }
 
   &.isLarge {
-    height: px(16);
+    padding: px(10) 0;
+  }
+
+  &.line {
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: px(0.5);
+      background-color: $--color-divider-base;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }
 
 .hWhiteSpace {
   flex-shrink: 0;
-  width: px(8);
+  padding: 0 px(4);
 
   &.isMedium {
-    width: px(12);
+    padding: 0 px(7);
   }
 
   &.isLarge {
-    width: px(16);
+    padding: 0 px(10);
+  }
+
+  &.line {
+    &::after {
+      content: '';
+      position: absolute;
+      width: px(0.5);
+      height: 100%;
+      background-color: $--color-divider-base;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
   }
 }
