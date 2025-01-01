@@ -3,7 +3,7 @@ import { useGlobalIconFont } from './utils/icon';
 export default defineAppConfig({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   usingComponents: Object.assign(useGlobalIconFont()),
-  pages: ['pages/home/index', 'pages/shopCart/index', 'pages/mine/index'],
+  pages: ['pages/home/index', 'pages/shopCart/index', 'pages/task/index', 'pages/mine/index'],
   tabBar: {
     list: [
       {
@@ -17,6 +17,12 @@ export default defineAppConfig({
         selectedIconPath: 'images/shop-cart-active.png',
         pagePath: 'pages/shopCart/index',
         text: '购物车',
+      },
+      {
+        iconPath: 'images/task-inactive.png',
+        selectedIconPath: 'images/task-active.png',
+        pagePath: 'pages/task/index',
+        text: '任务中心',
       },
       {
         iconPath: 'images/mine-inactive.png',
@@ -43,6 +49,6 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  // entryPagePath: 'pages/checkout/index',
+  entryPagePath: 'pages/task/index',
   // entryPagePath: 'pages/shopCart/index',
 });

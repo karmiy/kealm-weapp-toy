@@ -17,10 +17,12 @@ const RenderWrapper = (props: PropsWithChildren<RenderWrapperProps>) => {
 
   return (
     <View
-      className={clsx({
-        [styles.hide]: !visible,
+      className={clsx(
+        {
+          [styles.hide]: !visible,
+        },
         className,
-      })}
+      )}
     >
       {children}
     </View>

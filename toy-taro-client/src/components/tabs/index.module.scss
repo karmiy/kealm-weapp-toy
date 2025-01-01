@@ -1,2 +1,7 @@
 @import '@/styles/index.scss';
 
+.wrapper {
+    &.isVertical {
+        display: flex;
+    }
+}

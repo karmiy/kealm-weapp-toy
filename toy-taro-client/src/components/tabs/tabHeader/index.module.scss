@@ -2,45 +2,135 @@
 
 .wrapper {
     display: flex;
-    background-color: $--fill-default;
-    height: px(48);
-}
+    
+    &.isHorizontal {
+        height: px(42);
+        background-color: $--fill-default;
+    }
 
+    &.isVertical {
+        flex-shrink: 0;
+        width: px(95);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: $--fill-body;
 
-
-.container {
-    display: flex;
-    height: 100%;
-    position: relative;
-}
-
-.item {
-    box-sizing: content-box;
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 px(18);
-    color: $--text-color-secondary;
-
-    &.isActive {
-        color: $--color-red;
-
-        &::after {
-            content: '';
-            position: absolute;
-            width: px(16);
-            height: px(3);
-            bottom: px(6);
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: px(1.5);
-            background-color: $--color-red;
+        &.isContainedVariant {
+            background-color: $--fill-default;
         }
     }
 }
 
-.title {
+.container {
+    display: flex;
+    position: relative;
+    align-items: center;
+
+    &.isHorizontal {
+        height: 100%;
+    }
+
+    &.isVertical {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+.item {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: $--text-color-secondary;
     white-space: nowrap;
-    font-size: px(16);
+
+    &.isTextVariant {
+        &.isHorizontal {
+            font-size: px(14);
+            padding: 0 px(18);
+
+            &.isActive {
+                color: $--color-red;
+    
+                &::after {
+                    content: '';
+                    position: absolute;
+                    width: px(16);
+                    height: px(3);
+                    bottom: px(6);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-radius: px(1.5);
+                    background-color: $--color-red;
+                }
+            }
+        }
+
+        &.isVertical {
+            padding: 0 px(8);
+            height: px(42);
+            font-size: px(13);
+
+            &.isActive {
+                color: $--color-red;
+                background-color: $--fill-default;
+    
+                &::after {
+                    content: '';
+                    position: absolute;
+                    width: px(2);
+                    height: px(14);
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-color: $--color-red;
+                }
+            }
+        }
+    }
+
+    &.isContainedVariant {
+        &.isHorizontal {
+            height: px(32);
+            padding: 0 px(12);
+            color: $--text-color-base;
+            background-color: $--fill-model-btns-active;
+            border-radius: px(12);
+            font-size: px(13);
+
+            &.isActive {
+                color: $--text-color-base-inverse;
+                background-color: $--color-red;
+            }
+        }
+
+        &.isVertical {
+            width: calc(100% - px(16));
+            height: px(35);
+            margin: 0 px(8);
+            padding: 0 px(8);
+            border-radius: px(12);
+            font-size: px(13);
+
+            &.isActive {
+                color: $--color-red;
+                background-color: $--color-red-opacity-1;
+            }
+        }
+    }
+
+    &.isHorizontal {
+        height: 100%;
+    }
+
+    &.isVertical {
+        width: 100%;
+
+        .title {
+            @include single-line-ellipsis;
+        }
+    }
 }

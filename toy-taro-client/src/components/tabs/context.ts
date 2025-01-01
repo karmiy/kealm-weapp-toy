@@ -1,3 +1,13 @@
 import { createContext } from 'react';
 
-export const TabsContext = createContext({ current: 0 });
+interface TabsContextProp {
+  current: number;
+  variant: 'text' | 'contained';
+  mode: 'vertical' | 'horizontal';
+}
+
+export const TabsContext = createContext<TabsContextProp>({
+  current: 0,
+  variant: 'text',
+  mode: 'horizontal',
+});
