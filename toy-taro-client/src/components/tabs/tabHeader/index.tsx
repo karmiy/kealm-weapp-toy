@@ -11,6 +11,7 @@ import styles from './index.module.scss';
 const logger = Logger.getLogger('[Tabs]').tag('[TabHeader]');
 
 interface TabHeaderProps {
+  className?: string;
   onChange?: (value: number) => void;
   items: string[];
 }
@@ -47,7 +48,7 @@ const TabHeaderItem = (props: TabHeaderItemProps) => {
 };
 
 const TabHeader = (props: TabHeaderProps) => {
-  const { items, onChange } = props;
+  const { className, items, onChange } = props;
   const itemsDepsKey = items.join('_');
   const { current = 0, variant, mode } = useContext(TabsContext);
   const isTextVariant = variant === 'text';
@@ -145,10 +146,14 @@ const TabHeader = (props: TabHeaderProps) => {
         >
           <CustomWrapper ref={containerRef}>
             <View
-              className={clsx(styles.container, {
-                [styles.isHorizontal]: isHorizontal,
-                [styles.isVertical]: isVertical,
-              })}
+              className={clsx(
+                styles.container,
+                {
+                  [styles.isHorizontal]: isHorizontal,
+                  [styles.isVertical]: isVertical,
+                },
+                className,
+              )}
             >
               {items.map((item, index) => {
                 const headerItemProps = {

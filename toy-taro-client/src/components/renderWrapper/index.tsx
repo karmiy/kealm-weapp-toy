@@ -21,6 +21,7 @@ const RenderWrapper = (props: PropsWithChildren<RenderWrapperProps>) => {
         {
           [styles.hide]: !visible,
         },
+        'karmiy',
         className,
       )}
     >

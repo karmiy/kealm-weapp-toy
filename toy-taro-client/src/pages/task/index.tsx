@@ -1,24 +1,20 @@
 import { useState } from 'react';
-import { Image, ScrollView, Text, View } from '@tarojs/components';
-import { clsx } from 'clsx';
-import { Icon, TabPanel, Tabs, WhiteSpace } from '@/components';
-import { COLOR_VARIABLES } from '@/utils/constants';
+import { Image, Text, View } from '@tarojs/components';
+import { TabPanel, Tabs, WhiteSpace } from '@/components';
+import { TaskCategory } from './category';
 import styles from './index.module.scss';
 
 export default function () {
   const [current, setCurrent] = useState(0);
-  const items = [
+  const [categoryList, setCategoryList] = useState([
     '每日任务',
     '每周任务',
     '限时任务',
     '挑战任务',
-    '其他任务1',
-    '其他任务2',
-    '其他任务3',
-    '其他任务44444',
-  ];
+  ]);
+
   return (
-    <ScrollView scrollY className={styles.wrapper}>
+    <View className={styles.wrapper}>
       <WhiteSpace size='medium' />
       <View className={styles.header}>
         <View className={styles.scoreWrapper}>
@@ -36,66 +32,23 @@ export default function () {
           className={styles.avatar}
         />
       </View>
-      {/* <Tabs current={current} onChange={setCurrent} variant='contained'>
-        {items.map((item, index) => {
-          return (
-            <TabPanel key={item} label={item}>
-              <View>content</View>
-            </TabPanel>
-          );
-        })}
-      </Tabs> */}
+      <WhiteSpace size='medium' />
       <Tabs
-        style={{ height: 200 }}
+        className={styles.tabs}
+        headerClassName={styles.tabsHeader}
         current={current}
         onChange={setCurrent}
         variant='contained'
-        mode='vertical'
+        mode='horizontal'
       >
-        {items.map((item, index) => {
+        {categoryList.map(category => {
           return (
-            <TabPanel key={item} label={item}>
-              <View style={{ height: 400 }}>content</View>
+            <TabPanel className={styles.tabPanel} key={category} label={category}>
+              <TaskCategory />
             </TabPanel>
           );
         })}
       </Tabs>
-      <WhiteSpace size='medium' />
-      <Tabs
-        style={{ height: 200 }}
-        current={current}
-        onChange={setCurrent}
-        variant='text'
-        mode='vertical'
-      >
-        {items.map((item, index) => {
-          return (
-            <TabPanel key={item} label={item}>
-              <View style={{ height: 400 }}>content</View>
-            </TabPanel>
-          );
-        })}
-      </Tabs>
-      <WhiteSpace size='medium' />
-      <Tabs current={current} onChange={setCurrent} variant='contained' mode='horizontal'>
-        {items.map((item, index) => {
-          return (
-            <TabPanel key={item} label={item}>
-              <View style={{ height: 400 }}>content</View>
-            </TabPanel>
-          );
-        })}
-      </Tabs>
-      <WhiteSpace size='medium' />
-      <Tabs current={current} onChange={setCurrent} variant='text' mode='horizontal'>
-        {items.map((item, index) => {
-          return (
-            <TabPanel key={item} label={item}>
-              <View style={{ height: 400 }}>content</View>
-            </TabPanel>
-          );
-        })}
-      </Tabs>
-    </ScrollView>
+    </View>
   );
 }

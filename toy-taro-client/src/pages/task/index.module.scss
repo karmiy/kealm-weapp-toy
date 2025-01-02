@@ -1,12 +1,14 @@
 @import '@/styles/index.scss';
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  // background-color: $--fill-default;
-  background-color: $--fill-body;
+  background-color: $--fill-default;
 }
 
 .header {
+  flex-shrink: 0;
   display: flex;
   border-radius: px(12);
   background-color: $--color-red-opacity-1;
@@ -45,5 +47,21 @@
   .avatar {
     width: px(70);
     height: px(70);
+  }
+}
+
+.tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .tabsHeader {
+    padding: 0 px(14);
+  }
+
+  .tabPanel {
+    flex: 1;
+    overflow: hidden;
   }
 }
