@@ -1,7 +1,32 @@
 @import '@/styles/index.scss';
 
 .wrapper {
+  position: relative;
   display: inline-flex;
   border-radius: px(4);
   overflow: hidden;
+
+  &.isDisabled {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      background-color: $--color-mask-disable;
+      border-radius: px(4);
+    }
+  }
+
+  // &.isDisabled button {
+  //   background-color: $--fill-disable;
+  //   border-color: $--fill-disable;
+  //   color: $--text-color-base-inverse;
+
+  //   view {
+  //     color: $--text-color-base-inverse;
+  //   }
+  // }
 }

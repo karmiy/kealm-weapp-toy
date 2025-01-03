@@ -4,6 +4,7 @@
     &.isVertical {
         background-color: $--fill-default;
         flex: 1;
+        overflow: hidden;
     }
 
     .scrollView {

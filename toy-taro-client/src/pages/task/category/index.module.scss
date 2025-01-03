@@ -5,5 +5,12 @@
 }
 
 .tabs {
+  box-sizing: border-box;
   height: 100%;
+  padding-top: px(8);
+}
+
+.tabPanelWrapper {
+  padding: px(2) px(14);
+  overflow: hidden;
 }
