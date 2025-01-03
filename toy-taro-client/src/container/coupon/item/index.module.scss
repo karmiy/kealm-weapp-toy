@@ -19,6 +19,17 @@
     }
   }
 
+  &.isSelected {
+    .content {
+      border: px(1) solid $--color-red;
+      color: $--color-red;
+    }
+
+    .action {
+      opacity: 1;
+    }
+  }
+
   .scoreWrapper {
     flex-shrink: 0;
     width: px(72);
@@ -41,12 +52,18 @@
     }
   }
 
-  .info {
+  .content {
     flex: 1;
     padding: 0 px(14);
     border: px(1) solid $--color-divider-base;
     border-left-width: 0;
     border-radius: 0 px(14) px(14) 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .info {
+    flex: 1;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -66,6 +83,33 @@
       color: $--text-color-secondary;
       margin-bottom: px(4);
       @include single-line-ellipsis;
+    }
+  }
+
+  .action {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding-left: px(4);
+    opacity: 0;
+
+    .outer {
+      box-sizing: border-box;
+      flex-shrink: 0;
+      width: px(16);
+      height: px(16);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: px(1) solid $--color-red;
+      border-radius: 50%;
+    }
+
+    .inner {
+      width: px(10);
+      height: px(10);
+      background-color: $--color-red;
+      border-radius: 50%;
     }
   }
 }

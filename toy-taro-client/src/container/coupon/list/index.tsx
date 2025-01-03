@@ -6,11 +6,12 @@ import styles from './index.module.scss';
 
 interface CouponListProps {
   list?: Array<CouponItemProps & { id: string }>;
-  onClick?: (id: string) => void;
+  selectedId?: string;
+  onSelect?: (id: string) => void;
 }
 
 const CouponList = (props: CouponListProps) => {
-  const { list = [], onClick } = props;
+  const { list = [], selectedId, onSelect } = props;
 
   return (
     <View className={styles.wrapper}>
@@ -19,7 +20,7 @@ const CouponList = (props: CouponListProps) => {
         return (
           <Fragment key={id}>
             {index !== 0 ? <WhiteSpace size='medium' /> : null}
-            <CouponItem {...rest} onClick={() => onClick?.(id)} />
+            <CouponItem {...rest} selected={id === selectedId} onClick={() => onSelect?.(id)} />
           </Fragment>
         );
       })}
@@ -27,4 +28,4 @@ const CouponList = (props: CouponListProps) => {
   );
 };
 
-export { CouponList, CouponItem };
+export { CouponList, CouponListProps, CouponItem };

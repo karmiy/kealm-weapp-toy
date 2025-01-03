@@ -7,6 +7,42 @@ import styles from './index.module.scss';
 
 export default function () {
   const [couponVisible, setCouponVisible] = useState(false);
+  const [selectedCouponId, setSelectedCouponId] = useState<string>('1');
+  const couponList = [
+    {
+      id: '1',
+      score: 50,
+      condition: '无门槛',
+      title: '新人优惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
+    {
+      id: '2',
+      score: 20,
+      condition: '满199可用',
+      title: '美乐蒂玩具专享券',
+      range: '仅限玩具类商品',
+      period: '2024-12-31',
+      disabled: true,
+    },
+    {
+      id: '3',
+      score: 100,
+      condition: '满299可用',
+      title: '节日特惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
+    {
+      id: '4',
+      score: 40,
+      condition: '无门槛',
+      title: '新人优惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
+  ];
 
   return (
     <View className={styles.wrapper}>
@@ -55,7 +91,13 @@ export default function () {
         <Text className={styles.tip}>共3件商品</Text>
         <Button>支付</Button>
       </View>
-      <CouponActionSheet visible={couponVisible} onClose={() => setCouponVisible(false)} />
+      <CouponActionSheet
+        visible={couponVisible}
+        list={couponList}
+        selectedId={selectedCouponId}
+        onSelect={setSelectedCouponId}
+        onClose={() => setCouponVisible(false)}
+      />
       <SafeAreaBar isWhiteBg inset='bottom' />
     </View>
   );
