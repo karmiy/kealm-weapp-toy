@@ -2,7 +2,9 @@ import { Text, View } from '@tarojs/components';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 
-interface CouponItemProps {
+export interface CouponItemProps {
+  id: string;
+  type?: 'selectable' | 'unselectable' | 'used' | 'expired';
   score: number;
   condition: string;
   title: string;
@@ -10,24 +12,36 @@ interface CouponItemProps {
   period: string;
   selected?: boolean;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (id: string) => void;
 }
 
 const CouponItem = (props: CouponItemProps) => {
-  const { score, condition, title, range, period, selected, disabled, onClick } = props;
+  const {
+    id,
+    type = 'selectable',
+    score,
+    condition,
+    title,
+    range,
+    period,
+    selected,
+    onClick,
+  } = props;
 
   const handleClick = () => {
-    if (disabled) {
+    if (type !== 'selectable') {
       return;
     }
-    onClick?.();
+    onClick?.(id);
   };
 
   return (
     <View
       className={clsx(styles.wrapper, {
-        [styles.isDisabled]: disabled,
         [styles.isSelected]: selected,
+        [styles.isUnSelectable]: type === 'unselectable',
+        [styles.isUsed]: type === 'used',
+        [styles.isExpired]: type === 'expired',
       })}
       onClick={handleClick}
     >
@@ -51,4 +65,4 @@ const CouponItem = (props: CouponItemProps) => {
   );
 };
 
-export { CouponItem, CouponItemProps };
+export { CouponItem };

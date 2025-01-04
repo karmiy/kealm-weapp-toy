@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components';
 import { ActionSheet } from '@/components';
+import type { CouponItemProps } from './item';
 import { CouponItem } from './item';
 import { CouponList, CouponListProps } from './list';
 import styles from './index.module.scss';
@@ -29,4 +30,4 @@ const CouponActionSheet = (props: CouponActionSheetProps) => {
   );
 };
 
-export { CouponActionSheet, CouponItem, CouponList };
+export { CouponActionSheet, CouponItem, CouponList, CouponItemProps };

@@ -5,7 +5,18 @@
   display: flex;
   overflow: hidden;
 
-  &.isDisabled {
+  &.isSelected {
+    .content {
+      border: px(1) solid $--color-red;
+      color: $--color-red;
+    }
+
+    .action {
+      opacity: 1;
+    }
+  }
+
+  &.isUnSelectable {
     &::after {
       content: '';
       position: absolute;
@@ -19,15 +30,39 @@
     }
   }
 
-  &.isSelected {
-    .content {
-      border: px(1) solid $--color-red;
-      color: $--color-red;
+  &.isUsed, &.isExpired {
+    &::after {
+      content: '';
+      width: px(50);
+      height: px(20);
+      position: absolute;
+      top: px(14);
+      right: px(14);
+      z-index: 1;
+      border-radius: px(4);
+      color: $--text-color-secondary;
+      background-color: $--fill-bar;
+      font-size: px(12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .action {
-      opacity: 1;
+    .scoreWrapper {
+      background-color: $--fill-disable;
     }
+
+    .info .title {
+      color: $--text-color-secondary;
+    }
+  }
+
+  &.isUsed::after {
+    content: '已使用';
+  }
+
+  &.isExpired::after {
+    content: '已过期';
   }
 
   .scoreWrapper {

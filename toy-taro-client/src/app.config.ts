@@ -53,6 +53,6 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  entryPagePath: 'pages/coupon/index',
-  // entryPagePath: 'pages/shopCart/index',
+  // entryPagePath: 'pages/coupon/index',
+  entryPagePath: 'pages/shopCart/index',
 });

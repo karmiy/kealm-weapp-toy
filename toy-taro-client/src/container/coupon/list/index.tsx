@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
 import { View } from '@tarojs/components';
 import { WhiteSpace } from '@/components';
-import { CouponItem, CouponItemProps } from '../item';
+import type { CouponItemProps } from '../item';
+import { CouponItem } from '../item';
 import styles from './index.module.scss';
 
 interface CouponListProps {
-  list?: Array<CouponItemProps & { id: string }>;
+  list?: Array<CouponItemProps>;
   selectedId?: string;
   onSelect?: (id: string) => void;
 }
@@ -16,11 +17,11 @@ const CouponList = (props: CouponListProps) => {
   return (
     <View className={styles.wrapper}>
       {list.map((item, index) => {
-        const { id, ...rest } = item;
+        const { id } = item;
         return (
           <Fragment key={id}>
             {index !== 0 ? <WhiteSpace size='medium' /> : null}
-            <CouponItem {...rest} selected={id === selectedId} onClick={() => onSelect?.(id)} />
+            <CouponItem {...item} selected={id === selectedId} onClick={() => onSelect?.(id)} />
           </Fragment>
         );
       })}

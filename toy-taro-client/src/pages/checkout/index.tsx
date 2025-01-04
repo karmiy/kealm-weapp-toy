@@ -11,6 +11,7 @@ export default function () {
   const couponList = [
     {
       id: '1',
+      type: 'selectable' as const,
       score: 50,
       condition: '无门槛',
       title: '新人优惠券',
@@ -19,15 +20,16 @@ export default function () {
     },
     {
       id: '2',
+      type: 'unselectable' as const,
       score: 20,
       condition: '满199可用',
       title: '美乐蒂玩具专享券',
       range: '仅限玩具类商品',
       period: '2024-12-31',
-      disabled: true,
     },
     {
       id: '3',
+      type: 'selectable' as const,
       score: 100,
       condition: '满299可用',
       title: '节日特惠券',
@@ -36,6 +38,7 @@ export default function () {
     },
     {
       id: '4',
+      type: 'selectable' as const,
       score: 40,
       condition: '无门槛',
       title: '新人优惠券',
