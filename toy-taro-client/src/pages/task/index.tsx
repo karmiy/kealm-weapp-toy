@@ -35,7 +35,7 @@ export default function () {
       <WhiteSpace size='medium' />
       <Tabs
         className={styles.tabs}
-        headerClassName={styles.tabsHeader}
+        classes={{ headerContainer: styles.tabsHeader }}
         current={current}
         onChange={setCurrent}
         variant='contained'

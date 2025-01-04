@@ -11,10 +11,11 @@ interface TabPanelProps {
   label: string;
   visible?: boolean;
   lazy?: boolean;
+  isScrollable?: boolean;
 }
 
 const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
-  const { className, visible, lazy = true, children } = props;
+  const { className, visible, lazy = true, isScrollable = false, children } = props;
   const { mode } = useContext(TabsContext);
   const isHorizontal = mode === 'horizontal';
   const isVertical = mode === 'vertical';
@@ -23,10 +24,14 @@ const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
 
   return (
     <WrapperComponent
-      className={clsx(styles.wrapper, { [styles.isVertical]: isVertical }, className)}
+      className={clsx(
+        styles.wrapper,
+        { [styles.isVertical]: isVertical, [styles.isScrollable]: isScrollable },
+        className,
+      )}
       visible={visible}
     >
-      {isVertical ? (
+      {isVertical || isScrollable ? (
         <ScrollView scrollY className={styles.scrollView} enableFlex>
           {children}
         </ScrollView>

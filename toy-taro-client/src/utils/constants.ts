@@ -9,7 +9,9 @@ export enum COLOR_VARIABLES {
 
 export enum PAGE_ID {
     HOME = 'home',
-    MINE = 'mine',
     SHOP_CART = 'shopCart',
     CHECKOUT = 'checkout',
+    TASK = 'task',
+    MINE = 'mine',
+    COUPON = 'coupon',
 }

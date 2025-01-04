@@ -11,7 +11,6 @@ import styles from './index.module.scss';
 const logger = Logger.getLogger('[Tabs]').tag('[TabHeader]');
 
 interface TabHeaderProps {
-  className?: string;
   onChange?: (value: number) => void;
   items: string[];
 }
@@ -24,7 +23,7 @@ interface TabHeaderItemProps {
 
 const TabHeaderItem = (props: TabHeaderItemProps) => {
   const { label, isActive, onClick } = props;
-  const { variant, mode } = useContext(TabsContext);
+  const { variant, mode, classes } = useContext(TabsContext);
   const isTextVariant = variant === 'text';
   const isContainedVariant = variant === 'contained';
   const isHorizontal = mode === 'horizontal';
@@ -32,14 +31,17 @@ const TabHeaderItem = (props: TabHeaderItemProps) => {
 
   return (
     <View
-      className={clsx({
-        [styles.item]: true,
-        [styles.isActive]: isActive,
-        [styles.isTextVariant]: isTextVariant,
-        [styles.isContainedVariant]: isContainedVariant,
-        [styles.isHorizontal]: isHorizontal,
-        [styles.isVertical]: isVertical,
-      })}
+      className={clsx(
+        {
+          [styles.item]: true,
+          [styles.isActive]: isActive,
+          [styles.isTextVariant]: isTextVariant,
+          [styles.isContainedVariant]: isContainedVariant,
+          [styles.isHorizontal]: isHorizontal,
+          [styles.isVertical]: isVertical,
+        },
+        classes?.headerItem,
+      )}
       onClick={onClick}
     >
       <Text className={styles.title}>{label}</Text>
@@ -48,9 +50,9 @@ const TabHeaderItem = (props: TabHeaderItemProps) => {
 };
 
 const TabHeader = (props: TabHeaderProps) => {
-  const { className, items, onChange } = props;
+  const { items, onChange } = props;
   const itemsDepsKey = items.join('_');
-  const { current = 0, variant, mode } = useContext(TabsContext);
+  const { current = 0, variant, mode, classes } = useContext(TabsContext);
   const isTextVariant = variant === 'text';
   const isContainedVariant = variant === 'contained';
   const isHorizontal = mode === 'horizontal';
@@ -152,7 +154,7 @@ const TabHeader = (props: TabHeaderProps) => {
                   [styles.isHorizontal]: isHorizontal,
                   [styles.isVertical]: isVertical,
                 },
-                className,
+                classes?.headerContainer,
               )}
             >
               {items.map((item, index) => {

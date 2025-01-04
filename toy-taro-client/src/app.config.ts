@@ -48,7 +48,11 @@ export default defineAppConfig({
       root: 'pages/checkout/',
       pages: ['index'],
     },
+    {
+      root: 'pages/coupon/',
+      pages: ['index'],
+    },
   ],
-  entryPagePath: 'pages/mine/index',
+  entryPagePath: 'pages/coupon/index',
   // entryPagePath: 'pages/shopCart/index',
 });

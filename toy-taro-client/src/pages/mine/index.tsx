@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import { Image, Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { Icon, WhiteSpace } from '@/components';
-import { COLOR_VARIABLES } from '@/utils/constants';
+import { COLOR_VARIABLES, PAGE_ID } from '@/utils/constants';
+import { navigateToPage } from '@/utils/router';
 import styles from './index.module.scss';
 
 export default function () {
@@ -24,7 +25,10 @@ export default function () {
       </View>
       <View className={styles.container}>
         <View className={styles.menuList}>
-          <View className={styles.menuItem}>
+          <View
+            className={styles.menuItem}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.COUPON })}
+          >
             <View className={styles.title}>
               <Icon name='coupon' size={14} color={COLOR_VARIABLES.COLOR_RED} />
               <Text>优惠券</Text>

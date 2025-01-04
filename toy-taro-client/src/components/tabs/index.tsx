@@ -8,8 +8,11 @@ import styles from './index.module.scss';
 
 interface TabsProps {
   className?: string;
+  classes?: {
+    headerContainer?: string;
+    headerItem?: string;
+  };
   style?: React.CSSProperties;
-  headerClassName?: string;
   current?: number;
   onChange?: (value: number) => void;
   lazy?: boolean;
@@ -20,7 +23,7 @@ interface TabsProps {
 const Tabs = (props: PropsWithChildren<TabsProps>) => {
   const {
     className,
-    headerClassName,
+    classes,
     style,
     current = 0,
     onChange,
@@ -46,12 +49,12 @@ const Tabs = (props: PropsWithChildren<TabsProps>) => {
   }, [_children, current, lazy]);
 
   return (
-    <TabsContext.Provider value={{ current, variant, mode }}>
+    <TabsContext.Provider value={{ classes, current, variant, mode }}>
       <View
         className={clsx(styles.wrapper, { [styles.isVertical]: mode === 'vertical' }, className)}
         style={style}
       >
-        <TabHeader className={headerClassName} items={labels} onChange={onChange} />
+        <TabHeader items={labels} onChange={onChange} />
         {/* https://juejin.cn/post/7299736066423848994 */}
         {/* scrollView 同级节点有更新会导致 scroll 位置回到 0 */}
         <Block>{children}</Block>
