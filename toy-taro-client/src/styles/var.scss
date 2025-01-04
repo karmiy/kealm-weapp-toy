@@ -11,9 +11,12 @@ $--color-divider-base:#F1F1F1 !default;
 $--color-mask-disable:rgba(255, 255, 255, 0.6) !default; 
 
 $--color-box-shadow-base: $--color-red-opacity-4 !default;
+$--color-box-shadow-menu: rgba(0, 0, 0, 0.1) !default;
 
 $--color-rate-inactive: #CCC !default;
 $--color-rate-active: #FAB646 !default;
+
+$--box-shadow-menu: 0 px(4) px(10) 0 $--color-box-shadow-base !default;
 
 /* z-index */
 $z-index-negative: -1 !default;

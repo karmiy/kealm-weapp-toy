@@ -49,6 +49,6 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  entryPagePath: 'pages/task/index',
+  entryPagePath: 'pages/mine/index',
   // entryPagePath: 'pages/shopCart/index',
 });
