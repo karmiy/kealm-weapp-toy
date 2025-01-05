@@ -17,7 +17,7 @@ const ToyScore = (props: ToyScoreProps) => {
       className={clsx(styles.wrapper, { [styles.isInverse]: colorMode === 'inverse' }, className)}
     >
       <Text className={styles.current}>{current}积分</Text>
-      <Text className={styles.origin}>{original}积分</Text>
+      {original ? <Text className={styles.origin}>{original}积分</Text> : null}
     </View>
   );
 };

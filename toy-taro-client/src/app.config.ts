@@ -52,7 +52,10 @@ export default defineAppConfig({
       root: 'pages/coupon/',
       pages: ['index'],
     },
+    {
+      root: 'pages/exchangeRecord/',
+      pages: ['index'],
+    },
   ],
-  // entryPagePath: 'pages/coupon/index',
-  entryPagePath: 'pages/shopCart/index',
+  entryPagePath: 'pages/mine/index',
 });

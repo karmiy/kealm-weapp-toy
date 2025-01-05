@@ -1,6 +1,4 @@
-import { useMemo, useState } from 'react';
 import { Image, Text, View } from '@tarojs/components';
-import { clsx } from 'clsx';
 import { Icon, WhiteSpace } from '@/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@/utils/constants';
 import { navigateToPage } from '@/utils/router';
@@ -35,7 +33,10 @@ export default function () {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
-          <View className={styles.menuItem}>
+          <View
+            className={styles.menuItem}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.EXCHANGE_RECORD })}
+          >
             <View className={styles.title}>
               <Icon name='exchange-record' size={14} color={COLOR_VARIABLES.COLOR_RED} />
               <Text>兑换记录</Text>

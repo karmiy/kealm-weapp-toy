@@ -2,6 +2,7 @@
 
 .wrapper {
   box-sizing: border-box;
+  overflow: hidden;
 
   &.isWhiteBg {
     background-color: $--fill-default;
@@ -81,6 +82,8 @@
     }
 
     .header {
+      overflow: hidden;
+
       .title {
         width: 100%;
         font-size: px(16);

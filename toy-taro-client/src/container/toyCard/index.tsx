@@ -26,7 +26,7 @@ const ToyCard = (props: ToyCardProps) => {
     style,
     mode = 'vertical',
     isWhiteBg = true,
-    isRadius = true,
+    isRadius = mode === 'vertical',
     paddingSize = 'none',
     width,
     coverImage,
@@ -48,8 +48,8 @@ const ToyCard = (props: ToyCardProps) => {
             <Image src={coverImage} mode='aspectFill' lazyLoad className={styles.coverImage} />
           </View>
         </View>
-        <Text className={styles.title}>{title}</Text>
-        <Text className={styles.subTitle}>{subTitle}</Text>
+        <View className={styles.title}>{title}</View>
+        <View className={styles.subTitle}>{subTitle}</View>
         <View className={styles.operateWrapper}>
           <ToyScore current={currentScore} original={originalScore} />
           {action}
@@ -67,8 +67,8 @@ const ToyCard = (props: ToyCardProps) => {
         <Image src={coverImage} mode='aspectFill' lazyLoad className={styles.coverImage} />
         <View className={styles.info}>
           <View className={styles.header}>
-            <Text className={styles.title}>{title}</Text>
-            <Text className={styles.subTitle}>{subTitle}</Text>
+            <View className={styles.title}>{title}</View>
+            <View className={styles.subTitle}>{subTitle}</View>
           </View>
           <View className={styles.operateWrapper}>
             <ToyScore current={currentScore} original={originalScore} />
