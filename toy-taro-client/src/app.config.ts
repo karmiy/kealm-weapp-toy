@@ -57,5 +57,5 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  entryPagePath: 'pages/mine/index',
+  // entryPagePath: 'pages/mine/index',
 });

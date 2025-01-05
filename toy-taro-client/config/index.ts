@@ -106,6 +106,7 @@ export default defineConfig(async (merge, {}) => {
       webpackChain(chain) {
         chain.resolve.plugin('tsconfig-paths').use(TsconfigPathsPlugin);
       },
+      esnextModules: ['taro-ui'],
     },
     rn: {
       appName: 'taroDemo',

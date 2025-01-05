@@ -1,0 +1,7 @@
+@import '@/styles/index.scss';
+
+.modalWrapper {
+  [class*="modal__content"] {
+    min-height: initial;
+  }
+}

@@ -1,6 +1,5 @@
 import { Fragment, useCallback, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { OsButton } from 'ossaui';
 import { Button, CheckButton, WhiteSpace } from '@/components';
 import { PAGE_ID } from '@/utils/constants';
 import { navigateToPage } from '@/utils/router';

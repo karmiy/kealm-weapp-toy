@@ -1,18 +1,14 @@
-import { pxTransform } from '@tarojs/taro';
-import { OsSearch } from 'ossaui';
-import { MENU_BUTTON, SCREEN_INFO } from '@/utils/utils';
+import { useState } from 'react';
+import { AtSearchBar } from 'taro-ui';
 import styles from './index.module.scss';
 
-const SEARCH_STYLES = {
-  backgroundColor: 'transparent',
-};
-
 const SearchBar = () => {
+  const [searchValue, setSearchValue] = useState('');
   return (
-    <OsSearch
+    <AtSearchBar
       className={styles.searchBar}
-      customStyle={SEARCH_STYLES}
-      showSplitLine={false}
+      value={searchValue}
+      onChange={setSearchValue}
       placeholder='搜索'
     />
   );

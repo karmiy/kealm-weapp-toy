@@ -45,6 +45,33 @@ export default function () {
       range: '全场商品可用',
       period: '2024-12-31',
     },
+    {
+      id: '5',
+      type: 'selectable' as const,
+      score: 40,
+      condition: '无门槛',
+      title: '新人优惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
+    {
+      id: '6',
+      type: 'selectable' as const,
+      score: 40,
+      condition: '无门槛',
+      title: '新人优惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
+    {
+      id: '7',
+      type: 'selectable' as const,
+      score: 40,
+      condition: '无门槛',
+      title: '新人优惠券',
+      range: '全场商品可用',
+      period: '2024-12-31',
+    },
   ];
 
   return (

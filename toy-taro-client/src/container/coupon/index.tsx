@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components';
-import { ActionSheet } from '@/components';
+import { FloatLayout } from '@/components';
 import type { CouponItemProps } from './item';
 import { CouponItem } from './item';
 import { CouponList, CouponListProps } from './list';
@@ -22,11 +22,11 @@ const CouponActionSheet = (props: CouponActionSheetProps) => {
   };
 
   return (
-    <ActionSheet visible={visible} onClose={onClose} title='优惠券' maxHeight={320}>
+    <FloatLayout visible={visible} title='优惠券' onClose={onClose} maxHeight={320}>
       <View className={styles.wrapper}>
         <CouponList list={list} selectedId={selectedId} onSelect={handleSelect} />
       </View>
-    </ActionSheet>
+    </FloatLayout>
   );
 };
 

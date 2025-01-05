@@ -1,12 +1,23 @@
 @import '@/styles/index.scss';
 
-.wrapper {
+.floatLayoutWrapper {
   color: $--text-color-base;
-
-  [class*="actionsheet__container"] {
+  
+  [class*="layout__container"] {
     background-color: $--fill-default;
     border-radius: px(12) px(12) 0 0;
     overflow: hidden;
+
+    [class*="layout-body"] {
+      padding: 0;
+      max-height: initial;
+      min-height: initial;
+
+      [class*="layout-body__content"] {
+        max-height: initial;
+        min-height: initial;
+      }
+    }
   }
 }
 

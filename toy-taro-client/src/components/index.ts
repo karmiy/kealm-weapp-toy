@@ -8,5 +8,6 @@ export * from './iconButton';
 export * from './stepper';
 export * from './checkButton';
 export * from './button';
-export * from './actionSheet';
+export * from './floatLayout';
 export * from './rate';
+export * from './modal';

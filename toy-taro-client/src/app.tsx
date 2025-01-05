@@ -1,16 +1,12 @@
-import { Fragment, PropsWithChildren } from 'react';
-import { View } from '@tarojs/components';
+import { PropsWithChildren } from 'react';
 import { useLaunch } from '@tarojs/taro';
-import { useDialog } from '@/hooks';
+import { Logger } from './utils/logger';
 import './app.scss';
 
 function App({ children }: PropsWithChildren) {
   useLaunch(() => {
-    console.log('App launched.');
+    Logger.getLogger('App').info('App launched.');
   });
-
-  const RootDialogs = useDialog();
-  console.log('[test] children', children);
 
   // children 是将要会渲染的页面
   return children;

@@ -1,4 +1,5 @@
 import { Image, Text, View } from '@tarojs/components';
+// import { AtButton } from 'taro-ui';
 import { Icon, WhiteSpace } from '@/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@/utils/constants';
 import { navigateToPage } from '@/utils/router';
@@ -22,6 +23,7 @@ export default function () {
         </View>
       </View>
       <View className={styles.container}>
+        {/* <AtButton type='primary'>按钮</AtButton> */}
         <View className={styles.menuList}>
           <View
             className={styles.menuItem}

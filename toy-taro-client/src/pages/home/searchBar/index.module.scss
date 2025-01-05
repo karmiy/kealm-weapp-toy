@@ -2,8 +2,4 @@
 
 .searchBar {
   flex: 1;
-  
-  & :global(.ossa-search__wrap) {
-    border-radius: px(8);
-  }
 }

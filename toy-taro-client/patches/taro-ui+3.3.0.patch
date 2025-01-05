@@ -1,0 +1,17 @@
+diff --git a/node_modules/taro-ui/dist/style/mixins/libs/tint.scss b/node_modules/taro-ui/dist/style/mixins/libs/tint.scss
+index ca201ea..cba2b1b 100644
+--- a/node_modules/taro-ui/dist/style/mixins/libs/tint.scss
++++ b/node_modules/taro-ui/dist/style/mixins/libs/tint.scss
+@@ -1,3 +1,5 @@
++@use "sass:color";
++
+ /**
+  * Mixes a color with white. It's different from lighten()
+  *
+@@ -19,5 +21,5 @@
+   $color,
+   $percent
+ ) {
+-  @return mix(#FFF, $color, $percent);
++  @return color.mix(#FFF, $color, $percent);
+ }

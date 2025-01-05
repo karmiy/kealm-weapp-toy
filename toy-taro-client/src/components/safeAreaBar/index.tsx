@@ -12,7 +12,7 @@ const SafeAreaBar = (props: SafeAreaBarProps) => {
   const { isWhiteBg = false, inset = 'top' } = props;
   return (
     <View
-      className={clsx({
+      className={clsx(styles.safeAreaBarWrapper, {
         [styles.whiteBg]: isWhiteBg,
         [styles.isTop]: inset === 'top',
         [styles.isBottom]: inset === 'bottom',
