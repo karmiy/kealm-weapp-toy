@@ -45,3 +45,58 @@
     background-color: inherit;
   }
 }
+
+@mixin hairline-base($color: $--color-red, $style: solid) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    transform: scale(0.5);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 1;
+    border-color: $color;
+    border-style: $style;
+  }
+}
+
+@mixin hairline-bottom($color: $--color-red, $style: solid) {
+  @include hairline-base($color, $style);
+
+  &::after {
+    border-width: 0;
+    border-bottom-width: 1Px;
+  }
+}
+
+@mixin hairline-top($color: $--color-red, $style: solid) {
+  @include hairline-base($color, $style);
+
+  &::after {
+    border-width: 0;
+    border-top-width: 1Px;
+  }
+}
+
+@mixin hairline-box($color: $--color-red, $style: solid, $radius: 0) {
+  @include hairline-base($color, $style);
+
+  &::after {
+    border-width: 1Px;
+    border-radius: $radius * 2;
+  }
+}
+
+@mixin hairline-box-color-inherit($style: solid, $radius: 0) {
+  @include hairline-box($--color-red, $style, $radius);
+
+  &::after {
+    border-color: inherit;
+  }
+}

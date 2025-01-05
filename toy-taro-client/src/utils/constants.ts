@@ -1,6 +1,8 @@
 export enum COLOR_VARIABLES {
     COLOR_RED = '#FF69B4',
     COLOR_RED_1 = '#FFBBC6',
+    COLOR_WHITE = '#FFF',
+    COLOR_BLACK = '#000',
     TEXT_COLOR_BASE = '#333',
     TEXT_COLOR_DISABLED = '#CCC',
     COLOR_RATE_INACTIVE = '#CCC',
@@ -14,4 +16,5 @@ export enum PAGE_ID {
     TASK = 'task',
     MINE = 'mine',
     COUPON = 'coupon',
+    EXCHANGE_RECORD = 'exchangeRecord',
 }

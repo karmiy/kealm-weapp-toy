@@ -1,4 +1,18 @@
-export const hexToRgba = (hex: string, alpha: number) => {
+// 定义内置的颜色映射表
+const COLOR_NAMES: Record<string, string> = {
+  red: '#FF0000',
+  green: '#008000',
+  blue: '#0000FF',
+  black: '#000000',
+  white: '#FFFFFF',
+  yellow: '#FFFF00',
+  cyan: '#00FFFF',
+  magenta: '#FF00FF',
+  // 可根据需要扩展更多颜色
+};
+
+export const colorToRgba = (hex: string, alpha: number) => {
+  hex = COLOR_NAMES[hex] ?? hex;
   // 去掉 "#" 符号
   const cleanHex = hex.replace('#', '');
 
