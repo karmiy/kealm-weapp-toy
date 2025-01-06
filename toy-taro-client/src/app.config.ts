@@ -56,6 +56,10 @@ export default defineAppConfig({
       root: 'pages/exchangeRecord/',
       pages: ['index'],
     },
+    {
+      root: 'pages/checkIn/',
+      pages: ['index'],
+    },
   ],
-  // entryPagePath: 'pages/mine/index',
+  entryPagePath: 'pages/checkIn/index',
 });
