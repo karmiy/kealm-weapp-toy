@@ -1,0 +1,29 @@
+@import '@/styles/index.scss';
+
+.rewardItemWrapper {
+  margin-top: px(14);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $--text-color-base;
+    font-size: px(13);
+    margin-bottom: px(7);
+
+    .status {
+      color: $--text-color-secondary;
+    }
+
+    .action {
+      position: relative;
+      color: $--color-red;
+    }
+  }
+
+  .desc {
+    margin-top: px(7);
+    color: $--text-color-secondary;
+    font-size: px(11);
+  }
+}

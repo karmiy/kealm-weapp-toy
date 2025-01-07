@@ -3,7 +3,6 @@
 .wrapper {
   height: 100%;
   background-color: $--fill-body;
-  overflow: hidden;
 
   .checkInRecord {
     margin: px(14);
@@ -37,6 +36,23 @@
 
     .calendar {
       margin-top: px(4);
+    }
+  }
+
+  .checkInReward {
+    margin: px(14);
+    padding: px(14);
+    border-radius: px(12);
+    background-color: $--fill-default;
+
+    .title {
+      font-size: px(16);
+      font-weight: bold;
+    }
+
+    .detailWrapper {
+      margin-top: px(14);
+      
     }
   }
 }

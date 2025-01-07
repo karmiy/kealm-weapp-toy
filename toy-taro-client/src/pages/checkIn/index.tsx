@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Text, View } from '@tarojs/components';
-import { Button, Calendar, WhiteSpace } from '@/components';
+import { ScrollView, Text, View } from '@tarojs/components';
+import { AtToast } from 'taro-ui';
+import { Button, Calendar, SafeAreaBar } from '@/components';
 import { Undefinable } from '@/types';
+import { RewardItem } from './rewardItem';
 import styles from './index.module.scss';
 
 function getDatesFromTodayToFirst(target: Date) {
@@ -26,6 +28,7 @@ export default function () {
   const [selectedDate, setSelectedDate] = useState<Undefinable<Date>>(today);
   const [markDates, setMarkDates] = useState(getDatesFromTodayToFirst(today));
   const [hasCheckIn, setHasCheckIn] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const handleCheckIn = useCallback(() => {
     setMarkDates(prev => [...prev, today]);
@@ -34,7 +37,7 @@ export default function () {
   }, [today]);
 
   return (
-    <View className={styles.wrapper}>
+    <ScrollView scrollY className={styles.wrapper}>
       <View className={styles.checkInRecord}>
         <View className={styles.header}>
           <View className={styles.info}>
@@ -54,6 +57,20 @@ export default function () {
           <Calendar value={selectedDate} markDates={markDates} />
         </View>
       </View>
-    </View>
+      <View className={styles.checkInReward}>
+        <Text className={styles.title}>签到奖励</Text>
+        <RewardItem
+          total={3}
+          current={8}
+          rewardInfo='5积分'
+          onReceive={() => setIsToastOpen(true)}
+        />
+        <RewardItem total={7} current={8} rewardInfo='满100减10积分优惠券' />
+        <RewardItem total={15} current={8} rewardInfo='满100减30积分优惠券' />
+        <RewardItem total={30} current={8} rewardInfo='5折优惠券  ' />
+      </View>
+      <AtToast isOpened={isToastOpen} onClose={() => setIsToastOpen(false)} text='领取成功！' />
+      <SafeAreaBar inset='bottom' />
+    </ScrollView>
   );
 }
