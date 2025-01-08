@@ -24,3 +24,6 @@ export const sleep = (duration = 1000) => new Promise(r => setTimeout(r, duratio
 export const uuid = () => Math.random().toString(36).slice(2);
 
 export const createSpecClassName = (cls: string) => `${cls}_${uuid()}`;
+
+export const toCamelCase = (input: string) =>
+  input.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());

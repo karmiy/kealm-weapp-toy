@@ -61,5 +61,5 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  entryPagePath: 'pages/checkIn/index',
+  // entryPagePath: 'pages/checkIn/index',
 });
