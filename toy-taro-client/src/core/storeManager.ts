@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { Undefinable } from '@/types';
 import { Logger } from '@/utils/logger';
 import { toCamelCase } from '@/utils/utils';
@@ -205,8 +206,7 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
       if (modelKey in model) {
         const currentValue = model[modelKey];
         const updateValue = partial[key];
-        // [TODO]update lodash isEqual
-        if (currentValue === updateValue) {
+        if (isEqual(currentValue, updateValue)) {
           continue;
         }
         hasChange = true;
@@ -331,6 +331,6 @@ const storeManager = new StoreManager({
 // storeManager.emitDelete(STORE_NAME.USER);
 // storeManager.emitDelete(STORE_NAME.TOY, ['1']);
 // const t = storeManager.getById(STORE_NAME.TOY, '1');
-// const u = storeManager.getById(STORE_NAME.USER, '1')；
+// const u = storeManager.getById(STORE_NAME.USER, '1');
 
 export { storeManager };
