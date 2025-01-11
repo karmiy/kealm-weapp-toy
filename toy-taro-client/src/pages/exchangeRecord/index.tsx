@@ -19,7 +19,7 @@ export default function () {
                   <Item
                     title='美乐蒂经典毛绒玩偶'
                     coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-shop-cart-1.png'
-                    currentScore={129}
+                    originalScore={129}
                     handleUndo={() => setShowConfirm(true)}
                   />
                 </Fragment>

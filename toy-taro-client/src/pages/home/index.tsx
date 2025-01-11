@@ -1,5 +1,6 @@
 import { ScrollView, View } from '@tarojs/components';
 import { SafeAreaBar, WhiteSpace } from '@/components';
+import { sdk } from '@/core';
 import { Carousel } from './carousel';
 import { Category } from './category';
 import { Hub } from './hub';

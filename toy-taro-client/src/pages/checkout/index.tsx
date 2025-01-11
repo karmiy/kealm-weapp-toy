@@ -90,7 +90,7 @@ export default function () {
                       title='美乐蒂经典毛绒玩偶美乐蒂经典毛绒玩偶'
                       subTitle='30cm 粉色'
                       coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-checkout-1.png'
-                      currentScore={119}
+                      discountedScore={119}
                       originalScore={140}
                       action={<Text>x1</Text>}
                     />

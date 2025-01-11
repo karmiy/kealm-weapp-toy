@@ -30,7 +30,7 @@ const ToyList = () => {
                 title='美乐蒂经典款毛绒玩偶'
                 paddingSize='small'
                 subTitle='库存: 12'
-                currentScore={199}
+                discountedScore={199}
                 originalScore={299}
                 action={<IconButton name='cart-add-fill' />}
               />

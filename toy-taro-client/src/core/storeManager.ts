@@ -22,11 +22,22 @@ type InstanceEntity<
 
 type PartialEntity<E> = Partial<E> & { id: string };
 
-class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: ModelConstruct }>> {
+class StoreManager<
+  C extends Record<
+    STORE_NAME,
+    {
+      type: HANDLER_TYPE;
+      model: ModelConstruct;
+      sortValue: (a: InstanceType<ModelConstruct>, b: InstanceType<ModelConstruct>) => number;
+    }
+  >,
+> {
   private _config: C;
   private _singleStores = new Map<STORE_NAME, Model>();
   private _multiStores = new Map<STORE_NAME, Map<string, Model>>();
+  private _sortIdsStores = new Map<STORE_NAME, string[]>();
   private _subscriptions = new Map<STORE_NAME, Set<() => void>>();
+  private _idListSubscriptions = new Map<STORE_NAME, Set<() => void>>();
   private _idSubscriptions = new Map<STORE_NAME, Map<string, Set<() => void>>>();
 
   private get _logger() {
@@ -54,6 +65,7 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
     if (!ModelConstructor) throw new Error(`[refresh]ModelConstructor for ${storeName} not found`);
 
     if (type === HANDLER_TYPE.MULTIPLE) {
+      const prevIds = this.getIds(storeName);
       if (!Array.isArray(payload)) {
         throw new Error(`[refresh]Payload for ${storeName} must be an array for type MULTIPLE`);
       }
@@ -69,15 +81,19 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
       });
 
       this._notifySubscribers(storeName);
+      const currentIds = this.getIds(storeName);
+      !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
     } else if (type === HANDLER_TYPE.SINGLE) {
       if (Array.isArray(payload)) {
         throw new Error(`[refresh]Payload for ${storeName} must not be an array for type SINGLE`);
       }
+      const prevModel = this._singleStores.get(storeName);
       const model = new ModelConstructor(payload);
       this._singleStores.set(storeName, model);
 
-      this._notifySubscribers(storeName);
       this._notifyIdSubscribers(storeName, model.id);
+      this._notifySubscribers(storeName);
+      prevModel?.id !== model.id && this._notifyIdListSubscribers(storeName);
     }
   }
 
@@ -131,7 +147,10 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
 
   getIds<T extends STORE_NAME>(storeName: T) {
     const config = this._config[storeName];
-    if (!config) throw new Error(`[getIds]Configuration for ${storeName} not found`);
+    if (!config) {
+      // throw new Error(`[getIds]Configuration for ${storeName} not found`);
+      return [];
+    }
 
     if (config.type === HANDLER_TYPE.MULTIPLE) {
       const store = this._multiStores.get(storeName);
@@ -141,7 +160,12 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
       return store ? [store.id] : [];
     }
 
-    throw new Error(`[getIds]Unknown type for ${storeName}`);
+    // throw new Error(`[getIds]Unknown type for ${storeName}`);
+    return [];
+  }
+
+  getSortIds<T extends STORE_NAME>(storeName: T) {
+    return this._sortIdsStores.get(storeName) ?? [];
   }
 
   subscribe(storeName: STORE_NAME, callback: () => void) {
@@ -152,6 +176,19 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
 
   unsubscribe(storeName: STORE_NAME, callback: () => void) {
     const storeSubscriptions = this._subscriptions.get(storeName);
+    if (storeSubscriptions) {
+      storeSubscriptions.delete(callback);
+    }
+  }
+
+  subscribeIdList(storeName: STORE_NAME, callback: () => void) {
+    const subscribes = this._idListSubscriptions.get(storeName) ?? new Set();
+    subscribes.add(callback);
+    this._idListSubscriptions.set(storeName, subscribes);
+  }
+
+  unsubscribeIdList(storeName: STORE_NAME, callback: () => void) {
+    const storeSubscriptions = this._idListSubscriptions.get(storeName);
     if (storeSubscriptions) {
       storeSubscriptions.delete(callback);
     }
@@ -180,6 +217,34 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
 
   private _notifySubscribers(storeName: STORE_NAME) {
     const storeSubscriptions = this._subscriptions.get(storeName);
+    if (storeSubscriptions) {
+      storeSubscriptions.forEach(callback => {
+        callback();
+      });
+    }
+  }
+
+  private _notifyIdListSubscribers(storeName: STORE_NAME) {
+    const config = this._config[storeName];
+    if (!config) {
+      throw new Error(`[_notifyIdListSubscribers]Configuration for ${storeName} not found`);
+    }
+
+    const { sortValue } = config;
+    const ids = [...this.getIds(storeName)];
+    ids.sort((a, b) => {
+      const aModel = this.getById(storeName, a);
+      const bModel = this.getById(storeName, b);
+      if (!aModel || !bModel) {
+        throw new Error(
+          `[_notifyIdListSubscribers]sort id list failed for ${storeName}: hasAModel: ${!!aModel}, hasBModel: ${!!bModel}`,
+        );
+      }
+      return sortValue(aModel, bModel);
+    });
+    this._sortIdsStores.set(storeName, ids);
+
+    const storeSubscriptions = this._idListSubscriptions.get(storeName);
     if (storeSubscriptions) {
       storeSubscriptions.forEach(callback => {
         callback();
@@ -227,6 +292,7 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
     if (!ModelConstructor) {
       throw new Error(`[emitUpdate]ModelConstructor for ${storeName} not found`);
     }
+    const prevIds = this.getIds(storeName);
     const { entities, partials } = payload;
 
     if (entities) {
@@ -270,6 +336,8 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
     }
 
     this._notifySubscribers(storeName);
+    const currentIds = this.getIds(storeName);
+    !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
   }
 
   emitDelete<T extends STORE_NAME>(
@@ -304,6 +372,7 @@ class StoreManager<C extends Record<STORE_NAME, { type: HANDLER_TYPE; model: Mod
       throw new Error(`[emitDelete]Unknown type for ${storeName}`);
     }
     this._notifySubscribers(storeName);
+    this._notifyIdListSubscribers(storeName);
   }
 }
 
@@ -311,10 +380,12 @@ const storeManager = new StoreManager({
   [STORE_NAME.TOY]: {
     type: HANDLER_TYPE.MULTIPLE,
     model: ToyModel,
+    sortValue: (a: ToyModel, b: ToyModel) => b.createTime - a.createTime,
   },
   [STORE_NAME.USER]: {
     type: HANDLER_TYPE.SINGLE,
     model: UserModel,
+    sortValue: (a: UserModel, b: UserModel) => 1,
   },
 });
 

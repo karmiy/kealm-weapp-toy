@@ -15,8 +15,8 @@ interface ToyCardProps {
   coverImage: string;
   title: React.ReactNode;
   subTitle?: React.ReactNode;
-  currentScore: number;
-  originalScore?: number;
+  discountedScore?: number;
+  originalScore: number;
   action?: React.ReactNode;
 }
 
@@ -32,7 +32,7 @@ const ToyCard = (props: ToyCardProps) => {
     coverImage,
     title,
     subTitle,
-    currentScore,
+    discountedScore,
     originalScore,
     action,
   } = props;
@@ -51,12 +51,12 @@ const ToyCard = (props: ToyCardProps) => {
         <View className={styles.title}>{title}</View>
         <View className={styles.subTitle}>{subTitle}</View>
         <View className={styles.operateWrapper}>
-          <ToyScore current={currentScore} original={originalScore} />
+          <ToyScore discounted={discountedScore} original={originalScore} />
           {action}
         </View>
       </>
     );
-  }, [action, coverImage, currentScore, mode, originalScore, subTitle, title]);
+  }, [action, coverImage, discountedScore, mode, originalScore, subTitle, title]);
 
   const HorizontalCard = useMemo(() => {
     if (mode !== 'horizontal') {
@@ -71,13 +71,13 @@ const ToyCard = (props: ToyCardProps) => {
             <View className={styles.subTitle}>{subTitle}</View>
           </View>
           <View className={styles.operateWrapper}>
-            <ToyScore current={currentScore} original={originalScore} />
+            <ToyScore discounted={discountedScore} original={originalScore} />
             {action}
           </View>
         </View>
       </>
     );
-  }, [action, coverImage, currentScore, mode, originalScore, title, subTitle]);
+  }, [mode, coverImage, title, subTitle, discountedScore, originalScore, action]);
 
   return (
     <View

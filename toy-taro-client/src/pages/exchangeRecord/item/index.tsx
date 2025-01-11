@@ -7,13 +7,13 @@ import styles from './index.module.scss';
 interface ItemProps {
   title: string;
   coverImage: string;
-  currentScore: number;
-  originalScore?: number;
+  discountedScore?: number;
+  originalScore: number;
   handleUndo?: () => void;
 }
 
 const Item = (props: ItemProps) => {
-  const { title, coverImage, currentScore, originalScore, handleUndo } = props;
+  const { title, coverImage, discountedScore, originalScore, handleUndo } = props;
 
   const subTitle = useMemo(() => {
     return (
@@ -35,7 +35,7 @@ const Item = (props: ItemProps) => {
         title={title}
         subTitle={subTitle}
         coverImage={coverImage}
-        currentScore={currentScore}
+        discountedScore={discountedScore}
         originalScore={originalScore}
         action={
           <Button

@@ -1,24 +1,24 @@
 import { Fragment } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { WhiteSpace } from '@/components';
+import { STORE_NAME } from '@/core';
+import { useStoreIds } from '@/store';
 import { Item } from './item';
 import styles from './index.module.scss';
 
 const LimitedTimeOffer = () => {
+  const ids = useStoreIds(STORE_NAME.TOY);
   return (
     <View className={styles.wrapper}>
       <View className={styles.header}>
         <Text className={styles.title}>限时特惠</Text>
       </View>
       <ScrollView scrollX className={styles.content} enableFlex>
-        {[...Array(3).keys()].map(index => {
-          const img = `https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-limited-time-offer-${
-            index + 1
-          }.png`;
+        {ids.map((id, index) => {
           return (
-            <Fragment key={index}>
+            <Fragment key={id}>
               {index !== 0 ? <WhiteSpace size='small' isVertical={false} /> : null}
-              <Item img={img} title='美乐蒂毛绒玩偶' normalPrice={29} emphasizePrice={19} />
+              <Item id={id} />
             </Fragment>
           );
         })}
