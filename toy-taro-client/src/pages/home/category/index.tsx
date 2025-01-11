@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
-import { TabPanel, Tabs } from '@/components';
+import { TabPanel, Tabs, WhiteSpace } from '@/components';
 import { ToyList } from './toyList';
 import styles from './index.module.scss';
 
@@ -21,15 +21,18 @@ const Category = () => {
   const [items, setItems] = useState<string[]>(demoItems);
   const [current, setCurrent] = useState(0);
   return (
-    <Tabs current={current} onChange={setCurrent}>
-      {items.map((item, index) => {
-        return (
-          <TabPanel key={item} label={item}>
-            <ToyList />
-          </TabPanel>
-        );
-      })}
-    </Tabs>
+    <>
+      <Tabs current={current} onChange={setCurrent}>
+        {items.map((item, index) => {
+          return (
+            <TabPanel key={item} label={item}>
+              <ToyList />
+            </TabPanel>
+          );
+        })}
+      </Tabs>
+      <WhiteSpace size='large' />
+    </>
   );
 };
 

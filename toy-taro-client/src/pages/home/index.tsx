@@ -17,13 +17,9 @@ export default function () {
       </View>
       <ScrollView scrollY className={styles.container}>
         <Carousel />
-        <WhiteSpace size='large' />
         <LimitedTimeOffer />
-        <WhiteSpace size='large' />
         <Hub />
-        <WhiteSpace size='large' />
         <Category />
-        <WhiteSpace size='large' />
       </ScrollView>
     </View>
   );

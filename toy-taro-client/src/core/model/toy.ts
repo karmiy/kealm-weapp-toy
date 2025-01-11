@@ -51,12 +51,14 @@ export class ToyModel {
   }
 
   @computed
-  get isTimeLimited() {
-    return (
-      this.flashSaleStart &&
-      this.flashSaleEnd &&
-      this.flashSaleStart < Date.now() &&
-      this.flashSaleEnd > Date.now()
+  get isLimitedTimeOffer() {
+    const now = new Date().getTime();
+    return Boolean(
+      this.discountedScore &&
+        this.flashSaleStart &&
+        this.flashSaleEnd &&
+        this.flashSaleStart <= now &&
+        this.flashSaleEnd >= now,
     );
   }
 

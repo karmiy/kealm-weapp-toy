@@ -14,7 +14,6 @@ const Item = (props: ItemProps) => {
   const { id } = props;
   const toy = useStoreById(STORE_NAME.TOY, id);
   const { coverImage } = toy ?? {};
-  // const { img, title, normalPrice, emphasizePrice } = props;
 
   useEffect(() => {
     if (!coverImage) {
@@ -28,8 +27,7 @@ const Item = (props: ItemProps) => {
     if (!coverImage) {
       return;
     }
-    sdk.modules.toy.update(id, 'test!');
-    // previewImageManager.preview(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
+    previewImageManager.preview(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
   };
 
   if (!toy) {
@@ -37,6 +35,7 @@ const Item = (props: ItemProps) => {
   }
 
   const { name, originalScore, discountedScore } = toy;
+  console.log('[test] toy', name);
 
   return (
     <View className={styles.wrapper}>
