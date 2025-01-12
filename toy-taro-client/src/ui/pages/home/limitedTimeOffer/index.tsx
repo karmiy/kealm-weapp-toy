@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { WhiteSpace } from '@ui/components';
-import { useToyLimitedTimeOffer } from '@ui/store';
+import { useToyLimitedTimeOffer } from '@/ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 

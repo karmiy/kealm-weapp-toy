@@ -3,7 +3,7 @@ import { Image, Text, View } from '@tarojs/components';
 import { sdk, STORE_NAME } from '@core';
 import { ToyScore } from '@ui/container';
 import { PREVIEW_IMAGE_ID, previewImageManager } from '@ui/manager/previewImageManager';
-import { useStoreById } from '@ui/store';
+import { useStoreById } from '@/ui/viewModel';
 import styles from './index.module.scss';
 
 interface ItemProps {
