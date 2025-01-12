@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { Button, SafeAreaBar, WhiteSpace } from '@/ui/components';
-import { CouponActionSheet, ToyCard } from '@/ui/container';
+import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
+import { CouponActionSheet, ToyCard } from '@ui/container';
 import { FormItem } from './formItem';
 import styles from './index.module.scss';
 

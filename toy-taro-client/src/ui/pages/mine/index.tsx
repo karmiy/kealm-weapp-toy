@@ -1,8 +1,8 @@
 import { Image, Text, View } from '@tarojs/components';
-// import { AtButton } from 'taro-ui';
-import { Icon, WhiteSpace } from '@/ui/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
+// import { AtButton } from 'taro-ui';
+import { Icon, WhiteSpace } from '@ui/components';
 import styles from './index.module.scss';
 
 export default function () {

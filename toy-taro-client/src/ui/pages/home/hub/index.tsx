@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components';
-import { WhiteSpace } from '@/ui/components';
+import { WhiteSpace } from '@ui/components';
 import { Item } from './item';
 import styles from './index.module.scss';
 

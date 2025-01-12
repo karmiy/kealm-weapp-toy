@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Image, Swiper, SwiperItem, View } from '@tarojs/components';
-import { WhiteSpace } from '@/ui/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
+import { WhiteSpace } from '@ui/components';
 import styles from './index.module.scss';
 
 const demoList = [

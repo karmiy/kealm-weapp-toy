@@ -1,7 +1,7 @@
 ## Test Code
 
 ```ts
-import { STORE_NAME, storeManager } from '@/core';
+import { STORE_NAME, storeManager } from '@core';
 import { Logger } from '@/utils/logger';
 
 storeManager.subscribe(STORE_NAME.TOY, () => {

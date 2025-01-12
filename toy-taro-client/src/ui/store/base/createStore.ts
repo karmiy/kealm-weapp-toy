@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo } from 'react';
-import { useGetSet } from '@/ui/hooks';
+import { useGetSet } from '@ui/hooks';
 import { EventEmitter } from '@shared/utils/event';
 import { ResolvableHookState, resolveHookState, InitialHookState } from '@shared/utils/resolveHookState';
 

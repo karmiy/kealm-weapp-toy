@@ -1,5 +1,5 @@
 import { Text, View } from '@tarojs/components';
-import { Button, Rate } from '@/ui/components';
+import { Button, Rate } from '@ui/components';
 import styles from './index.module.scss';
 
 interface TaskItemProps {

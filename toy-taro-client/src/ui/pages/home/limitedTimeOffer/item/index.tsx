@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { sdk, STORE_NAME } from '@core';
 import { Image, Text, View } from '@tarojs/components';
-import { ToyScore } from '@/ui/container';
-import { PREVIEW_IMAGE_ID, previewImageManager } from '@/ui/manager/previewImageManager';
-import { useStoreById } from '@/ui/store';
+import { sdk, STORE_NAME } from '@core';
+import { ToyScore } from '@ui/container';
+import { PREVIEW_IMAGE_ID, previewImageManager } from '@ui/manager/previewImageManager';
+import { useStoreById } from '@ui/store';
 import styles from './index.module.scss';
 
 interface ItemProps {

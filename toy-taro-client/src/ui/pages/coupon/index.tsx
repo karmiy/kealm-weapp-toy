@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { SafeAreaBar, TabPanel, Tabs, WhiteSpace } from '@/ui/components';
-import { CouponItemProps, CouponList } from '@/ui/container';
+import { SafeAreaBar, TabPanel, Tabs, WhiteSpace } from '@ui/components';
+import { CouponItemProps, CouponList } from '@ui/container';
 import styles from './index.module.scss';
 
 const couponList: Array<CouponItemProps> = [

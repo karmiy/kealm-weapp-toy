@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { View } from '@tarojs/components';
-import { TabPanel, Tabs, WhiteSpace } from '@/ui/components';
+import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { TaskItem } from '../item';
 import styles from './index.module.scss';
 

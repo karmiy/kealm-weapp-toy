@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components';
-import { FloatLayout } from '@/ui/components';
+import { FloatLayout } from '@ui/components';
 import type { CouponItemProps } from './item';
 import { CouponItem } from './item';
 import { CouponList, CouponListProps } from './list';

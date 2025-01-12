@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { Undefinable } from '@/types';
+import { Undefinable } from '@shared/types';
 import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
 import { HANDLER_TYPE, STORE_NAME } from './constants';

@@ -1,7 +1,7 @@
 import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import { Button as TaroButton, ITouchEvent, View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { Undefinable } from '@/types';
+import { Undefinable } from '@shared/types';
 import { colorToRgba } from '@shared/utils/color';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Icon, IconNames } from '../icon';

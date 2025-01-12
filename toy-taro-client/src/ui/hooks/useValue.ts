@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Undefinable } from '@/types';
+import { Undefinable } from '@shared/types';
 import { useConsistentFunc } from './useConsistentFunc';
 
 type SetValue<T> = (v: T) => void;

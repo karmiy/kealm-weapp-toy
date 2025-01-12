@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
-import { Button, Calendar, SafeAreaBar } from '@/ui/components';
-import { Undefinable } from '@/types';
+import { Undefinable } from '@shared/types';
+import { Button, Calendar, SafeAreaBar } from '@ui/components';
 import { RewardItem } from './rewardItem';
 import styles from './index.module.scss';
 

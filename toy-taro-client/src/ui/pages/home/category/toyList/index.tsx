@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
-import { IconButton } from '@/ui/components';
-import { ToyCard } from '@/ui/container';
+import { IconButton } from '@ui/components';
+import { ToyCard } from '@ui/container';
 import styles from './index.module.scss';
 
 const demoList = [

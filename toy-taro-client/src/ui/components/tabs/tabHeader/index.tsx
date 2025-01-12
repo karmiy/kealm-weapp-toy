@@ -1,10 +1,10 @@
 import { Fragment, useCallback, useContext, useEffect, useRef } from 'react';
 import { Block, CustomWrapper, ScrollView, Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { WhiteSpace } from '@/ui/components';
-import { useConsistentFunc } from '@/ui/hooks';
 import { getBoundingClientRect, getScrollOffset, scrollTo } from '@shared/utils/dom';
 import { Logger } from '@shared/utils/logger';
+import { WhiteSpace } from '@ui/components';
+import { useConsistentFunc } from '@ui/hooks';
 import { TabsContext } from '../context';
 import styles from './index.module.scss';
 

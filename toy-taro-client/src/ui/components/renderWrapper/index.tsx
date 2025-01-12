@@ -1,7 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { STATUS_BAR_HEIGHT } from '@shared/utils/utils';
 import styles from './index.module.scss';
 
 interface RenderWrapperProps {

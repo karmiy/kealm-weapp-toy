@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
-import { Button } from '@/ui/components';
-import { ToyCard } from '@/ui/container';
+import { Button } from '@ui/components';
+import { ToyCard } from '@ui/container';
 import styles from './index.module.scss';
 
 interface ItemProps {

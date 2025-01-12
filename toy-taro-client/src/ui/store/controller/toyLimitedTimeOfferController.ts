@@ -1,5 +1,5 @@
-import { sdk, STORE_NAME } from '@core';
 import { Singleton } from '@shared/utils/utils';
+import { sdk, STORE_NAME } from '@core';
 
 class ToyLimitedTimeOfferController extends Singleton<ToyLimitedTimeOfferController> {
   ids: string[] = [];

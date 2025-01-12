@@ -1,6 +1,4 @@
 import { PropsWithChildren, useRef } from 'react';
-import { View } from '@tarojs/components';
-import { clsx } from 'clsx';
 import { RenderWrapper } from '../renderWrapper';
 import styles from './index.module.scss';
 

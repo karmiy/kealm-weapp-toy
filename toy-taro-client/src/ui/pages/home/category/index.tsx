@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
-import { TabPanel, Tabs, WhiteSpace } from '@/ui/components';
+import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { ToyList } from './toyList';
 import styles from './index.module.scss';
 

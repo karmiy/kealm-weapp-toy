@@ -38,6 +38,8 @@
                   "^\\u0000",
                   // Internal packages.
                   "^(@shared)(/.*|$)",
+                  "^(@core)(/.*|$)",
+                  "^(@ui)(/.*|$)",
                   "^(@components)(/.*|$)",
                   "^(@hooks)(/.*|$)",
                   "^(@views)(/.*|$)",

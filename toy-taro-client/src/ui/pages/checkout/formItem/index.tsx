@@ -1,7 +1,7 @@
 import { Text, View } from '@tarojs/components';
 import clsx from 'clsx';
-import { Icon } from '@/ui/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
+import { Icon } from '@ui/components';
 import styles from './index.module.scss';
 
 interface FormItemProps {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Image, Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { ToyScore } from '@/ui/container';
+import { ToyScore } from '@ui/container';
 import styles from './index.module.scss';
 
 interface ToyCardProps {

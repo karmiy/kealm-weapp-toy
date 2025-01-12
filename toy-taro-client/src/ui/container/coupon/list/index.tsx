@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { View } from '@tarojs/components';
-import { WhiteSpace } from '@/ui/components';
+import { WhiteSpace } from '@ui/components';
 import type { CouponItemProps } from '../item';
 import { CouponItem } from '../item';
 import styles from './index.module.scss';

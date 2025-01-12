@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
-import { CheckButton, Stepper } from '@/ui/components';
-import { ToyCard } from '@/ui/container';
+import { CheckButton, Stepper } from '@ui/components';
+import { ToyCard } from '@ui/container';
 import styles from './index.module.scss';
 
 interface ItemProps {

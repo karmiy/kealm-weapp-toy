@@ -1,8 +1,8 @@
 import { Fragment, useCallback, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { Button, CheckButton, WhiteSpace } from '@/ui/components';
 import { PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
+import { Button, CheckButton, WhiteSpace } from '@ui/components';
 import { Item } from './item';
 import styles from './index.module.scss';
 

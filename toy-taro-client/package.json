@@ -29,7 +29,7 @@
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "open": "weapp open -p .",
     "postinstall": "weapp-tw patch && patch-package",
-    "lint:eslint": "eslint --fix --ext .js,.jsx,.ts,.tsx src"
+    "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx --fix"
   },
   "browserslist": [
     "last 3 versions",

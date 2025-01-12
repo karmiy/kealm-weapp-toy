@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { sdk, STORE_NAME } from '@core';
-import { useForceUpdate } from '@/ui/hooks';
+import { useForceUpdate } from '@ui/hooks';
 
 export function useStoreById<T extends STORE_NAME>(storeName: T, id: string) {
   const [model, setModel] = useState(sdk.storeManager.getById(storeName, id));

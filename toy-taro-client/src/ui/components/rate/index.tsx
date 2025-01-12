@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
-import { useValue } from '@/ui/hooks';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
+import { useValue } from '@ui/hooks';
 import { Icon } from '../icon';
 import styles from './index.module.scss';
 
