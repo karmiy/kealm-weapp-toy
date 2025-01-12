@@ -1,0 +1,12 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  background-color: $--fill-default;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: px(16);
+}

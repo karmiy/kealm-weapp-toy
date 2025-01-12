@@ -1,6 +1,6 @@
 {
     "symbol_url": "https://at.alicdn.com/t/c/font_4790432_tapik93d5sj.js",
-    "save_dir": "./src/components/iconfont",
+    "save_dir": "./src/ui/components/iconfont",
     "use_typescript": true,
     "platforms": ["weapp"],
     "use_rpx": true,

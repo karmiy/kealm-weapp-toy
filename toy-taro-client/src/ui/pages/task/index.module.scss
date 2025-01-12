@@ -1,0 +1,67 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $--fill-default;
+}
+
+.header {
+  flex-shrink: 0;
+  display: flex;
+  border-radius: px(12);
+  background-color: $--color-red-opacity-1;
+  padding: px(14);
+  margin: 0 px(14);
+
+  .scoreWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .title {
+      font-size: px(13);
+    }
+
+    .score {
+      margin: px(3) 0 0;
+      font-size: px(26);
+      font-weight: bold;
+      color: $--color-red;
+    }
+
+    .checkEntry {
+      display: flex;
+      align-items: center;
+      font-size: px(13);
+      color: $--color-red;
+
+      text {
+        margin-right: px(3);
+      }
+    }
+  }
+
+  .avatar {
+    width: px(70);
+    height: px(70);
+  }
+}
+
+.tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .tabsHeader {
+    padding: 0 px(14);
+  }
+
+  .tabPanel {
+    flex: 1;
+    overflow: hidden;
+  }
+}

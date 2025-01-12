@@ -1,4 +1,4 @@
-import { Logger } from '@/utils/logger';
+import { Logger } from '@shared/utils/logger';
 import { AbstractModule } from './base';
 import { MODULE_WEIGHT } from './constants';
 import { ToyModule, UserModule } from './module';

@@ -1,4 +1,4 @@
-import { computed, makeObserver, observable } from '@/utils/observer';
+import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { ToyEntity } from '../entity';
 
 export class ToyModel {

@@ -1,0 +1,58 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  height: 100%;
+  background-color: $--fill-body;
+
+  .checkInRecord {
+    margin: px(14);
+    padding: px(14);
+    border-radius: px(12);
+    background-color: $--fill-default;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: px(12);
+        color: $--text-color-secondary;
+
+        .day {
+          color: $--color-red;
+          font-size: px(21);
+          margin-top: px(4);
+        }
+      }
+
+      .checkInBtn {
+        min-width: px(84);
+      }
+    }
+
+    .calendar {
+      margin-top: px(4);
+    }
+  }
+
+  .checkInReward {
+    margin: px(14);
+    padding: px(14);
+    border-radius: px(12);
+    background-color: $--fill-default;
+
+    .title {
+      font-size: px(16);
+      font-weight: bold;
+    }
+
+    .detailWrapper {
+      margin-top: px(14);
+      
+    }
+  }
+}

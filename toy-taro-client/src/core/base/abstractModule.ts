@@ -1,4 +1,4 @@
-import { Logger } from '@/utils/logger';
+import { Logger } from '@shared/utils/logger';
 
 export abstract class AbstractModule {
   protected get _logger() {

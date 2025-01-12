@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import { Undefinable } from '@/types';
-import { Logger } from '@/utils/logger';
-import { toCamelCase } from '@/utils/utils';
+import { Logger } from '@shared/utils/logger';
+import { toCamelCase } from '@shared/utils/utils';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
 import { ToyModel, UserModel } from './model';
 

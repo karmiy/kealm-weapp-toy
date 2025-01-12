@@ -1,0 +1,18 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+    &.isVertical {
+        background-color: $--fill-default;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    &.isScrollable {
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .scrollView {
+        height: 100%;
+    }
+}

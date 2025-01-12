@@ -1,0 +1,113 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.isWhiteBg {
+    background-color: $--fill-default;
+  }
+
+  &.isRadius {
+    border-radius: px(12);
+  }
+
+  &.isSmallPadding {
+    padding: px(8);
+  }
+
+  &.isVertical {
+    .coverWrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%;
+      border-radius: px(12);
+      overflow: hidden;
+    
+      .coverContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: px(12);
+      }
+    
+      .coverImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    
+    .title {
+      font-size: px(14);
+      font-weight: bold;
+      color: $--text-color-base;
+      @include single-line-ellipsis;
+      width: 100%;
+      margin-top: px(6);
+    }
+    
+    .subTitle {
+      color: $--text-color-placeholder;
+      font-size: px(11);
+      margin-top: px(4);
+    }
+    
+    .operateWrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &.isHorizontal {
+    display: flex;
+
+    .coverImage {
+      flex-shrink: 0;
+      width: px(84);
+      height: px(84);
+      border-radius: px(12);
+    }
+  
+    .info {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      margin-left: px(14);
+    }
+
+    .header {
+      overflow: hidden;
+
+      .title {
+        width: 100%;
+        font-size: px(16);
+        font-weight: bold;
+        color: $--text-color-base;
+        @include single-line-ellipsis;
+      }
+
+      .subTitle {
+        width: 100%;
+        color: $--text-color-placeholder;
+        font-size: px(12);
+        margin-top: px(4);
+        @include single-line-ellipsis;
+      }
+    }
+  
+    .operateWrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: $--text-color-secondary;
+      font-size: px(12);
+    }
+  }
+}

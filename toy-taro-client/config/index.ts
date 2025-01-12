@@ -118,9 +118,12 @@ export default defineConfig(async (merge, {}) => {
     },
     alias: {
       '@': path.resolve(__dirname, '..', 'src'),
+      '@ui': path.resolve(__dirname, '..', 'src/ui'),
+      '@core': path.resolve(__dirname, '..', 'src/core'),
+      '@shared': path.resolve(__dirname, '..', 'src/shared'),
     },
     sass: {
-      resource: path.resolve(__dirname, '..', 'src/styles/theme.scss'), // 使用 babel-plugin-import 后需要改为再此引入 theme，否则无效
+      resource: path.resolve(__dirname, '..', 'src/ui/styles/theme.scss'), // 使用 babel-plugin-import 后需要改为再此引入 theme，否则无效
     },
   };
   if (process.env.NODE_ENV === 'development') {

@@ -1,33 +1,38 @@
-import { useGlobalIconFont } from './utils/icon';
+import { useGlobalIconFont } from './shared/utils/icon';
 
 export default defineAppConfig({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   usingComponents: Object.assign(useGlobalIconFont()),
-  pages: ['pages/home/index', 'pages/shopCart/index', 'pages/task/index', 'pages/mine/index'],
+  pages: [
+    'ui/pages/home/index',
+    'ui/pages/shopCart/index',
+    'ui/pages/task/index',
+    'ui/pages/mine/index',
+  ],
   tabBar: {
     list: [
       {
-        iconPath: 'images/home-inactive.png',
-        selectedIconPath: 'images/home-active.png',
-        pagePath: 'pages/home/index',
+        iconPath: 'ui/images/home-inactive.png',
+        selectedIconPath: 'ui/images/home-active.png',
+        pagePath: 'ui/pages/home/index',
         text: '首页',
       },
       {
-        iconPath: 'images/shop-cart-inactive.png',
-        selectedIconPath: 'images/shop-cart-active.png',
-        pagePath: 'pages/shopCart/index',
+        iconPath: 'ui/images/shop-cart-inactive.png',
+        selectedIconPath: 'ui/images/shop-cart-active.png',
+        pagePath: 'ui/pages/shopCart/index',
         text: '购物车',
       },
       {
-        iconPath: 'images/task-inactive.png',
-        selectedIconPath: 'images/task-active.png',
-        pagePath: 'pages/task/index',
+        iconPath: 'ui/images/task-inactive.png',
+        selectedIconPath: 'ui/images/task-active.png',
+        pagePath: 'ui/pages/task/index',
         text: '任务中心',
       },
       {
-        iconPath: 'images/mine-inactive.png',
-        selectedIconPath: 'images/mine-active.png',
-        pagePath: 'pages/mine/index',
+        iconPath: 'ui/images/mine-inactive.png',
+        selectedIconPath: 'ui/images/mine-active.png',
+        pagePath: 'ui/pages/mine/index',
         text: '我的',
       },
     ],
@@ -45,21 +50,21 @@ export default defineAppConfig({
   },
   subPackages: [
     {
-      root: 'pages/checkout/',
+      root: 'ui/pages/checkout/',
       pages: ['index'],
     },
     {
-      root: 'pages/coupon/',
+      root: 'ui/pages/coupon/',
       pages: ['index'],
     },
     {
-      root: 'pages/exchangeRecord/',
+      root: 'ui/pages/exchangeRecord/',
       pages: ['index'],
     },
     {
-      root: 'pages/checkIn/',
+      root: 'ui/pages/checkIn/',
       pages: ['index'],
     },
   ],
-  // entryPagePath: 'pages/checkIn/index',
+  // entryPagePath: 'ui/pages/checkIn/index',
 });

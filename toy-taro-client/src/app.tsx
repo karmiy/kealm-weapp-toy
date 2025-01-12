@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
+import { sdk } from '@core';
 import { getApp, useLaunch } from '@tarojs/taro';
-import { sdk } from '@/core';
-import { Logger } from '@/utils/logger';
+import { Logger } from '@shared/utils/logger';
 import './app.scss';
 
 function App({ children }: PropsWithChildren) {

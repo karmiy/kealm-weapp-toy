@@ -1,0 +1,18 @@
+@import '@/ui/styles/index.scss';
+
+.safeAreaBarWrapper {
+    background-color: transparent;
+
+    &.whiteBg {
+        background-color: $--fill-default;
+    }
+
+    &.isTop {
+        height: constant(safe-area-inset-top);
+        height: env(safe-area-inset-top);
+    }
+    &.isBottom {
+        @include safe-area-inset-bottom;
+    }
+}
+

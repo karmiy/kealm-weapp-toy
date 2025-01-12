@@ -1,0 +1,70 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  box-sizing: border-box;
+  background-color: $--fill-body;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+
+  .scrollView {
+    height: 100%;
+
+    .container {
+      padding: 0 px(14);
+    }
+  }
+}
+
+.actionBar {
+  box-sizing: border-box;
+  width: 100%;
+  height: px(55);
+  padding: 0 px(14);
+  flex-shrink: 0;
+  background-color: $--fill-default;
+  border-top: px(0.5) solid $--color-divider-base;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .select {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: px(14);
+
+    .label {
+      margin-left: px(8);
+      color: $--text-color-base;
+      font-size: px(14);
+    }
+  }
+
+  .operate {
+    display: flex;
+    align-items: center;
+
+    .total {
+      color: $--text-color-base;
+      font-size: px(14);
+
+      .score {
+        font-weight: bold;
+        color: $--color-red;
+      }
+    }
+
+    .checkout {
+      margin-left: px(14);
+    }
+  }  
+}

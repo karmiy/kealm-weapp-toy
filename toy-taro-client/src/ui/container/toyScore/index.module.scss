@@ -1,0 +1,29 @@
+@import '@/ui/styles/index.scss';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: px(22);
+  color: $--text-color-secondary;
+
+  &.isInverse {
+    color: $--text-color-base-inverse;
+  }
+
+  .origin {
+      font-size: px(11);
+      text-decoration: line-through;
+  }
+
+  .current {
+      display: flex;
+      margin-right: px(4);
+      color: $--color-red;
+      font-size: px(14);
+      font-weight: bold;
+
+      text:first-child {
+          margin-right: px(2);
+      }
+  }
+}

@@ -23,6 +23,10 @@
     ],
     "paths": {
       "@/*": ["src/*"],
+      "@ui/*": ["src/ui/*"],
+      "@core/*": ["src/core/*"],
+      "@core": ["src/core"],
+      "@shared/*": ["src/shared/*"],
     }
   },
   "include": [
