@@ -1,8 +1,8 @@
 import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
-import { IconButton } from '@ui/components';
+import { IconButton, StatusWrapper } from '@ui/components';
 import { ToyCard } from '@ui/container';
-import { useStoreById, useToyViewModel } from '@ui/viewModel';
+import { useStoreById, useStoreLoadingStatus, useToyViewModel } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface ToyListProps {
@@ -44,12 +44,15 @@ const ToyList = (props: ToyListProps) => {
       categoryId,
     },
   });
+  const loading = useStoreLoadingStatus(STORE_NAME.TOY);
   return (
     <View className={styles.wrapper}>
       <View className={styles.container}>
-        {toyIds.map(id => {
-          return <ToyItem key={id} id={id} />;
-        })}
+        <StatusWrapper loading={loading} count={toyIds.length}>
+          {toyIds.map(id => {
+            return <ToyItem key={id} id={id} />;
+          })}
+        </StatusWrapper>
       </View>
     </View>
   );

@@ -36,9 +36,11 @@ class StoreManager<
   private _singleStores = new Map<STORE_NAME, Model>();
   private _multiStores = new Map<STORE_NAME, Map<string, Model>>();
   private _sortIdsStores = new Map<STORE_NAME, string[]>();
+  private _loadingStores = new Set<STORE_NAME>();
   private _subscriptions = new Map<STORE_NAME, Set<() => void>>();
   private _idListSubscriptions = new Map<STORE_NAME, Set<() => void>>();
   private _idSubscriptions = new Map<STORE_NAME, Map<string, Set<() => void>>>();
+  private _loadingSubscriptions = new Map<STORE_NAME, Set<() => void>>();
 
   private get _logger() {
     return Logger.getLogger('[StoreManager]');
@@ -380,6 +382,42 @@ class StoreManager<
     }
     this._notifySubscribers(storeName);
     this._notifyIdListSubscribers(storeName);
+  }
+
+  startLoading<T extends STORE_NAME>(storeName: T) {
+    this._loadingStores.add(storeName);
+    this._notifyIdLoadingSubscribers(storeName);
+  }
+
+  stopLoading<T extends STORE_NAME>(storeName: T) {
+    this._loadingStores.delete(storeName);
+    this._notifyIdLoadingSubscribers(storeName);
+  }
+
+  private _notifyIdLoadingSubscribers(storeName: STORE_NAME) {
+    const subscribes = this._loadingSubscriptions.get(storeName);
+    if (subscribes) {
+      subscribes.forEach(callback => {
+        callback();
+      });
+    }
+  }
+
+  getLoadingStatus<T extends STORE_NAME>(storeName: T) {
+    return this._loadingStores.has(storeName);
+  }
+
+  subscribeLoading(storeName: STORE_NAME, callback: () => void) {
+    const subscribes = this._loadingSubscriptions.get(storeName) ?? new Set();
+    subscribes.add(callback);
+    this._loadingSubscriptions.set(storeName, subscribes);
+  }
+
+  unsubscribeLoading(storeName: STORE_NAME, callback: () => void) {
+    const storeSubscriptions = this._loadingSubscriptions.get(storeName);
+    if (storeSubscriptions) {
+      storeSubscriptions.delete(callback);
+    }
   }
 }
 

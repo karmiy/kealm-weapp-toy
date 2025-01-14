@@ -13,3 +13,4 @@ export * from './rate';
 export * from './modal';
 export * from './calendar';
 export * from './fallbackImage';
+export * from './statusView';

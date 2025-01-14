@@ -31,8 +31,9 @@ export const toCamelCase = (input: string) =>
 export class Singleton {
   private static _instances: Map<string, any> = new Map();
 
-  static getInstance<T>(this: new () => T): T {
-    const name = this.name;
+  // 小程序压缩代码后预览时无法拿到 class.name
+  static getInstance<T>(this: (new () => T) & { identifier: string }): T {
+    const name = this.identifier;
     if (!Singleton._instances.has(name)) {
       Singleton._instances.set(name, new this());
     }

@@ -4,6 +4,8 @@ import { sdk, STORE_NAME } from '@core';
 type Listener = () => void;
 
 export class ToyLimitedTimeOfferController extends Singleton {
+  static identifier = 'ToyLimitedTimeOfferController';
+
   private _listeners = new Set<Listener>();
   ids: string[] = [];
 

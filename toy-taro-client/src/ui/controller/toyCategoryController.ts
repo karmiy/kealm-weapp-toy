@@ -5,6 +5,8 @@ import { sdk, STORE_NAME } from '@core';
 type Listener = () => void;
 
 export class ToyCategoryController extends Singleton {
+  static identifier = 'ToyCategoryController';
+
   private _toyIdsListeners = new Map<string, Set<Listener>>();
   private _toyIdsStore = new Map<string, Set<string>>();
 
@@ -33,15 +35,16 @@ export class ToyCategoryController extends Singleton {
       toyIds.add(id);
       store.set(categoryId, toyIds);
     });
+    const prevStore = this._toyIdsStore;
+    this._toyIdsStore = store;
 
     [...store.entries()].forEach(([categoryId, ids]) => {
-      const prevIds = this._toyIdsStore.get(categoryId);
+      const prevIds = prevStore.get(categoryId);
       if (prevIds && isEqual(prevIds, ids)) {
         return;
       }
       this._notifyChange(categoryId);
     });
-    this._toyIdsStore = store;
   };
 
   private _notifyChange = (categoryId: string) => {
