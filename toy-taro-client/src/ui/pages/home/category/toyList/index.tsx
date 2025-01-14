@@ -1,41 +1,54 @@
 import { View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { IconButton } from '@ui/components';
 import { ToyCard } from '@ui/container';
+import { useStoreById, useToyViewModel } from '@ui/viewModel';
 import styles from './index.module.scss';
 
-const demoList = [
-  {
-    content:
-      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
-  },
-  {
-    content:
-      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
-  },
-  {
-    content:
-      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png',
-  },
-];
+interface ToyListProps {
+  categoryId: string;
+}
 
-const ToyList = () => {
+interface ToyItemProps {
+  id: string;
+}
+
+const ToyItem = (props: ToyItemProps) => {
+  const toy = useStoreById(STORE_NAME.TOY, props.id);
+  if (!toy) {
+    return null;
+  }
+  const { coverImage, name, stock, discountedScore, originalScore } = toy;
+  return (
+    <View className={styles.itemWrapper}>
+      <ToyCard
+        coverImage={coverImage}
+        title={name}
+        paddingSize='small'
+        subTitle={`库存: ${stock}`}
+        discountedScore={discountedScore}
+        originalScore={originalScore}
+        action={<IconButton name='cart-add-fill' />}
+      />
+    </View>
+  );
+};
+
+const ToyList = (props: ToyListProps) => {
+  const { categoryId } = props;
+  const {
+    category: { toyIds },
+  } = useToyViewModel({
+    category: {
+      enable: true,
+      categoryId,
+    },
+  });
   return (
     <View className={styles.wrapper}>
       <View className={styles.container}>
-        {[...Array(12).keys()].map(index => {
-          return (
-            <View key={index} className={styles.itemWrapper}>
-              <ToyCard
-                coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-toy-card-1.png'
-                title='美乐蒂经典款毛绒玩偶'
-                paddingSize='small'
-                subTitle='库存: 12'
-                discountedScore={199}
-                originalScore={299}
-                action={<IconButton name='cart-add-fill' />}
-              />
-            </View>
-          );
+        {toyIds.map(id => {
+          return <ToyItem key={id} id={id} />;
         })}
       </View>
     </View>

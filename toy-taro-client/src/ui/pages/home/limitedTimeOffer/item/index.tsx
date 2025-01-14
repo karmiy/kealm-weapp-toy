@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Image, Text, View } from '@tarojs/components';
 import { sdk, STORE_NAME } from '@core';
+import { FallbackImage } from '@ui/components';
 import { ToyScore } from '@ui/container';
 import { PREVIEW_IMAGE_ID, previewImageManager } from '@ui/manager/previewImageManager';
 import { useStoreById } from '@/ui/viewModel';
@@ -35,19 +36,12 @@ const Item = (props: ItemProps) => {
   }
 
   const { name, originalScore, discountedScore } = toy;
-  console.log('[test] toy', name);
 
   return (
     <View className={styles.wrapper}>
       <View className={styles.imgWrapper}>
         {coverImage ? (
-          <Image
-            className={styles.img}
-            mode='aspectFill'
-            lazyLoad
-            src={coverImage}
-            onClick={handlePreview}
-          />
+          <FallbackImage className={styles.img} src={coverImage} onClick={handlePreview} />
         ) : null}
       </View>
       <Text className={styles.title}>{name}</Text>

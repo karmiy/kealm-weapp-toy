@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Image, Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
+import { FallbackImage } from '@ui/components';
 import { ToyScore } from '@ui/container';
 import styles from './index.module.scss';
 
@@ -45,7 +46,7 @@ const ToyCard = (props: ToyCardProps) => {
       <>
         <View className={styles.coverWrapper}>
           <View className={styles.coverContainer}>
-            <Image src={coverImage} mode='aspectFill' lazyLoad className={styles.coverImage} />
+            <FallbackImage src={coverImage} className={styles.coverImage} />
           </View>
         </View>
         <View className={styles.title}>{title}</View>
@@ -64,7 +65,7 @@ const ToyCard = (props: ToyCardProps) => {
     }
     return (
       <>
-        <Image src={coverImage} mode='aspectFill' lazyLoad className={styles.coverImage} />
+        <FallbackImage src={coverImage} className={styles.coverImage} />
         <View className={styles.info}>
           <View className={styles.header}>
             <View className={styles.title}>{title}</View>

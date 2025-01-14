@@ -12,6 +12,7 @@ export function useStoreById<T extends STORE_NAME>(storeName: T, id: string) {
       setModel(storeManager.getById(storeName, id));
       update();
     };
+    updateIds();
     storeManager.subscribeById(storeName, id, updateIds);
     return () => storeManager.unsubscribeById(storeName, id, updateIds);
   }, [storeName, id, update]);

@@ -28,7 +28,7 @@ export const createSpecClassName = (cls: string) => `${cls}_${uuid()}`;
 export const toCamelCase = (input: string) =>
   input.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 
-export abstract class Singleton<T> {
+export class Singleton {
   private static _instances: Map<string, any> = new Map();
 
   static getInstance<T>(this: new () => T): T {

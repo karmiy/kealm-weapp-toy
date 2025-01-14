@@ -1,0 +1,8 @@
+@import '@ui/styles/index.scss';
+
+.fallbackImageWrapper {
+    background-color: $--fill-fallback;
+    &.isError {
+        background: $--fill-fallback url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/default-cover-image.jpg') no-repeat center / cover;
+    }
+}

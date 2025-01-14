@@ -1,4 +1,4 @@
-import { ToyCategory, ToyEntity } from '../entity';
+import { ToyCategoryEntity, ToyEntity } from '../entity';
 import { mock, MOCK_API_NAME } from '../mock';
 
 export class ToyApi {
@@ -8,7 +8,7 @@ export class ToyApi {
   }
 
   @mock({ name: MOCK_API_NAME.GET_TOY_CATEGORY_LIST, enable: true })
-  static async getToyCategoryList(): Promise<ToyCategory[]> {
+  static async getToyCategoryList(): Promise<ToyCategoryEntity[]> {
     return Promise.resolve([]);
   }
 }

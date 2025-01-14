@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Image, Text, View } from '@tarojs/components';
-import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
+import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { TaskCategory } from './category';
 import styles from './index.module.scss';
 
@@ -25,10 +25,8 @@ export default function () {
             <Icon name='arrow-right' size={10} color={COLOR_VARIABLES.COLOR_RED} />
           </View> */}
         </View>
-        <Image
+        <FallbackImage
           src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/task-header.png'
-          mode='aspectFill'
-          lazyLoad
           className={styles.avatar}
         />
       </View>

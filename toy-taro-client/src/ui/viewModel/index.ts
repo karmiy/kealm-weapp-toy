@@ -1,2 +1,2 @@
 export * from './base';
-export * from './useToyLimitedTimeOffer';
+export * from './useToyViewModel';

@@ -3,7 +3,7 @@ import { Undefinable } from '@shared/types';
 import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
-import { ToyModel, UserModel } from './model';
+import { ToyCategoryModel, ToyModel, UserModel } from './model';
 
 interface Entity {
   id: string;
@@ -73,6 +73,7 @@ class StoreManager<
       if (!store) {
         throw new Error(`[refresh]Store for ${storeName} not found`);
       }
+      store.clear();
       payload.forEach(entity => {
         const model = new ModelConstructor(entity);
         store.set(model.id, model);
@@ -80,9 +81,9 @@ class StoreManager<
         this._notifyIdSubscribers(storeName, model.id);
       });
 
-      this._notifySubscribers(storeName);
       const currentIds = this.getIds(storeName);
       !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
+      this._notifySubscribers(storeName);
     } else if (type === HANDLER_TYPE.SINGLE) {
       if (Array.isArray(payload)) {
         throw new Error(`[refresh]Payload for ${storeName} must not be an array for type SINGLE`);
@@ -92,8 +93,8 @@ class StoreManager<
       this._singleStores.set(storeName, model);
 
       this._notifyIdSubscribers(storeName, model.id);
-      this._notifySubscribers(storeName);
       prevModel?.id !== model.id && this._notifyIdListSubscribers(storeName);
+      this._notifySubscribers(storeName);
     }
   }
 
@@ -168,6 +169,11 @@ class StoreManager<
     return this._sortIdsStores.get(storeName) ?? [];
   }
 
+  getSortList<T extends STORE_NAME>(storeName: T) {
+    const sortIds = storeManager.getSortIds(storeName);
+    return sortIds.map(id => storeManager.getById(storeName, id)!);
+  }
+
   subscribe(storeName: STORE_NAME, callback: () => void) {
     const subscribes = this._subscriptions.get(storeName) ?? new Set();
     subscribes.add(callback);
@@ -215,6 +221,7 @@ class StoreManager<
     }
   }
 
+  // 需要在 _notifyIdListSubscribers 之后，否则调用 getSortIds 会拿不到值
   private _notifySubscribers(storeName: STORE_NAME) {
     const storeSubscriptions = this._subscriptions.get(storeName);
     if (storeSubscriptions) {
@@ -381,6 +388,12 @@ const storeManager = new StoreManager({
     type: HANDLER_TYPE.MULTIPLE,
     model: ToyModel,
     sortValue: (a: ToyModel, b: ToyModel) => b.createTime - a.createTime,
+  },
+  [STORE_NAME.TOY_CATEGORY]: {
+    type: HANDLER_TYPE.MULTIPLE,
+    model: ToyCategoryModel,
+    sortValue: (a: ToyCategoryModel, b: ToyCategoryModel) =>
+      b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.USER]: {
     type: HANDLER_TYPE.SINGLE,

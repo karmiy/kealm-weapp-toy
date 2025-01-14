@@ -1,6 +1,7 @@
 export enum STORE_NAME {
     USER = 'USER',
     TOY = 'TOY',
+    TOY_CATEGORY = 'TOY_CATEGORY',
 }
 
 export enum HANDLER_TYPE {

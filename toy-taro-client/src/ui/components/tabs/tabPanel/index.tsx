@@ -6,6 +6,8 @@ import { RenderWrapper } from '../../renderWrapper';
 import { TabsContext } from '../context';
 import styles from './index.module.scss';
 
+// 初始不渲染参考：https://github.com/karmiy/kealm-react-components/blob/master/packages/components/cores/tabs/tab-pane.jsx
+
 interface TabPanelProps {
   className?: string;
   label: string;

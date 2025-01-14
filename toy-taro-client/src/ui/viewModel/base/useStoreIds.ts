@@ -7,6 +7,7 @@ export function useStoreIds(storeName: STORE_NAME) {
   useEffect(() => {
     const storeManager = sdk.storeManager;
     const updateIds = () => setIds(storeManager.getSortIds(storeName));
+    updateIds();
     storeManager.subscribeIdList(storeName, updateIds);
     return () => storeManager.unsubscribeIdList(storeName, updateIds);
   }, [storeName]);

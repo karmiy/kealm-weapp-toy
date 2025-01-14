@@ -23,6 +23,8 @@ export class ToyModel {
   flashSaleStart?: number;
   @observable
   flashSaleEnd?: number;
+  @observable
+  categoryId: string;
 
   constructor(entity: ToyEntity) {
     makeObserver(this);
@@ -37,6 +39,7 @@ export class ToyModel {
       create_time,
       flash_sale_start,
       flash_sale_end,
+      category_id,
     } = entity;
     this.id = id;
     this.name = name;
@@ -48,6 +51,7 @@ export class ToyModel {
     this.createTime = create_time;
     this.flashSaleStart = flash_sale_start;
     this.flashSaleEnd = flash_sale_end;
+    this.categoryId = category_id;
   }
 
   @computed

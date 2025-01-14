@@ -3,7 +3,7 @@ import { sdk, STORE_NAME } from '@core';
 
 type Listener = () => void;
 
-export class ToyLimitedTimeOfferController extends Singleton<ToyLimitedTimeOfferController> {
+export class ToyLimitedTimeOfferController extends Singleton {
   private _listeners = new Set<Listener>();
   ids: string[] = [];
 

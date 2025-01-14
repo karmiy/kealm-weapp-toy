@@ -2,7 +2,7 @@ import { Image, Text, View } from '@tarojs/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 // import { AtButton } from 'taro-ui';
-import { Icon, WhiteSpace } from '@ui/components';
+import { FallbackImage, Icon, WhiteSpace } from '@ui/components';
 import styles from './index.module.scss';
 
 export default function () {
@@ -10,10 +10,8 @@ export default function () {
     <View className={styles.wrapper}>
       <View className={styles.header}>
         <View className={styles.avatar}>
-          <Image
+          <FallbackImage
             src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-avatar.png'
-            mode='aspectFill'
-            lazyLoad
             className={styles.image}
           />
         </View>

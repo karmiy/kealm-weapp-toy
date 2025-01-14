@@ -1,4 +1,5 @@
 import { Image, Text, View } from '@tarojs/components';
+import { FallbackImage } from '@ui/components';
 import styles from './index.module.scss';
 
 interface ItemProps {
@@ -14,7 +15,7 @@ const Item = (props: ItemProps) => {
         <Text className={styles.title}>{title}</Text>
         <View className={styles.coverWrapper}>
           <View className={styles.coverContainer}>
-            <Image src={coverImage} mode='aspectFill' lazyLoad className={styles.coverImage} />
+            <FallbackImage src={coverImage} className={styles.coverImage} />
           </View>
         </View>
       </View>

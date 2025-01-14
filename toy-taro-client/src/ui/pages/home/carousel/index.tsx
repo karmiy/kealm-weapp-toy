@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Image, Swiper, SwiperItem, View } from '@tarojs/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
-import { WhiteSpace } from '@ui/components';
+import { FallbackImage, WhiteSpace } from '@ui/components';
 import styles from './index.module.scss';
 
 const demoList = [
@@ -35,12 +35,7 @@ const Carousel = () => {
       >
         {demoList.map((item, idx) => (
           <SwiperItem key={idx}>
-            <Image
-              className={styles.swiperItemImage}
-              src={item.content}
-              mode='aspectFill'
-              lazyLoad
-            />
+            <FallbackImage className={styles.swiperItemImage} src={item.content} />
           </SwiperItem>
         ))}
       </Swiper>

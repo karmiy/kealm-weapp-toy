@@ -1,32 +1,21 @@
 import { useState } from 'react';
-import { View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
+import { useStoreList } from '@ui/viewModel';
 import { ToyList } from './toyList';
 import styles from './index.module.scss';
 
-// 初始不渲染参考：https://github.com/karmiy/kealm-react-components/blob/master/packages/components/cores/tabs/tab-pane.jsx
-
 const Category = () => {
-  const demoItems = [
-    '卡牌',
-    '美乐蒂',
-    '玩偶',
-    '赛车',
-    '益智游戏',
-    '泡泡玛特',
-    '贴纸',
-    '安静书',
-    '文具',
-  ];
-  const [items, setItems] = useState<string[]>(demoItems);
+  const list = useStoreList(STORE_NAME.TOY_CATEGORY);
   const [current, setCurrent] = useState(0);
   return (
     <>
       <Tabs current={current} onChange={setCurrent}>
-        {items.map((item, index) => {
+        {list.map(item => {
+          const { id, name } = item;
           return (
-            <TabPanel key={item} label={item}>
-              <ToyList />
+            <TabPanel key={id} label={name}>
+              <ToyList categoryId={id} />
             </TabPanel>
           );
         })}
