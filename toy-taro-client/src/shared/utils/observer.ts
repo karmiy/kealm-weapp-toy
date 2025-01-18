@@ -1,3 +1,4 @@
+import { Undefinable } from '../types';
 // function computed({ deps }: { deps: string[] }) {
 //   return function (_target: any, propertyKey: string, descriptor: PropertyDescriptor) {
 //     const originalMethod = descriptor.get!; // 获取 getter 方法
@@ -46,17 +47,22 @@ const getComputedReadStatusKey = (propertyKey: string) =>
 const getComputedDirtyActionKey = (propertyKey: string) =>
   `${PREFIX_OBSERVER}__computed__${propertyKey}__dirty_action`;
 
-type Observer = () => void;
+type Observer = (() => void) & { disposers?: Set<() => void> } & { _sortValue?: number };
 
 class DependencyTracker {
-  static current: Observer | null = null;
+  private static _sortValue = 0;
+  static stack: Observer[] = [];
+  static get current(): Observer | null {
+    return this.stack[this.stack.length - 1] || null;
+  }
 
   static start(observer: Observer) {
-    this.current = observer;
+    observer._sortValue = this._sortValue++;
+    this.stack.push(observer);
   }
 
   static end() {
-    this.current = null;
+    this.stack.pop();
   }
 }
 
@@ -76,9 +82,14 @@ function makeObserver(target: any) {
           this[observableObserversKey] = new Set<Observer>();
         }
 
-        const currentObserver = DependencyTracker.current;
-        if (currentObserver) {
-          this[observableObserversKey].add(currentObserver);
+        const observerStack = DependencyTracker.stack;
+        if (observerStack) {
+          observerStack.forEach(observer => {
+            const disposers = observer.disposers ?? new Set();
+            disposers.add(() => this[observableObserversKey].delete(observer));
+            observer.disposers = disposers;
+            this[observableObserversKey].add(observer);
+          });
         }
 
         return this[observableProxyKey];
@@ -88,7 +99,9 @@ function makeObserver(target: any) {
         if (oldValue !== value) {
           this[observableProxyKey] = value;
           if (this[observableObserversKey]) {
-            this[observableObserversKey].forEach(observer => observer());
+            const observers: Array<Observer> = [...this[observableObserversKey]];
+            observers.sort((a, b) => (b._sortValue ?? 0) - (a._sortValue ?? 0));
+            observers.forEach(observer => observer());
           }
         }
       },
@@ -134,4 +147,43 @@ function computed(_target: any, propertyKey: string, descriptor: PropertyDescrip
   };
 }
 
-export { makeObserver, observable, computed };
+function reaction<T>(
+  getter: () => T,
+  effect: (newValue: T, oldValue: T) => void,
+  options?: { fireImmediately?: false },
+): void;
+function reaction<T>(
+  getter: () => T,
+  effect: (newValue: T, oldValue: Undefinable<T>) => void,
+  options: { fireImmediately: true },
+): void;
+function reaction<T>(
+  getter: () => T,
+  effect: (newValue: T, oldValue: Undefinable<T>) => void,
+  options?: { fireImmediately?: boolean },
+) {
+  const { fireImmediately = false } = options ?? {};
+  let currentValue: T | undefined; // 当前值
+
+  const observer: Observer = () => {
+    const newValue = getter();
+    if (newValue !== currentValue) {
+      effect(newValue, currentValue);
+      currentValue = newValue;
+    }
+  };
+
+  // 启动依赖追踪
+  DependencyTracker.start(observer);
+  try {
+    currentValue = getter();
+    fireImmediately && effect(currentValue, undefined);
+  } finally {
+    DependencyTracker.end();
+  }
+
+  // 返回取消观察的函数
+  return () => observer.disposers?.forEach(disposer => disposer());
+}
+
+export { makeObserver, observable, computed, reaction };
