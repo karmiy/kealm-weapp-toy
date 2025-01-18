@@ -7,6 +7,7 @@ export class ToyModule extends AbstractModule {
   protected onLoad() {
     this.syncToyList();
     this.syncToyCategoryList();
+    this.syncToyShopCartList();
   }
   protected onUnload() {}
   protected moduleName(): string {
@@ -25,5 +26,33 @@ export class ToyModule extends AbstractModule {
     const toyCategoryLList = await ToyApi.getToyCategoryList();
     storeManager.refresh(STORE_NAME.TOY_CATEGORY, toyCategoryLList);
     storeManager.stopLoading(STORE_NAME.TOY_CATEGORY);
+  }
+
+  async syncToyShopCartList() {
+    storeManager.startLoading(STORE_NAME.TOY_SHOP_CART);
+    const toyShopCartList = await ToyApi.getToyShopCart();
+    storeManager.refresh(STORE_NAME.TOY_SHOP_CART, toyShopCartList);
+    storeManager.stopLoading(STORE_NAME.TOY_SHOP_CART);
+  }
+
+  async updateToyShopCart(id: string, quantity: number) {
+    try {
+      await ToyApi.updateToyShopCart(id, quantity);
+      if (quantity > 0) {
+        storeManager.emitUpdate(STORE_NAME.TOY_SHOP_CART, {
+          partials: [
+            {
+              id,
+              quantity,
+            },
+          ],
+        });
+        return;
+      }
+      storeManager.emitDelete(STORE_NAME.TOY_SHOP_CART, [id]);
+    } catch (error) {
+      this._logger.error('updateToyShopCart error', error);
+      throw error;
+    }
   }
 }

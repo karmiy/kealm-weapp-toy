@@ -18,3 +18,12 @@ export interface ToyCategoryEntity {
   create_time: number;
   last_modified_time: number;
 }
+
+export interface ToyShopCartEntity {
+  id: string;
+  product_id: string;
+  user_id: string;
+  create_time: number;
+  last_modified_time: number;
+  quantity: number;
+}

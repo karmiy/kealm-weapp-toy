@@ -1,16 +1,12 @@
 import { Fragment } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { WhiteSpace } from '@ui/components';
-import { useToyViewModel } from '@/ui/viewModel';
+import { useLimitedTimeOffer } from '@/ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 
 const LimitedTimeOffer = () => {
-  const {
-    limitedTimeOffer: { ids },
-  } = useToyViewModel({
-    limitedTimeOffer: { enable: true },
-  });
+  const { ids } = useLimitedTimeOffer();
   if (!ids.length) {
     return null;
   }

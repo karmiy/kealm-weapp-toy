@@ -2,20 +2,15 @@ import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { ToyEntity } from '../entity';
 
 export class ToyModel {
-  @observable
   id: string;
 
-  @observable
   name: string;
-  @observable
   desc?: string;
   @observable
   discountedScore?: number;
   @observable
   originalScore: number;
-  @observable
   stock: number;
-  @observable
   coverImage: string;
   @observable
   createTime: number;
@@ -23,7 +18,6 @@ export class ToyModel {
   flashSaleStart?: number;
   @observable
   flashSaleEnd?: number;
-  @observable
   categoryId: string;
 
   constructor(entity: ToyEntity) {

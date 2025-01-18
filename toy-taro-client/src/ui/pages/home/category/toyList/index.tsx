@@ -2,7 +2,7 @@ import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { IconButton, StatusWrapper } from '@ui/components';
 import { ToyCard } from '@ui/container';
-import { useStoreById, useStoreLoadingStatus, useToyViewModel } from '@ui/viewModel';
+import { useStoreById, useStoreLoadingStatus, useToyCategory } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface ToyListProps {
@@ -36,13 +36,8 @@ const ToyItem = (props: ToyItemProps) => {
 
 const ToyList = (props: ToyListProps) => {
   const { categoryId } = props;
-  const {
-    category: { toyIds },
-  } = useToyViewModel({
-    category: {
-      enable: true,
-      categoryId,
-    },
+  const { toyIds } = useToyCategory({
+    categoryId,
   });
   const loading = useStoreLoadingStatus(STORE_NAME.TOY);
   return (

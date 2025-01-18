@@ -3,7 +3,7 @@ import { Undefinable } from '@shared/types';
 import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
-import { ToyCategoryModel, ToyModel, UserModel } from './model';
+import { ToyCategoryModel, ToyModel, ToyShopCartModel, UserModel } from './model';
 
 interface Entity {
   id: string;
@@ -431,6 +431,12 @@ const storeManager = new StoreManager({
     type: HANDLER_TYPE.MULTIPLE,
     model: ToyCategoryModel,
     sortValue: (a: ToyCategoryModel, b: ToyCategoryModel) =>
+      b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.TOY_SHOP_CART]: {
+    type: HANDLER_TYPE.MULTIPLE,
+    model: ToyShopCartModel,
+    sortValue: (a: ToyShopCartModel, b: ToyShopCartModel) =>
       b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.USER]: {

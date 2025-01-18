@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { startOfToday, startOfTomorrow } from 'date-fns';
 import { sleep } from '@shared/utils/utils';
-import { ToyCategoryEntity, ToyEntity } from '../../entity';
+import { ToyCategoryEntity, ToyEntity, ToyShopCartEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
+import { createMockApiCache } from '../utils';
 
 const CATEGORY_LIST = [
   { id: '1', name: '卡牌' },
@@ -42,12 +43,12 @@ const createRandomToy = (): ToyEntity => {
 };
 
 export const mockToyApi = {
-  [MOCK_API_NAME.GET_TOY_LIST]: async (): Promise<ToyEntity[]> => {
+  [MOCK_API_NAME.GET_TOY_LIST]: createMockApiCache(async (): Promise<ToyEntity[]> => {
     await sleep(100);
     return faker.helpers.multiple(createRandomToy, {
       count: 100,
     });
-  },
+  }),
   [MOCK_API_NAME.GET_TOY_CATEGORY_LIST]: async (): Promise<ToyCategoryEntity[]> => {
     await sleep(100);
     return CATEGORY_LIST.map(item => ({
@@ -55,5 +56,23 @@ export const mockToyApi = {
       create_time: faker.date.recent().getTime(),
       last_modified_time: faker.date.recent().getTime(),
     }));
+  },
+  [MOCK_API_NAME.GET_TOY_SHOP_CART]: async (): Promise<ToyShopCartEntity[]> => {
+    const toyList = await mockToyApi[MOCK_API_NAME.GET_TOY_LIST]();
+    return faker.helpers.multiple(
+      () => {
+        return {
+          id: faker.string.uuid(),
+          product_id: faker.helpers.arrayElement(toyList).id,
+          user_id: faker.string.ulid(),
+          create_time: faker.date.recent().getTime(),
+          last_modified_time: faker.date.recent().getTime(),
+          quantity: faker.number.int({ min: 1, max: 2 }),
+        };
+      },
+      {
+        count: faker.number.int({ min: 2, max: 8 }),
+      },
+    );
   },
 };
