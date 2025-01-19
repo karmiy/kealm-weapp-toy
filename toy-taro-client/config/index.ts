@@ -36,6 +36,14 @@ export default defineConfig(async (merge, {}) => {
       enable: false, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
     },
     mini: {
+      miniCssExtractPluginOption: {
+        // 忽略 mini-css-extract-plugin 的顺序
+        // 默认情况下，mini-css-extract-plugin 会根据 CSS 文件的顺序来生成 CSS 文件，
+        // 但如 home 页面是顶层先引入了 StatusView，子组件又引入 AtToast，有的页面同时引入，代码书写 AtToast 又在前面
+        // 导致 mini-css-extract-plugin 不知道打出来的样式谁在前谁在后
+        // 但本项目可以忽略这个顺序，我们以 css module 为主，不太会存在样式顺序问题
+        ignoreOrder: true,
+      },
       postcss: {
         pxtransform: {
           enable: true,
