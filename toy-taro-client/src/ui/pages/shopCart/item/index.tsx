@@ -9,30 +9,31 @@ import styles from './index.module.scss';
 interface ItemProps {
   id: string;
   onUpdateQuantityError?: () => void;
+  checked?: boolean;
+  onChecked?: (checked: boolean) => void;
 }
 
 const Item = (props: ItemProps) => {
-  const { id, onUpdateQuantityError } = props;
+  const { id, onUpdateQuantityError, checked = false, onChecked } = props;
   const toyShotCart = useStoreById(STORE_NAME.TOY_SHOP_CART, id);
-  const toy = useStoreById(STORE_NAME.TOY, toyShotCart?.productId ?? '-1');
-  const [checked, setChecked] = useState(false);
+  const toy = useStoreById(STORE_NAME.TOY, toyShotCart?.productId);
   const [count, setCount] = useState(() => {
     if (!toy?.stock || !toyShotCart?.quantity) {
       return 1;
     }
     return Math.max(Math.min(toy.stock, toyShotCart.quantity), 1);
   });
-  const { updateToyShopCart } = useToyShopCart(id);
+  const { updateToyShopCart } = useToyShopCart();
 
   const handleUpdateCount = useCallback(
     async (quantity: number) => {
       setCount(quantity);
-      await updateToyShopCart(quantity, prevQuantity => {
+      await updateToyShopCart(id, quantity, prevQuantity => {
         setCount(prevQuantity);
         onUpdateQuantityError?.();
       });
     },
-    [updateToyShopCart, onUpdateQuantityError],
+    [id, updateToyShopCart, onUpdateQuantityError],
   );
 
   if (!toyShotCart || !toy || !count) {
@@ -42,7 +43,7 @@ const Item = (props: ItemProps) => {
 
   return (
     <View className={styles.wrapper}>
-      <CheckButton className={styles.select} checked={checked} onChange={setChecked} />
+      <CheckButton className={styles.select} checked={checked} onChange={v => onChecked?.(v)} />
       <ToyCard
         className={styles.card}
         mode='horizontal'

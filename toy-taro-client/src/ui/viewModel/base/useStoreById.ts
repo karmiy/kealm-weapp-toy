@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { sdk, STORE_NAME } from '@core';
 import { useForceUpdate } from '@ui/hooks';
 
-export function useStoreById<T extends STORE_NAME>(storeName: T, id: string) {
-  const [model, setModel] = useState(sdk.storeManager.getById(storeName, id));
+export function useStoreById<T extends STORE_NAME>(storeName: T, id?: string) {
+  const [model, setModel] = useState(id ? sdk.storeManager.getById(storeName, id) : undefined);
   const update = useForceUpdate();
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     const storeManager = sdk.storeManager;
     const updateIds = () => {
       setModel(storeManager.getById(storeName, id));

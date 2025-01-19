@@ -1,6 +1,7 @@
 import { getApp } from '@tarojs/taro';
 import { ToyCategoryController } from './toyCategoryController';
 import { ToyLimitedTimeOfferController } from './toyLimitedTimeOfferController';
+import { ToyShopCartController } from './toyShopCartController';
 
 const controllers: Array<{
   getInstance: () => {
@@ -8,7 +9,7 @@ const controllers: Array<{
     dispose: () => void;
   };
   name: string;
-}> = [ToyLimitedTimeOfferController, ToyCategoryController];
+}> = [ToyLimitedTimeOfferController, ToyCategoryController, ToyShopCartController];
 
 function bootstrap() {
   controllers.forEach(controller => {

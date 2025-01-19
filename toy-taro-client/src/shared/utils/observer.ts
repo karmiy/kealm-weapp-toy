@@ -46,18 +46,34 @@ const getComputedReadStatusKey = (propertyKey: string) =>
   `${PREFIX_OBSERVER}__computed__${propertyKey}__read`;
 const getComputedDirtyActionKey = (propertyKey: string) =>
   `${PREFIX_OBSERVER}__computed__${propertyKey}__dirty_action`;
+const getComputedObserversKey = (propertyKey: string) =>
+  `${PREFIX_OBSERVER}__computed__${propertyKey}__observers`;
 
-type Observer = (() => void) & { disposers?: Set<() => void> } & { _sortValue?: number };
+type ObserverType = 'reaction' | 'computed';
+type Observer = (() => void) & { disposers?: Set<() => void> } & {
+  _sortValue?: number;
+  _sortType?: ObserverType;
+};
+
+// class DependencyTracker {
+//   private static _sortValue = 0;
+//   static stack: Observer[] = [];
+
+//   static start(observer: Observer, type: ObserverType) {
+//     observer._sortValue = this._sortValue++;
+//     observer._sortType = type;
+//     this.stack.push(observer);
+//   }
+
+//   static end() {
+//     this.stack.pop();
+//   }
+// }
 
 class DependencyTracker {
-  private static _sortValue = 0;
   static stack: Observer[] = [];
-  static get current(): Observer | null {
-    return this.stack[this.stack.length - 1] || null;
-  }
 
   static start(observer: Observer) {
-    observer._sortValue = this._sortValue++;
     this.stack.push(observer);
   }
 
@@ -82,14 +98,12 @@ function makeObserver(target: any) {
           this[observableObserversKey] = new Set<Observer>();
         }
 
-        const observerStack = DependencyTracker.stack;
-        if (observerStack) {
-          observerStack.forEach(observer => {
-            const disposers = observer.disposers ?? new Set();
-            disposers.add(() => this[observableObserversKey].delete(observer));
-            observer.disposers = disposers;
-            this[observableObserversKey].add(observer);
-          });
+        const observer = [...DependencyTracker.stack].pop();
+        if (observer) {
+          const disposers = observer.disposers ?? new Set();
+          disposers.add(() => this[observableObserversKey].delete(observer));
+          observer.disposers = disposers;
+          this[observableObserversKey].add(observer);
         }
 
         return this[observableProxyKey];
@@ -100,7 +114,6 @@ function makeObserver(target: any) {
           this[observableProxyKey] = value;
           if (this[observableObserversKey]) {
             const observers: Array<Observer> = [...this[observableObserversKey]];
-            observers.sort((a, b) => (b._sortValue ?? 0) - (a._sortValue ?? 0));
             observers.forEach(observer => observer());
           }
         }
@@ -125,14 +138,27 @@ function computed(_target: any, propertyKey: string, descriptor: PropertyDescrip
     const computedProxyKey = getComputedProxyKey(propertyKey);
     const computedDirtyStatusKey = getComputedDirtyStatusKey(propertyKey);
     const computedDirtyActionKey = getComputedDirtyActionKey(propertyKey);
+    const computedObserversKey = getComputedObserversKey(propertyKey);
 
     if (!this[computedReadStatusKey]) {
       this[computedDirtyStatusKey] = true;
-      this[computedDirtyActionKey] = () => (this[computedDirtyStatusKey] = true);
+      this[computedDirtyActionKey] = () => {
+        this[computedDirtyStatusKey] = true;
+        const observers = [...this[computedObserversKey]];
+        observers.forEach(observer => observer());
+      };
       this[computedProxyKey] = undefined;
       this[computedReadStatusKey] = true;
+      this[computedObserversKey] = new Set<Observer>();
     }
 
+    const observer = [...DependencyTracker.stack].pop();
+    if (observer) {
+      const disposers = observer.disposers ?? new Set();
+      disposers.add(() => this[computedObserversKey].delete(observer));
+      observer.disposers = disposers;
+      this[computedObserversKey].add(observer);
+    }
     if (this[computedDirtyStatusKey]) {
       DependencyTracker.start(this[computedDirtyActionKey]);
 
@@ -151,12 +177,12 @@ function reaction<T>(
   getter: () => T,
   effect: (newValue: T, oldValue: T) => void,
   options?: { fireImmediately?: false },
-): void;
+): () => void;
 function reaction<T>(
   getter: () => T,
   effect: (newValue: T, oldValue: Undefinable<T>) => void,
   options: { fireImmediately: true },
-): void;
+): () => void;
 function reaction<T>(
   getter: () => T,
   effect: (newValue: T, oldValue: Undefinable<T>) => void,
