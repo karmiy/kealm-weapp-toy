@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
 import { PAGE_ID } from '@shared/utils/constants';
@@ -12,28 +12,19 @@ import styles from './index.module.scss';
 export default function () {
   const ids = useStoreIds(STORE_NAME.TOY_SHOP_CART);
   const loading = useStoreLoadingStatus(STORE_NAME.TOY_SHOP_CART);
-  const { checkedIds, isCheckedAll, checkAll, uncheckAll, toggleCheckStatus, getToyShopCartScore } =
-    useToyShopCart();
+  const { checkedIds, isCheckedAll, checkAll, uncheckAll, totalScore, toggleCheckStatus } =
+    useToyShopCart({ enableCheckIds: true, enableCheckAll: true, enableTotalScore: true });
   const [isUpdateQuantityError, setIsUpdateQuantityError] = useState(false);
 
   const handleCheckOut = useCallback(() => {
     navigateToPage({
       pageName: PAGE_ID.CHECKOUT,
-      params: {
-        ids: checkedIds.join(','),
-      },
     });
-  }, [checkedIds]);
+  }, []);
 
   const handleUpdateQuantityError = useCallback(() => {
     setIsUpdateQuantityError(true);
   }, []);
-
-  const totalScore = useMemo(() => {
-    return checkedIds.reduce((acc, curr) => {
-      return acc + getToyShopCartScore(curr);
-    }, 0);
-  }, [checkedIds, getToyShopCartScore]);
 
   return (
     <View className={styles.wrapper}>

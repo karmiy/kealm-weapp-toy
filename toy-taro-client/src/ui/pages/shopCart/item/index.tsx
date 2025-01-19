@@ -28,9 +28,11 @@ const Item = (props: ItemProps) => {
   const handleUpdateCount = useCallback(
     async (quantity: number) => {
       setCount(quantity);
-      await updateToyShopCart(id, quantity, prevQuantity => {
-        setCount(prevQuantity);
-        onUpdateQuantityError?.();
+      await updateToyShopCart(id, quantity, {
+        fallback: prevQuantity => {
+          setCount(prevQuantity);
+          onUpdateQuantityError?.();
+        },
       });
     },
     [id, updateToyShopCart, onUpdateQuantityError],

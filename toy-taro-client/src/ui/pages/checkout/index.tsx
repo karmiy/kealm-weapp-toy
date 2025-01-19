@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { getCurrentInstance } from '@tarojs/taro';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
 import { useToyShopCart } from '@ui/viewModel';
@@ -9,8 +8,10 @@ import { ToyItem } from './toyItem';
 import styles from './index.module.scss';
 
 export default function () {
-  const [ids] = useState<string[]>(getCurrentInstance().router?.params?.ids?.split(',') || []);
-  const { getToyShopCartScore } = useToyShopCart();
+  const { checkedIds, totalScore } = useToyShopCart({
+    enableCheckIds: true,
+    enableTotalScore: true,
+  });
 
   const [couponVisible, setCouponVisible] = useState(false);
   const [selectedCouponId, setSelectedCouponId] = useState<string>('1');
@@ -80,21 +81,13 @@ export default function () {
     },
   ];
 
-  const scoreInfo = useMemo(() => {
-    const totalScore = ids.reduce((acc, curr) => {
-      return acc + getToyShopCartScore(curr);
-    }, 0);
-
-    return { totalScore };
-  }, [getToyShopCartScore, ids]);
-
   return (
     <View className={styles.wrapper}>
       <View className={styles.detail}>
         <ScrollView scrollY className={styles.scrollView}>
           <View className={styles.container}>
             <View className={styles.area}>
-              {ids.map((id, index) => {
+              {checkedIds.map((id, index) => {
                 return (
                   <>
                     {index !== 0 ? <WhiteSpace isVertical line size='large' /> : null}
@@ -113,7 +106,7 @@ export default function () {
                 onClick={() => setCouponVisible(true)}
               />
               <WhiteSpace isVertical size='medium' />
-              <FormItem label='商品积分' text={`${scoreInfo.totalScore}积分`} />
+              <FormItem label='商品积分' text={`${totalScore}积分`} />
               <WhiteSpace isVertical size='medium' />
               <FormItem label='优惠积分' text='-20积分' highlight />
               <WhiteSpace isVertical size='medium' />
@@ -123,7 +116,7 @@ export default function () {
         </ScrollView>
       </View>
       <View className={styles.actionWrapper}>
-        <Text className={styles.tip}>共3件商品</Text>
+        <Text className={styles.tip}>共{checkedIds.length}件商品</Text>
         <Button>支付</Button>
       </View>
       <CouponActionSheet

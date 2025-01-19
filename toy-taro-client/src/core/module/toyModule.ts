@@ -55,4 +55,26 @@ export class ToyModule extends AbstractModule {
       throw error;
     }
   }
+
+  async addToyShopCart(productId: string, quantity: number) {
+    try {
+      await ToyApi.updateToyShopCart(productId, quantity);
+      const now = new Date().getTime();
+      storeManager.emitUpdate(STORE_NAME.TOY_SHOP_CART, {
+        entities: [
+          {
+            id: `${now}-${productId}`,
+            product_id: productId,
+            user_id: 'user_id',
+            create_time: now,
+            last_modified_time: now,
+            quantity,
+          },
+        ],
+      });
+    } catch (error) {
+      this._logger.error('addToyShopCart error', error);
+      throw error;
+    }
+  }
 }

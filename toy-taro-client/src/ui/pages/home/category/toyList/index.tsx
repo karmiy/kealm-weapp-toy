@@ -7,14 +7,17 @@ import styles from './index.module.scss';
 
 interface ToyListProps {
   categoryId: string;
+  onAddToCart?: (id: string) => void;
 }
 
 interface ToyItemProps {
   id: string;
+  onAddToCart?: (id: string) => void;
 }
 
 const ToyItem = (props: ToyItemProps) => {
-  const toy = useStoreById(STORE_NAME.TOY, props.id);
+  const { id, onAddToCart } = props;
+  const toy = useStoreById(STORE_NAME.TOY, id);
   if (!toy) {
     return null;
   }
@@ -28,14 +31,14 @@ const ToyItem = (props: ToyItemProps) => {
         subTitle={`库存: ${stock}`}
         discountedScore={discountedScore}
         originalScore={originalScore}
-        action={<IconButton name='cart-add-fill' />}
+        action={<IconButton name='cart-add-fill' onClick={() => onAddToCart?.(id)} />}
       />
     </View>
   );
 };
 
 const ToyList = (props: ToyListProps) => {
-  const { categoryId } = props;
+  const { categoryId, onAddToCart } = props;
   const { toyIds } = useToyCategory({
     categoryId,
   });
@@ -45,7 +48,7 @@ const ToyList = (props: ToyListProps) => {
       <View className={styles.container}>
         <StatusWrapper loading={loading} count={toyIds.length}>
           {toyIds.map(id => {
-            return <ToyItem key={id} id={id} />;
+            return <ToyItem key={id} id={id} onAddToCart={onAddToCart} />;
           })}
         </StatusWrapper>
       </View>

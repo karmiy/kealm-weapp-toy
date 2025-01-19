@@ -32,7 +32,7 @@ const createRandomToy = (): ToyEntity => {
     discounted_score:
       Math.random() > 0.9 ? faker.number.int({ min: 1, max: originScore - 1 }) : undefined,
     original_score: originScore,
-    stock: faker.number.int({ min: 1, max: 10 }),
+    stock: faker.number.int({ min: 2, max: 10 }),
     cover_image: faker.image.url({ width: 300, height: 300 }),
     // cover_image: coverImage,
     create_time: faker.date.recent().getTime(),
