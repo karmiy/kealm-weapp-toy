@@ -6,7 +6,7 @@ import { useStoreList, useToyShopCart } from '@ui/viewModel';
 import { ToyList } from './toyList';
 
 const ADD_TO_CART_TOAST_MES = {
-  SUCCESS: '添加成功！',
+  SUCCESS: '已加入购物车！',
   EXIST: '购物车里已存在该商品！',
   FAIL: '添加失败！',
 };
