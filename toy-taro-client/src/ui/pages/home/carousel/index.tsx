@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Swiper, SwiperItem, View } from '@tarojs/components';
+import { Swiper, SwiperItem } from '@tarojs/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { FallbackImage, WhiteSpace } from '@ui/components';
 import styles from './index.module.scss';

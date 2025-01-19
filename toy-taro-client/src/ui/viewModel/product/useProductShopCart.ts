@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { reaction } from '@shared/utils/observer';
 import { sdk, STORE_NAME } from '@core';
-import { ToyShopCartController } from '@ui/controller/toyShopCartController';
 import { useDebounceFunc } from '@ui/hooks/useDebounceFunc';
+import { ProductShopCartController } from '@/ui/controller/productShopCartController';
 
 interface Props {
   enableCheckIds?: boolean;
@@ -11,7 +11,7 @@ interface Props {
   enableAllProductIds?: boolean;
 }
 
-export function useToyShopCart(props?: Props) {
+export function useProductShopCart(props?: Props) {
   const {
     enableCheckIds = false,
     enableCheckAll = false,
@@ -28,7 +28,7 @@ export function useToyShopCart(props?: Props) {
       return;
     }
     const disposer = reaction(
-      () => ToyShopCartController.getInstance().checkIds,
+      () => ProductShopCartController.getInstance().checkIds,
       ids => {
         setCheckedIds(ids);
       },
@@ -44,7 +44,7 @@ export function useToyShopCart(props?: Props) {
       return;
     }
     const disposer = reaction(
-      () => ToyShopCartController.getInstance().isCheckedAll,
+      () => ProductShopCartController.getInstance().isCheckedAll,
       v => {
         setIsCheckedAll(v);
       },
@@ -60,7 +60,7 @@ export function useToyShopCart(props?: Props) {
       return;
     }
     const disposer = reaction(
-      () => ToyShopCartController.getInstance().totalScore,
+      () => ProductShopCartController.getInstance().totalScore,
       v => {
         setTotalScore(v);
       },
@@ -76,7 +76,7 @@ export function useToyShopCart(props?: Props) {
       return;
     }
     const disposer = reaction(
-      () => ToyShopCartController.getInstance().allProductIds,
+      () => ProductShopCartController.getInstance().allProductIds,
       ids => {
         setAllProductIds(ids);
       },
@@ -88,18 +88,18 @@ export function useToyShopCart(props?: Props) {
   }, [enableAllProductIds]);
 
   const toggleCheckStatus = useCallback((id: string) => {
-    ToyShopCartController.getInstance().toggleCheckStatus(id);
+    ProductShopCartController.getInstance().toggleCheckStatus(id);
   }, []);
 
   const checkAll = useCallback(() => {
-    ToyShopCartController.getInstance().checkAll();
+    ProductShopCartController.getInstance().checkAll();
   }, []);
 
   const uncheckAll = useCallback(() => {
-    ToyShopCartController.getInstance().uncheckAll();
+    ProductShopCartController.getInstance().uncheckAll();
   }, []);
 
-  const updateToyShopCart = useDebounceFunc(
+  const updateProductShopCart = useDebounceFunc(
     async (
       id: string,
       quantity: number,
@@ -109,31 +109,31 @@ export function useToyShopCart(props?: Props) {
       },
     ) => {
       try {
-        await sdk.modules.toy.updateToyShopCart(id, quantity);
+        await sdk.modules.product.updateProductShopCart(id, quantity);
         callback?.success?.();
       } catch {
-        const toyShopCart = sdk.storeManager.getById(STORE_NAME.TOY_SHOP_CART, id);
-        toyShopCart && callback?.fallback?.(toyShopCart.quantity);
+        const productShopCart = sdk.storeManager.getById(STORE_NAME.PRODUCT_SHOP_CART, id);
+        productShopCart && callback?.fallback?.(productShopCart.quantity);
       }
     },
     500,
   );
 
-  const addToyShopCart = useCallback(async (productId: string, quantity: number) => {
-    await sdk.modules.toy.addToyShopCart(productId, quantity);
+  const addProductShopCart = useCallback(async (productId: string, quantity: number) => {
+    await sdk.modules.product.addProductShopCart(productId, quantity);
   }, []);
 
-  const getToyShopCartScore = useCallback((id: string) => {
+  const getProductShopCartScore = useCallback((id: string) => {
     const storeManager = sdk.storeManager;
-    const toyShopCart = storeManager.getById(STORE_NAME.TOY_SHOP_CART, id);
-    if (!toyShopCart) {
+    const productShopCart = storeManager.getById(STORE_NAME.PRODUCT_SHOP_CART, id);
+    if (!productShopCart) {
       return 0;
     }
-    const toy = storeManager.getById(STORE_NAME.TOY, toyShopCart.productId);
-    if (!toy) {
+    const product = storeManager.getById(STORE_NAME.PRODUCT, productShopCart.productId);
+    if (!product) {
       return 0;
     }
-    return toy.score * toyShopCart.quantity;
+    return product.score * productShopCart.quantity;
   }, []);
 
   return {
@@ -144,8 +144,8 @@ export function useToyShopCart(props?: Props) {
     totalScore,
     allProductIds,
     toggleCheckStatus,
-    updateToyShopCart,
-    addToyShopCart,
-    getToyShopCartScore,
+    updateProductShopCart,
+    addProductShopCart,
+    getProductShopCartScore,
   };
 }

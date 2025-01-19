@@ -1,2 +1,2 @@
-export { ToyModule } from './toyModule';
+export { ProductModule } from './productModule';
 export { UserModule } from './userModule';

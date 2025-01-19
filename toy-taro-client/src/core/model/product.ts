@@ -1,7 +1,7 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
-import { ToyEntity } from '../entity';
+import { ProductEntity } from '../entity';
 
-export class ToyModel {
+export class ProductModel {
   id: string;
 
   name: string;
@@ -20,7 +20,7 @@ export class ToyModel {
   flashSaleEnd?: number;
   categoryId: string;
 
-  constructor(entity: ToyEntity) {
+  constructor(entity: ProductEntity) {
     makeObserver(this);
     const {
       id,

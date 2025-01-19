@@ -2,8 +2,8 @@ import { computed, makeObserver, observable, reaction } from '@shared/utils/obse
 import { Singleton } from '@shared/utils/utils';
 import { sdk, STORE_NAME } from '@core';
 
-export class ToyShopCartController extends Singleton {
-  static identifier = 'ToyShopCartController';
+export class ProductShopCartController extends Singleton {
+  static identifier = 'ProductShopCartController';
 
   private _disposers: Array<() => void> = [];
 
@@ -29,10 +29,10 @@ export class ToyShopCartController extends Singleton {
     return Boolean(this.checkIds.length && this.checkIds.length === this.allIds.length);
   }
 
-  private _handleToyShopCartChange = () => {
+  private _handleProductShopCartChange = () => {
     const allIds: string[] = [];
     const allProductIds: string[] = [];
-    sdk.storeManager.get(STORE_NAME.TOY_SHOP_CART).forEach(shopCart => {
+    sdk.storeManager.get(STORE_NAME.PRODUCT_SHOP_CART).forEach(shopCart => {
       allIds.push(shopCart.id);
       allProductIds.push(shopCart.productId);
     });
@@ -44,26 +44,26 @@ export class ToyShopCartController extends Singleton {
 
   private _calcTotalScore = () => {
     this.totalScore = this.checkIds.reduce((sum, id) => {
-      const shopCart = sdk.storeManager.getById(STORE_NAME.TOY_SHOP_CART, id);
+      const shopCart = sdk.storeManager.getById(STORE_NAME.PRODUCT_SHOP_CART, id);
       if (!shopCart) return sum;
 
-      const toy = sdk.storeManager.getById(STORE_NAME.TOY, shopCart.productId);
-      if (!toy) return sum;
+      const product = sdk.storeManager.getById(STORE_NAME.PRODUCT, shopCart.productId);
+      if (!product) return sum;
 
-      return sum + (toy.score * shopCart.quantity ?? 0);
+      return sum + (product.score * shopCart.quantity ?? 0);
     }, 0);
   };
 
   init() {
-    this._handleToyShopCartChange();
-    sdk.storeManager.subscribe(STORE_NAME.TOY_SHOP_CART, this._handleToyShopCartChange);
+    this._handleProductShopCartChange();
+    sdk.storeManager.subscribe(STORE_NAME.PRODUCT_SHOP_CART, this._handleProductShopCartChange);
 
     const disposer = reaction(() => this.checkIds, this._calcTotalScore);
     this._disposers.push(disposer);
   }
 
   dispose() {
-    sdk.storeManager.unsubscribe(STORE_NAME.TOY_SHOP_CART, this._handleToyShopCartChange);
+    sdk.storeManager.unsubscribe(STORE_NAME.PRODUCT_SHOP_CART, this._handleProductShopCartChange);
     this._disposers.forEach(disposer => disposer());
   }
 
@@ -76,7 +76,7 @@ export class ToyShopCartController extends Singleton {
   }
 
   checkAll() {
-    this.checkIds = [...sdk.storeManager.getIds(STORE_NAME.TOY_SHOP_CART)];
+    this.checkIds = [...sdk.storeManager.getIds(STORE_NAME.PRODUCT_SHOP_CART)];
   }
 
   uncheckAll() {

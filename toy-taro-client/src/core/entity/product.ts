@@ -1,4 +1,4 @@
-export interface ToyEntity {
+export interface ProductEntity {
   id: string;
   name: string;
   desc?: string;
@@ -12,14 +12,14 @@ export interface ToyEntity {
   category_id: string;
 }
 
-export interface ToyCategoryEntity {
+export interface ProductCategoryEntity {
   id: string;
   name: string;
   create_time: number;
   last_modified_time: number;
 }
 
-export interface ToyShopCartEntity {
+export interface ProductShopCartEntity {
   id: string;
   product_id: string;
   user_id: string;

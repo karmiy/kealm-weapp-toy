@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { AtToast } from 'taro-ui';
 import { STORE_NAME } from '@core';
 import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
-import { useStoreList, useToyShopCart } from '@ui/viewModel';
-import { ToyList } from './toyList';
+import { useProductShopCart, useStoreList } from '@ui/viewModel';
+import { ProductList } from './productList';
 
 const ADD_TO_CART_TOAST_MES = {
   SUCCESS: '已加入购物车！',
@@ -12,8 +12,8 @@ const ADD_TO_CART_TOAST_MES = {
 };
 
 const Category = () => {
-  const list = useStoreList(STORE_NAME.TOY_CATEGORY);
-  const { allProductIds, addToyShopCart } = useToyShopCart({ enableAllProductIds: true });
+  const list = useStoreList(STORE_NAME.PRODUCT_CATEGORY);
+  const { allProductIds, addProductShopCart } = useProductShopCart({ enableAllProductIds: true });
   const [current, setCurrent] = useState(0);
   const [addToCartToastMes, setAddToCartToastMes] = useState<string>(ADD_TO_CART_TOAST_MES.SUCCESS);
   const [isShowAddToCartToast, setIsShowAddToCartToast] = useState(false);
@@ -26,7 +26,7 @@ const Category = () => {
           setIsShowAddToCartToast(true);
           return;
         }
-        await addToyShopCart(id, 1);
+        await addProductShopCart(id, 1);
         setAddToCartToastMes(ADD_TO_CART_TOAST_MES.SUCCESS);
         setIsShowAddToCartToast(true);
       } catch {
@@ -34,7 +34,7 @@ const Category = () => {
         setIsShowAddToCartToast(true);
       }
     },
-    [allProductIds, addToyShopCart],
+    [allProductIds, addProductShopCart],
   );
 
   return (
@@ -44,7 +44,7 @@ const Category = () => {
           const { id, name } = item;
           return (
             <TabPanel key={id} label={name}>
-              <ToyList categoryId={id} onAddToCart={handleAddToCart} />
+              <ProductList categoryId={id} onAddToCart={handleAddToCart} />
             </TabPanel>
           );
         })}

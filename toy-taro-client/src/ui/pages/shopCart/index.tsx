@@ -5,15 +5,15 @@ import { PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button, CheckButton, StatusWrapper, WhiteSpace } from '@ui/components';
-import { useStoreIds, useStoreLoadingStatus, useToyShopCart } from '@ui/viewModel';
+import { useProductShopCart, useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 
 export default function () {
-  const ids = useStoreIds(STORE_NAME.TOY_SHOP_CART);
-  const loading = useStoreLoadingStatus(STORE_NAME.TOY_SHOP_CART);
+  const ids = useStoreIds(STORE_NAME.PRODUCT_SHOP_CART);
+  const loading = useStoreLoadingStatus(STORE_NAME.PRODUCT_SHOP_CART);
   const { checkedIds, isCheckedAll, checkAll, uncheckAll, totalScore, toggleCheckStatus } =
-    useToyShopCart({ enableCheckIds: true, enableCheckAll: true, enableTotalScore: true });
+    useProductShopCart({ enableCheckIds: true, enableCheckAll: true, enableTotalScore: true });
   const [isUpdateQuantityError, setIsUpdateQuantityError] = useState(false);
 
   const handleCheckOut = useCallback(() => {

@@ -3,15 +3,15 @@ import { sdk, STORE_NAME } from '@core';
 
 type Listener = () => void;
 
-export class ToyLimitedTimeOfferController extends Singleton {
-  static identifier = 'ToyLimitedTimeOfferController';
+export class ProductLimitedTimeOfferController extends Singleton {
+  static identifier = 'ProductLimitedTimeOfferController';
 
   private _listeners = new Set<Listener>();
   ids: string[] = [];
 
   private _getLimitedTimeOfferIds = () => {
-    return sdk.storeManager.getSortIds(STORE_NAME.TOY).filter(id => {
-      const model = sdk.storeManager.getById(STORE_NAME.TOY, id);
+    return sdk.storeManager.getSortIds(STORE_NAME.PRODUCT).filter(id => {
+      const model = sdk.storeManager.getById(STORE_NAME.PRODUCT, id);
       return model?.isLimitedTimeOffer;
     });
   };
@@ -24,11 +24,11 @@ export class ToyLimitedTimeOfferController extends Singleton {
 
   init() {
     this._handleIdsChange();
-    sdk.storeManager.subscribeIdList(STORE_NAME.TOY, this._handleIdsChange);
+    sdk.storeManager.subscribeIdList(STORE_NAME.PRODUCT, this._handleIdsChange);
   }
 
   dispose() {
-    sdk.storeManager.unsubscribeIdList(STORE_NAME.TOY, this._handleIdsChange);
+    sdk.storeManager.unsubscribeIdList(STORE_NAME.PRODUCT, this._handleIdsChange);
     this._listeners.clear();
   }
 

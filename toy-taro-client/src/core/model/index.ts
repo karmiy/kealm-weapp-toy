@@ -1,4 +1,4 @@
-export * from './toy';
-export * from './toyCategory';
-export * from './toyShopCart';
+export * from './product';
+export * from './productCategory';
+export * from './productShopCart';
 export * from './user';

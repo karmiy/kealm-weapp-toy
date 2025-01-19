@@ -1,3 +1,3 @@
-export * from './toyCard';
-export * from './toyScore';
+export * from './productCard';
+export * from './productScore';
 export * from './coupon';

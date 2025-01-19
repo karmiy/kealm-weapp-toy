@@ -2,14 +2,14 @@ import { Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import styles from './index.module.scss';
 
-interface ToyScoreProps {
+interface ProductScoreProps {
   className?: string;
   discounted?: number;
   original: number;
   colorMode?: 'plain' | 'inverse';
 }
 
-const ToyScore = (props: ToyScoreProps) => {
+const ProductScore = (props: ProductScoreProps) => {
   const { className, discounted, original, colorMode = 'plain' } = props;
 
   return (
@@ -22,4 +22,4 @@ const ToyScore = (props: ToyScoreProps) => {
   );
 };
 
-export { ToyScore };
+export { ProductScore };

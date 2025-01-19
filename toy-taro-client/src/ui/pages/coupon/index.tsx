@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ScrollView, Text, View } from '@tarojs/components';
-import { SafeAreaBar, TabPanel, Tabs, WhiteSpace } from '@ui/components';
+import { View } from '@tarojs/components';
+import { SafeAreaBar, TabPanel, Tabs } from '@ui/components';
 import { CouponItemProps, CouponList } from '@ui/container';
 import styles from './index.module.scss';
 
@@ -100,7 +100,6 @@ const ensureLength = (list: Array<CouponItemProps>, length: number) => {
 };
 
 export default function () {
-  const couponTypes = ['待使用', '已使用', '已过期'];
   const [current, setCurrent] = useState(0);
   const selectableCoupons = ensureLength(groupByType(couponList, 'selectable'), 8);
   const usedCoupons = ensureLength(groupByType(couponList, 'used'), 8);

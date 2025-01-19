@@ -1,6 +1,6 @@
-import { ToyShopCartEntity } from '../entity';
+import { ProductShopCartEntity } from '../entity';
 
-export class ToyShopCartModel {
+export class ProductShopCartModel {
   id: string;
   productId: string;
   userId: string;
@@ -8,7 +8,7 @@ export class ToyShopCartModel {
   lastModifiedTime: number;
   quantity: number;
 
-  constructor(entity: ToyShopCartEntity) {
+  constructor(entity: ProductShopCartEntity) {
     const { id, product_id, user_id, create_time, last_modified_time, quantity } = entity;
     this.id = id;
     this.productId = product_id;

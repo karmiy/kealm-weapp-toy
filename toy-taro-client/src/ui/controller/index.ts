@@ -1,7 +1,7 @@
 import { getApp } from '@tarojs/taro';
-import { ToyCategoryController } from './toyCategoryController';
-import { ToyLimitedTimeOfferController } from './toyLimitedTimeOfferController';
-import { ToyShopCartController } from './toyShopCartController';
+import { ProductCategoryController } from './productCategoryController';
+import { ProductLimitedTimeOfferController } from './productLimitedTimeOfferController';
+import { ProductShopCartController } from './productShopCartController';
 
 const controllers: Array<{
   getInstance: () => {
@@ -9,7 +9,7 @@ const controllers: Array<{
     dispose: () => void;
   };
   name: string;
-}> = [ToyLimitedTimeOfferController, ToyCategoryController, ToyShopCartController];
+}> = [ProductLimitedTimeOfferController, ProductCategoryController, ProductShopCartController];
 
 function bootstrap() {
   controllers.forEach(controller => {
@@ -18,4 +18,4 @@ function bootstrap() {
   });
 }
 
-export { bootstrap, ToyLimitedTimeOfferController, ToyCategoryController };
+export { bootstrap, ProductLimitedTimeOfferController, ProductCategoryController };

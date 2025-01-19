@@ -1,4 +1,4 @@
-import { Image, Text, View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import { FallbackImage } from '@ui/components';
 import styles from './index.module.scss';
 

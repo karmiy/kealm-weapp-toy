@@ -1,12 +1,12 @@
-import { ToyCategoryEntity } from '../entity';
+import { ProductCategoryEntity } from '../entity';
 
-export class ToyCategoryModel {
+export class ProductCategoryModel {
   id: string;
   name: string;
   createTime: number;
   lastModifiedTime: number;
 
-  constructor(entity: ToyCategoryEntity) {
+  constructor(entity: ProductCategoryEntity) {
     const { id, name, create_time, last_modified_time } = entity;
     this.id = id;
     this.name = name;

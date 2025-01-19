@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
-import { useToyShopCart } from '@ui/viewModel';
+import { useProductShopCart } from '@ui/viewModel';
 import { FormItem } from './formItem';
-import { ToyItem } from './toyItem';
+import { ProductItem } from './productItem';
 import styles from './index.module.scss';
 
 export default function () {
-  const { checkedIds, totalScore } = useToyShopCart({
+  const { checkedIds, totalScore } = useProductShopCart({
     enableCheckIds: true,
     enableTotalScore: true,
   });
@@ -91,7 +91,7 @@ export default function () {
                 return (
                   <>
                     {index !== 0 ? <WhiteSpace isVertical line size='large' /> : null}
-                    <ToyItem key={id} id={id} />
+                    <ProductItem key={id} id={id} />
                   </>
                 );
               })}

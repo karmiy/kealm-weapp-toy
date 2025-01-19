@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 
 const TaskCategory = () => {
   const [current, setCurrent] = useState(0);
-  const [typeList, setTypeList] = useState([
+  const [typeList] = useState([
     '学习', // Study
     '运动', // Exercise
     '生活', // Life

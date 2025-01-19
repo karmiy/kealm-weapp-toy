@@ -1,30 +1,30 @@
 import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { IconButton, StatusWrapper } from '@ui/components';
-import { ToyCard } from '@ui/container';
-import { useStoreById, useStoreLoadingStatus, useToyCategory } from '@ui/viewModel';
+import { ProductCard } from '@ui/container';
+import { useProductCategory, useStoreById, useStoreLoadingStatus } from '@ui/viewModel';
 import styles from './index.module.scss';
 
-interface ToyListProps {
+interface ProductListProps {
   categoryId: string;
   onAddToCart?: (id: string) => void;
 }
 
-interface ToyItemProps {
+interface ProductItemProps {
   id: string;
   onAddToCart?: (id: string) => void;
 }
 
-const ToyItem = (props: ToyItemProps) => {
+const ProductItem = (props: ProductItemProps) => {
   const { id, onAddToCart } = props;
-  const toy = useStoreById(STORE_NAME.TOY, id);
-  if (!toy) {
+  const product = useStoreById(STORE_NAME.PRODUCT, id);
+  if (!product) {
     return null;
   }
-  const { coverImage, name, stock, discountedScore, originalScore } = toy;
+  const { coverImage, name, stock, discountedScore, originalScore } = product;
   return (
     <View className={styles.itemWrapper}>
-      <ToyCard
+      <ProductCard
         coverImage={coverImage}
         title={name}
         paddingSize='small'
@@ -37,18 +37,18 @@ const ToyItem = (props: ToyItemProps) => {
   );
 };
 
-const ToyList = (props: ToyListProps) => {
+const ProductList = (props: ProductListProps) => {
   const { categoryId, onAddToCart } = props;
-  const { toyIds } = useToyCategory({
+  const { productIds } = useProductCategory({
     categoryId,
   });
-  const loading = useStoreLoadingStatus(STORE_NAME.TOY);
+  const loading = useStoreLoadingStatus(STORE_NAME.PRODUCT);
   return (
     <View className={styles.wrapper}>
       <View className={styles.container}>
-        <StatusWrapper loading={loading} count={toyIds.length}>
-          {toyIds.map(id => {
-            return <ToyItem key={id} id={id} onAddToCart={onAddToCart} />;
+        <StatusWrapper loading={loading} count={productIds.length}>
+          {productIds.map(id => {
+            return <ProductItem key={id} id={id} onAddToCart={onAddToCart} />;
           })}
         </StatusWrapper>
       </View>
@@ -56,4 +56,4 @@ const ToyList = (props: ToyListProps) => {
   );
 };
 
-export { ToyList };
+export { ProductList };

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { startOfToday, startOfTomorrow } from 'date-fns';
 import { sleep } from '@shared/utils/utils';
-import { ToyCategoryEntity, ToyEntity, ToyShopCartEntity } from '../../entity';
+import { ProductCategoryEntity, ProductEntity, ProductShopCartEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
 
@@ -17,7 +17,7 @@ const CATEGORY_LIST = [
   { id: '9', name: '文具' },
 ];
 
-const createRandomToy = (): ToyEntity => {
+const createRandomProduct = (): ProductEntity => {
   const originScore = faker.number.int({ min: 2, max: 100 });
   const coverImage = faker.helpers.arrayElement([
     'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-limited-time-offer-1.png',
@@ -42,14 +42,14 @@ const createRandomToy = (): ToyEntity => {
   };
 };
 
-export const mockToyApi = {
-  [MOCK_API_NAME.GET_TOY_LIST]: createMockApiCache(async (): Promise<ToyEntity[]> => {
+export const mockProductApi = {
+  [MOCK_API_NAME.GET_PRODUCT_LIST]: createMockApiCache(async (): Promise<ProductEntity[]> => {
     await sleep(100);
-    return faker.helpers.multiple(createRandomToy, {
+    return faker.helpers.multiple(createRandomProduct, {
       count: 100,
     });
   }),
-  [MOCK_API_NAME.GET_TOY_CATEGORY_LIST]: async (): Promise<ToyCategoryEntity[]> => {
+  [MOCK_API_NAME.GET_PRODUCT_CATEGORY_LIST]: async (): Promise<ProductCategoryEntity[]> => {
     await sleep(100);
     return CATEGORY_LIST.map(item => ({
       ...item,
@@ -57,13 +57,13 @@ export const mockToyApi = {
       last_modified_time: faker.date.recent().getTime(),
     }));
   },
-  [MOCK_API_NAME.GET_TOY_SHOP_CART]: async (): Promise<ToyShopCartEntity[]> => {
-    const toyList = await mockToyApi[MOCK_API_NAME.GET_TOY_LIST]();
+  [MOCK_API_NAME.GET_PRODUCT_SHOP_CART]: async (): Promise<ProductShopCartEntity[]> => {
+    const productList = await mockProductApi[MOCK_API_NAME.GET_PRODUCT_LIST]();
     return faker.helpers.multiple(
       () => {
         return {
           id: faker.string.uuid(),
-          product_id: faker.helpers.arrayElement(toyList).id,
+          product_id: faker.helpers.arrayElement(productList).id,
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
           last_modified_time: faker.date.recent().getTime(),

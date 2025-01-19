@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Text, View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { TaskCategory } from './category';
 import styles from './index.module.scss';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import { Button } from '@ui/components';
-import { ToyCard } from '@ui/container';
+import { ProductCard } from '@ui/container';
 import styles from './index.module.scss';
 
 interface ItemProps {
@@ -28,7 +28,7 @@ const Item = (props: ItemProps) => {
   }, []);
   return (
     <View className={styles.wrapper}>
-      <ToyCard
+      <ProductCard
         className={styles.card}
         mode='horizontal'
         paddingSize='none'

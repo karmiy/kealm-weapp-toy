@@ -3,7 +3,7 @@ import { Undefinable } from '@shared/types';
 import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
-import { ToyCategoryModel, ToyModel, ToyShopCartModel, UserModel } from './model';
+import { ProductCategoryModel, ProductModel, ProductShopCartModel, UserModel } from './model';
 
 interface Entity {
   id: string;
@@ -422,21 +422,21 @@ class StoreManager<
 }
 
 const storeManager = new StoreManager({
-  [STORE_NAME.TOY]: {
+  [STORE_NAME.PRODUCT]: {
     type: HANDLER_TYPE.MULTIPLE,
-    model: ToyModel,
-    sortValue: (a: ToyModel, b: ToyModel) => b.createTime - a.createTime,
+    model: ProductModel,
+    sortValue: (a: ProductModel, b: ProductModel) => b.createTime - a.createTime,
   },
-  [STORE_NAME.TOY_CATEGORY]: {
+  [STORE_NAME.PRODUCT_CATEGORY]: {
     type: HANDLER_TYPE.MULTIPLE,
-    model: ToyCategoryModel,
-    sortValue: (a: ToyCategoryModel, b: ToyCategoryModel) =>
+    model: ProductCategoryModel,
+    sortValue: (a: ProductCategoryModel, b: ProductCategoryModel) =>
       b.lastModifiedTime - a.lastModifiedTime,
   },
-  [STORE_NAME.TOY_SHOP_CART]: {
+  [STORE_NAME.PRODUCT_SHOP_CART]: {
     type: HANDLER_TYPE.MULTIPLE,
-    model: ToyShopCartModel,
-    sortValue: (a: ToyShopCartModel, b: ToyShopCartModel) =>
+    model: ProductShopCartModel,
+    sortValue: (a: ProductShopCartModel, b: ProductShopCartModel) =>
       b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.USER]: {
@@ -446,19 +446,19 @@ const storeManager = new StoreManager({
   },
 });
 
-// const toyStore = storeManager.get(STORE_NAME.TOY);
+// const productStore = storeManager.get(STORE_NAME.PRODUCT);
 // const userStore = storeManager.get(STORE_NAME.USER);
-// const toyIds = storeManager.getIds(STORE_NAME.TOY);
+// const productIds = storeManager.getIds(STORE_NAME.PRODUCT);
 // const userIds = storeManager.getIds(STORE_NAME.USER);
 // storeManager.refresh(STORE_NAME.USER, { id: '', name: '' });
-// storeManager.refresh(STORE_NAME.TOY, [{ id: '', name: '', desc: '' }]);
-// storeManager.emitUpdate(STORE_NAME.TOY, {
+// storeManager.refresh(STORE_NAME.PRODUCT, [{ id: '', name: '', desc: '' }]);
+// storeManager.emitUpdate(STORE_NAME.PRODUCT, {
 //   entities: [{ id: '1', name: '', desc: '' }],
 //   partials: [{ id: '2', name: 'k' }],
 // });
 // storeManager.emitDelete(STORE_NAME.USER);
-// storeManager.emitDelete(STORE_NAME.TOY, ['1']);
-// const t = storeManager.getById(STORE_NAME.TOY, '1');
+// storeManager.emitDelete(STORE_NAME.PRODUCT, ['1']);
+// const t = storeManager.getById(STORE_NAME.PRODUCT, '1');
 // const u = storeManager.getById(STORE_NAME.USER, '1');
 
 export { storeManager };

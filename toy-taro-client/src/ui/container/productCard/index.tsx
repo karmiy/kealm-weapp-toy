@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { Image, Text, View } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { FallbackImage } from '@ui/components';
-import { ToyScore } from '@ui/container';
+import { ProductScore } from '@ui/container';
 import styles from './index.module.scss';
 
-interface ToyCardProps {
+interface ProductCardProps {
   mode?: 'horizontal' | 'vertical';
   isWhiteBg?: boolean;
   isRadius?: boolean;
@@ -21,7 +21,7 @@ interface ToyCardProps {
   action?: React.ReactNode;
 }
 
-const ToyCard = (props: ToyCardProps) => {
+const ProductCard = (props: ProductCardProps) => {
   const {
     className,
     style,
@@ -52,7 +52,7 @@ const ToyCard = (props: ToyCardProps) => {
         <View className={styles.title}>{title}</View>
         <View className={styles.subTitle}>{subTitle}</View>
         <View className={styles.operateWrapper}>
-          <ToyScore discounted={discountedScore} original={originalScore} />
+          <ProductScore discounted={discountedScore} original={originalScore} />
           {action}
         </View>
       </>
@@ -72,7 +72,7 @@ const ToyCard = (props: ToyCardProps) => {
             <View className={styles.subTitle}>{subTitle}</View>
           </View>
           <View className={styles.operateWrapper}>
-            <ToyScore discounted={discountedScore} original={originalScore} />
+            <ProductScore discounted={discountedScore} original={originalScore} />
             {action}
           </View>
         </View>
@@ -104,4 +104,4 @@ const ToyCard = (props: ToyCardProps) => {
   );
 };
 
-export { ToyCard };
+export { ProductCard };

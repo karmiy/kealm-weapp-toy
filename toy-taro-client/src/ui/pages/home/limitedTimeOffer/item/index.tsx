@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Image, Text, View } from '@tarojs/components';
-import { sdk, STORE_NAME } from '@core';
+import { Text, View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { FallbackImage } from '@ui/components';
-import { ToyScore } from '@ui/container';
+import { ProductScore } from '@ui/container';
 import { PREVIEW_IMAGE_ID, previewImageManager } from '@ui/manager/previewImageManager';
 import { useStoreById } from '@/ui/viewModel';
 import styles from './index.module.scss';
@@ -13,8 +13,8 @@ interface ItemProps {
 
 const Item = (props: ItemProps) => {
   const { id } = props;
-  const toy = useStoreById(STORE_NAME.TOY, id);
-  const { coverImage } = toy ?? {};
+  const product = useStoreById(STORE_NAME.PRODUCT, id);
+  const { coverImage } = product ?? {};
 
   useEffect(() => {
     if (!coverImage) {
@@ -31,11 +31,11 @@ const Item = (props: ItemProps) => {
     previewImageManager.preview(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
   };
 
-  if (!toy) {
+  if (!product) {
     return null;
   }
 
-  const { name, originalScore, discountedScore } = toy;
+  const { name, originalScore, discountedScore } = product;
 
   return (
     <View className={styles.wrapper}>
@@ -45,7 +45,7 @@ const Item = (props: ItemProps) => {
         ) : null}
       </View>
       <Text className={styles.title}>{name}</Text>
-      <ToyScore discounted={discountedScore} original={originalScore} colorMode='inverse' />
+      <ProductScore discounted={discountedScore} original={originalScore} colorMode='inverse' />
     </View>
   );
 };
