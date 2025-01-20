@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { CalendarItem, createCalendar } from '@shared/utils/date';
-import { useConsistentFunc, useValue } from '@ui/hooks';
+import { useConsistentFunc } from '@ui/hooks';
 import styles from './index.module.scss';
 
 interface CalendarProps {

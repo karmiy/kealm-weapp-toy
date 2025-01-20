@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { reaction } from '@shared/utils/observer';
 import { sdk, STORE_NAME } from '@core';
+import { ProductShopCartController } from '@ui/controller';
 import { useDebounceFunc } from '@ui/hooks/useDebounceFunc';
-import { ProductShopCartController } from '@/ui/controller/productShopCartController';
 
 interface Props {
   enableCheckIds?: boolean;

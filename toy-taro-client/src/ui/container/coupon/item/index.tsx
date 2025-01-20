@@ -5,13 +5,12 @@ import styles from './index.module.scss';
 export interface CouponItemProps {
   id: string;
   type?: 'selectable' | 'unselectable' | 'used' | 'expired';
-  score: number;
-  condition: string;
-  title: string;
-  range: string;
-  period: string;
+  discountTip: string;
+  conditionTip: string;
+  name: string;
+  usageScopeTip: string;
+  expirationTip: string;
   selected?: boolean;
-  disabled?: boolean;
   onClick?: (id: string) => void;
 }
 
@@ -19,11 +18,11 @@ const CouponItem = (props: CouponItemProps) => {
   const {
     id,
     type = 'selectable',
-    score,
-    condition,
-    title,
-    range,
-    period,
+    discountTip,
+    conditionTip,
+    name,
+    usageScopeTip,
+    expirationTip,
     selected,
     onClick,
   } = props;
@@ -46,14 +45,14 @@ const CouponItem = (props: CouponItemProps) => {
       onClick={handleClick}
     >
       <View className={styles.scoreWrapper}>
-        <Text className={styles.score}>{score}</Text>
-        <Text className={styles.condition}>{condition}</Text>
+        <Text className={styles.score}>{discountTip}</Text>
+        <Text className={styles.condition}>{conditionTip}</Text>
       </View>
       <View className={styles.content}>
         <View className={styles.info}>
-          <Text className={styles.title}>{title}</Text>
-          <Text className={styles.subTitle}>{range}</Text>
-          <Text className={styles.subTitle}>有效期至：{period}</Text>
+          <Text className={styles.title}>{name}</Text>
+          <Text className={styles.subTitle}>{usageScopeTip}</Text>
+          <Text className={styles.subTitle}>{expirationTip}</Text>
         </View>
         <View className={styles.action}>
           <View className={styles.outer}>

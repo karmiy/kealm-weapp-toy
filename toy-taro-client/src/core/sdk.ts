@@ -1,12 +1,13 @@
 import { Logger } from '@shared/utils/logger';
 import { AbstractModule } from './base';
 import { MODULE_WEIGHT } from './constants';
-import { ProductModule, UserModule } from './module';
+import { CouponModule, ProductModule, UserModule } from './module';
 import { storeManager } from './storeManager';
 
 type Modules = {
   product: ProductModule;
   user: UserModule;
+  coupon: CouponModule;
 };
 
 const modulesConfig: Array<{
@@ -15,14 +16,19 @@ const modulesConfig: Array<{
   alias: keyof Modules;
 }> = [
   {
+    weight: MODULE_WEIGHT.HIGH,
+    module: UserModule,
+    alias: 'user',
+  },
+  {
     weight: MODULE_WEIGHT.NORMAL,
     module: ProductModule,
     alias: 'product',
   },
   {
-    weight: MODULE_WEIGHT.HIGH,
-    module: UserModule,
-    alias: 'user',
+    weight: MODULE_WEIGHT.NORMAL,
+    module: CouponModule,
+    alias: 'coupon',
   },
 ];
 

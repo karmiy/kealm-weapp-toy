@@ -2,6 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { Undefinable } from '@shared/types';
 import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
+import { CouponModel } from './model/coupon';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
 import { ProductCategoryModel, ProductModel, ProductShopCartModel, UserModel } from './model';
 
@@ -438,6 +439,11 @@ const storeManager = new StoreManager({
     model: ProductShopCartModel,
     sortValue: (a: ProductShopCartModel, b: ProductShopCartModel) =>
       b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.COUPON]: {
+    type: HANDLER_TYPE.MULTIPLE,
+    model: CouponModel,
+    sortValue: (a: CouponModel, b: CouponModel) => b.createTime - a.createTime,
   },
   [STORE_NAME.USER]: {
     type: HANDLER_TYPE.SINGLE,

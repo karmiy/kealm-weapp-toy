@@ -1,4 +1,5 @@
 import { getApp } from '@tarojs/taro';
+import { CouponController } from './couponController';
 import { ProductCategoryController } from './productCategoryController';
 import { ProductLimitedTimeOfferController } from './productLimitedTimeOfferController';
 import { ProductShopCartController } from './productShopCartController';
@@ -9,7 +10,12 @@ const controllers: Array<{
     dispose: () => void;
   };
   name: string;
-}> = [ProductLimitedTimeOfferController, ProductCategoryController, ProductShopCartController];
+}> = [
+  ProductLimitedTimeOfferController,
+  ProductCategoryController,
+  ProductShopCartController,
+  CouponController,
+];
 
 function bootstrap() {
   controllers.forEach(controller => {
@@ -18,4 +24,10 @@ function bootstrap() {
   });
 }
 
-export { bootstrap, ProductLimitedTimeOfferController, ProductCategoryController };
+export {
+  bootstrap,
+  ProductLimitedTimeOfferController,
+  ProductCategoryController,
+  ProductShopCartController,
+  CouponController,
+};

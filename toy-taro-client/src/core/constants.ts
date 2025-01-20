@@ -3,6 +3,7 @@ export enum STORE_NAME {
     PRODUCT = 'PRODUCT',
     PRODUCT_CATEGORY = 'PRODUCT_CATEGORY',
     PRODUCT_SHOP_CART = 'PRODUCT_SHOP_CART',
+    COUPON = 'COUPON',
 }
 
 export enum HANDLER_TYPE {
@@ -13,6 +14,7 @@ export enum HANDLER_TYPE {
 export enum MODULE_NAME {
     USER = 'UserModule',
     PRODUCT = 'ProductModule',
+    COUPON = 'CouponModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -22,3 +24,13 @@ export enum MODULE_WEIGHT {
 }
 
 // ----------------------toy--------------------------------
+// ----------------------coupon--------------------------------
+export enum COUPON_STATUS {
+    ACTIVE = 'ACTIVE',
+    USED = 'USED',
+}
+
+export enum COUPON_TYPE {
+    CASH_DISCOUNT = "CASH_DISCOUNT",
+    PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
+}
