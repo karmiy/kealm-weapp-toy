@@ -55,6 +55,7 @@ function generateRandomValidityTime(): CouponValidityTime {
 
 export const mockCouponApi = {
   [MOCK_API_NAME.GET_COUPON_LIST]: async (): Promise<CouponEntity[]> => {
+    await sleep(100);
     return faker.helpers.multiple(
       () => {
         const type = faker.helpers.arrayElement([

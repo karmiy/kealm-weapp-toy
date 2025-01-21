@@ -4,6 +4,8 @@ export enum STORE_NAME {
     PRODUCT_CATEGORY = 'PRODUCT_CATEGORY',
     PRODUCT_SHOP_CART = 'PRODUCT_SHOP_CART',
     COUPON = 'COUPON',
+    TASK = 'TASK',
+    TASK_CATEGORY = 'TASK_CATEGORY',
 }
 
 export enum HANDLER_TYPE {
@@ -15,6 +17,7 @@ export enum MODULE_NAME {
     USER = 'UserModule',
     PRODUCT = 'ProductModule',
     COUPON = 'CouponModule',
+    TASK = 'TaskModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -33,4 +36,23 @@ export enum COUPON_STATUS {
 export enum COUPON_TYPE {
     CASH_DISCOUNT = "CASH_DISCOUNT",
     PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
+}
+
+// ----------------------task--------------------------------
+export enum TASK_TYPE {
+    DAILY = 'DAILY',
+    WEEKLY = 'WEEKLY',
+    TIMED = 'TIMED',
+    CHALLENGE = 'CHALLENGE',
+}
+
+export enum TASK_STATUS {
+    INITIAL = 'INITIAL',
+    PENDING_APPROVAL = 'PENDING_APPROVAL',
+    APPROVED = 'APPROVED',
+}
+
+export enum TASK_REWARD_TYPE {
+    POINTS = 'POINTS', // 积分
+    DISCOUNT = 'DISCOUNT', // 打折券
 }

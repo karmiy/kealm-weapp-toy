@@ -4,7 +4,14 @@ import { Logger } from '@shared/utils/logger';
 import { toCamelCase } from '@shared/utils/utils';
 import { CouponModel } from './model/coupon';
 import { HANDLER_TYPE, STORE_NAME } from './constants';
-import { ProductCategoryModel, ProductModel, ProductShopCartModel, UserModel } from './model';
+import {
+  ProductCategoryModel,
+  ProductModel,
+  ProductShopCartModel,
+  TaskCategoryModel,
+  TaskModel,
+  UserModel,
+} from './model';
 
 interface Entity {
   id: string;
@@ -444,6 +451,17 @@ const storeManager = new StoreManager({
     type: HANDLER_TYPE.MULTIPLE,
     model: CouponModel,
     sortValue: (a: CouponModel, b: CouponModel) => b.createTime - a.createTime,
+  },
+  [STORE_NAME.TASK]: {
+    type: HANDLER_TYPE.MULTIPLE,
+    model: TaskModel,
+    sortValue: (a: TaskModel, b: TaskModel) => b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.TASK_CATEGORY]: {
+    type: HANDLER_TYPE.MULTIPLE,
+    model: TaskCategoryModel,
+    sortValue: (a: TaskCategoryModel, b: TaskCategoryModel) =>
+      b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.USER]: {
     type: HANDLER_TYPE.SINGLE,

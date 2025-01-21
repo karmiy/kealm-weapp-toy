@@ -28,7 +28,10 @@ const Item = (props: ItemProps) => {
     if (!coverImage) {
       return;
     }
-    previewImageManager.preview(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
+    previewImageManager.preview({
+      id: PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER,
+      current: coverImage,
+    });
   };
 
   if (!product) {

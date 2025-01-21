@@ -23,7 +23,15 @@ class PreviewImageManager {
     this._storeMap.set(id, items);
   }
 
-  preview(id: string, current: string) {
+  preview(params: { id?: string, current: string } ) {
+    const { id, current } = params;
+    if (!id) {
+      Taro.previewImage({
+        current,
+        urls: [current],
+      });
+      return;
+    }
     const items = this._getImgsById(id);
     Taro.previewImage({
       current,

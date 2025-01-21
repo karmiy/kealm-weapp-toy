@@ -3,6 +3,7 @@ import { View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { FallbackImage } from '@ui/components';
 import { ProductScore } from '@ui/container';
+import { previewImageManager } from '@ui/manager';
 import styles from './index.module.scss';
 
 interface ProductCardProps {
@@ -46,7 +47,11 @@ const ProductCard = (props: ProductCardProps) => {
       <>
         <View className={styles.coverWrapper}>
           <View className={styles.coverContainer}>
-            <FallbackImage src={coverImage} className={styles.coverImage} />
+            <FallbackImage
+              src={coverImage}
+              className={styles.coverImage}
+              onClick={() => previewImageManager.preview({ current: coverImage })}
+            />
           </View>
         </View>
         <View className={styles.title}>{title}</View>
@@ -65,7 +70,11 @@ const ProductCard = (props: ProductCardProps) => {
     }
     return (
       <>
-        <FallbackImage src={coverImage} className={styles.coverImage} />
+        <FallbackImage
+          src={coverImage}
+          className={styles.coverImage}
+          onClick={() => previewImageManager.preview({ current: coverImage })}
+        />
         <View className={styles.info}>
           <View className={styles.header}>
             <View className={styles.title}>{title}</View>
