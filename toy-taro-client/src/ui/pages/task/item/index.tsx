@@ -1,33 +1,39 @@
 import { Text, View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { Button, Rate } from '@ui/components';
+import { useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface TaskItemProps {
-  title: string;
-  desc: string;
-  score: number;
-  difficulty: number;
-  isPending: boolean;
+  id: string;
 }
 
 const TaskItem = (props: TaskItemProps) => {
-  const { title, desc, score, difficulty, isPending } = props;
+  const { id } = props;
+  const task = useStoreById(STORE_NAME.TASK, id);
+
+  if (!task) {
+    return null;
+  }
+
+  const difficulty = task.difficulty;
+  const isPendingApprove = task.isPendingApprove;
 
   return (
     <View className={styles.wrapper}>
       <View className={styles.header}>
         <View className={styles.titleWrapper}>
-          <Text className={styles.title}>{title}</Text>
-          <Text className={styles.desc}>{desc}</Text>
+          <Text className={styles.title}>{task.name}</Text>
+          <Text className={styles.desc}>{task.desc}</Text>
         </View>
-        <Text className={styles.scoreWrapper}>+{score}积分</Text>
+        <Text className={styles.scoreWrapper}>{task.rewardTitle}</Text>
       </View>
       <View className={styles.footer}>
         <View className={styles.difficulty}>
           难度：
           <Rate value={difficulty} max={difficulty} size={12} />
         </View>
-        <Button disabled={isPending}>{!isPending ? '完成' : '审批中'}</Button>
+        <Button disabled={isPendingApprove}>{!isPendingApprove ? '完成' : '审批中'}</Button>
       </View>
     </View>
   );

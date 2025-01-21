@@ -9,15 +9,15 @@ export function useProductCategory(props: Props) {
   const { categoryId } = props;
 
   const [productIdsForCategory, setProductListForCategory] = useState<string[]>(() => {
-    return ProductCategoryController.getInstance().getProductIds(categoryId) ?? [];
+    return ProductCategoryController.getInstance().getIds(categoryId) ?? [];
   });
 
   useEffect(() => {
     const controller = ProductCategoryController.getInstance();
-    const handleChange = () => setProductListForCategory(controller.getProductIds(categoryId));
+    const handleChange = () => setProductListForCategory(controller.getIds(categoryId));
     handleChange();
-    controller.onProductListChange(categoryId, handleChange);
-    return () => controller.offProductListChange(categoryId, handleChange);
+    controller.onCategoryListChange(categoryId, handleChange);
+    return () => controller.offCategoryListChange(categoryId, handleChange);
   }, [categoryId]);
 
   return {

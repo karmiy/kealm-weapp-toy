@@ -1,17 +1,31 @@
 import { useState } from 'react';
 import { Text, View } from '@tarojs/components';
+import { TASK_TYPE } from '@core';
 import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { TaskCategory } from './category';
 import styles from './index.module.scss';
 
+const TASK_TYPE_LIST = [
+  {
+    type: TASK_TYPE.DAILY,
+    label: '每日任务',
+  },
+  {
+    type: TASK_TYPE.WEEKLY,
+    label: '每周任务',
+  },
+  {
+    type: TASK_TYPE.TIMED,
+    label: '限时任务',
+  },
+  {
+    type: TASK_TYPE.CHALLENGE,
+    label: '挑战任务',
+  },
+];
+
 export default function () {
   const [current, setCurrent] = useState(0);
-  const [categoryList, setCategoryList] = useState([
-    '每日任务',
-    '每周任务',
-    '限时任务',
-    '挑战任务',
-  ]);
 
   return (
     <View className={styles.wrapper}>
@@ -39,10 +53,10 @@ export default function () {
         variant='contained'
         mode='horizontal'
       >
-        {categoryList.map(category => {
+        {TASK_TYPE_LIST.map(item => {
           return (
-            <TabPanel className={styles.tabPanel} key={category} label={category}>
-              <TaskCategory />
+            <TabPanel className={styles.tabPanel} key={item.type} label={item.label}>
+              <TaskCategory type={item.type} />
             </TabPanel>
           );
         })}
