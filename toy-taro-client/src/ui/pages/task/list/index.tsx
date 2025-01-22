@@ -22,7 +22,6 @@ const TaskList = (props: TaskListProps) => {
           return (
             <Fragment key={id}>
               <TaskItem id={id} />
-              <WhiteSpace isVertical size='medium' />
             </Fragment>
           );
         })}

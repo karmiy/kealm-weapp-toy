@@ -29,13 +29,17 @@ export class AbstractCategoryController<T extends ModelsWithCategoryId> extends 
     return model.categoryId;
   }
 
+  protected isMatchFunc(model: T) {
+    return true;
+  }
+
   private _handleIdListChange = () => {
     const storeManager = sdk.storeManager;
     const allIds = storeManager.getSortIds(this._storeName);
     const store = new Map<string, Set<string>>();
     allIds.forEach(id => {
       const model = storeManager.getById(this._storeName, id);
-      if (!model) {
+      if (!model || !this.isMatchFunc(model as T)) {
         return;
       }
       const categoryIdentifier = this.getCategoryIdentifier(model as T);

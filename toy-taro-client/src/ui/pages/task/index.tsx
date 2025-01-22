@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Text, View } from '@tarojs/components';
+import { AtToast } from 'taro-ui';
 import { TASK_TYPE } from '@core';
 import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { TaskCategory } from './category';
+import { TaskContext } from './context';
 import styles from './index.module.scss';
 
 const TASK_TYPE_LIST = [
@@ -24,43 +26,58 @@ const TASK_TYPE_LIST = [
   },
 ];
 
+const SUBMIT_APPROVE_MES = {
+  SUCCESS: '已发起申请，请等待管理员确认~',
+  FAIL: '发起申请失败，请联系管理员！',
+};
+
 export default function () {
   const [current, setCurrent] = useState(0);
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const [toastMes, setToastMes] = useState(SUBMIT_APPROVE_MES.SUCCESS);
+
+  const onSubmitApproval = useCallback((success?: boolean) => {
+    setToastMes(success ? SUBMIT_APPROVE_MES.SUCCESS : SUBMIT_APPROVE_MES.FAIL);
+    setIsToastOpen(true);
+  }, []);
 
   return (
-    <View className={styles.wrapper}>
-      <WhiteSpace size='medium' />
-      <View className={styles.header}>
-        <View className={styles.scoreWrapper}>
-          <Text className={styles.title}>当前积分</Text>
-          <Text className={styles.score}>2580</Text>
-          {/* <View className={styles.checkEntry}>
+    <TaskContext.Provider value={{ onSubmitApproval }}>
+      <View className={styles.wrapper}>
+        <WhiteSpace size='medium' />
+        <View className={styles.header}>
+          <View className={styles.scoreWrapper}>
+            <Text className={styles.title}>当前积分</Text>
+            <Text className={styles.score}>2580</Text>
+            {/* <View className={styles.checkEntry}>
             <Text>查看当前积分</Text>
             <Icon name='arrow-right' size={10} color={COLOR_VARIABLES.COLOR_RED} />
           </View> */}
+          </View>
+          <FallbackImage
+            src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/task-header.png'
+            className={styles.avatar}
+          />
         </View>
-        <FallbackImage
-          src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/task-header.png'
-          className={styles.avatar}
-        />
+        <WhiteSpace size='medium' />
+        <Tabs
+          className={styles.tabs}
+          classes={{ headerContainer: styles.tabsHeader }}
+          current={current}
+          onChange={setCurrent}
+          variant='contained'
+          mode='horizontal'
+        >
+          {TASK_TYPE_LIST.map(item => {
+            return (
+              <TabPanel className={styles.tabPanel} key={item.type} label={item.label}>
+                <TaskCategory type={item.type} />
+              </TabPanel>
+            );
+          })}
+        </Tabs>
+        <AtToast isOpened={isToastOpen} onClose={() => setIsToastOpen(false)} text={toastMes} />
       </View>
-      <WhiteSpace size='medium' />
-      <Tabs
-        className={styles.tabs}
-        classes={{ headerContainer: styles.tabsHeader }}
-        current={current}
-        onChange={setCurrent}
-        variant='contained'
-        mode='horizontal'
-      >
-        {TASK_TYPE_LIST.map(item => {
-          return (
-            <TabPanel className={styles.tabPanel} key={item.type} label={item.label}>
-              <TaskCategory type={item.type} />
-            </TabPanel>
-          );
-        })}
-      </Tabs>
-    </View>
+    </TaskContext.Provider>
   );
 }

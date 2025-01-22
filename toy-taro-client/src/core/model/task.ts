@@ -64,6 +64,11 @@ export class TaskModel {
   }
 
   @computed
+  get isApproved() {
+    return this.status === TASK_STATUS.APPROVED;
+  }
+
+  @computed
   get rewardTitle() {
     if (this.rewardType === TASK_REWARD_TYPE.POINTS) {
       return `+${this.value}积分`;
