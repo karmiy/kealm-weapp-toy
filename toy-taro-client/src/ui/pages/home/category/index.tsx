@@ -22,13 +22,13 @@ const Category = () => {
     async (id: string) => {
       try {
         if (allProductIds.includes(id)) {
-          openToast({ mes: ADD_TO_CART_TOAST_MES.EXIST });
+          openToast({ text: ADD_TO_CART_TOAST_MES.EXIST });
           return;
         }
         await addProductShopCart(id, 1);
-        openToast({ mes: ADD_TO_CART_TOAST_MES.SUCCESS });
+        openToast({ text: ADD_TO_CART_TOAST_MES.SUCCESS });
       } catch {
-        openToast({ mes: ADD_TO_CART_TOAST_MES.FAIL });
+        openToast({ text: ADD_TO_CART_TOAST_MES.FAIL });
       }
     },
     [allProductIds, addProductShopCart, openToast],

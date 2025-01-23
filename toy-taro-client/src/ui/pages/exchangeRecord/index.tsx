@@ -1,45 +1,48 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { ScrollView, View } from '@tarojs/components';
-import { Modal, SafeAreaBar, WhiteSpace } from '@ui/components';
+import { sdk, STORE_NAME } from '@core';
+import { SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
+import { withOperateFeedback } from '@ui/hoc';
+import { useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 
-export default function () {
-  const [showConfirm, setShowConfirm] = useState(false);
+function ExchangeRecord() {
+  const ids = useStoreIds(STORE_NAME.ORDER);
+  const loading = useStoreLoadingStatus(STORE_NAME.ORDER);
+
+  useEffect(() => {
+    // load order list
+    sdk.modules.order.syncOrderList();
+  }, []);
 
   return (
     <View className={styles.wrapper}>
-      <View className={styles.list}>
-        <ScrollView scrollY className={styles.scrollView}>
-          <View className={styles.container}>
-            {[...Array(24).keys()].map(index => {
-              return (
-                <Fragment key={index}>
-                  <WhiteSpace size='medium' />
-                  <Item
-                    title='美乐蒂经典毛绒玩偶'
-                    coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-shop-cart-1.png'
-                    originalScore={129}
-                    handleUndo={() => setShowConfirm(true)}
-                  />
-                </Fragment>
-              );
-            })}
-            <WhiteSpace size='medium' />
-          </View>
-        </ScrollView>
-      </View>
-      <Modal
-        visible={showConfirm}
-        title='提示'
-        cancelText='取消'
-        confirmText='确定'
-        content='您确定要撤销兑换这件商品吗？撤销后请与管理员联系处理归还事宜'
-        onClose={() => setShowConfirm(false)}
-        onCancel={() => setShowConfirm(false)}
-        onConfirm={() => setShowConfirm(false)}
-      />
-      <SafeAreaBar isWhiteBg inset='bottom' />
+      <StatusWrapper loading={loading} count={ids.length} size='fill'>
+        <View className={styles.list}>
+          <ScrollView scrollY className={styles.scrollView}>
+            <View className={styles.container}>
+              {ids.map(id => {
+                return (
+                  <Fragment key={id}>
+                    <WhiteSpace size='medium' />
+                    <Item id={id} />
+                  </Fragment>
+                );
+              })}
+              <WhiteSpace size='medium' />
+            </View>
+          </ScrollView>
+        </View>
+      </StatusWrapper>
+      <SafeAreaBar inset='bottom' />
     </View>
   );
 }
+
+const ExchangeRecordPage = withOperateFeedback(ExchangeRecord, {
+  enableToast: true,
+  enableConfirmDialog: true,
+});
+
+export default ExchangeRecordPage;

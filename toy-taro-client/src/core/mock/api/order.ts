@@ -6,7 +6,7 @@ import { MOCK_API_NAME } from '../constants';
 
 export const mockOrderApi = {
   [MOCK_API_NAME.GET_ORDER_LIST]: async (): Promise<OrderEntity[]> => {
-    await sleep(100);
+    await sleep(1000);
     return faker.helpers.multiple(
       () => {
         return {
@@ -17,11 +17,7 @@ export const mockOrderApi = {
           cover_image: faker.image.url({ width: 300, height: 300 }),
           create_time: faker.date.recent().getTime(),
           last_modified_time: faker.date.recent().getTime(),
-          status: faker.helpers.arrayElement([
-            ORDER_STATUS.INITIAL,
-            ORDER_STATUS.Revoked,
-            ORDER_STATUS.Revoking,
-          ]),
+          status: faker.helpers.arrayElement([ORDER_STATUS.INITIAL, ORDER_STATUS.Revoking]),
           user_id: faker.string.uuid(),
         };
       },

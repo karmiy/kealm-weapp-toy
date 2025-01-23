@@ -63,5 +63,4 @@ export enum TASK_REWARD_TYPE {
 export enum ORDER_STATUS {
     INITIAL = 'INITIAL',
     Revoking = 'Revoking',
-    Revoked = 'Revoked',
 }

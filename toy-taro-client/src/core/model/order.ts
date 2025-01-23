@@ -45,11 +45,6 @@ export class OrderModel {
   }
 
   @computed
-  get isRevoked() {
-    return this.status === ORDER_STATUS.Revoked;
-  }
-
-  @computed
   get orderTime() {
     return format(this.createTime, 'yyyy-MM-dd');
   }

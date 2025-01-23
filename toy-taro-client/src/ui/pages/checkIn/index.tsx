@@ -34,7 +34,7 @@ function CheckIn() {
     setMarkDates(prev => [...prev, today]);
     setSelectedDate(undefined);
     setHasCheckIn(true);
-    openToast({ mes: '签到成功！' });
+    openToast({ text: '签到成功！' });
   }, [today, openToast]);
 
   return (
@@ -64,7 +64,7 @@ function CheckIn() {
           total={3}
           current={8}
           rewardInfo='5积分'
-          onReceive={() => openToast({ mes: '领取成功！' })}
+          onReceive={() => openToast({ text: '领取成功！' })}
         />
         <RewardItem total={7} current={8} rewardInfo='满100减10积分优惠券' />
         <RewardItem total={15} current={8} rewardInfo='满100减30积分优惠券' />

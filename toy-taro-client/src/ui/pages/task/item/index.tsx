@@ -23,8 +23,8 @@ const TaskItem = (props: TaskItemProps) => {
 
   const handleSubmitApproval = useCallback(() => {
     submitApprovalRequest(id, {
-      success: () => openToast({ mes: SUBMIT_APPROVE_MES.SUCCESS }),
-      fallback: () => openToast({ mes: SUBMIT_APPROVE_MES.FAIL }),
+      success: () => openToast({ text: SUBMIT_APPROVE_MES.SUCCESS }),
+      fallback: () => openToast({ text: SUBMIT_APPROVE_MES.FAIL }),
     });
   }, [submitApprovalRequest, id, openToast]);
 

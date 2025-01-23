@@ -32,7 +32,7 @@ const Item = (props: ItemProps) => {
       await updateProductShopCart(id, quantity, {
         fallback: prevQuantity => {
           setCount(prevQuantity);
-          openToast({ mes: '商品数量更新失败！' });
+          openToast({ text: '商品数量更新失败！' });
         },
       });
     },

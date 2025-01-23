@@ -1,20 +1,27 @@
 import { createContext, useContext } from 'react';
 
-export interface FeedbackParams {
-  mes: string;
+export interface ToastParams {
+  text: string;
+}
+
+export interface ConfirmDialogParams {
+  title?: string;
+  content: string;
+  cancelText?: string;
+  confirmText?: string;
 }
 
 interface ContextProps {
-  openToast: (params: FeedbackParams) => void;
+  openToast: (params: ToastParams) => void;
+  openConfirmDialog: (params: ConfirmDialogParams) => Promise<boolean>;
 }
 
-const callback = () => {};
-
 export const Context = createContext<ContextProps>({
-  openToast: callback,
+  openToast: () => {},
+  openConfirmDialog: () => Promise.resolve(true),
 });
 
 export function useOperateFeedback() {
-  const { openToast } = useContext(Context);
-  return { openToast };
+  const { openToast, openConfirmDialog } = useContext(Context);
+  return { openToast, openConfirmDialog };
 }
