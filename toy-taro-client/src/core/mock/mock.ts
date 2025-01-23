@@ -1,4 +1,4 @@
-import { mockCouponApi, mockProductApi, mockTaskApi } from './api';
+import { mockCouponApi, mockOrderApi, mockProductApi, mockTaskApi } from './api';
 import { MOCK_API_NAME } from './constants';
 
 const mockApis: Record<MOCK_API_NAME, () => unknown> = Object.assign(
@@ -6,6 +6,7 @@ const mockApis: Record<MOCK_API_NAME, () => unknown> = Object.assign(
   mockProductApi,
   mockCouponApi,
   mockTaskApi,
+  mockOrderApi,
 );
 
 export function mock(options: { name: MOCK_API_NAME; enable?: boolean }) {

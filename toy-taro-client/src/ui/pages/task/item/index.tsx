@@ -1,27 +1,32 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { Text, View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { Button, Rate } from '@ui/components';
+import { useOperateFeedback } from '@ui/hoc';
 import { useStoreById, useTaskAction } from '@ui/viewModel';
-import { TaskContext } from '../context';
 import styles from './index.module.scss';
 
 interface TaskItemProps {
   id: string;
 }
 
+const SUBMIT_APPROVE_MES = {
+  SUCCESS: '已发起申请，请等待管理员确认~',
+  FAIL: '发起申请失败，请联系管理员！',
+};
+
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
   const { submitApprovalRequest, isSubmitApproving } = useTaskAction();
-  const { onSubmitApproval } = useContext(TaskContext);
+  const { openToast } = useOperateFeedback();
 
   const handleSubmitApproval = useCallback(() => {
     submitApprovalRequest(id, {
-      success: () => onSubmitApproval(true),
-      fallback: () => onSubmitApproval(false),
+      success: () => openToast({ mes: SUBMIT_APPROVE_MES.SUCCESS }),
+      fallback: () => openToast({ mes: SUBMIT_APPROVE_MES.FAIL }),
     });
-  }, [id, onSubmitApproval, submitApprovalRequest]);
+  }, [submitApprovalRequest, id, openToast]);
 
   if (!task || task.isApproved) {
     return null;

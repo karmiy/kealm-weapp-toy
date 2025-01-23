@@ -1,6 +1,7 @@
 import { HANDLER_TYPE, STORE_NAME } from './constants';
 import {
   CouponModel,
+  OrderModel,
   ProductCategoryModel,
   ProductModel,
   ProductShopCartModel,
@@ -47,6 +48,11 @@ const config = {
     type: HANDLER_TYPE.SINGLE as const,
     model: UserModel,
     sortValue: (a: UserModel, b: UserModel) => 1,
+  },
+  [STORE_NAME.ORDER]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: OrderModel,
+    sortValue: (a: OrderModel, b: OrderModel) => b.lastModifiedTime - a.lastModifiedTime,
   },
 };
 

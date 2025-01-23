@@ -6,6 +6,7 @@ export enum STORE_NAME {
     COUPON = 'COUPON',
     TASK = 'TASK',
     TASK_CATEGORY = 'TASK_CATEGORY',
+    ORDER = 'ORDER',
 }
 
 export enum HANDLER_TYPE {
@@ -18,6 +19,7 @@ export enum MODULE_NAME {
     PRODUCT = 'ProductModule',
     COUPON = 'CouponModule',
     TASK = 'TaskModule',
+    ORDER = 'OrderModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -55,4 +57,11 @@ export enum TASK_STATUS {
 export enum TASK_REWARD_TYPE {
     POINTS = 'POINTS', // 积分
     DISCOUNT = 'DISCOUNT', // 打折券
+}
+
+// ----------------------order--------------------------------
+export enum ORDER_STATUS {
+    INITIAL = 'INITIAL',
+    Revoking = 'Revoking',
+    Revoked = 'Revoked',
 }

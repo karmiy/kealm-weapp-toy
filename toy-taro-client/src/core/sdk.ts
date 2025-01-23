@@ -1,7 +1,7 @@
 import { Logger } from '@shared/utils/logger';
 import { AbstractModule } from './base';
 import { MODULE_WEIGHT } from './constants';
-import { CouponModule, ProductModule, TaskModule, UserModule } from './module';
+import { CouponModule, OrderModule, ProductModule, TaskModule, UserModule } from './module';
 import { storeManager } from './storeManager';
 
 type Modules = {
@@ -9,6 +9,7 @@ type Modules = {
   user: UserModule;
   coupon: CouponModule;
   task: TaskModule;
+  order: OrderModule;
 };
 
 const modulesConfig: Array<{
@@ -35,6 +36,11 @@ const modulesConfig: Array<{
     weight: MODULE_WEIGHT.NORMAL,
     module: TaskModule,
     alias: 'task',
+  },
+  {
+    weight: MODULE_WEIGHT.NORMAL,
+    module: OrderModule,
+    alias: 'order',
   },
 ];
 

@@ -3,18 +3,18 @@ import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { CheckButton, Stepper } from '@ui/components';
 import { ProductCard } from '@ui/container';
+import { useOperateFeedback } from '@ui/hoc';
 import { useProductShopCart, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface ItemProps {
   id: string;
-  onUpdateQuantityError?: () => void;
   checked?: boolean;
   onChecked?: (checked: boolean) => void;
 }
 
 const Item = (props: ItemProps) => {
-  const { id, onUpdateQuantityError, checked = false, onChecked } = props;
+  const { id, checked = false, onChecked } = props;
   const productShotCart = useStoreById(STORE_NAME.PRODUCT_SHOP_CART, id);
   const product = useStoreById(STORE_NAME.PRODUCT, productShotCart?.productId);
   const [count, setCount] = useState(() => {
@@ -24,6 +24,7 @@ const Item = (props: ItemProps) => {
     return Math.max(Math.min(product.stock, productShotCart.quantity), 1);
   });
   const { updateProductShopCart } = useProductShopCart();
+  const { openToast } = useOperateFeedback();
 
   const handleUpdateCount = useCallback(
     async (quantity: number) => {
@@ -31,11 +32,11 @@ const Item = (props: ItemProps) => {
       await updateProductShopCart(id, quantity, {
         fallback: prevQuantity => {
           setCount(prevQuantity);
-          onUpdateQuantityError?.();
+          openToast({ mes: '商品数量更新失败！' });
         },
       });
     },
-    [id, updateProductShopCart, onUpdateQuantityError],
+    [updateProductShopCart, id, openToast],
   );
 
   if (!productShotCart || !product || !count) {

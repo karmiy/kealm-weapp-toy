@@ -1,29 +1,24 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { AtToast } from 'taro-ui';
 import { PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button, CheckButton, StatusWrapper, WhiteSpace } from '@ui/components';
+import { withOperateFeedback } from '@ui/hoc';
 import { useProductShopCart, useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 
-export default function () {
+function ShopCart() {
   const ids = useStoreIds(STORE_NAME.PRODUCT_SHOP_CART);
   const loading = useStoreLoadingStatus(STORE_NAME.PRODUCT_SHOP_CART);
   const { checkedIds, isCheckedAll, checkAll, uncheckAll, totalScore, toggleCheckStatus } =
     useProductShopCart({ enableCheckIds: true, enableCheckAll: true, enableTotalScore: true });
-  const [isUpdateQuantityError, setIsUpdateQuantityError] = useState(false);
 
   const handleCheckOut = useCallback(() => {
     navigateToPage({
       pageName: PAGE_ID.CHECKOUT,
     });
-  }, []);
-
-  const handleUpdateQuantityError = useCallback(() => {
-    setIsUpdateQuantityError(true);
   }, []);
 
   return (
@@ -37,7 +32,6 @@ export default function () {
                   <Item
                     key={id}
                     id={id}
-                    onUpdateQuantityError={handleUpdateQuantityError}
                     checked={checkedIds.includes(id)}
                     onChecked={() => toggleCheckStatus(id)}
                   />
@@ -67,11 +61,10 @@ export default function () {
           </Button>
         </View>
       </View>
-      <AtToast
-        isOpened={isUpdateQuantityError}
-        onClose={() => setIsUpdateQuantityError(false)}
-        text='商品数量更新失败！'
-      />
     </View>
   );
 }
+
+const ShopCartPage = withOperateFeedback(ShopCart, { enableToast: true });
+
+export default ShopCartPage;

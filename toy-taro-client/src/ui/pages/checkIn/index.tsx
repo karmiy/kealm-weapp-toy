@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { AtToast } from 'taro-ui';
 import { Undefinable } from '@shared/types';
 import { Button, Calendar, SafeAreaBar } from '@ui/components';
+import { useOperateFeedback, withOperateFeedback } from '@ui/hoc';
 import { RewardItem } from './rewardItem';
 import styles from './index.module.scss';
 
@@ -23,18 +23,19 @@ function getDatesFromTodayToFirst(target: Date) {
   return dates;
 }
 
-export default function () {
+function CheckIn() {
   const today = useMemo(() => new Date(), []);
   const [selectedDate, setSelectedDate] = useState<Undefinable<Date>>(today);
   const [markDates, setMarkDates] = useState(getDatesFromTodayToFirst(today));
   const [hasCheckIn, setHasCheckIn] = useState(false);
-  const [isToastOpen, setIsToastOpen] = useState(false);
+  const { openToast } = useOperateFeedback();
 
   const handleCheckIn = useCallback(() => {
     setMarkDates(prev => [...prev, today]);
     setSelectedDate(undefined);
     setHasCheckIn(true);
-  }, [today]);
+    openToast({ mes: '签到成功！' });
+  }, [today, openToast]);
 
   return (
     <ScrollView scrollY className={styles.wrapper}>
@@ -63,14 +64,17 @@ export default function () {
           total={3}
           current={8}
           rewardInfo='5积分'
-          onReceive={() => setIsToastOpen(true)}
+          onReceive={() => openToast({ mes: '领取成功！' })}
         />
         <RewardItem total={7} current={8} rewardInfo='满100减10积分优惠券' />
         <RewardItem total={15} current={8} rewardInfo='满100减30积分优惠券' />
         <RewardItem total={30} current={8} rewardInfo='5折优惠券  ' />
       </View>
-      <AtToast isOpened={isToastOpen} onClose={() => setIsToastOpen(false)} text='领取成功！' />
       <SafeAreaBar inset='bottom' />
     </ScrollView>
   );
 }
+
+const CheckInPage = withOperateFeedback(CheckIn, { enableToast: true });
+
+export default CheckInPage;

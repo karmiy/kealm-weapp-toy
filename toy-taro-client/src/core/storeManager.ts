@@ -48,13 +48,14 @@ class StoreManager<
 
   constructor(config: C) {
     this._config = config;
-    for (const key in config) {
+    const keys = Object.keys(config);
+    keys.forEach(key => {
       const modelName = key as STORE_NAME;
       if (config[modelName].type === HANDLER_TYPE.SINGLE) {
         return;
       }
       this._multiStores.set(modelName, new Map());
-    }
+    });
   }
 
   refresh<T extends STORE_NAME>(

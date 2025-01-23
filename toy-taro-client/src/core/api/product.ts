@@ -18,6 +18,6 @@ export class ProductApi {
   }
 
   static async updateProductShopCart(id: string, quantity: number): Promise<void> {
-    return Promise.resolve();
+    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
   }
 }
