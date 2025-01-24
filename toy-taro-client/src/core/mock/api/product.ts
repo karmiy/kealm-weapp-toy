@@ -75,4 +75,7 @@ export const mockProductApi = {
       },
     );
   },
+  [MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART]: async (): Promise<void> => {
+    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
+  },
 };

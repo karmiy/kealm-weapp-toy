@@ -1,8 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Undefinable } from '@shared/types';
+import { sdk } from '@core';
 import { Button, Calendar, SafeAreaBar } from '@ui/components';
 import { useOperateFeedback, withOperateFeedback } from '@ui/hoc';
+import { useCheckIn } from '@ui/viewModel';
 import { RewardItem } from './rewardItem';
 import styles from './index.module.scss';
 
@@ -24,18 +26,17 @@ function getDatesFromTodayToFirst(target: Date) {
 }
 
 function CheckIn() {
+  const { checkInInfo, claimReward, checkInToday } = useCheckIn();
   const today = useMemo(() => new Date(), []);
-  const [selectedDate, setSelectedDate] = useState<Undefinable<Date>>(today);
-  const [markDates, setMarkDates] = useState(getDatesFromTodayToFirst(today));
-  const [hasCheckIn, setHasCheckIn] = useState(false);
-  const { openToast } = useOperateFeedback();
+  const hasCheckIn = useMemo(() => {
+    return checkInInfo?.days.includes(today.getDate());
+  }, [checkInInfo?.days, today]);
 
-  const handleCheckIn = useCallback(() => {
-    setMarkDates(prev => [...prev, today]);
-    setSelectedDate(undefined);
-    setHasCheckIn(true);
-    openToast({ text: '签到成功！' });
-  }, [today, openToast]);
+  const RewardList = useMemo(() => {
+    return checkInInfo?.ruleList.map(rule => {
+      return <RewardItem key={rule.id} {...rule} onClaimReward={() => claimReward(rule.id)} />;
+    });
+  }, [checkInInfo?.ruleList, claimReward]);
 
   return (
     <ScrollView scrollY className={styles.wrapper}>
@@ -43,32 +44,27 @@ function CheckIn() {
         <View className={styles.header}>
           <View className={styles.info}>
             <Text>已签到</Text>
-            <Text className={styles.day}>{markDates.length}天</Text>
+            <Text className={styles.day}>{checkInInfo?.days.length ?? 0}天</Text>
           </View>
           <Button
             className={styles.checkInBtn}
             circle={false}
-            onClick={handleCheckIn}
+            onClick={checkInToday}
             disabled={hasCheckIn}
           >
             {hasCheckIn ? '已签到' : '签到打卡'}
           </Button>
         </View>
         <View className={styles.calendar}>
-          <Calendar value={selectedDate} markDates={markDates} />
+          <Calendar
+            value={!hasCheckIn ? today : undefined}
+            markDates={checkInInfo?.markDates ?? []}
+          />
         </View>
       </View>
       <View className={styles.checkInReward}>
         <Text className={styles.title}>签到奖励</Text>
-        <RewardItem
-          total={3}
-          current={8}
-          rewardInfo='5积分'
-          onReceive={() => openToast({ text: '领取成功！' })}
-        />
-        <RewardItem total={7} current={8} rewardInfo='满100减10积分优惠券' />
-        <RewardItem total={15} current={8} rewardInfo='满100减30积分优惠券' />
-        <RewardItem total={30} current={8} rewardInfo='5折优惠券  ' />
+        {RewardList}
       </View>
       <SafeAreaBar inset='bottom' />
     </ScrollView>

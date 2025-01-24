@@ -26,4 +26,8 @@ export const mockOrderApi = {
       },
     );
   },
+  [MOCK_API_NAME.REVOKE_ORDER]: async (): Promise<void> => {
+    await sleep(1000);
+    return Math.random() > 0.6 ? Promise.resolve() : Promise.reject();
+  },
 };

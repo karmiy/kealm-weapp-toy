@@ -1,5 +1,6 @@
 import { HANDLER_TYPE, STORE_NAME } from './constants';
 import {
+  CheckInModel,
   CouponModel,
   OrderModel,
   ProductCategoryModel,
@@ -53,6 +54,11 @@ const config = {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: OrderModel,
     sortValue: (a: OrderModel, b: OrderModel) => b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.CHECK_IN]: {
+    type: HANDLER_TYPE.SINGLE as const,
+    model: CheckInModel,
+    sortValue: (a: CheckInModel, b: CheckInModel) => 1,
   },
 };
 

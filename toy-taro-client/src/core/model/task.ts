@@ -1,6 +1,6 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { TASK_REWARD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
-import { TaskEntity } from '../entity';
+import { TaskEntity, TaskReward } from '../entity';
 
 export class TaskModel {
   id: string;
@@ -16,9 +16,7 @@ export class TaskModel {
   @observable
   status: TASK_STATUS;
 
-  rewardType: TASK_REWARD_TYPE;
-
-  value: number;
+  reward: TaskReward;
 
   difficulty: number;
 
@@ -40,8 +38,7 @@ export class TaskModel {
       type,
       category_id,
       status,
-      reward_type,
-      value,
+      reward,
       difficulty,
     } = entity;
     this.id = id;
@@ -53,8 +50,7 @@ export class TaskModel {
     this.type = type;
     this.categoryId = category_id;
     this.status = status;
-    this.rewardType = reward_type;
-    this.value = value;
+    this.reward = reward;
     this.difficulty = difficulty;
   }
 
@@ -70,9 +66,16 @@ export class TaskModel {
 
   @computed
   get rewardTitle() {
-    if (this.rewardType === TASK_REWARD_TYPE.POINTS) {
-      return `+${this.value}积分`;
+    const reward = this.reward;
+    switch (reward.type) {
+      case TASK_REWARD_TYPE.POINTS:
+        return `+${reward.value}积分`;
+      case TASK_REWARD_TYPE.CASH_DISCOUNT:
+        return `满${reward.minimumOrderValue}减${reward.value}券`;
+      case TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT:
+        return `${reward.value / 10}折券`;
+      default:
+        return '';
     }
-    return `${this.value / 10}折券`;
   }
 }

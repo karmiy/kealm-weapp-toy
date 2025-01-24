@@ -2,47 +2,49 @@ import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import { AtProgress } from 'taro-ui';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
+import { Button } from '@ui/components';
 import styles from './index.module.scss';
 
 interface RewardItemProps {
-  total: number;
+  target: number;
   current?: number;
-  rewardInfo: string;
-  isReceived?: boolean;
-  onReceive?: () => void;
+  ruleTip: string;
+  rewardTip: string;
+  isClaimed?: boolean;
+  onClaimReward?: () => void;
 }
 
 const RewardItem = (props: RewardItemProps) => {
-  const { total, current = 0, rewardInfo, isReceived = false, onReceive } = props;
+  const { target, current = 0, ruleTip, rewardTip, isClaimed = false, onClaimReward } = props;
 
   const percent = useMemo(() => {
-    return Math.min(Math.floor((current / total) * 100), 100);
-  }, [current, total]);
+    return Math.min(Math.floor((current / target) * 100), 100);
+  }, [current, target]);
 
   const Status = useMemo(() => {
-    if (current < total) {
+    if (current < target) {
       return <View className={styles.status}>未达成</View>;
     }
 
-    if (isReceived) {
+    if (isClaimed) {
       return <View className={styles.status}>已领取</View>;
     }
 
     return (
-      <View className={styles.action} onClick={onReceive}>
+      <View className={styles.action} onClick={onClaimReward}>
         领取
       </View>
     );
-  }, [current, isReceived, onReceive, total]);
+  }, [current, isClaimed, onClaimReward, target]);
 
   return (
     <View className={styles.rewardItemWrapper}>
       <View className={styles.header}>
-        <Text>连续签到{total}天</Text>
+        <Text>{ruleTip}</Text>
         {Status}
       </View>
       <AtProgress percent={percent} color={COLOR_VARIABLES.COLOR_RED} isHidePercent />
-      <Text className={styles.desc}>奖励：{rewardInfo}</Text>
+      <Text className={styles.desc}>奖励：{rewardTip}</Text>
     </View>
   );
 };

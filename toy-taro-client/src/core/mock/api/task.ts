@@ -84,11 +84,15 @@ export const mockTaskApi = {
             TASK_STATUS.PENDING_APPROVAL,
             TASK_STATUS.APPROVED,
           ]),
-          reward_type: faker.helpers.arrayElement([
-            TASK_REWARD_TYPE.POINTS,
-            TASK_REWARD_TYPE.DISCOUNT,
-          ]),
-          value: faker.number.int({ min: 10, max: 100 }),
+          reward: {
+            type: faker.helpers.arrayElement([
+              TASK_REWARD_TYPE.POINTS,
+              TASK_REWARD_TYPE.CASH_DISCOUNT,
+              TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
+            ]),
+            value: faker.number.int({ min: 10, max: 99 }),
+            minimumOrderValue: faker.number.int({ min: 100, max: 300 }),
+          },
           difficulty: faker.number.int({ min: 1, max: 5 }),
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
@@ -99,5 +103,9 @@ export const mockTaskApi = {
         count: faker.number.int({ min: 80, max: 118 }),
       },
     );
+  },
+  [MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST]: async (id: string): Promise<void> => {
+    await sleep(800);
+    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
   },
 };
