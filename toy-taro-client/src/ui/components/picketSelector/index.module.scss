@@ -1,0 +1,18 @@
+@import '@ui/styles/index.scss';
+
+.pickerSelectorWrapper {
+  display: flex;
+  padding: px(8) px(12);
+  border-radius: px(12);
+  border: px(1) solid $--color-border-base;
+  align-items: center;
+  overflow: hidden;
+
+  .input {
+    flex: 1;
+  }
+
+  .suffix {
+    margin-left: px(4);
+  }
+}

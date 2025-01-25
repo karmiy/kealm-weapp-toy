@@ -19,4 +19,5 @@ export enum PAGE_ID {
     COUPON = 'coupon',
     EXCHANGE_RECORD = 'exchangeRecord',
     CHECK_IN = 'checkIn',
+    PRODUCT_MANAGE = 'productManage',
 }

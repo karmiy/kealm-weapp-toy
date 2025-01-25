@@ -1,0 +1,21 @@
+@import '@ui/styles/index.scss';
+
+.imagePickerWrapper {
+  :global(.at-image-picker__flex-box) {
+    padding-left: 0;
+    padding-right: 0;
+
+    :global(.at-image-picker__flex-item):first-child {
+      margin-left: 0;
+    }
+  }
+
+  :global(.at-image-picker__item.at-image-picker__choose-btn) {
+    border-color: $--color-red;
+    border-style: dashed;
+
+    view {
+      background-color: $--color-red;
+    }
+  }
+}

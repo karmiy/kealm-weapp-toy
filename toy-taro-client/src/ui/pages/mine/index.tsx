@@ -43,6 +43,16 @@ export default function () {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
+          <View
+            className={styles.menuItem}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.PRODUCT_MANAGE })}
+          >
+            <View className={styles.title}>
+              <Icon name='product' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+              <Text>商品管理</Text>
+            </View>
+            <Icon name='arrow-right' size={14} />
+          </View>
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>

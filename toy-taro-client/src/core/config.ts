@@ -15,7 +15,7 @@ const config = {
   [STORE_NAME.PRODUCT]: {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: ProductModel,
-    sortValue: (a: ProductModel, b: ProductModel) => b.createTime - a.createTime,
+    sortValue: (a: ProductModel, b: ProductModel) => b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.PRODUCT_CATEGORY]: {
     type: HANDLER_TYPE.MULTIPLE as const,

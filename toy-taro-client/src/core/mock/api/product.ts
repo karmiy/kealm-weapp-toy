@@ -36,6 +36,7 @@ const createRandomProduct = (): ProductEntity => {
     cover_image: faker.image.url({ width: 300, height: 300 }),
     // cover_image: coverImage,
     create_time: faker.date.recent().getTime(),
+    last_modified_time: faker.date.recent().getTime(),
     flash_sale_start: startOfToday().getTime(),
     flash_sale_end: Math.random() > 0.5 ? startOfTomorrow().getTime() : startOfToday().getTime(),
     category_id: categoryIds[Math.floor(Math.random() * categoryIds.length)],

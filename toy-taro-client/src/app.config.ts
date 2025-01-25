@@ -65,6 +65,10 @@ export default defineAppConfig({
       root: 'ui/pages/checkIn/',
       pages: ['index'],
     },
+    {
+      root: 'ui/pages/productManage/',
+      pages: ['index'],
+    },
   ],
-  // entryPagePath: 'ui/pages/checkIn/index',
+  // entryPagePath: 'ui/pages/productManage/index',
 });

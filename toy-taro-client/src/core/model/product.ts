@@ -14,6 +14,7 @@ export class ProductModel {
   coverImage: string;
   @observable
   createTime: number;
+  lastModifiedTime: number;
   @observable
   flashSaleStart?: number;
   @observable
@@ -31,6 +32,7 @@ export class ProductModel {
       stock,
       cover_image,
       create_time,
+      last_modified_time,
       flash_sale_start,
       flash_sale_end,
       category_id,
@@ -43,6 +45,7 @@ export class ProductModel {
     this.stock = stock;
     this.coverImage = cover_image;
     this.createTime = create_time;
+    this.lastModifiedTime = last_modified_time;
     this.flashSaleStart = flash_sale_start;
     this.flashSaleEnd = flash_sale_end;
     this.categoryId = category_id;
