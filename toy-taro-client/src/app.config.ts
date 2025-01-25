@@ -3,6 +3,7 @@ import { useGlobalIconFont } from './shared/utils/icon';
 export default defineAppConfig({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   usingComponents: Object.assign(useGlobalIconFont()),
+  lazyCodeLoading: 'requiredComponents', // 用时注入 https://developers.weixin.qq.com/miniprogram/dev/framework/ability/lazyload.html#%E7%94%A8%E6%97%B6%E6%B3%A8%E5%85%A5
   pages: [
     'ui/pages/home/index',
     'ui/pages/shopCart/index',
@@ -10,6 +11,7 @@ export default defineAppConfig({
     'ui/pages/mine/index',
   ],
   tabBar: {
+    custom: true,
     list: [
       {
         iconPath: 'ui/images/home-inactive.png',
