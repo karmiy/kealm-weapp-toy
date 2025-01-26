@@ -24,12 +24,16 @@
   word-break: break-word;
 }
 
+@mixin safe-area-inset-padding {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @mixin safe-area-inset-bottom {
   &:after {
     content: '';
     display: block;
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
+    @include safe-area-inset-padding;
     width: 100%;
     background-color: inherit;
   }

@@ -1,11 +1,12 @@
 import { Text, View } from '@tarojs/components';
+import { TAB_BAR_ID } from '@shared/tabBar';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
-// import { AtButton } from 'taro-ui';
 import { FallbackImage, Icon, WhiteSpace } from '@ui/components';
+import { withCustomTabBar } from '@ui/hoc';
 import styles from './index.module.scss';
 
-export default function () {
+function Task() {
   return (
     <View className={styles.wrapper}>
       <View className={styles.header}>
@@ -64,3 +65,7 @@ export default function () {
     </View>
   );
 }
+
+const TaskPage = withCustomTabBar(Task, { tabBarId: TAB_BAR_ID.MINE });
+
+export default TaskPage;

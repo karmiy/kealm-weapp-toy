@@ -13,6 +13,7 @@ export default defineAppConfig({
   tabBar: {
     custom: true,
     list: [
+      // 自定义也需要配置list，小程序默认还是会拿第一个页面作为首页
       {
         iconPath: 'ui/images/home-inactive.png',
         selectedIconPath: 'ui/images/home-active.png',

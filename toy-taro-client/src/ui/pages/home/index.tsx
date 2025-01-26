@@ -1,6 +1,7 @@
 import { ScrollView, View } from '@tarojs/components';
+import { TAB_BAR_ID } from '@shared/tabBar';
 import { SafeAreaBar } from '@ui/components';
-import { withOperateFeedback } from '@ui/hoc';
+import { withCustomTabBar, withOperateFeedback } from '@ui/hoc';
 import { Carousel } from './carousel';
 import { Category } from './category';
 import { Hub } from './hub';
@@ -25,6 +26,8 @@ function Home() {
   );
 }
 
-const HomePage = withOperateFeedback(Home, { enableToast: true });
+const HomePage = withCustomTabBar(withOperateFeedback(Home, { enableToast: true }), {
+  tabBarId: TAB_BAR_ID.HOME,
+});
 
 export default HomePage;

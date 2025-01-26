@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
+import { TAB_BAR_ID } from '@shared/tabBar';
 import { PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button, CheckButton, StatusWrapper, WhiteSpace } from '@ui/components';
-import { withOperateFeedback } from '@ui/hoc';
+import { withCustomTabBar, withOperateFeedback } from '@ui/hoc';
 import { useProductShopCart, useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
@@ -65,6 +66,8 @@ function ShopCart() {
   );
 }
 
-const ShopCartPage = withOperateFeedback(ShopCart, { enableToast: true });
+const ShopCartPage = withCustomTabBar(withOperateFeedback(ShopCart, { enableToast: true }), {
+  tabBarId: TAB_BAR_ID.SHOP_CART,
+});
 
 export default ShopCartPage;
