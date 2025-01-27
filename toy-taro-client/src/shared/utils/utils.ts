@@ -1,6 +1,6 @@
-import { getMenuButtonBoundingClientRect, getSystemInfoSync } from '@tarojs/taro';
+import { getMenuButtonBoundingClientRect, getWindowInfo } from '@tarojs/taro';
 
-const systemInfo = getSystemInfoSync();
+const systemInfo = getWindowInfo();
 // 屏幕宽高
 export const SCREEN_INFO = {
   width: systemInfo.screenWidth,
