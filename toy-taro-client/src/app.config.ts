@@ -53,6 +53,10 @@ export default defineAppConfig({
   },
   subPackages: [
     {
+      root: 'ui/pages/login/',
+      pages: ['index'],
+    },
+    {
       root: 'ui/pages/checkout/',
       pages: ['index'],
     },
@@ -73,5 +77,5 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  // entryPagePath: 'ui/pages/productManage/index',
+  entryPagePath: 'ui/pages/login/index',
 });

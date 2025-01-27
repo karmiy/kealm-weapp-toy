@@ -30,6 +30,10 @@ export enum MODULE_WEIGHT {
     LOW
 }
 
+export enum ERROR_CODE {
+    NO_LOGIN = 'NO_LOGIN',
+}
+
 // ----------------------toy--------------------------------
 // ----------------------coupon--------------------------------
 export enum COUPON_STATUS {

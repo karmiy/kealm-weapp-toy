@@ -1,0 +1,34 @@
+@import '@ui/styles/index.scss';
+
+.loginWrapper {
+  position: relative;
+  height: 100%;
+  background: $--color-red-1 url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/login-cover-image.png') no-repeat center / cover;
+
+  .container {
+    position: absolute;
+    padding: px(16);
+    background-color: $--fill-default;
+    border-radius: px(24);
+    width: calc(100vw - px(32));
+    left: px(16);
+    bottom: constant(safe-area-inset-bottom);
+    bottom: env(safe-area-inset-bottom);
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+
+  .back {
+    display: flex;
+    align-items: center;
+    margin-top: px(16);
+    color: $--color-red;
+    font-size: px(14);
+
+    text {
+      margin-left: px(4);
+    }
+  }
+}

@@ -11,6 +11,7 @@ export enum COLOR_VARIABLES {
 }
 
 export enum PAGE_ID {
+    LOGIN = 'login',
     HOME = 'home',
     SHOP_CART = 'shopCart',
     CHECKOUT = 'checkout',
