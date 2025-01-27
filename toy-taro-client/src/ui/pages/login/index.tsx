@@ -1,5 +1,6 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { Text, View } from '@tarojs/components';
+import { sdk } from '@core';
 import { Button, Icon, Input, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { FormItem } from '@ui/container';
 import { COLOR_VARIABLES } from '@/shared/utils/constants';
@@ -8,6 +9,14 @@ import styles from './index.module.scss';
 
 export default function () {
   const [pageStatus, setPageStatus] = useState(LOGIN_PAGE_STATUS.DEFAULT);
+
+  const handleWxLogin = useCallback(async () => {
+    try {
+      sdk.modules.user.wxLogin();
+    } catch (error) {
+      console.error('[test] error', error);
+    }
+  }, []);
 
   return (
     <View className={styles.loginWrapper}>
@@ -30,7 +39,7 @@ export default function () {
         ) : null}
         {pageStatus === LOGIN_PAGE_STATUS.DEFAULT ? (
           <Fragment>
-            <Button className={styles.actionButton} size='large'>
+            <Button className={styles.actionButton} size='large' onClick={handleWxLogin}>
               微信一键登录
             </Button>
             <WhiteSpace size='medium' />

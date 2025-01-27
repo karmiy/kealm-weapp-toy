@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
+import { showToast } from '@shared/utils/operateFeedback';
 import { STORE_NAME } from '@core';
 import { TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { useProductShopCart, useStoreList } from '@ui/viewModel';
-import { useOperateFeedback } from '@/ui/hoc';
 import { ProductList } from './productList';
 
 const ADD_TO_CART_TOAST_MES = {
@@ -15,23 +15,21 @@ const Category = () => {
   const list = useStoreList(STORE_NAME.PRODUCT_CATEGORY);
   const { allProductIds, addProductShopCart } = useProductShopCart({ enableAllProductIds: true });
   const [current, setCurrent] = useState(0);
-  const [isShowAddToCartToast, setIsShowAddToCartToast] = useState(false);
-  const { openToast } = useOperateFeedback();
 
   const handleAddToCart = useCallback(
     async (id: string) => {
       try {
         if (allProductIds.includes(id)) {
-          openToast({ text: ADD_TO_CART_TOAST_MES.EXIST });
+          showToast({ title: ADD_TO_CART_TOAST_MES.EXIST });
           return;
         }
         await addProductShopCart(id, 1);
-        openToast({ text: ADD_TO_CART_TOAST_MES.SUCCESS });
+        showToast({ title: ADD_TO_CART_TOAST_MES.SUCCESS });
       } catch {
-        openToast({ text: ADD_TO_CART_TOAST_MES.FAIL });
+        showToast({ title: ADD_TO_CART_TOAST_MES.FAIL });
       }
     },
-    [allProductIds, addProductShopCart, openToast],
+    [allProductIds, addProductShopCart],
   );
 
   return (

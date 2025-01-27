@@ -3,7 +3,7 @@ import { Text, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
 import { TASK_TYPE } from '@core';
 import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
-import { withCustomTabBar, withOperateFeedback } from '@ui/hoc';
+import { withCustomTabBar } from '@ui/hoc';
 import { TaskCategory } from './category';
 import styles from './index.module.scss';
 
@@ -66,7 +66,7 @@ function Task() {
   );
 }
 
-const TaskPage = withCustomTabBar(withOperateFeedback(Task, { enableToast: true }), {
+const TaskPage = withCustomTabBar(Task, {
   tabBarId: TAB_BAR_ID.TASK,
 });
 

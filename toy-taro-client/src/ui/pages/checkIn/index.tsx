@@ -1,31 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
-import { Undefinable } from '@shared/types';
-import { sdk } from '@core';
 import { Button, Calendar, SafeAreaBar } from '@ui/components';
-import { useOperateFeedback, withOperateFeedback } from '@ui/hoc';
 import { useCheckIn } from '@ui/viewModel';
 import { RewardItem } from './rewardItem';
 import styles from './index.module.scss';
 
-function getDatesFromTodayToFirst(target: Date) {
-  const dates: Date[] = [];
-
-  // 获取本月第一天
-  const firstDay = new Date(target.getFullYear(), target.getMonth(), 1);
-
-  // 从今天开始循环到第一天
-  const current = new Date(target);
-  current.setDate(current.getDate() - 1);
-  while (current >= firstDay) {
-    dates.push(new Date(current)); // 添加当前日期（拷贝以防止引用）
-    current.setDate(current.getDate() - 1); // 日期减 1
-  }
-
-  return dates;
-}
-
-function CheckIn() {
+export default function () {
   const { checkInInfo, claimReward, checkInToday } = useCheckIn();
   const today = useMemo(() => new Date(), []);
   const hasCheckIn = useMemo(() => {
@@ -70,7 +50,3 @@ function CheckIn() {
     </ScrollView>
   );
 }
-
-const CheckInPage = withOperateFeedback(CheckIn, { enableToast: true });
-
-export default CheckInPage;

@@ -2,12 +2,11 @@ import { Fragment, useEffect } from 'react';
 import { ScrollView, View } from '@tarojs/components';
 import { sdk, STORE_NAME } from '@core';
 import { SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
-import { withOperateFeedback } from '@ui/hoc';
 import { useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
 
-function ExchangeRecord() {
+export default function () {
   const ids = useStoreIds(STORE_NAME.ORDER);
   const loading = useStoreLoadingStatus(STORE_NAME.ORDER);
 
@@ -39,10 +38,3 @@ function ExchangeRecord() {
     </View>
   );
 }
-
-const ExchangeRecordPage = withOperateFeedback(ExchangeRecord, {
-  enableToast: true,
-  enableConfirmDialog: true,
-});
-
-export default ExchangeRecordPage;

@@ -40,3 +40,11 @@ export class Singleton {
     return Singleton._instances.get(name);
   }
 }
+
+export const getStorageKey = (key: string) => `kealm-storage-toy-client_${key}`;
+
+export class JsError extends Error {
+  constructor(public code: string, message: string) {
+    super(message);
+  }
+}

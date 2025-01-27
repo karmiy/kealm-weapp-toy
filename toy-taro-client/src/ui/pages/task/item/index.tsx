@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { Text, View } from '@tarojs/components';
+import { showToast } from '@shared/utils/operateFeedback';
 import { STORE_NAME } from '@core';
 import { Button, Rate } from '@ui/components';
-import { useOperateFeedback } from '@ui/hoc';
 import { useStoreById, useTaskAction } from '@ui/viewModel';
 import styles from './index.module.scss';
 
@@ -19,14 +19,13 @@ const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
   const { submitApprovalRequest, isSubmitApproving } = useTaskAction();
-  const { openToast } = useOperateFeedback();
 
   const handleSubmitApproval = useCallback(() => {
     submitApprovalRequest(id, {
-      success: () => openToast({ text: SUBMIT_APPROVE_MES.SUCCESS }),
-      fallback: () => openToast({ text: SUBMIT_APPROVE_MES.FAIL }),
+      success: () => showToast({ title: SUBMIT_APPROVE_MES.SUCCESS }),
+      fallback: () => showToast({ title: SUBMIT_APPROVE_MES.FAIL }),
     });
-  }, [submitApprovalRequest, id, openToast]);
+  }, [submitApprovalRequest, id]);
 
   if (!task || task.isApproved) {
     return null;

@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Text, View } from '@tarojs/components';
+import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { sdk, STORE_NAME } from '@core';
 import { Button } from '@ui/components';
 import { ProductCard } from '@ui/container';
 import { useStoreById } from '@ui/viewModel';
-import { useOperateFeedback } from '@/ui/hoc';
 import styles from './index.module.scss';
 
 interface ItemProps {
@@ -14,7 +14,6 @@ interface ItemProps {
 const Item = (props: ItemProps) => {
   const { id } = props;
   const order = useStoreById(STORE_NAME.ORDER, id);
-  const { openToast, openConfirmDialog } = useOperateFeedback();
   const [isRequestRevoking, setIsRequestRevoking] = useState(false);
 
   const { name, desc, orderTime, score, coverImage, isRevoking } = order! ?? {};
@@ -30,7 +29,7 @@ const Item = (props: ItemProps) => {
 
   const handleRevoke = useCallback(async () => {
     try {
-      const feedback = await openConfirmDialog({
+      const feedback = await showModal({
         content: '您确定要撤销兑换这件商品吗？撤销后请与管理员联系处理归还事宜',
       });
       if (!feedback) {
@@ -38,17 +37,17 @@ const Item = (props: ItemProps) => {
       }
       setIsRequestRevoking(true);
       await sdk.modules.order.revokeOrder(id);
-      openToast({
-        text: '撤销成功',
+      showToast({
+        title: '撤销成功',
       });
     } catch {
-      openToast({
-        text: '撤销失败',
+      showToast({
+        title: '撤销失败',
       });
     } finally {
       setIsRequestRevoking(false);
     }
-  }, [openConfirmDialog, id, openToast]);
+  }, [id]);
 
   if (!order) {
     return null;

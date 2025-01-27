@@ -5,7 +5,7 @@ import { PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button, CheckButton, StatusWrapper, WhiteSpace } from '@ui/components';
-import { withCustomTabBar, withOperateFeedback } from '@ui/hoc';
+import { withCustomTabBar } from '@ui/hoc';
 import { useProductShopCart, useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
 import { Item } from './item';
 import styles from './index.module.scss';
@@ -66,7 +66,7 @@ function ShopCart() {
   );
 }
 
-const ShopCartPage = withCustomTabBar(withOperateFeedback(ShopCart, { enableToast: true }), {
+const ShopCartPage = withCustomTabBar(ShopCart, {
   tabBarId: TAB_BAR_ID.SHOP_CART,
 });
 
