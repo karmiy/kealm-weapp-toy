@@ -92,7 +92,15 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
     const iconColor =
       type === 'plain' ? color ?? COLOR_VARIABLES.COLOR_RED : COLOR_VARIABLES.COLOR_WHITE;
     return (
-      <View className={styles.icon}>
+      <View
+        className={clsx(styles.icon, {
+          [styles.isLarge]: size === 'large',
+          [styles.isMedium]: size === 'medium',
+          [styles.isSmall]: size === 'small',
+          [styles.isMini]: size === 'mini',
+          // [styles.isLoading]: icon === 'loading',
+        })}
+      >
         <Icon name={icon} color={iconColor} size={ICON_SIZE[size]} />
       </View>
     );

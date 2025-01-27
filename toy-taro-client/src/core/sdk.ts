@@ -67,42 +67,54 @@ class SDK {
   storeManager = storeManager;
 
   async load() {
-    if (this._isLoaded) {
-      this._logger.info('skip load, has already loaded');
-      return;
-    }
-    const highLevelModules: Array<string> = [];
-    const normalLevelModules: Array<string> = [];
-    const lowLevelModules: Array<string> = [];
-    // const sortModulesConfig = [...modulesConfig].sort((a, b) => a.weight - b.weight);
-    modulesConfig.forEach(config => {
-      const { module: ModuleConstructor, alias, weight } = config;
-      this.modules[alias] = new (ModuleConstructor as any)();
-
-      switch (weight) {
-        case MODULE_WEIGHT.HIGH:
-          highLevelModules.push(alias);
-          break;
-        case MODULE_WEIGHT.NORMAL:
-          normalLevelModules.push(alias);
-          break;
-        case MODULE_WEIGHT.LOW:
-          lowLevelModules.push(alias);
-          break;
+    const loadedModules: Array<string> = [];
+    try {
+      this._logger.error('start load');
+      if (this._isLoaded) {
+        this._logger.info('skip load, has already loaded');
+        return;
       }
-    });
-    await Promise.all(highLevelModules.map(alias => this.modules[alias].load()));
-    await Promise.all(normalLevelModules.map(alias => this.modules[alias].load()));
-    await Promise.all(lowLevelModules.map(alias => this.modules[alias].load()));
-    this._isLoaded = true;
+      const highLevelModules: Array<string> = [];
+      const normalLevelModules: Array<string> = [];
+      const lowLevelModules: Array<string> = [];
+      // const sortModulesConfig = [...modulesConfig].sort((a, b) => a.weight - b.weight);
+      modulesConfig.forEach(config => {
+        const { module: ModuleConstructor, alias, weight } = config;
+        this.modules[alias] = new (ModuleConstructor as any)();
+
+        switch (weight) {
+          case MODULE_WEIGHT.HIGH:
+            highLevelModules.push(alias);
+            break;
+          case MODULE_WEIGHT.NORMAL:
+            normalLevelModules.push(alias);
+            break;
+          case MODULE_WEIGHT.LOW:
+            lowLevelModules.push(alias);
+            break;
+        }
+      });
+      const loadModule = async (alias: string) => {
+        loadedModules.push(alias);
+        await this.modules[alias].load();
+      };
+      await Promise.all(highLevelModules.map(async alias => await loadModule(alias)));
+      await Promise.all(normalLevelModules.map(async alias => await loadModule(alias)));
+      await Promise.all(lowLevelModules.map(async alias => await loadModule(alias)));
+      this._isLoaded = true;
+    } catch (error) {
+      this._logger.error('load failed', error);
+      await Promise.all(loadedModules.map(async alias => await this.modules[alias].unload()));
+      throw error;
+    }
   }
 
-  unload() {
+  async unload() {
     if (!this._isLoaded) {
       this._logger.info('skip unload, has not loaded');
       return;
     }
-    Object.values(this.modules).forEach(module => module.unload());
+    await Promise.all(Object.values(this.modules).map(async module => await module.unload()));
   }
 }
 

@@ -1,8 +1,16 @@
-import { mockCheckInApi, mockCouponApi, mockOrderApi, mockProductApi, mockTaskApi } from './api';
+import {
+  mockCheckInApi,
+  mockCouponApi,
+  mockOrderApi,
+  mockProductApi,
+  mockTaskApi,
+  mockUserApi,
+} from './api';
 import { MOCK_API_NAME } from './constants';
 
-const mockApis: Record<MOCK_API_NAME, () => unknown> = Object.assign(
+const mockApis: Record<MOCK_API_NAME, (...args: any[]) => unknown> = Object.assign(
   {},
+  mockUserApi,
   mockProductApi,
   mockCouponApi,
   mockTaskApi,
@@ -19,7 +27,7 @@ export function mock(options: { name: MOCK_API_NAME; enable?: boolean }) {
 
     descriptor.value = function (...args: unknown[]) {
       if (enable) {
-        return mockApis[name]();
+        return mockApis[name](...args);
       } else {
         return originalMethod.apply(this, args);
       }

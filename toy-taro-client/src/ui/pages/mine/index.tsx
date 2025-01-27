@@ -1,24 +1,42 @@
-import { Text, View } from '@tarojs/components';
+import { useCallback, useMemo } from 'react';
+import { BaseEventOrig, Button, Text, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
+import { Logger } from '@shared/utils/logger';
+import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
+import { sdk, STORE_NAME } from '@core';
 import { FallbackImage, Icon, WhiteSpace } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
+import { useSingleStore } from '@ui/viewModel';
 import styles from './index.module.scss';
 
-function Task() {
+const logger = Logger.getLogger('[UI][Mine]');
+
+function Mine() {
+  const user = useSingleStore(STORE_NAME.USER);
+  const isAdmin = !!user?.isAdmin;
+  const subTitle = useMemo(() => {
+    return isAdmin ? '角色：管理员' : `积分: ${user?.availableScore ?? 0}`;
+  }, [isAdmin, user?.availableScore]);
+  const onChooseAvatar = useCallback(async (e: BaseEventOrig<any>) => {
+    try {
+      const { avatarUrl } = e.detail;
+      await sdk.modules.user.uploadAvatar(avatarUrl);
+    } catch (error) {
+      logger.error('onChooseAvatar error', error.message);
+      showToast({ title: '头像更新失败' });
+    }
+  }, []);
   return (
     <View className={styles.wrapper}>
       <View className={styles.header}>
-        <View className={styles.avatar}>
-          <FallbackImage
-            src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-avatar.png'
-            className={styles.image}
-          />
-        </View>
+        <Button className={styles.avatar} openType='chooseAvatar' onChooseAvatar={onChooseAvatar}>
+          {user ? <FallbackImage src={user.avatar} className={styles.image} /> : null}
+        </Button>
         <View className={styles.info}>
-          <Text className={styles.name}>洪以妍</Text>
-          <Text className={styles.score}>积分: 144</Text>
+          <Text className={styles.name}>{user?.nickName}</Text>
+          <Text className={styles.subTitle}>{subTitle}</Text>
         </View>
       </View>
       <View className={styles.container}>
@@ -44,16 +62,18 @@ function Task() {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
-          <View
-            className={styles.menuItem}
-            onClick={() => navigateToPage({ pageName: PAGE_ID.PRODUCT_MANAGE })}
-          >
-            <View className={styles.title}>
-              <Icon name='product' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-              <Text>商品管理</Text>
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.PRODUCT_MANAGE })}
+            >
+              <View className={styles.title}>
+                <Icon name='product' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>商品管理</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
             </View>
-            <Icon name='arrow-right' size={14} />
-          </View>
+          ) : null}
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>
@@ -66,6 +86,6 @@ function Task() {
   );
 }
 
-const TaskPage = withCustomTabBar(Task, { tabBarId: TAB_BAR_ID.MINE });
+const MinePage = withCustomTabBar(Mine, { tabBarId: TAB_BAR_ID.MINE });
 
-export default TaskPage;
+export default MinePage;

@@ -28,7 +28,7 @@ const StatusView = (props: StatusViewProps) => {
     }
     return (
       <>
-        <View className={styles.loadingIcon}>
+        <View>
           <Icon name='loading' size={32} color={COLOR_VARIABLES.COLOR_RED} />
         </View>
         <Text className={styles.tip}>请稍等~</Text>

@@ -18,6 +18,8 @@
     width: px(80);
     height: px(80);
     overflow: hidden;
+    outline: none;
+    border: none;
 
     .image {
       width: 100%;
@@ -38,7 +40,7 @@
       margin-bottom: px(4);
     }
 
-    .score {
+    .subTitle {
       font-size: px(16);
     }
   }

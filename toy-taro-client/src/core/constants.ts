@@ -30,11 +30,28 @@ export enum MODULE_WEIGHT {
     LOW
 }
 
-export enum ERROR_CODE {
-    NO_LOGIN = 'NO_LOGIN',
+// ----------------------error--------------------------------
+export enum SERVER_ERROR_CODE {
+    LOGIN_EXPIRED = 401,
 }
 
-// ----------------------toy--------------------------------
+export enum ERROR_CODE {
+    NO_LOGIN = 'NO_LOGIN',
+    LOGIN_EXPIRED = 'LOGIN_EXPIRED',
+    NO_USER_INFO = 'NO_USER_INFO',
+}
+
+export enum ERROR_MESSAGE {
+    NO_LOGIN = '账号未登录',
+    LOGIN_EXPIRED = '登录已过期',
+    NO_USER_INFO = '用户数据不存在',
+}
+
+export enum ROLE {
+    ADMIN = 'ADMIN',
+    USER = 'USER',
+}
+
 // ----------------------coupon--------------------------------
 export enum COUPON_STATUS {
     ACTIVE = 'ACTIVE',

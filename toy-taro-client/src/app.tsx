@@ -1,15 +1,12 @@
 import { PropsWithChildren } from 'react';
-import { getApp, useLaunch } from '@tarojs/taro';
+import { useLaunch } from '@tarojs/taro';
 import { Logger } from '@shared/utils/logger';
-import { sdk } from '@core';
-import { bootstrap } from '@ui/controller';
+import { bootstrap } from '@ui/bootstrap';
 import './app.scss';
 
 function App({ children }: PropsWithChildren) {
   useLaunch(async () => {
     Logger.getLogger('[App]').info('App launched.');
-    await sdk.load();
-    getApp().sdk = sdk;
     await bootstrap();
   });
 

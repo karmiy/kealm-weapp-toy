@@ -1,4 +1,4 @@
-import { navigateTo, redirectTo, switchTab } from '@tarojs/taro';
+import { navigateTo, redirectTo, reLaunch, switchTab } from '@tarojs/taro';
 import { PAGE_ID } from './constants';
 import { Logger } from './logger';
 
@@ -8,12 +8,19 @@ interface NavigateOptions {
   pageName: PAGE_ID;
   isRedirect?: boolean;
   isSwitchTab?: boolean;
+  isRelaunch?: boolean;
   params?: Record<string, string | boolean | number>;
 }
 
 /* 跳转页面 */
 export function navigateToPage(options: NavigateOptions) {
-  const { pageName, isRedirect = false, isSwitchTab = false, params = {} } = options;
+  const {
+    pageName,
+    isRedirect = false,
+    isSwitchTab = false,
+    isRelaunch = false,
+    params = {},
+  } = options;
 
   const search = Object.keys(params).reduce((s, key, index) => {
     s += `${index ? '&' : '?'}${key}=${String(params[key])}`;
@@ -39,6 +46,11 @@ export function navigateToPage(options: NavigateOptions) {
     switchTab({
       url,
     });
+    return;
+  }
+
+  if (isRelaunch) {
+    reLaunch({ url });
     return;
   }
 

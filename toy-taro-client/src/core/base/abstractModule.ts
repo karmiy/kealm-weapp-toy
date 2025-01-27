@@ -5,14 +5,14 @@ export abstract class AbstractModule {
     return Logger.getLogger(`[${this.moduleName()}]`);
   }
 
-  load() {
+  async load() {
     this._logger.info('load');
-    this.onLoad();
+    await this.onLoad();
   }
 
-  unload() {
+  async unload() {
     this._logger.info('unload');
-    this.onUnload();
+    await this.onUnload();
   }
 
   protected abstract onLoad(): void;
