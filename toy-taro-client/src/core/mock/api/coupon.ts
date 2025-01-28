@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
-import { COUPON_STATUS, COUPON_TYPE } from '../../constants';
+import { UserStorageManager } from '../../base';
+import { COUPON_STATUS, COUPON_TYPE, ROLE } from '../../constants';
 import { CouponEntity, CouponValidityTime } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 
@@ -62,13 +63,17 @@ export const mockCouponApi = {
           COUPON_TYPE.CASH_DISCOUNT,
           COUPON_TYPE.PERCENTAGE_DISCOUNT,
         ]);
+        const userInfo = UserStorageManager.getInstance().getUserInfo();
+        const isAdmin = userInfo?.role === ROLE.ADMIN;
         return {
           id: faker.string.uuid(),
           name: faker.helpers.arrayElement(COUPON_THEMES),
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
           validity_time: generateRandomValidityTime(),
-          status: faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED]),
+          status: !isAdmin
+            ? faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED])
+            : COUPON_STATUS.ACTIVE,
           type,
           value:
             type === COUPON_TYPE.CASH_DISCOUNT

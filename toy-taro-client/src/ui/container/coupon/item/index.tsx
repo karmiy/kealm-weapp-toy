@@ -1,10 +1,15 @@
+import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 
+type CouponItemType = 'selectable' | 'unselectable' | 'used' | 'expired';
+
+export type CouponRenderAction = (id: string, type: CouponItemType) => React.ReactNode;
+
 export interface CouponItemProps {
   id: string;
-  type?: 'selectable' | 'unselectable' | 'used' | 'expired';
+  type?: CouponItemType;
   discountTip: string;
   conditionTip: string;
   name: string;
@@ -12,6 +17,7 @@ export interface CouponItemProps {
   expirationTip: string;
   selected?: boolean;
   onClick?: (id: string) => void;
+  renderAction?: CouponRenderAction;
 }
 
 const CouponItem = (props: CouponItemProps) => {
@@ -25,6 +31,7 @@ const CouponItem = (props: CouponItemProps) => {
     expirationTip,
     selected,
     onClick,
+    renderAction,
   } = props;
 
   const handleClick = () => {
@@ -34,6 +41,10 @@ const CouponItem = (props: CouponItemProps) => {
     onClick?.(id);
   };
 
+  const Action = useMemo(() => {
+    return renderAction?.(id, type);
+  }, [renderAction, id, type]);
+
   return (
     <View
       className={clsx(styles.wrapper, {
@@ -41,6 +52,7 @@ const CouponItem = (props: CouponItemProps) => {
         [styles.isUnSelectable]: type === 'unselectable',
         [styles.isUsed]: type === 'used',
         [styles.isExpired]: type === 'expired',
+        [styles.isCustomAction]: !!renderAction,
       })}
       onClick={handleClick}
     >
@@ -54,11 +66,15 @@ const CouponItem = (props: CouponItemProps) => {
           <Text className={styles.subTitle}>{usageScopeTip}</Text>
           <Text className={styles.subTitle}>{expirationTip}</Text>
         </View>
-        <View className={styles.action}>
-          <View className={styles.outer}>
-            <View className={styles.inner} />
+        {Action ? (
+          <View className={styles.customAction}>{Action}</View>
+        ) : (
+          <View className={styles.selectAction}>
+            <View className={styles.outer}>
+              <View className={styles.inner} />
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );

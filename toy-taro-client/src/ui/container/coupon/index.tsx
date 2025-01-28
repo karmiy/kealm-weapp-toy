@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
 import { FloatLayout } from '@ui/components';
-import type { CouponItemProps } from './item';
+import type { CouponItemProps, CouponRenderAction } from './item';
 import { CouponItem } from './item';
 import { CouponList, CouponListProps } from './list';
 import styles from './index.module.scss';
@@ -11,10 +11,11 @@ interface CouponActionSheetProps {
   list?: CouponListProps['list'];
   onClose?: () => void;
   onSelect?: (id: string) => void;
+  renderAction?: CouponRenderAction;
 }
 
 const CouponActionSheet = (props: CouponActionSheetProps) => {
-  const { visible = false, selectedId, list, onClose, onSelect } = props;
+  const { visible = false, selectedId, list, onClose, onSelect, renderAction } = props;
 
   const handleSelect = (id: string) => {
     onSelect?.(id);
@@ -24,10 +25,15 @@ const CouponActionSheet = (props: CouponActionSheetProps) => {
   return (
     <FloatLayout visible={visible} title='优惠券' onClose={onClose} maxHeight={320}>
       <View className={styles.wrapper}>
-        <CouponList list={list} selectedId={selectedId} onSelect={handleSelect} />
+        <CouponList
+          list={list}
+          selectedId={selectedId}
+          onSelect={handleSelect}
+          renderAction={renderAction}
+        />
       </View>
     </FloatLayout>
   );
 };
 
-export { CouponActionSheet, CouponItem, CouponList, CouponItemProps };
+export { CouponActionSheet, CouponItem, CouponList, CouponItemProps, CouponRenderAction };

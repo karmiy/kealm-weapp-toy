@@ -81,5 +81,5 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  // entryPagePath: 'ui/pages/productManage/index',
+  // entryPagePath: 'ui/pages/coupon/index',
 });

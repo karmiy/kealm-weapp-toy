@@ -8,6 +8,8 @@ export class CouponController extends Singleton {
   private _disposers: Array<() => void> = [];
 
   @observable
+  allCouponIds: Array<string> = [];
+  @observable
   activeCouponIds: Array<string> = [];
 
   @observable
@@ -39,6 +41,7 @@ export class CouponController extends Singleton {
           break;
       }
     });
+    this.allCouponIds = ids;
     this.activeCouponIds = activeCouponIds;
     this.usedCouponIds = usedCouponIds;
     this.expiredCouponIds = expiredCouponIds;

@@ -1,0 +1,33 @@
+@import '@ui/styles/index.scss';
+
+.wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.scrollView {
+  height: 100%;
+}
+
+.container {
+  padding: px(16);
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: px(12);
+
+    .action {
+      display: flex;
+      align-items: center;
+      color: $--color-red;
+    }
+  }
+
+  .itemAction {
+    display: flex;
+    align-items: center;
+  }
+  
+}
