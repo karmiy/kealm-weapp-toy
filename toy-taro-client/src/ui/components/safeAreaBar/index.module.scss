@@ -1,6 +1,7 @@
 @import '@ui/styles/index.scss';
 
 .safeAreaBarWrapper {
+    flex-shrink: 0;
     background-color: transparent;
 
     &.whiteBg {
@@ -14,5 +15,8 @@
     &.isBottom {
         @include safe-area-inset-bottom;
     }
-}
 
+    &.isTabBar {
+        height: px($--tab-bar-height);
+    }
+}

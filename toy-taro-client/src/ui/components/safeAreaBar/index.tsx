@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 
 interface SafeAreaBarProps {
   isWhiteBg?: boolean;
-  inset?: 'top' | 'bottom';
+  inset?: 'top' | 'bottom' | 'tabBar';
 }
 
 const SafeAreaBar = (props: SafeAreaBarProps) => {
@@ -16,6 +16,7 @@ const SafeAreaBar = (props: SafeAreaBarProps) => {
         [styles.whiteBg]: isWhiteBg,
         [styles.isTop]: inset === 'top',
         [styles.isBottom]: inset === 'bottom',
+        [styles.isTabBar]: inset === 'tabBar',
       })}
       style={{ height: inset === 'top' ? STATUS_BAR_HEIGHT : undefined }} // 微信开发者工具上 safe-area-inset-top 没效果（但真机似乎可以s）
     />

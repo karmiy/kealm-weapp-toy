@@ -10,9 +10,4 @@
     flex: 1;
     overflow: hidden;
   }
-
-  .tabBarPlaceholder {
-    flex-shrink: 0;
-    height: px($--tab-bar-height);
-  }
 }

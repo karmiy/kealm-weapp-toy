@@ -77,5 +77,5 @@ export default defineAppConfig({
       pages: ['index'],
     },
   ],
-  // entryPagePath: 'ui/pages/login/index',
+  entryPagePath: 'ui/pages/mine/index',
 });

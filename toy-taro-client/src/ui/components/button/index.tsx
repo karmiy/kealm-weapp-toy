@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   style?: React.CSSProperties;
   type?: 'primary' | 'plain';
+  width?: number | string;
   size?: 'large' | 'medium' | 'small' | 'mini';
   icon?: IconNames;
   color?: string;
@@ -33,6 +34,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
     className,
     style,
     type = 'primary',
+    width,
     size = 'medium',
     icon,
     color,
@@ -127,6 +129,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
       style={{
         ...customStyles,
         ...style,
+        width,
       }}
       onClick={!disabled ? onClick : undefined}
       onTouchStart={onTouchStart}

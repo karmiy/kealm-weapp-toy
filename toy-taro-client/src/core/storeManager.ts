@@ -32,7 +32,6 @@ class StoreManager<
     }
   >,
 > {
-  private _config: C;
   private _singleStores = new Map<STORE_NAME, Model>();
   private _multiStores = new Map<STORE_NAME, Map<string, Model>>();
   private _sortIdsStores = new Map<STORE_NAME, string[]>();
@@ -46,8 +45,11 @@ class StoreManager<
     return Logger.getLogger('[StoreManager]');
   }
 
-  constructor(config: C) {
-    this._config = config;
+  constructor(private _config: C) {}
+
+  init() {
+    this._logger.info('init');
+    const config = this._config;
     const keys = Object.keys(config);
     keys.forEach(key => {
       const modelName = key as STORE_NAME;
@@ -56,6 +58,18 @@ class StoreManager<
       }
       this._multiStores.set(modelName, new Map());
     });
+  }
+
+  dispose() {
+    this._logger.info('dispose');
+    this._singleStores.clear();
+    this._multiStores.clear();
+    this._sortIdsStores.clear();
+    this._loadingStores.clear();
+    this._subscriptions.clear();
+    this._idListSubscriptions.clear();
+    this._idSubscriptions.clear();
+    this._loadingSubscriptions.clear();
   }
 
   refresh<T extends STORE_NAME>(

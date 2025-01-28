@@ -21,6 +21,8 @@ export class UserStorageManager extends Singleton {
 
   dispose() {
     storeManager.unsubscribe(STORE_NAME.USER, this._handleUserStoreChange);
+    this.clearUserAuth();
+    this.clearUserInfo();
   }
 
   private _handleUserStoreChange = () => {

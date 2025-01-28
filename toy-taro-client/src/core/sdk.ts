@@ -67,6 +67,7 @@ class SDK {
   storeManager = storeManager;
 
   async load() {
+    storeManager.init();
     const loadedModules: Array<string> = [];
     try {
       this._logger.error('start load');
@@ -105,6 +106,7 @@ class SDK {
     } catch (error) {
       this._logger.error('load failed', error);
       await Promise.all(loadedModules.map(async alias => await this.modules[alias].unload()));
+      storeManager.dispose();
       throw error;
     }
   }
@@ -115,6 +117,8 @@ class SDK {
       return;
     }
     await Promise.all(Object.values(this.modules).map(async module => await module.unload()));
+    storeManager.dispose();
+    this._isLoaded = false;
   }
 }
 

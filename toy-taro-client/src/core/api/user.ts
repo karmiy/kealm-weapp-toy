@@ -42,4 +42,9 @@ export class UserApi {
       });
     });
   }
+
+  @mock({ name: MOCK_API_NAME.UPLOAD_PROFILE })
+  static async uploadProfile(params: { name: string }): Promise<void> {
+    return Promise.resolve();
+  }
 }

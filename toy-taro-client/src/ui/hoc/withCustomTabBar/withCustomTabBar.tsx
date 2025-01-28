@@ -27,7 +27,7 @@ export function withCustomTabBar<T extends object>(
         <View className={styles.pageContainer}>
           <WrappedComponent {...props} />
         </View>
-        <View className={styles.tabBarPlaceholder} />
+        <SafeAreaBar inset='tabBar' />
         <SafeAreaBar inset='bottom' />
       </View>
     );

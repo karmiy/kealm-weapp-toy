@@ -4,7 +4,6 @@ import { login as taroLogin } from '@tarojs/taro';
 import { Logger } from '@shared/utils/logger';
 import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { sleep } from '@shared/utils/utils';
 import { sdk } from '@core';
 import { bootstrap } from '@ui/bootstrap';
 import { Button, Icon, Input, SafeAreaBar, WhiteSpace } from '@ui/components';
@@ -25,8 +24,7 @@ export default function () {
   const handleLoginSuccess = useCallback(async () => {
     try {
       await bootstrap();
-      showToast({ title: '登录成功' });
-      await sleep(1500);
+      await showToast({ title: '登录成功', awaitClose: true });
       navigateToPage({ pageName: PAGE_ID.HOME, isRelaunch: true });
     } catch (error) {
       logger.error('reload sdk failed', error);

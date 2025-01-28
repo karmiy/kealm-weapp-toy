@@ -51,6 +51,10 @@ export class CouponController extends Singleton {
 
   dispose() {
     sdk.storeManager.unsubscribe(STORE_NAME.COUPON, this._handleCouponListChange);
+    this.activeCouponIds.length = 0;
+    this.usedCouponIds.length = 0;
+    this.expiredCouponIds.length = 0;
     this._disposers.forEach(disposer => disposer());
+    this._disposers.length = 0;
   }
 }

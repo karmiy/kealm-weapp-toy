@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
+import { UserStorageManager } from '../..//base';
 import { ROLE, SERVER_ERROR_CODE } from '../../constants';
 import { UserEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
@@ -7,6 +8,10 @@ import { MOCK_API_NAME } from '../constants';
 export const mockUserApi = {
   [MOCK_API_NAME.GET_USER_INFO]: async (): Promise<UserEntity> => {
     await sleep(1000);
+    const cacheUserInfo = UserStorageManager.getInstance().getUserInfo();
+    if (cacheUserInfo) {
+      return cacheUserInfo;
+    }
     const role = Math.random() > 0.5 ? ROLE.ADMIN : ROLE.USER;
     // return Promise.reject({ code: SERVER_ERROR_CODE.LOGIN_EXPIRED });
     return {
@@ -26,5 +31,9 @@ export const mockUserApi = {
   [MOCK_API_NAME.UPLOAD_AVATAR]: async (tempUrl: string): Promise<string> => {
     await sleep(100);
     return Promise.resolve(tempUrl);
+  },
+  [MOCK_API_NAME.UPLOAD_PROFILE]: async (params: { name: string }): Promise<void> => {
+    await sleep(100);
+    return Promise.resolve();
   },
 };

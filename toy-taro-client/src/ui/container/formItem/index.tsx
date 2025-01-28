@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { Text, View } from '@tarojs/components';
+import clsx from 'clsx';
 import { Icon } from '@ui/components';
 import { COLOR_VARIABLES } from '@/shared/utils/constants';
 import styles from './index.module.scss';

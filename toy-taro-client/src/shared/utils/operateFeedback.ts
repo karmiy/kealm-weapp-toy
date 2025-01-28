@@ -1,5 +1,6 @@
 import { showModal as TaroShowModal, showToast as TaroShowToast } from '@tarojs/taro';
 import { COLOR_VARIABLES } from './constants';
+import { sleep } from './utils';
 
 export const showModal = async (options: {
   title?: string;
@@ -25,15 +26,29 @@ export const showModal = async (options: {
   });
 };
 
-export const showToast = (options: {
+export const showToast = async (options: {
   title: string;
   icon?: 'success' | 'error' | 'loading' | 'none';
   duration?: number;
+  awaitClose?: boolean;
 }) => {
-  const { title, icon = 'none', duration = 2000 } = options;
-  TaroShowToast({
-    title,
-    icon,
-    duration,
+  return new Promise<void>((resolve, reject) => {
+    const { title, icon = 'none', duration = 2000, awaitClose = false } = options;
+    TaroShowToast({
+      title,
+      icon,
+      duration,
+      success: async () => {
+        if (!awaitClose) {
+          resolve();
+          return;
+        }
+        await sleep(duration);
+        resolve();
+      },
+      fail: error => {
+        reject(error);
+      },
+    });
   });
 };

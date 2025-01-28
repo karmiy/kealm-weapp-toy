@@ -35,9 +35,15 @@
     flex-direction: column;
     justify-content: center;
 
+    .title {
+      display: flex;
+      align-items: center;
+      margin-bottom: px(4);
+    }
+
     .name {
       font-size: px(18);
-      margin-bottom: px(4);
+      margin-right: px(4);
     }
 
     .subTitle {
@@ -85,4 +91,8 @@
     font-size: px(14);
     color: $--color-red;
   }
+}
+
+.editNickName {
+  padding: px(16);
 }

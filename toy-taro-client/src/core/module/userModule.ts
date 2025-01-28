@@ -1,4 +1,3 @@
-import { chooseMedia } from '@tarojs/taro';
 import { JsError } from '@shared/utils/utils';
 import { LoginParams, UserApi } from '../api';
 import { AbstractModule, UserStorageManager } from '../base';
@@ -49,6 +48,7 @@ export class UserModule extends AbstractModule {
     // 不再支持 getUserProfile 获取昵称头像了 https://developers.weixin.qq.com/community/develop/doc/00022c683e8a80b29bed2142b56c01
     // 可以单独做个配置页面，用 chooseMedia 和 button 组件的 open-type="chooseAvatar" 让用户选头像， 做个弹框让用户输入昵称
     // 官方推荐：https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/userProfile.html
+    // mock 本地数据时，清了换成要重启微信开发者工具
     const avatarUrl = await UserApi.uploadAvatar(tempUrl);
     const userInfo = storeManager.get(STORE_NAME.USER);
     if (!userInfo) {
@@ -59,8 +59,15 @@ export class UserModule extends AbstractModule {
     });
   }
 
-  logout() {
-    UserStorageManager.getInstance().clearUserAuth();
-    UserStorageManager.getInstance().clearUserInfo();
+  async uploadProfile(params: { name: string }) {
+    const { name } = params;
+    await UserApi.uploadProfile(params);
+    const userInfo = storeManager.get(STORE_NAME.USER);
+    if (!userInfo) {
+      throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+    }
+    storeManager.emitUpdate(STORE_NAME.USER, {
+      partials: [{ id: userInfo.id, name }],
+    });
   }
 }

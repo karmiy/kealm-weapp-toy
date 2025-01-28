@@ -26,8 +26,15 @@ function bootstrap() {
   });
 }
 
+function unBootstrap() {
+  controllers.forEach(controller => {
+    controller.getInstance().dispose();
+  });
+}
+
 export {
   bootstrap,
+  unBootstrap,
   ProductLimitedTimeOfferController,
   ProductCategoryController,
   ProductShopCartController,
