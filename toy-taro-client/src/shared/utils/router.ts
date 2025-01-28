@@ -1,4 +1,4 @@
-import { navigateTo, redirectTo, reLaunch, switchTab } from '@tarojs/taro';
+import { getCurrentPages, navigateTo, redirectTo, reLaunch, switchTab } from '@tarojs/taro';
 import { PAGE_ID } from './constants';
 import { Logger } from './logger';
 
@@ -55,4 +55,16 @@ export function navigateToPage(options: NavigateOptions) {
   }
 
   navigateTo({ url });
+}
+
+export function getCurrentPageId() {
+  const currentPage = [...getCurrentPages()].pop();
+  if (!currentPage) {
+    return;
+  }
+  const pageId = currentPage.route?.split('/')[2];
+  if (!pageId) {
+    return;
+  }
+  return pageId as PAGE_ID;
 }

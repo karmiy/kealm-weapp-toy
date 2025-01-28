@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ScrollView, View } from '@tarojs/components';
 import type { File } from 'taro-ui/types/image-picker';
+import { PAGE_ID } from '@shared/utils/constants';
+import { navigateToPage } from '@shared/utils/router';
 import { Button, ImagePicker, Input, PickerSelector, SafeAreaBar, Textarea } from '@ui/components';
 import { FormItem } from '@ui/container';
 import styles from './index.module.scss';
@@ -9,6 +11,10 @@ export default function () {
   const [pictures, setPictures] = useState<File[]>([]);
   const [categoryNum, setCategoryNum] = useState<number>();
   const categoryList = ['贴纸', '拼图', '益智', '咕卡'];
+
+  const handleEditCategory = useCallback(() => {
+    navigateToPage({ pageName: PAGE_ID.PRODUCT_CATEGORY_MANAGE });
+  }, []);
 
   return (
     <View className={styles.wrapper}>
@@ -32,7 +38,12 @@ export default function () {
             <FormItem title='商品描述' required>
               <Textarea placeholder='请输入商品描述' />
             </FormItem>
-            <FormItem title='商品分类' required showSettingEntrance>
+            <FormItem
+              title='商品分类'
+              required
+              showSettingEntrance
+              onSettingClick={handleEditCategory}
+            >
               <PickerSelector
                 placeholder='请选择商品名称'
                 type='select'

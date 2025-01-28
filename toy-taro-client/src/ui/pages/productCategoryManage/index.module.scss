@@ -1,0 +1,38 @@
+@import '@ui/styles/index.scss';
+
+.wrapper {
+  box-sizing: border-box;
+  height: 100%;
+  background-color: $--fill-body;
+
+  .scrollView {
+    height: 100%;
+  }
+
+  .container {
+    box-sizing: border-box;
+    padding: px(12) px(16);
+  }
+
+  .list {
+    padding: px(16);
+    border-radius: px(12);
+    background-color: $--fill-default;
+    font-size: px(14);
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: px(8);
+
+      .action {
+        color: $--color-red;
+      }
+    }
+  }
+}
+
+.editCategoryWrapper {
+  padding: px(16);
+}

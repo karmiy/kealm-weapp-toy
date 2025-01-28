@@ -4,7 +4,7 @@
 import React, { FunctionComponent } from 'react';
 import Taro from '@tarojs/taro';
 
-export type IconNames = 'product' | 'edit' | 'loading' | 'empty' | 'exchange-record' | 'coupon' | 'star-fill' | 'star' | 'close' | 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
+export type IconNames = 'delete' | 'product' | 'edit' | 'loading' | 'empty' | 'exchange-record' | 'coupon' | 'star-fill' | 'star' | 'close' | 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
 
 interface Props {
   name: IconNames;

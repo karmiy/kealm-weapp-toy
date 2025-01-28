@@ -9,7 +9,7 @@ export const showModal = async (options: {
   confirmText?: string;
 }) => {
   const { title = '提示', content, cancelText = '取消', confirmText = '确定' } = options;
-  return new Promise((resolve, reject) => {
+  return new Promise<boolean>((resolve, reject) => {
     TaroShowModal({
       title,
       content,
@@ -33,7 +33,7 @@ export const showToast = async (options: {
   awaitClose?: boolean;
 }) => {
   return new Promise<void>((resolve, reject) => {
-    const { title, icon = 'none', duration = 2000, awaitClose = false } = options;
+    const { title, icon = 'none', duration = 1500, awaitClose = false } = options;
     TaroShowToast({
       title,
       icon,

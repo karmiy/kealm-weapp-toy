@@ -76,6 +76,10 @@ export default defineAppConfig({
       root: 'ui/pages/productManage/',
       pages: ['index'],
     },
+    {
+      root: 'ui/pages/productCategoryManage/',
+      pages: ['index'],
+    },
   ],
-  entryPagePath: 'ui/pages/mine/index',
+  // entryPagePath: 'ui/pages/productManage/index',
 });

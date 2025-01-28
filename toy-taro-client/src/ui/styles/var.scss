@@ -1,6 +1,7 @@
 // [Draft]: ossaui
 // @import 'ossaui/dist/style/_variable.scss';
 @import './theme.scss';
+@import './function.scss';
 // ossa 颜色参考 https://github.com/NeteaseYanxuan/OSSA/blob/main/packages/ossa/src/style/_variable.scss
 // taro-ui 颜色参考 https://github.com/jd-opensource/taro-ui/blob/next/packages/taro-ui/src/style/variables/default.scss
 
@@ -53,7 +54,7 @@ $--color-rate-active: #FAB646 !default;
 
 /*--------------------------------- Style ---------------------------------*/
 /* Box shadow */
-$--box-shadow-menu: 0 px(4) px(10) 0 $--color-box-shadow-base !default;
+$--box-shadow-menu: 0 px(3) px(10) 0 $--color-box-shadow-menu !default;
 
 /* Tab bar */
 $--tab-bar-height: 50 !default;

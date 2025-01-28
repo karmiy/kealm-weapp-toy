@@ -21,4 +21,5 @@ export enum PAGE_ID {
     EXCHANGE_RECORD = 'exchangeRecord',
     CHECK_IN = 'checkIn',
     PRODUCT_MANAGE = 'productManage',
+    PRODUCT_CATEGORY_MANAGE = 'productCategoryManage',
 }
