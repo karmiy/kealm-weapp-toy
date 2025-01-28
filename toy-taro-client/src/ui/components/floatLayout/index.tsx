@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { ScrollView, View } from '@tarojs/components';
+import clsx from 'clsx';
 import { AtFloatLayout } from 'taro-ui';
 import { Icon } from '../icon';
 import { SafeAreaBar } from '../safeAreaBar';
@@ -10,14 +11,15 @@ interface FloatLayoutProps extends PropsWithChildren {
   onClose?: () => void;
   title?: React.ReactNode;
   maxHeight?: number;
+  className?: string;
 }
 
 const FloatLayout = (props: FloatLayoutProps) => {
-  const { visible = false, onClose, title, maxHeight, children } = props;
+  const { className, visible = false, onClose, title, maxHeight, children } = props;
 
   return (
     <AtFloatLayout
-      className={styles.floatLayoutWrapper}
+      className={clsx(styles.floatLayoutWrapper, className)}
       isOpened={visible}
       onClose={onClose}
       scrollY={false}

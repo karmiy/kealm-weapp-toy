@@ -4,6 +4,7 @@
   color: $--text-color-base;
   
   [class*="layout__container"] {
+    min-height: auto;
     background-color: $--fill-default;
     border-radius: px(12) px(12) 0 0;
     overflow: hidden;
