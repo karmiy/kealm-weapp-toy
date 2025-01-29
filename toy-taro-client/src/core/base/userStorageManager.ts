@@ -1,7 +1,7 @@
 import { getStorageSync, removeStorageSync, setStorageSync } from '@tarojs/taro';
 import { Undefinable } from '@shared/types';
 import { getStorageKey, Singleton } from '@shared/utils/utils';
-import { STORE_NAME } from '../constants';
+import { ROLE, STORE_NAME } from '../constants';
 import { UserEntity } from '../entity';
 import { storeManager } from '../storeManager';
 
@@ -48,6 +48,11 @@ export class UserStorageManager extends Singleton {
 
   getUserInfo() {
     return getStorageSync<Undefinable<UserEntity>>(this._userStorageKey);
+  }
+
+  get isAdmin() {
+    const userInfo = this.getUserInfo();
+    return userInfo?.role === ROLE.ADMIN;
   }
 
   clearUserInfo() {

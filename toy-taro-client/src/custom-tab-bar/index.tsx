@@ -3,6 +3,7 @@ import { CoverImage, CoverView } from '@tarojs/components';
 import { switchTab } from '@tarojs/taro';
 import clsx from 'clsx';
 import { ADMIN_TAB_BAR_LIST, TAB_BAR_ID, USER_TAB_BAR_LIST } from '@shared/tabBar';
+import { useUserInfo } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 export interface CustomTabBarRef {
@@ -11,10 +12,8 @@ export interface CustomTabBarRef {
 
 const CustomTabBar = forwardRef<CustomTabBarRef>((_, ref) => {
   const [selected, setSelected] = useState<TAB_BAR_ID>();
-  const [tarBarList, setTabBarList] = useState(() => {
-    const isAdmin = false;
-    return isAdmin ? ADMIN_TAB_BAR_LIST : USER_TAB_BAR_LIST;
-  });
+  const { isAdmin } = useUserInfo();
+  const tarBarList = isAdmin ? ADMIN_TAB_BAR_LIST : USER_TAB_BAR_LIST;
 
   useImperativeHandle(ref, () => ({
     setSelected: setSelected,

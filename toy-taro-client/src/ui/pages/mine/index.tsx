@@ -107,7 +107,7 @@ function Mine() {
           >
             <View className={styles.title}>
               <Icon name='exchange-record' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-              <Text>兑换记录</Text>
+              <Text>{isAdmin ? '订单管理' : '兑换记录'}</Text>
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
