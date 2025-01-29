@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { useValue } from '@ui/hooks';
@@ -9,10 +9,11 @@ interface CheckButtonProps {
   className?: string;
   checked?: boolean;
   onChange?: (v: boolean) => void;
+  label?: string;
 }
 
 const CheckButton = (props: CheckButtonProps) => {
-  const { className, checked, onChange } = props;
+  const { className, checked, onChange, label } = props;
   const [currentChecked, setCurrentChecked] = useValue<boolean>({
     value: checked,
     defaultValue: false,
@@ -29,6 +30,7 @@ const CheckButton = (props: CheckButtonProps) => {
         color={COLOR_VARIABLES.COLOR_RED}
         name={currentChecked ? 'check' : 'uncheck'}
       />
+      {label ? <Text className={styles.label}>{label}</Text> : null}
     </View>
   );
 };

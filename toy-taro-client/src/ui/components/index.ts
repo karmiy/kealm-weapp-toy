@@ -17,3 +17,4 @@ export * from './statusView';
 export * from './imagePicker';
 export * from './input';
 export * from './picketSelector';
+export * from './tag';

@@ -1,0 +1,49 @@
+@import '@ui/styles/index.scss';
+
+@mixin tag-style(
+  $color,
+  $type,
+  $radius,
+) {
+  border-radius: $radius;
+
+  @if ($type == outline) {
+    color: $color;
+    border-color: $color;
+    background-color: initial;
+    @include hairline-box-color-inherit(solid, $radius);
+  } @else if ($type == solid) {
+    color: $--text-color-base-inverse;
+    background-color: $color;
+    border-color: $color;
+    @include hairline-box-color-inherit(solid, $radius);
+  }
+}
+
+.tagWrapper {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 px(12);
+  height: px(24);
+  font-size: px(12);
+  flex-shrink: 0;
+
+  &.isOutline {
+    &.isPrimary {
+      @include tag-style($--color-red, outline, px(12));
+    }
+  }
+  &.isSolid {
+    &.isPrimary {
+      @include tag-style($--color-red, solid, px(12));
+    }
+  }
+
+  .deleteIcon {
+    margin-left: px(2);
+    // position: absolute;
+    // right: px(2);
+    // top: px(2);
+  }
+}
