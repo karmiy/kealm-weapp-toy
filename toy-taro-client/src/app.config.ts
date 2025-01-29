@@ -77,5 +77,5 @@ export default defineAppConfig({
       pages: ['entrance/index', 'categoryManage/index'],
     },
   ],
-  // entryPagePath: 'ui/pages/coupon/index',
+  // entryPagePath: 'ui/pages/coupon/entrance/index',
 });

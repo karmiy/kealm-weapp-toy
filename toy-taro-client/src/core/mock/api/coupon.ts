@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
 import { UserStorageManager } from '../../base';
-import { COUPON_STATUS, COUPON_TYPE, ROLE } from '../../constants';
+import { COUPON_STATUS, COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE, ROLE } from '../../constants';
 import { CouponEntity, CouponValidityTime } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 
@@ -23,11 +23,15 @@ const COUPON_THEMES = [
 ];
 
 function generateRandomValidityTime(): CouponValidityTime {
-  const types = ['dateRange', 'dateList', 'weekly'];
+  const types = [
+    COUPON_VALIDITY_TIME_TYPE.DATE_RANGE,
+    COUPON_VALIDITY_TIME_TYPE.DATE_LIST,
+    COUPON_VALIDITY_TIME_TYPE.WEEKLY,
+  ];
   const selectedType = faker.helpers.arrayElement(types);
 
   switch (selectedType) {
-    case 'dateRange':
+    case COUPON_VALIDITY_TIME_TYPE.DATE_RANGE:
       const startTime =
         Math.random() > 0.8
           ? faker.date.soon().getTime()
@@ -35,19 +39,23 @@ function generateRandomValidityTime(): CouponValidityTime {
       const endTime = faker.date
         .soon({ refDate: startTime, days: faker.number.int({ min: 1, max: 3 }) })
         .getTime();
-      return { start_time: startTime, end_time: endTime };
+      return {
+        start_time: startTime,
+        end_time: endTime,
+        type: COUPON_VALIDITY_TIME_TYPE.DATE_RANGE,
+      };
 
-    case 'dateList':
+    case COUPON_VALIDITY_TIME_TYPE.DATE_LIST:
       const dates = Array.from({ length: faker.number.int({ min: 1, max: 2 }) }, () =>
         faker.date.future().getTime(),
       );
-      return { dates };
+      return { dates, type: COUPON_VALIDITY_TIME_TYPE.DATE_LIST };
 
-    case 'weekly':
+    case COUPON_VALIDITY_TIME_TYPE.WEEKLY:
       const days = faker.helpers
         .shuffle([1, 2, 3, 4, 5, 6, 7])
         .slice(0, faker.number.int({ min: 1, max: 3 }));
-      return { days };
+      return { days, type: COUPON_VALIDITY_TIME_TYPE.WEEKLY };
 
     default:
       throw new Error('Unexpected validity type');

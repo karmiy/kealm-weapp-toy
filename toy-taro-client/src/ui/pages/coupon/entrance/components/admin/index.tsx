@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { ScrollView, View } from '@tarojs/components';
+import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
+import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Icon, StatusWrapper, WhiteSpace } from '@ui/components';
 import type { CouponRenderAction } from '@ui/container';
 import { CouponList } from '@ui/container';
 import { useCoupon, useStoreLoadingStatus } from '@ui/viewModel';
-import { COLOR_VARIABLES } from '@/shared/utils/constants';
 import styles from './index.module.scss';
 
 export function CouponAdminPage() {
@@ -14,13 +15,20 @@ export function CouponAdminPage() {
     enableAllIds: true,
   });
 
+  const handleManageCoupon = useCallback((id?: string) => {
+    navigateToPage({
+      pageName: PAGE_ID.COUPON_MANAGE,
+      params: id ? { id } : {},
+    });
+  }, []);
+
   const renderAction: CouponRenderAction = useCallback(
     (id, type) => {
       return (
         <View className={styles.itemAction}>
           {type !== 'expired' ? (
             <>
-              <View>
+              <View onClick={() => handleManageCoupon(id)}>
                 <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
               </View>
               <WhiteSpace size='small' isVertical={false} />
@@ -32,7 +40,7 @@ export function CouponAdminPage() {
         </View>
       );
     },
-    [handleDelete],
+    [handleDelete, handleManageCoupon],
   );
 
   return (
@@ -41,7 +49,7 @@ export function CouponAdminPage() {
         <ScrollView scrollY className={styles.scrollView}>
           <View className={styles.container}>
             <View className={styles.header}>
-              <View className={styles.action}>
+              <View className={styles.action} onClick={() => handleManageCoupon()}>
                 <Icon name='add' color={COLOR_VARIABLES.COLOR_RED} />
                 新增
               </View>

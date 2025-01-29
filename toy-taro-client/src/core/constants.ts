@@ -63,6 +63,11 @@ export enum COUPON_TYPE {
     PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
 }
 
+export enum COUPON_VALIDITY_TIME_TYPE {
+    DATE_RANGE = 'DATE_RANGE',
+    DATE_LIST = 'DATE_LIST',
+    WEEKLY = 'WEEKLY',
+}
 // ----------------------task--------------------------------
 export enum TASK_TYPE {
     DAILY = 'DAILY',

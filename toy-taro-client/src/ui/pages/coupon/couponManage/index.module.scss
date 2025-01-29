@@ -1,26 +1,24 @@
 @import '@ui/styles/index.scss';
 
-.wrapper {
-  box-sizing: border-box;
-  height: 100%;
-  background-color: $--fill-body;
+.checkButtonWrapper {
+  display: flex;
+  align-items: center;
+}
 
-  .scrollView {
-    height: 100%;
+.tagWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 
-    .container {
-      box-sizing: border-box;
-      padding: px(12) px(16);
-    
-      .list {
-        padding: px(16);
-        border-radius: px(12);
-        background-color: $--fill-default;
-      }
+  .tagItem {
+    margin: 0 px(4) px(4) 0;
+  }
 
-      .saveButton {
-        width: 100%;
-      }
-    }
+  .addTag {
+    display: flex;
+    align-items: center;
+    margin: 0 px(4) px(4) 0;
+    color: $--color-red;
+    font-size: px(12);
   }
 }

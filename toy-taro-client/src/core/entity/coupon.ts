@@ -1,15 +1,18 @@
-import { COUPON_STATUS, COUPON_TYPE } from '../constants';
+import { COUPON_STATUS, COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE } from '../constants';
 
 export type CouponValidityDateRange = {
+  type: COUPON_VALIDITY_TIME_TYPE.DATE_RANGE;
   start_time: number;
   end_time: number;
 };
 
 export type CouponValidityDateList = {
+  type: COUPON_VALIDITY_TIME_TYPE.DATE_LIST;
   dates: number[];
 };
 
 export type CouponValidityWeekly = {
+  type: COUPON_VALIDITY_TIME_TYPE.WEEKLY;
   days: number[];
 };
 

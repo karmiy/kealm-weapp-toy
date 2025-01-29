@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { computed, makeObserver, observable } from '@shared/utils/observer';
-import { COUPON_STATUS, COUPON_TYPE } from '../constants';
+import { COUPON_STATUS, COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE } from '../constants';
 import {
   CouponEntity,
   CouponValidityDateList,
@@ -10,15 +10,15 @@ import {
 } from '../entity';
 
 const isDateRange = (validityTime: CouponValidityTime): validityTime is CouponValidityDateRange => {
-  return 'start_time' in validityTime && 'end_time' in validityTime;
+  return validityTime.type === COUPON_VALIDITY_TIME_TYPE.DATE_RANGE;
 };
 
 const isDateList = (validityTime: CouponValidityTime): validityTime is CouponValidityDateList => {
-  return 'dates' in validityTime;
+  return validityTime.type === COUPON_VALIDITY_TIME_TYPE.DATE_LIST;
 };
 
 const isWeekly = (validityTime: CouponValidityTime): validityTime is CouponValidityWeekly => {
-  return 'days' in validityTime;
+  return validityTime.type === COUPON_VALIDITY_TIME_TYPE.WEEKLY;
 };
 
 const numberToWeekday = (num: number) => {
@@ -86,6 +86,31 @@ export class CouponModel {
       return '无门槛';
     }
     return `满${this.minimumOrderValue}可用`;
+  }
+
+  @computed
+  get validityTimeType() {
+    return this.validityTime.type;
+  }
+
+  @computed
+  get sortDates() {
+    if (this.validityTime.type !== COUPON_VALIDITY_TIME_TYPE.DATE_LIST) {
+      return [];
+    }
+    return this.validityTime.dates.sort((a, b) => a - b);
+  }
+
+  getWeeklyLabel(day: number) {
+    return `周${numberToWeekday(day)}`;
+  }
+
+  @computed
+  get sortDays() {
+    if (this.validityTime.type !== COUPON_VALIDITY_TIME_TYPE.WEEKLY) {
+      return [];
+    }
+    return this.validityTime.days.sort((a, b) => a - b);
   }
 
   @computed
