@@ -4,7 +4,7 @@ import { TAB_BAR_ID } from '@shared/tabBar';
 import { TASK_TYPE } from '@core';
 import { FallbackImage, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
-import { TaskCategory } from './category';
+import { TaskCategory } from './components';
 import styles from './index.module.scss';
 
 const TASK_TYPE_LIST = [

@@ -5,12 +5,12 @@ import { Icon, WhiteSpace } from '@ui/components';
 import { COLOR_VARIABLES } from '@/shared/utils/constants';
 import styles from './index.module.scss';
 
-interface ItemProps {
+interface CategoryItemProps {
   onClick?: (id: string) => void;
   onEdit?: (id: string) => void;
 }
 
-export const Item = (props: ItemProps) => {
+export const CategoryItem = (props: CategoryItemProps) => {
   const { onClick, onEdit } = props;
   const handleEdit = useCallback(
     (e: ITouchEvent) => {
@@ -27,7 +27,7 @@ export const Item = (props: ItemProps) => {
   }, []);
 
   return (
-    <View className={styles.itemWrapper} onClick={onClick}>
+    <View className={styles.categoryItemWrapper} onClick={() => onClick?.('1')}>
       <Text>数字电子</Text>
       <View className={styles.actionWrapper}>
         <View onClick={handleEdit}>

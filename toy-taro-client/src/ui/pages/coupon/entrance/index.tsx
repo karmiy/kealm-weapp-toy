@@ -3,8 +3,7 @@ import { View } from '@tarojs/components';
 import { setNavigationBarTitle } from '@tarojs/taro';
 import { SafeAreaBar } from '@ui/components';
 import { useUserInfo } from '@ui/viewModel';
-import { CouponAdminPage } from './admin';
-import { CouponUserPage } from './user';
+import { CouponAdminPage, CouponUserPage } from './components';
 import styles from './index.module.scss';
 
 export default function () {

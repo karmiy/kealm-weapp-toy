@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, Calendar, SafeAreaBar } from '@ui/components';
 import { useCheckIn } from '@ui/viewModel';
-import { RewardItem } from './rewardItem';
+import { RewardItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {

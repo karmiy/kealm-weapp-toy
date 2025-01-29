@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import { STORE_NAME, TASK_TYPE } from '@core';
 import { TabPanel, Tabs } from '@ui/components';
 import { useStoreList } from '@ui/viewModel';
-import { TaskList } from '../list';
+import { TaskList } from '../taskList';
 import styles from './index.module.scss';
 
 interface TaskCategoryProps {

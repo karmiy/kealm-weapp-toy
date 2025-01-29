@@ -7,11 +7,11 @@ import { ProductCard } from '@ui/container';
 import { useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
-interface ItemProps {
+interface RecordItemProps {
   id: string;
 }
 
-const Item = (props: ItemProps) => {
+const RecordItem = (props: RecordItemProps) => {
   const { id } = props;
   const order = useStoreById(STORE_NAME.ORDER, id);
   const [isRequestRevoking, setIsRequestRevoking] = useState(false);
@@ -77,4 +77,4 @@ const Item = (props: ItemProps) => {
   );
 };
 
-export { Item };
+export { RecordItem };

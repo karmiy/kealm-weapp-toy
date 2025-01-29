@@ -7,13 +7,13 @@ import { ProductCard } from '@ui/container';
 import { useProductShopCart, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
-interface ItemProps {
+interface ShopItemProps {
   id: string;
   checked?: boolean;
   onChecked?: (checked: boolean) => void;
 }
 
-const Item = (props: ItemProps) => {
+const ShopItem = (props: ShopItemProps) => {
   const { id, checked = false, onChecked } = props;
   const productShotCart = useStoreById(STORE_NAME.PRODUCT_SHOP_CART, id);
   const product = useStoreById(STORE_NAME.PRODUCT, productShotCart?.productId);
@@ -61,4 +61,4 @@ const Item = (props: ItemProps) => {
   );
 };
 
-export { Item };
+export { ShopItem };

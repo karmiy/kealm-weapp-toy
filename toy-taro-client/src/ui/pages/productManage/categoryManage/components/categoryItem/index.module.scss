@@ -1,0 +1,16 @@
+@import '@ui/styles/index.scss';
+
+.categoryItemWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: px(16);
+  border-radius: px(12);
+  box-shadow: $--box-shadow-menu;
+
+  .actionWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

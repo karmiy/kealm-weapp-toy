@@ -1,0 +1,16 @@
+@import '@ui/styles/index.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: px(8);
+
+  .action {
+    color: $--color-red;
+  }
+}
+
+.editCategoryWrapper {
+  padding: px(16);
+}

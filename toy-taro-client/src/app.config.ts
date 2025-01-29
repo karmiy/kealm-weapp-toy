@@ -62,7 +62,7 @@ export default defineAppConfig({
     },
     {
       root: 'ui/pages/coupon/',
-      pages: ['index'],
+      pages: ['entrance/index', 'couponManage/index'],
     },
     {
       root: 'ui/pages/exchangeRecord/',
@@ -74,11 +74,7 @@ export default defineAppConfig({
     },
     {
       root: 'ui/pages/productManage/',
-      pages: ['index'],
-    },
-    {
-      root: 'ui/pages/productCategoryManage/',
-      pages: ['index'],
+      pages: ['entrance/index', 'categoryManage/index'],
     },
   ],
   // entryPagePath: 'ui/pages/coupon/index',

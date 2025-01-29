@@ -1,8 +1,8 @@
 import { Fragment, useCallback, useState } from 'react';
-import { ScrollView, Text, View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import { navigateBack } from '@tarojs/taro';
-import { Button, FloatLayout, Input, SafeAreaBar, WhiteSpace } from '@ui/components';
-import { FormItem } from '@ui/container';
+import { Button, FloatLayout, Input, WhiteSpace } from '@ui/components';
+import { FormItem, Layout } from '@ui/container';
 import { CategoryItem } from './components';
 import styles from './index.module.scss';
 
@@ -21,28 +21,21 @@ export default function () {
   }, []);
 
   return (
-    <View className={styles.wrapper}>
-      <ScrollView scrollY className={styles.scrollView}>
-        <View className={styles.container}>
-          <View className={styles.list}>
-            <View className={styles.header}>
-              <Text>商品分类</Text>
-              <View className={styles.action} onClick={() => setShowEditCategory(true)}>
-                新增分类
-              </View>
-            </View>
-            {[...Array(20).keys()].map(index => {
-              return (
-                <Fragment key={index}>
-                  {index !== 0 ? <WhiteSpace size='medium' /> : null}
-                  <CategoryItem onClick={handleCategorySelect} onEdit={handleEditCategory} />
-                </Fragment>
-              );
-            })}
-          </View>
+    <Layout type='card'>
+      <View className={styles.header}>
+        <Text>商品分类</Text>
+        <View className={styles.action} onClick={() => setShowEditCategory(true)}>
+          新增分类
         </View>
-        <SafeAreaBar inset='bottom' />
-      </ScrollView>
+      </View>
+      {[...Array(20).keys()].map(index => {
+        return (
+          <Fragment key={index}>
+            {index !== 0 ? <WhiteSpace size='medium' /> : null}
+            <CategoryItem onClick={handleCategorySelect} onEdit={handleEditCategory} />
+          </Fragment>
+        );
+      })}
       <FloatLayout
         visible={showEditCategory}
         onClose={() => {
@@ -67,6 +60,6 @@ export default function () {
           </Button>
         </View>
       </FloatLayout>
-    </View>
+    </Layout>
   );
 }

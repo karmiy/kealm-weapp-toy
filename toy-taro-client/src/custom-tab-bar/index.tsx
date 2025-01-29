@@ -31,8 +31,13 @@ const CustomTabBar = forwardRef<CustomTabBarRef>((_, ref) => {
             className={styles.tabBarItem}
             onClick={() => switchTab({ url: pagePath })}
           >
-            <CoverImage src={selected === id ? selectedIconPath : iconPath} />
-            <CoverView className={clsx({ [styles.isActive]: selected === id })}>{text}</CoverView>
+            <CoverImage
+              className={styles.image}
+              src={selected === id ? selectedIconPath : iconPath}
+            />
+            <CoverView className={clsx(styles.label, { [styles.isActive]: selected === id })}>
+              {text}
+            </CoverView>
           </CoverView>
         );
       })}

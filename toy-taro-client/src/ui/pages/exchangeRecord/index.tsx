@@ -3,7 +3,7 @@ import { ScrollView, View } from '@tarojs/components';
 import { sdk, STORE_NAME } from '@core';
 import { SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
 import { useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
-import { Item } from './item';
+import { RecordItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
@@ -25,7 +25,7 @@ export default function () {
                 return (
                   <Fragment key={id}>
                     <WhiteSpace size='medium' />
-                    <Item id={id} />
+                    <RecordItem id={id} />
                   </Fragment>
                 );
               })}

@@ -3,8 +3,7 @@ import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
 import { useCoupon, useProductShopCart } from '@ui/viewModel';
-import { FormItem } from './formItem';
-import { ProductItem } from './productItem';
+import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {

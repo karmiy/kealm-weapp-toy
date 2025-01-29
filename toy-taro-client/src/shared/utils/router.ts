@@ -12,6 +12,12 @@ interface NavigateOptions {
   params?: Record<string, string | boolean | number>;
 }
 
+const pagePathMap = new Map<PAGE_ID, string>([
+  [PAGE_ID.PRODUCT_MANAGE, 'productManage/entrance'],
+  [PAGE_ID.PRODUCT_CATEGORY_MANAGE, 'productManage/categoryManage'],
+  [PAGE_ID.COUPON, 'coupon/entrance'],
+  [PAGE_ID.COUPON_MANAGE, 'coupon/couponManage'],
+]);
 /* 跳转页面 */
 export function navigateToPage(options: NavigateOptions) {
   const {
@@ -27,7 +33,7 @@ export function navigateToPage(options: NavigateOptions) {
     return s;
   }, '');
 
-  const url = `/ui/pages/${pageName}/index${search}`;
+  const url = `/ui/pages/${pagePathMap.get(pageName) ?? pageName}/index${search}`;
 
   logger.info('navigateToPage', {
     pageName,

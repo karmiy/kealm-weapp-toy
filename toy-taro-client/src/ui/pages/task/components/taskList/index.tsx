@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import { View } from '@tarojs/components';
 import { TASK_TYPE } from '@core';
-import { StatusWrapper, WhiteSpace } from '@ui/components';
+import { StatusWrapper } from '@ui/components';
 import { useTaskCategory } from '@ui/viewModel';
-import { TaskItem } from '../item';
+import { TaskItem } from '../taskItem';
 import styles from './index.module.scss';
 
 interface TaskListProps {

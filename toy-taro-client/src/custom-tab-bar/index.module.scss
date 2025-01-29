@@ -28,13 +28,13 @@
     align-items: center;
     flex-direction: column;
 
-    cover-image {
+    .image {
       width: px(27);
       height: px(27);
       margin-bottom: px(2);
     }
 
-    cover-view {
+    .label {
       font-size: px(10);
       color: $--text-color-base;
 

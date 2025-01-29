@@ -2,11 +2,7 @@ import { ScrollView, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
 import { SafeAreaBar } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
-import { Carousel } from './carousel';
-import { Category } from './category';
-import { Hub } from './hub';
-import { LimitedTimeOffer } from './limitedTimeOffer';
-import { TopBar } from './topBar';
+import { Carousel, Category, Hub, LimitedTimeOffer, TopBar } from './components';
 import styles from './index.module.scss';
 
 function Home() {

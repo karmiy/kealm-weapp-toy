@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import { AtProgress } from 'taro-ui';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
-import { Button } from '@ui/components';
 import styles from './index.module.scss';
 
 interface RewardItemProps {

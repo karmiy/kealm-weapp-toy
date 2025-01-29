@@ -7,7 +7,7 @@ import { STORE_NAME } from '@core';
 import { Button, CheckButton, StatusWrapper, WhiteSpace } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
 import { useProductShopCart, useStoreIds, useStoreLoadingStatus } from '@ui/viewModel';
-import { Item } from './item';
+import { ShopItem } from './components';
 import styles from './index.module.scss';
 
 function ShopCart() {
@@ -30,7 +30,7 @@ function ShopCart() {
             <View className={styles.container}>
               {ids.map(id => {
                 return (
-                  <Item
+                  <ShopItem
                     key={id}
                     id={id}
                     checked={checkedIds.includes(id)}
