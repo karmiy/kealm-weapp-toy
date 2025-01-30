@@ -47,8 +47,10 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
   } = props;
 
   const customStyles = useMemo(() => {
-    const baseStyles: Record<string, Undefinable<string>> = {
+    const baseStyles: Record<string, Undefinable<string | number>> = {
       '--button-plain-active-color': colorToRgba(color ?? COLOR_VARIABLES.COLOR_RED, 0.1),
+      width,
+      padding: typeof width !== 'undefined' ? 0 : undefined,
     };
     if (!color) {
       return baseStyles;
@@ -69,7 +71,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
       };
     }
     return baseStyles;
-  }, [color, type, bgColor]);
+  }, [color, width, type, bgColor]);
 
   const [active, setActive] = useState(false);
 
@@ -129,7 +131,6 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
       style={{
         ...customStyles,
         ...style,
-        width,
       }}
       onClick={!disabled ? onClick : undefined}
       onTouchStart={onTouchStart}

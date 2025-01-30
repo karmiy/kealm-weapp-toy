@@ -17,7 +17,7 @@ interface RateProps {
 const Rate = (props: RateProps) => {
   const { className, size = 14, value, onChange, max = 5 } = props;
   const space = size / 4;
-  const [currentChecked, setCurrentChecked] = useValue<number>({
+  const [currentValue, setCurrentValue] = useValue<number>({
     value,
     defaultValue: 0,
     onChange,
@@ -25,10 +25,11 @@ const Rate = (props: RateProps) => {
 
   const Stars = useMemo(() => {
     return Array.from({ length: max }).map((_, index) => {
-      const isActive = index <= currentChecked;
+      const v = index + 1;
+      const isActive = v <= currentValue;
       const style = { marginLeft: index ? space : 0 };
       return (
-        <View key={index} onClick={() => setCurrentChecked(index)} style={style}>
+        <View key={v} onClick={() => setCurrentValue(v)} style={style}>
           <Icon
             size={size}
             color={
@@ -39,7 +40,7 @@ const Rate = (props: RateProps) => {
         </View>
       );
     });
-  }, [currentChecked, max, setCurrentChecked, size, space]);
+  }, [currentValue, max, setCurrentValue, size, space]);
 
   return <View className={clsx(styles.wrapper, className)}>{Stars}</View>;
 };
