@@ -8,10 +8,11 @@ import styles from './index.module.scss';
 interface StatusViewProps {
   className?: string;
   type: 'loading' | 'empty';
-  size?: 'flex' | 'fill' | { width?: number; height?: number };
+  size?: 'flex' | 'fill' | 'overlay' | { width?: number; height?: number };
 }
 
 interface StatusWrapperProps extends Omit<StatusViewProps, 'type'> {
+  className?: string;
   loading?: boolean;
   count?: number;
 }
@@ -54,7 +55,11 @@ const StatusView = (props: StatusViewProps) => {
     <View
       className={clsx(
         styles.statusViewWrapper,
-        { [styles.isFlex]: size === 'flex', [styles.isFill]: size === 'fill' },
+        {
+          [styles.isFlex]: size === 'flex',
+          [styles.isFill]: size === 'fill',
+          [styles.isOverlay]: size === 'overlay',
+        },
         className,
       )}
       style={sizeStyle}
@@ -66,15 +71,28 @@ const StatusView = (props: StatusViewProps) => {
 };
 
 const StatusWrapper = (props: PropsWithChildren<StatusWrapperProps>) => {
-  const { loading, count, children, ...rest } = props;
+  const { className, loading, count, children, ...rest } = props;
 
-  if (loading && !count) {
-    return <StatusView {...rest} type='loading' />;
+  const StatusLayout = useMemo(() => {
+    if (loading && !count) {
+      return <StatusView {...rest} type='loading' />;
+    }
+    if (!loading && !count) {
+      return <StatusView {...rest} type='empty' />;
+    }
+    return null;
+  }, [count, loading, rest]);
+
+  if (rest.size === 'overlay') {
+    return (
+      <View className={clsx(styles.statusWrapper, className)}>
+        {StatusLayout}
+        {children}
+      </View>
+    );
   }
-  if (!loading && !count) {
-    return <StatusView {...rest} type='empty' />;
-  }
-  return children;
+
+  return StatusLayout ?? children;
 };
 
 export { StatusView, StatusWrapper };
