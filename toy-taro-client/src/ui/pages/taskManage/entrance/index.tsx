@@ -81,6 +81,10 @@ export default function () {
     });
   }, []);
 
+  const handleEditCategory = useCallback(() => {
+    navigateToPage({ pageName: PAGE_ID.TASK_CATEGORY_MANAGE });
+  }, []);
+
   return (
     <StatusWrapper loading={isLoading} count={isLoading ? 0 : 1} size='overlay'>
       <Layout type='card'>
@@ -109,7 +113,7 @@ export default function () {
             value={taskTypeIndex}
           />
         </FormItem>
-        <FormItem title='任务分类' required>
+        <FormItem title='任务分类' required showSettingEntrance onSettingClick={handleEditCategory}>
           <PickerSelector
             placeholder='请选择任务分类'
             type='select'

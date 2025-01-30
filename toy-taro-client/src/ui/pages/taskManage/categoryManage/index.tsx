@@ -6,15 +6,21 @@ import { CategoryForm } from './components';
 import styles from './index.module.scss';
 
 const CATEGORY_LIST = [
-  { id: '1', name: '卡牌' },
-  { id: '2', name: '美乐蒂' },
-  { id: '3', name: '玩偶' },
-  { id: '4', name: '赛车' },
-  { id: '5', name: '益智游戏' },
-  { id: '6', name: '泡泡玛特' },
-  { id: '7', name: '贴纸' },
-  { id: '8', name: '安静书' },
-  { id: '9', name: '文具' },
+  { id: '1', name: '学习' },
+  { id: '2', name: '运动' },
+  { id: '3', name: '生活' },
+  { id: '4', name: '兴趣' },
+  { id: '5', name: '工作' },
+  { id: '6', name: '健康' },
+  { id: '7', name: '社交' },
+  { id: '8', name: '环保' },
+  { id: '9', name: '志愿服务' },
+  { id: '10', name: '技能提升' },
+  { id: '11', name: '旅行' },
+  { id: '12', name: '财务' },
+  { id: '13', name: '创造' },
+  { id: '14', name: '休息' },
+  { id: '15', name: '自我提升' },
 ];
 
 export default function () {
@@ -34,7 +40,7 @@ export default function () {
   return (
     <Fragment>
       <ConfigListPanel
-        title='商品分类'
+        title='任务分类'
         addButtonText='新增分类'
         list={CATEGORY_LIST}
         labelKey='name'

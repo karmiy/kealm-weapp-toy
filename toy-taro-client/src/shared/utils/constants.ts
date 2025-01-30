@@ -17,6 +17,7 @@ export enum PAGE_ID {
     CHECKOUT = 'checkout',
     TASK = 'task',
     TASK_MANAGE = 'taskManage',
+    TASK_CATEGORY_MANAGE = 'taskCategoryManage',
     MINE = 'mine',
     COUPON = 'coupon',
     COUPON_MANAGE = 'couponManage',
