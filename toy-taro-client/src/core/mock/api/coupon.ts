@@ -4,6 +4,7 @@ import { UserStorageManager } from '../../base';
 import { COUPON_STATUS, COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE } from '../../constants';
 import { CouponEntity, CouponValidityTime } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
+import { createMockApiCache } from '../utils';
 
 const COUPON_THEMES = [
   '节日特惠券',
@@ -63,7 +64,7 @@ function generateRandomValidityTime(): CouponValidityTime {
 }
 
 export const mockCouponApi = {
-  [MOCK_API_NAME.GET_COUPON_LIST]: async (): Promise<CouponEntity[]> => {
+  [MOCK_API_NAME.GET_COUPON_LIST]: createMockApiCache(async (): Promise<CouponEntity[]> => {
     await sleep(100);
     return faker.helpers.multiple(
       () => {
@@ -71,6 +72,10 @@ export const mockCouponApi = {
           COUPON_TYPE.CASH_DISCOUNT,
           COUPON_TYPE.PERCENTAGE_DISCOUNT,
         ]);
+        const value =
+          type === COUPON_TYPE.CASH_DISCOUNT
+            ? faker.number.int({ min: 1, max: 100 })
+            : faker.number.int({ min: 10, max: 99 });
         const isAdmin = UserStorageManager.getInstance().isAdmin;
         return {
           id: faker.string.uuid(),
@@ -82,13 +87,10 @@ export const mockCouponApi = {
             ? faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED])
             : COUPON_STATUS.ACTIVE,
           type,
-          value:
-            type === COUPON_TYPE.CASH_DISCOUNT
-              ? faker.number.int({ min: 1, max: 100 })
-              : faker.number.int({ min: 10, max: 99 }),
+          value,
           minimum_order_value: faker.helpers.arrayElement([
             0,
-            faker.number.int({ min: 1, max: 100 }),
+            faker.number.int({ min: 1, max: type === COUPON_TYPE.CASH_DISCOUNT ? value : 100 }),
           ]),
         };
       },
@@ -96,5 +98,5 @@ export const mockCouponApi = {
         count: faker.number.int({ min: 16, max: 36 }),
       },
     );
-  },
+  }),
 };

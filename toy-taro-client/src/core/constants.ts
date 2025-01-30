@@ -79,7 +79,6 @@ export enum TASK_TYPE {
 export enum TASK_STATUS {
     INITIAL = 'INITIAL',
     PENDING_APPROVAL = 'PENDING_APPROVAL',
-    APPROVED = 'APPROVED',
 }
 
 export enum TASK_REWARD_TYPE {

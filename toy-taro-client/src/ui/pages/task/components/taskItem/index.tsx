@@ -1,10 +1,12 @@
 import { useCallback } from 'react';
-import { Text, View } from '@tarojs/components';
+import { PAGE_ID } from '@shared/utils/constants';
 import { showToast } from '@shared/utils/operateFeedback';
+import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
-import { Button, Rate } from '@ui/components';
-import { useStoreById, useTaskAction } from '@ui/viewModel';
-import styles from './index.module.scss';
+import { Button } from '@ui/components';
+import { TaskCard } from '@ui/container';
+import { useStoreById, useTaskAction, useUserInfo } from '@ui/viewModel';
+// import styles from './index.module.scss';
 
 interface TaskItemProps {
   id: string;
@@ -18,7 +20,8 @@ const SUBMIT_APPROVE_MES = {
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
-  const { submitApprovalRequest, isSubmitApproving } = useTaskAction();
+  const { isAdmin } = useUserInfo();
+  const { submitApprovalRequest, isActionLoading } = useTaskAction();
 
   const handleSubmitApproval = useCallback(() => {
     submitApprovalRequest(id, {
@@ -27,7 +30,7 @@ const TaskItem = (props: TaskItemProps) => {
     });
   }, [submitApprovalRequest, id]);
 
-  if (!task || task.isApproved) {
+  if (!task) {
     return null;
   }
 
@@ -35,24 +38,28 @@ const TaskItem = (props: TaskItemProps) => {
   const isPendingApprove = task.isPendingApprove;
 
   return (
-    <View className={styles.wrapper}>
-      <View className={styles.header}>
-        <View className={styles.titleWrapper}>
-          <Text className={styles.title}>{task.name}</Text>
-          <Text className={styles.desc}>{task.desc}</Text>
-        </View>
-        <Text className={styles.scoreWrapper}>{task.rewardTitle}</Text>
-      </View>
-      <View className={styles.footer}>
-        <View className={styles.difficulty}>
-          难度：
-          <Rate value={difficulty} max={difficulty} size={12} />
-        </View>
-        <Button disabled={isPendingApprove || isSubmitApproving} onClick={handleSubmitApproval}>
-          {!isPendingApprove ? '完成' : '审批中'}
-        </Button>
-      </View>
-    </View>
+    <TaskCard
+      name={task.name}
+      desc={task.desc}
+      rewardTitle={task.getRewardTitle(task.reward)}
+      difficulty={difficulty}
+      action={
+        isAdmin ? (
+          <Button
+            type='plain'
+            disabled={isActionLoading}
+            icon='edit'
+            onClick={() => navigateToPage({ pageName: PAGE_ID.TASK_MANAGE, params: { id } })}
+          >
+            编辑
+          </Button>
+        ) : (
+          <Button disabled={isPendingApprove || isActionLoading} onClick={handleSubmitApproval}>
+            {!isPendingApprove ? '完成' : '审批中'}
+          </Button>
+        )
+      }
+    />
   );
 };
 

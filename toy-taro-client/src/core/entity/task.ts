@@ -6,13 +6,16 @@ export type TaskReward =
       value: number;
     }
   | {
+      couponId: string;
       type: TASK_REWARD_TYPE.CASH_DISCOUNT;
       value: number;
       minimumOrderValue: number;
     }
   | {
+      couponId: string;
       type: TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT;
       value: number;
+      minimumOrderValue: number;
     };
 
 export interface TaskEntity {
@@ -21,7 +24,7 @@ export interface TaskEntity {
   desc: string;
   type: TASK_TYPE;
   category_id: string;
-  status: TASK_STATUS;
+  status?: TASK_STATUS; // 管理员没有返回这个字段
   reward: TaskReward;
   difficulty: number;
   user_id: string;

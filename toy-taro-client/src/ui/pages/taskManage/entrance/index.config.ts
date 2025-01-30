@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '分类管理',
+  navigationBarTitleText: '配置任务',
   disableScroll: true,
 });

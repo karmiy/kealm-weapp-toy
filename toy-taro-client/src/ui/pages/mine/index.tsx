@@ -118,7 +118,7 @@ function Mine() {
             >
               <View className={styles.title}>
                 <Icon name='product' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-                <Text>商品管理</Text>
+                <Text>商品录入</Text>
               </View>
               <Icon name='arrow-right' size={14} />
             </View>

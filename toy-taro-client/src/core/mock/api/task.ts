@@ -1,8 +1,17 @@
 import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
-import { TASK_REWARD_TYPE, TASK_STATUS, TASK_TYPE } from '../../constants';
-import { TaskCategoryEntity, TaskEntity } from '../../entity';
+import { UserStorageManager } from '../../base';
+import {
+  COUPON_STATUS,
+  COUPON_TYPE,
+  COUPON_VALIDITY_TIME_TYPE,
+  TASK_REWARD_TYPE,
+  TASK_STATUS,
+  TASK_TYPE,
+} from '../../constants';
+import { CouponEntity, TaskCategoryEntity, TaskEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
+import { mockCouponApi } from './coupon';
 
 const verbNounMap: Record<string, string[]> = {
   完成: ['今日阅读任务', '功课', '数学练习', '拼图300片', '拼图500片', '拼图1000片', '英语听力'],
@@ -53,6 +62,22 @@ const CATEGORY_LIST = [
   { id: '15', name: '自我提升' },
 ];
 
+function isCouponExpired(coupon: CouponEntity) {
+  if (coupon.validity_time.type === COUPON_VALIDITY_TIME_TYPE.WEEKLY) {
+    return false;
+  }
+  const now = new Date().getTime();
+  if (coupon.validity_time.type === COUPON_VALIDITY_TIME_TYPE.DATE_RANGE) {
+    return coupon.validity_time.end_time < now;
+  }
+  if (coupon.validity_time.type === COUPON_VALIDITY_TIME_TYPE.DATE_LIST) {
+    const { dates } = coupon.validity_time;
+    return !dates.some(date => date >= now);
+  }
+
+  return true;
+}
+
 export const mockTaskApi = {
   [MOCK_API_NAME.GET_TASK_CATEGORY_LIST]: async (): Promise<TaskCategoryEntity[]> => {
     await sleep(300);
@@ -65,9 +90,35 @@ export const mockTaskApi = {
   [MOCK_API_NAME.GET_TASK_LIST]: async (): Promise<TaskEntity[]> => {
     await sleep(300);
     const categoryIds = CATEGORY_LIST.map(item => item.id);
+    const coupons = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
+    const activeCoupons = coupons.filter(
+      coupon => coupon.status === COUPON_STATUS.ACTIVE && !isCouponExpired(coupon),
+    );
     return faker.helpers.multiple(
       () => {
         const name = faker.helpers.arrayElement(taskTitles);
+        const isAdmin = UserStorageManager.getInstance().isAdmin;
+        const type = faker.helpers.arrayElement([
+          TASK_REWARD_TYPE.POINTS,
+          TASK_REWARD_TYPE.CASH_DISCOUNT,
+          TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
+        ]);
+        const coupon = faker.helpers.arrayElement(activeCoupons);
+        const reward =
+          type === TASK_REWARD_TYPE.POINTS || !coupon
+            ? {
+                type: TASK_REWARD_TYPE.POINTS as const,
+                value: faker.number.int({ min: 10, max: 99 }),
+              }
+            : {
+                type:
+                  coupon.type === COUPON_TYPE.CASH_DISCOUNT
+                    ? (TASK_REWARD_TYPE.CASH_DISCOUNT as const)
+                    : (TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT as const),
+                couponId: coupon.id,
+                minimumOrderValue: coupon.minimum_order_value,
+                value: coupon.value,
+              };
         return {
           id: faker.string.uuid(),
           name,
@@ -79,20 +130,10 @@ export const mockTaskApi = {
             TASK_TYPE.CHALLENGE,
           ]),
           category_id: faker.helpers.arrayElement(categoryIds),
-          status: faker.helpers.arrayElement([
-            TASK_STATUS.INITIAL,
-            TASK_STATUS.PENDING_APPROVAL,
-            TASK_STATUS.APPROVED,
-          ]),
-          reward: {
-            type: faker.helpers.arrayElement([
-              TASK_REWARD_TYPE.POINTS,
-              TASK_REWARD_TYPE.CASH_DISCOUNT,
-              TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-            ]),
-            value: faker.number.int({ min: 10, max: 99 }),
-            minimumOrderValue: faker.number.int({ min: 100, max: 300 }),
-          },
+          status: !isAdmin
+            ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
+            : undefined,
+          reward,
           difficulty: faker.number.int({ min: 1, max: 5 }),
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),

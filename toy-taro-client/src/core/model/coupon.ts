@@ -29,6 +29,7 @@ const numberToWeekday = (num: number) => {
 export class CouponModel {
   id: string;
 
+  @observable
   name: string;
 
   userId: string;
@@ -41,10 +42,13 @@ export class CouponModel {
   @observable
   status: COUPON_STATUS;
 
+  @observable
   type: COUPON_TYPE;
 
+  @observable
   value: number;
 
+  @observable
   minimumOrderValue: number;
 
   constructor(entity: CouponEntity) {
@@ -74,6 +78,7 @@ export class CouponModel {
     return '全场商品可用';
   }
 
+  @computed
   get discountTip() {
     if (this.type === COUPON_TYPE.CASH_DISCOUNT) {
       return `${this.value}`;
@@ -81,11 +86,19 @@ export class CouponModel {
     return `${this.value / 10}折`;
   }
 
+  @computed
   get conditionTip() {
     if (this.minimumOrderValue === 0) {
       return '无门槛';
     }
     return `满${this.minimumOrderValue}可用`;
+  }
+
+  @computed
+  get detailTip() {
+    const discount =
+      this.type === COUPON_TYPE.CASH_DISCOUNT ? `减${this.value}` : `${this.value / 10}折`;
+    return `${this.name} ${discount}(${this.conditionTip})`;
   }
 
   @computed

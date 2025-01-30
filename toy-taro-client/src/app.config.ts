@@ -76,6 +76,10 @@ export default defineAppConfig({
       root: 'ui/pages/productManage/',
       pages: ['entrance/index', 'categoryManage/index'],
     },
+    {
+      root: 'ui/pages/taskManage/',
+      pages: ['entrance/index'],
+    },
   ],
-  // entryPagePath: 'ui/pages/coupon/entrance/index',
+  // entryPagePath: 'ui/pages/taskManage/entrance/index',
 });

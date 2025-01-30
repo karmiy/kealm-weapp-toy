@@ -94,6 +94,7 @@ export function useCoupon(props?: Props) {
         usageScopeTip: coupon.usageScopeTip,
         conditionTip: coupon.conditionTip,
         expirationTip: coupon.expirationTip,
+        detailTip: coupon.detailTip,
         type: discountInfo.enabled ? ('selectable' as const) : ('unselectable' as const),
         selectable: discountInfo.enabled,
         discountScore: discountInfo.score,
@@ -109,6 +110,7 @@ export function useCoupon(props?: Props) {
         usageScopeTip: coupon.usageScopeTip,
         conditionTip: coupon.conditionTip,
         expirationTip: coupon.expirationTip,
+        detailTip: coupon.detailTip,
         type: 'used' as const,
       };
     });
@@ -122,6 +124,7 @@ export function useCoupon(props?: Props) {
         usageScopeTip: coupon.usageScopeTip,
         conditionTip: coupon.conditionTip,
         expirationTip: coupon.expirationTip,
+        detailTip: coupon.detailTip,
         type: 'expired' as const,
       };
     });
@@ -142,6 +145,7 @@ export function useCoupon(props?: Props) {
         usageScopeTip: coupon.usageScopeTip,
         conditionTip: coupon.conditionTip,
         expirationTip: coupon.expirationTip,
+        detailTip: coupon.detailTip,
         type,
       };
     });

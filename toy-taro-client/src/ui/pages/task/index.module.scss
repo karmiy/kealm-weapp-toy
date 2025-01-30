@@ -7,7 +7,7 @@
   background-color: $--fill-default;
 }
 
-.header {
+.userHeader {
   flex-shrink: 0;
   display: flex;
   border-radius: px(12);
@@ -47,6 +47,20 @@
   .avatar {
     width: px(70);
     height: px(70);
+  }
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 px(14);
+
+  .action {
+    display: flex;
+    align-items: center;
+    color: $--color-red;
+    font-size: px(14);
   }
 }
 

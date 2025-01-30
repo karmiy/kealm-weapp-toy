@@ -17,6 +17,6 @@ export class TaskCategoryController extends AbstractCategoryController<TaskModel
   }
 
   protected isMatchFunc(model: TaskModel) {
-    return model.status !== TASK_STATUS.APPROVED;
+    return true;
   }
 }

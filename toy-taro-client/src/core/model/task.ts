@@ -5,19 +5,25 @@ import { TaskEntity, TaskReward } from '../entity';
 export class TaskModel {
   id: string;
 
+  @observable
   name: string;
 
+  @observable
   desc: string;
 
+  @observable
   type: TASK_TYPE;
 
+  @observable
   categoryId: string;
 
   @observable
   status: TASK_STATUS;
 
+  @observable
   reward: TaskReward;
 
+  @observable
   difficulty: number;
 
   userId: string;
@@ -49,7 +55,7 @@ export class TaskModel {
     this.desc = desc;
     this.type = type;
     this.categoryId = category_id;
-    this.status = status;
+    this.status = status ?? TASK_STATUS.INITIAL;
     this.reward = reward;
     this.difficulty = difficulty;
   }
@@ -60,20 +66,40 @@ export class TaskModel {
   }
 
   @computed
-  get isApproved() {
-    return this.status === TASK_STATUS.APPROVED;
+  get couponId() {
+    if (this.reward.type === TASK_REWARD_TYPE.POINTS) {
+      return;
+    }
+    return this.reward.couponId;
   }
 
   @computed
-  get rewardTitle() {
-    const reward = this.reward;
+  get isCouponReward() {
+    return this.reward.type !== TASK_REWARD_TYPE.POINTS;
+  }
+
+  @computed
+  get pointsValue() {
+    if (this.isCouponReward) {
+      return;
+    }
+    return this.reward.value;
+  }
+
+  getRewardTitle(reward: TaskReward) {
     switch (reward.type) {
       case TASK_REWARD_TYPE.POINTS:
         return `+${reward.value}积分`;
       case TASK_REWARD_TYPE.CASH_DISCOUNT:
-        return `满${reward.minimumOrderValue}减${reward.value}券`;
       case TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT:
-        return `${reward.value / 10}折券`;
+        const conditionTip = reward.minimumOrderValue
+          ? `满${reward.minimumOrderValue}可用`
+          : '无门槛';
+        const titleTip =
+          reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT
+            ? `减${reward.value}券`
+            : `${reward.value / 10}折券`;
+        return `${titleTip}(${conditionTip})`;
       default:
         return '';
     }

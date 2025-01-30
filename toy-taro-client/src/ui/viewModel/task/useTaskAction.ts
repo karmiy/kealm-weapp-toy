@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { sdk } from '@core';
 
 export function useTaskAction() {
-  const [isSubmitApproving, setIsSubmitApproving] = useState(false);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   const submitApprovalRequest = useCallback(
     async (
@@ -13,20 +13,20 @@ export function useTaskAction() {
       },
     ) => {
       const { success, fallback } = callback ?? {};
-      setIsSubmitApproving(true);
+      setIsActionLoading(true);
       try {
         await sdk.modules.task.submitApprovalRequest(id);
         success?.();
       } catch {
         fallback?.();
       }
-      setIsSubmitApproving(false);
+      setIsActionLoading(false);
     },
     [],
   );
 
   return {
     submitApprovalRequest,
-    isSubmitApproving,
+    isActionLoading,
   };
 }

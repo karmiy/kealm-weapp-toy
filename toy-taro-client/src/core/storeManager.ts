@@ -99,8 +99,8 @@ class StoreManager<
       });
 
       const currentIds = this.getIds(storeName);
-      !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
       this._notifySubscribers(storeName);
+      !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
     } else if (type === HANDLER_TYPE.SINGLE) {
       if (Array.isArray(payload)) {
         throw new Error(`[refresh]Payload for ${storeName} must not be an array for type SINGLE`);
@@ -110,8 +110,8 @@ class StoreManager<
       this._singleStores.set(storeName, model);
 
       this._notifyIdSubscribers(storeName, model.id);
-      prevModel?.id !== model.id && this._notifyIdListSubscribers(storeName);
       this._notifySubscribers(storeName);
+      prevModel?.id !== model.id && this._notifyIdListSubscribers(storeName);
     }
   }
 
@@ -238,8 +238,30 @@ class StoreManager<
     }
   }
 
-  // 需要在 _notifyIdListSubscribers 之后，否则调用 getSortIds 会拿不到值
+  private _reorderSortIds(storeName: STORE_NAME) {
+    const config = this._config[storeName];
+    if (!config) {
+      throw new Error(`[_reorderSortIds]Configuration for ${storeName} not found`);
+    }
+
+    const { sortValue } = config;
+    const ids = [...this.getIds(storeName)];
+    ids.sort((a, b) => {
+      const aModel = this.getById(storeName, a);
+      const bModel = this.getById(storeName, b);
+      if (!aModel || !bModel) {
+        throw new Error(
+          `[_reorderSortIds]sort id list failed for ${storeName}: hasAModel: ${!!aModel}, hasBModel: ${!!bModel}`,
+        );
+      }
+      return sortValue(aModel, bModel);
+    });
+    this._sortIdsStores.set(storeName, ids);
+  }
+
+  // 触发优先级：_notifyIdSubscribers > _notifySubscribers > _notifyIdListSubscribers，防止 getSortIds 拿不到值
   private _notifySubscribers(storeName: STORE_NAME) {
+    this._reorderSortIds(storeName);
     const storeSubscriptions = this._subscriptions.get(storeName);
     if (storeSubscriptions) {
       storeSubscriptions.forEach(callback => {
@@ -359,8 +381,8 @@ class StoreManager<
       }
     }
 
-    this._notifySubscribers(storeName);
     const currentIds = this.getIds(storeName);
+    this._notifySubscribers(storeName);
     !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
   }
 

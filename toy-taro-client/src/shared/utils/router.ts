@@ -13,6 +13,7 @@ interface NavigateOptions {
 }
 
 const pagePathMap = new Map<PAGE_ID, string>([
+  [PAGE_ID.TASK_MANAGE, 'taskManage/entrance'],
   [PAGE_ID.PRODUCT_MANAGE, 'productManage/entrance'],
   [PAGE_ID.PRODUCT_CATEGORY_MANAGE, 'productManage/categoryManage'],
   [PAGE_ID.COUPON, 'coupon/entrance'],
