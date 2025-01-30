@@ -7,6 +7,7 @@ import {
   ProductModel,
   ProductShopCartModel,
   TaskCategoryModel,
+  TaskFlowModel,
   TaskModel,
   UserModel,
 } from './model';
@@ -38,6 +39,11 @@ const config = {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: TaskModel,
     sortValue: (a: TaskModel, b: TaskModel) => b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.TASK_FLOW]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: TaskFlowModel,
+    sortValue: (a: TaskFlowModel, b: TaskFlowModel) => b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.TASK_CATEGORY]: {
     type: HANDLER_TYPE.MULTIPLE as const,

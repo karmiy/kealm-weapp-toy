@@ -1,39 +1,39 @@
 import isEqual from 'lodash/isEqual';
 import { Singleton } from '@shared/utils/utils';
-import { ModelsWithCategoryId, sdk, StoreNamesWithCategoryId } from '@core';
+import { Models, ModelsWithCategoryId, sdk, STORE_NAME, StoreNamesWithCategoryId } from '@core';
 
 type Listener = () => void;
 
-export class AbstractCategoryController<T extends ModelsWithCategoryId> extends Singleton {
+export class AbstractCategoryController<T extends Models> extends Singleton {
   static identifier = 'AbstractCategoryController';
 
   private _idsListeners = new Map<string, Set<Listener>>();
   private _idsStore = new Map<string, Set<string>>();
 
-  constructor(private _storeName: StoreNamesWithCategoryId) {
+  constructor(private _storeName: STORE_NAME) {
     super();
   }
 
   init() {
-    this._handleIdListChange();
-    sdk.storeManager.subscribeIdList(this._storeName, this._handleIdListChange);
+    this._handleListChange();
+    sdk.storeManager.subscribe(this._storeName, this._handleListChange);
   }
 
   dispose() {
-    sdk.storeManager.unsubscribeIdList(this._storeName, this._handleIdListChange);
+    sdk.storeManager.subscribe(this._storeName, this._handleListChange);
     this._idsListeners.clear();
     this._idsStore.clear();
   }
 
   protected getCategoryIdentifier(model: T) {
-    return model.categoryId;
+    return model.id;
   }
 
   protected isMatchFunc(model: T) {
     return true;
   }
 
-  private _handleIdListChange = () => {
+  private _handleListChange = () => {
     const storeManager = sdk.storeManager;
     const allIds = storeManager.getSortIds(this._storeName);
     const store = new Map<string, Set<string>>();

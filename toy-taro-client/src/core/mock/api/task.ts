@@ -9,8 +9,9 @@ import {
   TASK_STATUS,
   TASK_TYPE,
 } from '../../constants';
-import { CouponEntity, TaskCategoryEntity, TaskEntity } from '../../entity';
+import { CouponEntity, TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
+import { createMockApiCache } from '../utils';
 import { mockCouponApi } from './coupon';
 
 const verbNounMap: Record<string, string[]> = {
@@ -87,7 +88,7 @@ export const mockTaskApi = {
       last_modified_time: faker.date.recent().getTime(),
     }));
   },
-  [MOCK_API_NAME.GET_TASK_LIST]: async (): Promise<TaskEntity[]> => {
+  [MOCK_API_NAME.GET_TASK_LIST]: createMockApiCache(async (): Promise<TaskEntity[]> => {
     await sleep(300);
     const categoryIds = CATEGORY_LIST.map(item => item.id);
     const coupons = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
@@ -130,9 +131,9 @@ export const mockTaskApi = {
             TASK_TYPE.CHALLENGE,
           ]),
           category_id: faker.helpers.arrayElement(categoryIds),
-          status: !isAdmin
-            ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
-            : undefined,
+          // status: !isAdmin
+          //   ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
+          //   : undefined,
           reward,
           difficulty: faker.number.int({ min: 1, max: 5 }),
           user_id: faker.string.ulid(),
@@ -144,9 +145,42 @@ export const mockTaskApi = {
         count: faker.number.int({ min: 80, max: 118 }),
       },
     );
+  }),
+  [MOCK_API_NAME.GET_TASK_FLOW_LIST]: async (): Promise<TaskFlowEntity[]> => {
+    await sleep(300);
+    const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
+    return faker.helpers.multiple(
+      () => {
+        return {
+          id: faker.string.uuid(),
+          task_id: faker.helpers.arrayElement(taskList).id,
+          status: faker.helpers.arrayElement([
+            TASK_STATUS.PENDING_APPROVAL,
+            TASK_STATUS.APPROVED,
+            TASK_STATUS.REJECTED,
+          ]),
+          user_id: faker.string.ulid(),
+          create_time: faker.date.recent().getTime(),
+          last_modified_time: faker.date.recent().getTime(),
+        };
+      },
+      {
+        count: faker.number.int({ min: 20, max: 40 }),
+      },
+    );
   },
-  [MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST]: async (id: string): Promise<void> => {
+  [MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST]: async (id: string): Promise<TaskFlowEntity> => {
     await sleep(800);
-    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
+    const now = new Date().getTime();
+    return Math.random() > 0.4
+      ? Promise.resolve({
+          id: faker.string.uuid(),
+          task_id: id,
+          status: TASK_STATUS.PENDING_APPROVAL,
+          user_id: faker.string.ulid(),
+          create_time: now,
+          last_modified_time: now,
+        })
+      : Promise.reject();
   },
 };

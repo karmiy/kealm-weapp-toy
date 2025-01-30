@@ -14,13 +14,13 @@ export function useTaskCategory(props: Props) {
     [type, categoryId],
   );
 
-  const [taskIdsForCategory, setTaskListForCategory] = useState<string[]>(() => {
+  const [taskIdsForCategory, setTaskIdsForCategory] = useState<string[]>(() => {
     return TaskCategoryController.getInstance().getIds(categoryIdentifier) ?? [];
   });
 
   useEffect(() => {
     const controller = TaskCategoryController.getInstance();
-    const handleChange = () => setTaskListForCategory(controller.getIds(categoryIdentifier));
+    const handleChange = () => setTaskIdsForCategory(controller.getIds(categoryIdentifier));
     handleChange();
     controller.onCategoryListChange(categoryIdentifier, handleChange);
     return () => controller.offCategoryListChange(categoryIdentifier, handleChange);

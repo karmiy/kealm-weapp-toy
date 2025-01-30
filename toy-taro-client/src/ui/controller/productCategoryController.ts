@@ -7,4 +7,8 @@ export class ProductCategoryController extends AbstractCategoryController<Produc
   constructor() {
     super(STORE_NAME.PRODUCT);
   }
+
+  protected getCategoryIdentifier(model: ProductModel) {
+    return model.categoryId;
+  }
 }

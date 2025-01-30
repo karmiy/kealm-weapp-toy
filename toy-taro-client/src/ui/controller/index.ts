@@ -4,6 +4,7 @@ import { ProductCategoryController } from './productCategoryController';
 import { ProductLimitedTimeOfferController } from './productLimitedTimeOfferController';
 import { ProductShopCartController } from './productShopCartController';
 import { TaskCategoryController } from './taskCategoryController';
+import { TaskFlowCategoryController } from './taskFlowCategoryController';
 
 const controllers: Array<{
   getInstance: () => {
@@ -17,6 +18,7 @@ const controllers: Array<{
   ProductShopCartController,
   CouponController,
   TaskCategoryController,
+  TaskFlowCategoryController,
 ];
 
 function bootstrap() {
@@ -40,4 +42,5 @@ export {
   ProductShopCartController,
   CouponController,
   TaskCategoryController,
+  TaskFlowCategoryController,
 };

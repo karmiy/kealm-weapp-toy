@@ -1,4 +1,4 @@
-import { STORE_NAME, TASK_STATUS, TASK_TYPE, TaskModel } from '@core';
+import { STORE_NAME, TASK_TYPE, TaskModel } from '@core';
 import { AbstractCategoryController } from './base';
 
 export class TaskCategoryController extends AbstractCategoryController<TaskModel> {

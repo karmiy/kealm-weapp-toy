@@ -5,7 +5,7 @@ import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button } from '@ui/components';
 import { TaskCard } from '@ui/container';
-import { useStoreById, useTaskAction, useUserInfo } from '@ui/viewModel';
+import { useStoreById, useTaskAction, useTaskFlowCategory, useUserInfo } from '@ui/viewModel';
 // import styles from './index.module.scss';
 
 interface TaskItemProps {
@@ -20,6 +20,7 @@ const SUBMIT_APPROVE_MES = {
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
+  const { taskFlow } = useTaskFlowCategory({ taskId: id });
   const { isAdmin } = useUserInfo();
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
 
@@ -35,11 +36,12 @@ const TaskItem = (props: TaskItemProps) => {
   }
 
   const difficulty = task.difficulty;
-  const isPendingApprove = task.isPendingApprove;
+  const isPendingApprove = taskFlow?.isPendingApproval ?? false;
+  const isFinished = taskFlow?.isFinished ?? false;
 
   return (
     <TaskCard
-      name={task.name}
+      name={task.name + id}
       desc={task.desc}
       rewardTitle={task.getRewardTitle(task.reward)}
       difficulty={difficulty}
@@ -54,8 +56,11 @@ const TaskItem = (props: TaskItemProps) => {
             编辑
           </Button>
         ) : (
-          <Button disabled={isPendingApprove || isActionLoading} onClick={handleSubmitApproval}>
-            {!isPendingApprove ? '完成' : '审批中'}
+          <Button
+            disabled={isPendingApprove || isFinished || isActionLoading}
+            onClick={handleSubmitApproval}
+          >
+            {!isPendingApprove ? (isFinished ? '已完成' : '完成') : '审批中'}
           </Button>
         )
       }

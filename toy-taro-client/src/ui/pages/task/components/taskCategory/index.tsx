@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
-import { STORE_NAME, TASK_TYPE } from '@core';
+import { TASK_TYPE } from '@core';
 import { TabPanel, Tabs } from '@ui/components';
-import { useStoreList } from '@ui/viewModel';
+import { useTaskCategoryList } from '@ui/viewModel';
 import { TaskList } from '../taskList';
 import styles from './index.module.scss';
 
@@ -13,7 +13,8 @@ interface TaskCategoryProps {
 const TaskCategory = (props: TaskCategoryProps) => {
   const { type } = props;
   const [current, setCurrent] = useState(0);
-  const categoryList = useStoreList(STORE_NAME.TASK_CATEGORY);
+  // const categoryList = useStoreList(STORE_NAME.TASK_CATEGORY);
+  const { categoryList } = useTaskCategoryList({ type });
 
   return (
     <View className={styles.wrapper}>

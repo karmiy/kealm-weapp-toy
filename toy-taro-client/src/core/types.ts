@@ -5,6 +5,10 @@ type ConfigModels = {
     [K in keyof Config]: InstanceType<Config[K]['model']>;
 };
 
+type Models = {
+    [K in keyof ConfigModels]: ConfigModels[K];
+}[keyof ConfigModels];
+
 type HasCategoryId<T> = T extends { categoryId: string } ? T : never;
 
 type StoreNamesWithCategoryId = {
@@ -19,4 +23,4 @@ type SingleStoreNames = {
     [K in keyof Config]: Config[K]['type'] extends HANDLER_TYPE.SINGLE ? K : never;
 }[keyof Config];
 
-export { StoreNamesWithCategoryId, ModelsWithCategoryId, SingleStoreNames };
+export { Models, StoreNamesWithCategoryId, ModelsWithCategoryId, SingleStoreNames };

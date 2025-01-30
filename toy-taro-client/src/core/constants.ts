@@ -5,6 +5,7 @@ export enum STORE_NAME {
     PRODUCT_SHOP_CART = 'PRODUCT_SHOP_CART',
     COUPON = 'COUPON',
     TASK = 'TASK',
+    TASK_FLOW = 'TASK_FLOW',
     TASK_CATEGORY = 'TASK_CATEGORY',
     ORDER = 'ORDER',
     CHECK_IN = 'CHECK_IN',
@@ -77,8 +78,9 @@ export enum TASK_TYPE {
 }
 
 export enum TASK_STATUS {
-    INITIAL = 'INITIAL',
     PENDING_APPROVAL = 'PENDING_APPROVAL',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
 }
 
 export enum TASK_REWARD_TYPE {

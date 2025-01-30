@@ -24,7 +24,6 @@ export interface TaskEntity {
   desc: string;
   type: TASK_TYPE;
   category_id: string;
-  status?: TASK_STATUS; // 管理员没有返回这个字段
   reward: TaskReward;
   difficulty: number;
   user_id: string;
@@ -35,6 +34,15 @@ export interface TaskEntity {
 export interface TaskCategoryEntity {
   id: string;
   name: string;
+  create_time: number;
+  last_modified_time: number;
+}
+
+export interface TaskFlowEntity {
+  id: string;
+  task_id: string;
+  status: TASK_STATUS;
+  user_id: string;
   create_time: number;
   last_modified_time: number;
 }

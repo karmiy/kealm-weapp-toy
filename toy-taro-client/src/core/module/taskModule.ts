@@ -6,6 +6,7 @@ import { storeManager } from '../storeManager';
 export class TaskModule extends AbstractModule {
   protected onLoad() {
     this.syncTaskList();
+    this.syncTaskFlowList();
     this.syncTaskCategoryList();
   }
   protected onUnload() {}
@@ -20,6 +21,13 @@ export class TaskModule extends AbstractModule {
     storeManager.stopLoading(STORE_NAME.TASK);
   }
 
+  async syncTaskFlowList() {
+    storeManager.startLoading(STORE_NAME.TASK_FLOW);
+    const taskFlowList = await TaskApi.getTaskFlowList();
+    storeManager.refresh(STORE_NAME.TASK_FLOW, taskFlowList);
+    storeManager.stopLoading(STORE_NAME.TASK_FLOW);
+  }
+
   async syncTaskCategoryList() {
     storeManager.startLoading(STORE_NAME.TASK_CATEGORY);
     const taskCategoryLList = await TaskApi.getTaskCategoryList();
@@ -28,14 +36,9 @@ export class TaskModule extends AbstractModule {
   }
 
   async submitApprovalRequest(id: string) {
-    await TaskApi.submitApprovalRequest(id);
-    storeManager.emitUpdate(STORE_NAME.TASK, {
-      partials: [
-        {
-          id,
-          status: TASK_STATUS.PENDING_APPROVAL,
-        },
-      ],
+    const taskFlow = await TaskApi.submitApprovalRequest(id);
+    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
+      entities: [taskFlow],
     });
   }
 }

@@ -1,5 +1,5 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
-import { TASK_REWARD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
+import { TASK_REWARD_TYPE, TASK_TYPE } from '../constants';
 import { TaskEntity, TaskReward } from '../entity';
 
 export class TaskModel {
@@ -16,9 +16,6 @@ export class TaskModel {
 
   @observable
   categoryId: string;
-
-  @observable
-  status: TASK_STATUS;
 
   @observable
   reward: TaskReward;
@@ -43,7 +40,6 @@ export class TaskModel {
       desc,
       type,
       category_id,
-      status,
       reward,
       difficulty,
     } = entity;
@@ -55,14 +51,8 @@ export class TaskModel {
     this.desc = desc;
     this.type = type;
     this.categoryId = category_id;
-    this.status = status ?? TASK_STATUS.INITIAL;
     this.reward = reward;
     this.difficulty = difficulty;
-  }
-
-  @computed
-  get isPendingApprove() {
-    return this.status === TASK_STATUS.PENDING_APPROVAL;
   }
 
   @computed
