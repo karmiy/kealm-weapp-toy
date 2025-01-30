@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { sdk, STORE_NAME, TASK_TYPE, TaskCategoryModel } from '@core';
-import { TaskCategoryController } from '@ui/controller';
+import { TaskGroupController } from '@ui/controller';
 import { useConsistentFunc } from '@ui/hooks';
 import { useStoreList } from '../base';
 
@@ -14,11 +14,8 @@ export function useTaskCategoryList(props: Props) {
   const [categoryList, setCategoryList] = useState<TaskCategoryModel[]>([]);
   const updateCategoryList = useConsistentFunc(() => {
     const list = allCategoryList.filter(item => {
-      const identifier = TaskCategoryController.getInstance().generateCategoryIdentifier(
-        type,
-        item.id,
-      );
-      return TaskCategoryController.getInstance().getIds(identifier).length > 0;
+      const identifier = TaskGroupController.getInstance().generateGroupByIdentifier(type, item.id);
+      return TaskGroupController.getInstance().getIds(identifier).length > 0;
     });
     setCategoryList(list);
   });

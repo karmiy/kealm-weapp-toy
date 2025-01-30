@@ -5,7 +5,7 @@ import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { Button } from '@ui/components';
 import { TaskCard } from '@ui/container';
-import { useStoreById, useTaskAction, useTaskFlowCategory, useUserInfo } from '@ui/viewModel';
+import { useStoreById, useTaskAction, useTaskFlowGroup, useUserInfo } from '@ui/viewModel';
 // import styles from './index.module.scss';
 
 interface TaskItemProps {
@@ -20,7 +20,7 @@ const SUBMIT_APPROVE_MES = {
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
-  const { taskFlow } = useTaskFlowCategory({ taskId: id });
+  const { taskFlow } = useTaskFlowGroup({ taskId: id });
   const { isAdmin } = useUserInfo();
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
 

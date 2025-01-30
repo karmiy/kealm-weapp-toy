@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
-import { ProductCategoryController } from '@ui/controller';
+import { ProductGroupController } from '@ui/controller';
 
 interface Props {
   categoryId: string;
 }
 
-export function useProductCategory(props: Props) {
+export function useProductGroup(props: Props) {
   const { categoryId } = props;
 
   const [productIdsForCategory, setProductListForCategory] = useState<string[]>(() => {
-    return ProductCategoryController.getInstance().getIds(categoryId) ?? [];
+    return ProductGroupController.getInstance().getIds(categoryId) ?? [];
   });
 
   useEffect(() => {
-    const controller = ProductCategoryController.getInstance();
+    const controller = ProductGroupController.getInstance();
     const handleChange = () => setProductListForCategory(controller.getIds(categoryId));
     handleChange();
-    controller.onCategoryListChange(categoryId, handleChange);
-    return () => controller.offCategoryListChange(categoryId, handleChange);
+    controller.onGroupListChange(categoryId, handleChange);
+    return () => controller.offGroupListChange(categoryId, handleChange);
   }, [categoryId]);
 
   return {

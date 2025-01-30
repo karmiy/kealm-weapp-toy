@@ -2,7 +2,7 @@ import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { IconButton, StatusWrapper } from '@ui/components';
 import { ProductCard } from '@ui/container';
-import { useProductCategory, useStoreById, useStoreLoadingStatus } from '@ui/viewModel';
+import { useProductGroup, useStoreById, useStoreLoadingStatus } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface ProductListProps {
@@ -39,7 +39,7 @@ const ProductItem = (props: ProductItemProps) => {
 
 const ProductList = (props: ProductListProps) => {
   const { categoryId, onAddToCart } = props;
-  const { productIds } = useProductCategory({
+  const { productIds } = useProductGroup({
     categoryId,
   });
   const loading = useStoreLoadingStatus(STORE_NAME.PRODUCT);

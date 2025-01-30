@@ -1,10 +1,10 @@
 import { getApp } from '@tarojs/taro';
 import { CouponController } from './couponController';
-import { ProductCategoryController } from './productCategoryController';
+import { ProductGroupController } from './productGroupController';
 import { ProductLimitedTimeOfferController } from './productLimitedTimeOfferController';
 import { ProductShopCartController } from './productShopCartController';
-import { TaskCategoryController } from './taskCategoryController';
-import { TaskFlowCategoryController } from './taskFlowCategoryController';
+import { TaskFlowGroupController } from './taskFlowGroupController';
+import { TaskGroupController } from './taskGroupController';
 
 const controllers: Array<{
   getInstance: () => {
@@ -14,11 +14,11 @@ const controllers: Array<{
   name: string;
 }> = [
   ProductLimitedTimeOfferController,
-  ProductCategoryController,
+  ProductGroupController,
   ProductShopCartController,
   CouponController,
-  TaskCategoryController,
-  TaskFlowCategoryController,
+  TaskGroupController,
+  TaskFlowGroupController,
 ];
 
 function bootstrap() {
@@ -38,9 +38,9 @@ export {
   bootstrap,
   unBootstrap,
   ProductLimitedTimeOfferController,
-  ProductCategoryController,
+  ProductGroupController,
   ProductShopCartController,
   CouponController,
-  TaskCategoryController,
-  TaskFlowCategoryController,
+  TaskGroupController,
+  TaskFlowGroupController,
 };

@@ -1,11 +1,11 @@
 import isEqual from 'lodash/isEqual';
 import { Singleton } from '@shared/utils/utils';
-import { Models, ModelsWithCategoryId, sdk, STORE_NAME, StoreNamesWithCategoryId } from '@core';
+import { Models, sdk, STORE_NAME } from '@core';
 
 type Listener = () => void;
 
-export class AbstractCategoryController<T extends Models> extends Singleton {
-  static identifier = 'AbstractCategoryController';
+export class AbstractGroupByController<T extends Models> extends Singleton {
+  static identifier = 'AbstractGroupByController';
 
   private _idsListeners = new Map<string, Set<Listener>>();
   private _idsStore = new Map<string, Set<string>>();
@@ -25,7 +25,7 @@ export class AbstractCategoryController<T extends Models> extends Singleton {
     this._idsStore.clear();
   }
 
-  protected getCategoryIdentifier(model: T) {
+  protected getGroupByIdentifier(model: T) {
     return model.id;
   }
 
@@ -42,42 +42,42 @@ export class AbstractCategoryController<T extends Models> extends Singleton {
       if (!model || !this.isMatchFunc(model as T)) {
         return;
       }
-      const categoryIdentifier = this.getCategoryIdentifier(model as T);
-      const ids = store.get(categoryIdentifier) ?? new Set();
+      const groupByIdentifier = this.getGroupByIdentifier(model as T);
+      const ids = store.get(groupByIdentifier) ?? new Set();
       ids.add(id);
-      store.set(categoryIdentifier, ids);
+      store.set(groupByIdentifier, ids);
     });
     const prevStore = this._idsStore;
     this._idsStore = store;
 
-    [...store.entries()].forEach(([categoryIdentifier, ids]) => {
-      const prevIds = prevStore.get(categoryIdentifier);
+    [...store.entries()].forEach(([groupByIdentifier, ids]) => {
+      const prevIds = prevStore.get(groupByIdentifier);
       if (prevIds && isEqual(prevIds, ids)) {
         return;
       }
-      this._notifyChange(categoryIdentifier);
+      this._notifyChange(groupByIdentifier);
     });
   };
 
-  private _notifyChange(categoryIdentifier: string) {
-    const listeners = this._idsListeners.get(categoryIdentifier);
+  private _notifyChange(groupByIdentifier: string) {
+    const listeners = this._idsListeners.get(groupByIdentifier);
     listeners?.forEach(listener => listener());
   }
 
-  getIds(categoryIdentifier: string) {
-    const ids = this._idsStore.get(categoryIdentifier);
+  getIds(groupByIdentifier: string) {
+    const ids = this._idsStore.get(groupByIdentifier);
     return ids ? Array.from(ids) : [];
   }
 
-  onCategoryListChange(categoryIdentifier: string, listener: Listener) {
-    const listeners = this._idsListeners.get(categoryIdentifier) ?? new Set();
+  onGroupListChange(groupByIdentifier: string, listener: Listener) {
+    const listeners = this._idsListeners.get(groupByIdentifier) ?? new Set();
     listeners.add(listener);
-    this._idsListeners.set(categoryIdentifier, listeners);
+    this._idsListeners.set(groupByIdentifier, listeners);
   }
 
-  offCategoryListChange(categoryIdentifier: string, listener: Listener) {
-    const listeners = this._idsListeners.get(categoryIdentifier);
+  offGroupListChange(groupByIdentifier: string, listener: Listener) {
+    const listeners = this._idsListeners.get(groupByIdentifier);
     listeners?.delete(listener);
-    !listeners?.size && this._idsListeners.delete(categoryIdentifier);
+    !listeners?.size && this._idsListeners.delete(groupByIdentifier);
   }
 }

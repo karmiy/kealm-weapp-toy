@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { View } from '@tarojs/components';
 import { TASK_TYPE } from '@core';
 import { StatusWrapper } from '@ui/components';
-import { useTaskCategory } from '@ui/viewModel';
+import { useTaskGroup } from '@ui/viewModel';
 import { TaskItem } from '../taskItem';
 import styles from './index.module.scss';
 
@@ -13,7 +13,7 @@ interface TaskListProps {
 
 const TaskList = (props: TaskListProps) => {
   const { type, categoryId } = props;
-  const { taskIds } = useTaskCategory({ type, categoryId });
+  const { taskIds } = useTaskGroup({ type, categoryId });
 
   return (
     <View className={styles.taskListWrapper}>
