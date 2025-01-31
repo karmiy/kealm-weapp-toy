@@ -97,23 +97,23 @@ const TabHeader = (props: TabHeaderProps) => {
       className: styles.wrapper,
     });
 
-    logger.info('scrollToInfo', {
-      wrapper: {
-        [containerRectSizeUnit]: scrollView[containerRectSizeUnit],
-      },
-      item: {
-        [containerBoundarySizeUnit]: item[containerBoundarySizeUnit],
-        [containerRectSizeUnit]: item[containerRectSizeUnit],
-      },
-      scrollOffset: {
-        [contentBoundarySizeUnit]: offset[contentBoundarySizeUnit],
-        [contentRectSizeUnit]: offset[contentRectSizeUnit],
-      },
-      delta,
-      expect: offset[contentBoundarySizeUnit] + delta,
-      max: offset[contentRectSizeUnit] - scrollView[containerRectSizeUnit],
-      min: 0,
-    });
+    // logger.info('scrollToInfo', {
+    //   wrapper: {
+    //     [containerRectSizeUnit]: scrollView[containerRectSizeUnit],
+    //   },
+    //   item: {
+    //     [containerBoundarySizeUnit]: item[containerBoundarySizeUnit],
+    //     [containerRectSizeUnit]: item[containerRectSizeUnit],
+    //   },
+    //   scrollOffset: {
+    //     [contentBoundarySizeUnit]: offset[contentBoundarySizeUnit],
+    //     [contentRectSizeUnit]: offset[contentRectSizeUnit],
+    //   },
+    //   delta,
+    //   expect: offset[contentBoundarySizeUnit] + delta,
+    //   max: offset[contentRectSizeUnit] - scrollView[containerRectSizeUnit],
+    //   min: 0,
+    // });
 
     scrollTo({
       component: ctx,

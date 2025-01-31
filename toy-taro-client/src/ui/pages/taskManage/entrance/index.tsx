@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View } from '@tarojs/components';
-import { useRouter } from '@tarojs/taro';
+import { navigateBack, useRouter } from '@tarojs/taro';
 import { Undefinable } from '@shared/types';
 import { navigateToPage } from '@shared/utils/router';
-import { STORE_NAME } from '@core';
+import { COUPON_TYPE, STORE_NAME, TASK_REWARD_TYPE } from '@core';
 import {
   Button,
   CheckButton,
@@ -17,7 +17,7 @@ import {
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
 import { useLoading } from '@ui/hooks';
-import { useCoupon, useStoreById, useStoreList } from '@ui/viewModel';
+import { useCoupon, useStoreById, useStoreList, useTaskAction } from '@ui/viewModel';
 import { COLOR_VARIABLES, PAGE_ID } from '@/shared/utils/constants';
 import { TASK_REWARD_SELECT_TYPE, TASK_TYPE_LIST } from './constants';
 import styles from './index.module.scss';
@@ -25,10 +25,14 @@ import styles from './index.module.scss';
 export default function () {
   const router = useRouter();
   const isLoading = useLoading();
+  const { isActionLoading, handleUpdate } = useTaskAction();
   const task = useStoreById(STORE_NAME.TASK, router.params.id);
   const coupon = useStoreById(STORE_NAME.COUPON, task?.couponId);
-  const [taskName, setTaskName] = useState(task?.name);
-  const [taskDesc, setTaskDesc] = useState(task?.desc);
+  // 任务名称
+  const [taskName, setTaskName] = useState(task?.name ?? '');
+  // 任务描述
+  const [taskDesc, setTaskDesc] = useState(task?.desc ?? '');
+  // 任务类型
   const [taskTypeIndex, setTaskTypeIndex] = useState<Undefinable<number>>(() => {
     if (!task) {
       return;
@@ -36,6 +40,7 @@ export default function () {
     const index = TASK_TYPE_LIST.findIndex(item => item.id === task.type);
     return index === -1 ? undefined : index;
   });
+  // 任务分类
   const taskCategoryList = useStoreList(STORE_NAME.TASK_CATEGORY);
   const [taskCategoryIndex, setTaskCategoryIndex] = useState<Undefinable<number>>(() => {
     if (!task) {
@@ -44,7 +49,9 @@ export default function () {
     const index = taskCategoryList.findIndex(item => item.id === task.categoryId);
     return index === -1 ? undefined : index;
   });
+  // 任务难度
   const [taskDifficulty, setTaskDifficulty] = useState(task?.difficulty ?? 1);
+  // 任务奖励类型
   const [taskRewardType, setTaskRewardType] = useState(
     task?.isCouponReward ? TASK_REWARD_SELECT_TYPE.COUPON : TASK_REWARD_SELECT_TYPE.POINTS,
   );
@@ -85,6 +92,44 @@ export default function () {
     navigateToPage({ pageName: PAGE_ID.TASK_CATEGORY_MANAGE });
   }, []);
 
+  const handleSave = useCallback(() => {
+    const type = typeof taskTypeIndex === 'number' ? TASK_TYPE_LIST[taskTypeIndex].id : undefined;
+    const categoryId =
+      typeof taskCategoryIndex === 'number' ? taskCategoryList[taskCategoryIndex].id : undefined;
+    const selectedCoupon = typeof couponIndex === 'number' ? activeCoupons[couponIndex] : undefined;
+    const couponType =
+      selectedCoupon?.originalType === COUPON_TYPE.CASH_DISCOUNT
+        ? TASK_REWARD_TYPE.CASH_DISCOUNT
+        : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT;
+    const rewardType =
+      taskRewardType === TASK_REWARD_SELECT_TYPE.POINTS ? TASK_REWARD_TYPE.POINTS : couponType;
+    handleUpdate({
+      id: task?.id,
+      name: taskName,
+      desc: taskDesc,
+      type,
+      categoryId,
+      difficulty: taskDifficulty,
+      rewardType,
+      couponId: selectedCoupon?.id,
+      value: pointsValue,
+      onSuccess: () => navigateBack(),
+    });
+  }, [
+    activeCoupons,
+    couponIndex,
+    handleUpdate,
+    pointsValue,
+    task?.id,
+    taskCategoryIndex,
+    taskCategoryList,
+    taskDesc,
+    taskDifficulty,
+    taskName,
+    taskRewardType,
+    taskTypeIndex,
+  ]);
+
   return (
     <StatusWrapper loading={isLoading} count={isLoading ? 0 : 1} size='overlay'>
       <Layout type='card'>
@@ -109,7 +154,7 @@ export default function () {
             mode='selector'
             range={TASK_TYPE_LIST}
             rangeKey='name'
-            onChange={e => setTaskTypeIndex(e.detail.value as number)}
+            onChange={e => setTaskTypeIndex(Number(e.detail.value))}
             value={taskTypeIndex}
           />
         </FormItem>
@@ -120,7 +165,7 @@ export default function () {
             mode='selector'
             range={taskCategoryList}
             rangeKey='name'
-            onChange={e => setTaskCategoryIndex(e.detail.value as number)}
+            onChange={e => setTaskCategoryIndex(Number(e.detail.value))}
             value={taskCategoryIndex}
           />
         </FormItem>
@@ -160,12 +205,19 @@ export default function () {
               mode='selector'
               range={activeCoupons}
               rangeKey='detailTip'
-              onChange={e => setCouponIndex(e.detail.value as number)}
+              onChange={e => setCouponIndex(Number(e.detail.value))}
               value={couponIndex}
             />
           ) : null}
         </FormItem>
-        <Button width='100%' type='primary' size='large'>
+        <Button
+          width='100%'
+          type='primary'
+          size='large'
+          disabled={isActionLoading}
+          onClick={handleSave}
+          loading={isActionLoading}
+        >
           保存
         </Button>
       </Layout>

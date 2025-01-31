@@ -14,6 +14,7 @@ interface ButtonProps {
   width?: number | string;
   size?: 'large' | 'medium' | 'small' | 'mini';
   icon?: IconNames;
+  loading?: boolean;
   color?: string;
   bgColor?: string;
   disabled?: boolean;
@@ -37,6 +38,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
     width,
     size = 'medium',
     icon,
+    loading,
     color,
     bgColor,
     disabled,
@@ -90,7 +92,8 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
   }, [disabled]);
 
   const IconComp = useMemo(() => {
-    if (!icon) {
+    const iconName = loading ? 'loading' : icon;
+    if (!iconName) {
       return null;
     }
     const iconColor =
@@ -105,10 +108,10 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
           // [styles.isLoading]: icon === 'loading',
         })}
       >
-        <Icon name={icon} color={iconColor} size={ICON_SIZE[size]} />
+        <Icon name={iconName} color={iconColor} size={ICON_SIZE[size]} />
       </View>
     );
-  }, [color, icon, type, size]);
+  }, [color, icon, type, size, loading]);
 
   return (
     <TaroButton

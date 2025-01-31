@@ -1,7 +1,17 @@
 import { sleep } from '@shared/utils/utils';
-import { TASK_STATUS } from '../constants';
+import { TASK_REWARD_TYPE, TASK_STATUS } from '../constants';
 import { TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../entity';
 import { mock, MOCK_API_NAME } from '../mock';
+
+export type TaskApiUpdateParams = Pick<
+  TaskEntity,
+  'name' | 'desc' | 'type' | 'category_id' | 'difficulty'
+> & {
+  id?: string;
+  reward_type: TASK_REWARD_TYPE;
+  value?: number;
+  coupon_id?: string;
+};
 
 export class TaskApi {
   @mock({ name: MOCK_API_NAME.GET_TASK_LIST })
@@ -29,5 +39,11 @@ export class TaskApi {
   static async updateTaskFlowStatus(taskFlowId: string, status: TASK_STATUS): Promise<void> {
     await sleep(800);
     return Promise.resolve();
+  }
+
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK })
+  static async updateTask(params: TaskApiUpdateParams): Promise<TaskEntity> {
+    await sleep(800);
+    return Promise.resolve({} as TaskEntity);
   }
 }

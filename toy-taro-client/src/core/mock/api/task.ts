@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { JsError, sleep } from '@shared/utils/utils';
+import { TaskApiUpdateParams } from '../../api';
 import { UserStorageManager } from '../../base';
 import {
   COUPON_STATUS,
@@ -10,7 +11,13 @@ import {
   TASK_STATUS,
   TASK_TYPE,
 } from '../../constants';
-import { CouponEntity, TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../../entity';
+import {
+  CouponEntity,
+  TaskCategoryEntity,
+  TaskEntity,
+  TaskFlowEntity,
+  TaskReward,
+} from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
 import { mockCouponApi } from './coupon';
@@ -189,5 +196,66 @@ export const mockTaskApi = {
     return Math.random() > 0.4
       ? Promise.resolve()
       : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
+  },
+  [MOCK_API_NAME.UPDATE_TASK]: async (task: TaskApiUpdateParams): Promise<TaskEntity> => {
+    await sleep(500);
+    let entity: TaskEntity;
+    const { reward_type, coupon_id, value } = task;
+
+    const reward = {
+      type: reward_type,
+    } as TaskReward;
+    if (reward.type === TASK_REWARD_TYPE.POINTS) {
+      if (typeof value !== 'number') {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖励不能为空'));
+      }
+      reward.value = value;
+    }
+    if (
+      reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT ||
+      reward.type === TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
+    ) {
+      if (!coupon_id) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖励优惠券不能为空'));
+      }
+      const coupons = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
+      const coupon = coupons.find(c => c.id === coupon_id);
+      if (!coupon) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '优惠券不存在'));
+      }
+      reward.couponId = coupon.id;
+      reward.value = coupon.value;
+      reward.minimumOrderValue = coupon.minimum_order_value;
+    }
+    const now = new Date().getTime();
+    if (task.id) {
+      const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
+      const currentTask = taskList.find(c => c.id === task.id);
+      if (!currentTask) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '任务不存在'));
+      }
+      entity = {
+        ...task,
+        id: task.id,
+        create_time: currentTask.create_time,
+        last_modified_time: now,
+        user_id: currentTask.user_id,
+        reward,
+      };
+    } else {
+      entity = {
+        ...task,
+        id: faker.string.uuid(),
+        create_time: now,
+        last_modified_time: now,
+        user_id: faker.string.ulid(),
+        reward,
+      };
+    }
+    return Math.random() > 0.4
+      ? Promise.resolve(entity)
+      : Promise.reject(
+          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, `任务${task.id ? '更新' : '创建'}失败`),
+        );
   },
 };

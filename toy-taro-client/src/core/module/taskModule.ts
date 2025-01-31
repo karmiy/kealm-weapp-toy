@@ -2,6 +2,7 @@ import { TaskApi } from '../api';
 import { AbstractModule, UserStorageManager } from '../base';
 import { MODULE_NAME, STORE_NAME, TASK_STATUS } from '../constants';
 import { storeManager } from '../storeManager';
+import { TaskUpdateParams } from '../types';
 
 export class TaskModule extends AbstractModule {
   protected onLoad() {
@@ -64,6 +65,30 @@ export class TaskModule extends AbstractModule {
       });
     } catch (error) {
       this._logger.error('updateTaskFlowStatus error', error.message);
+      throw error;
+    }
+  }
+
+  async updateTask(task: TaskUpdateParams) {
+    try {
+      const { id, name, desc, type, categoryId, difficulty, rewardType, value, couponId } = task;
+      this._logger.info('updateTask', task);
+      const entity = await TaskApi.updateTask({
+        id,
+        name,
+        desc,
+        type,
+        category_id: categoryId,
+        difficulty,
+        reward_type: rewardType,
+        value,
+        coupon_id: couponId,
+      });
+      storeManager.emitUpdate(STORE_NAME.TASK, {
+        entities: [entity],
+      });
+    } catch (error) {
+      this._logger.info('updateTask error', error.message);
       throw error;
     }
   }

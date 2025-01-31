@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
 import { UserStorageManager } from '../..//base';
-import { ROLE, SERVER_ERROR_CODE } from '../../constants';
+import { ROLE } from '../../constants';
 import { UserEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 

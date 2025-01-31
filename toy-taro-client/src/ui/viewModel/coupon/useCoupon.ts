@@ -3,7 +3,6 @@ import { reaction } from '@shared/utils/observer';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import {
   COUPON_STATUS,
-  COUPON_TYPE,
   COUPON_VALIDITY_TIME_TYPE,
   CouponUpdateParams,
   sdk,
@@ -104,6 +103,7 @@ export function useCoupon(props?: Props) {
         expirationTip: coupon.expirationTip,
         detailTip: coupon.detailTip,
         type: discountInfo.enabled ? ('selectable' as const) : ('unselectable' as const),
+        originalType: coupon.type,
         selectable: discountInfo.enabled,
         discountScore: discountInfo.score,
       };
@@ -120,6 +120,7 @@ export function useCoupon(props?: Props) {
         expirationTip: coupon.expirationTip,
         detailTip: coupon.detailTip,
         type: 'used' as const,
+        originalType: coupon.type,
       };
     });
   }, [usedCouponModels]);
@@ -134,6 +135,7 @@ export function useCoupon(props?: Props) {
         expirationTip: coupon.expirationTip,
         detailTip: coupon.detailTip,
         type: 'expired' as const,
+        originalType: coupon.type,
       };
     });
   }, [expiredCouponModels]);
@@ -155,6 +157,7 @@ export function useCoupon(props?: Props) {
         expirationTip: coupon.expirationTip,
         detailTip: coupon.detailTip,
         type,
+        originalType: coupon.type,
       };
     });
   }, [allCouponModels]);
@@ -189,9 +192,9 @@ export function useCoupon(props?: Props) {
 
   const handleUpdate = useCallback(
     async (
-      params: Omit<CouponUpdateParams, 'value' | 'minimumOrderValue'> & {
-        value: string;
-        minimumOrderValue: string;
+      params: Partial<Omit<CouponUpdateParams, 'value' | 'minimumOrderValue'>> & {
+        value?: string;
+        minimumOrderValue?: string;
         onSuccess?: () => void;
       },
     ) => {
@@ -296,5 +299,6 @@ export function useCoupon(props?: Props) {
     allCoupons,
     handleDelete,
     handleUpdate,
+    isActionLoading,
   };
 }

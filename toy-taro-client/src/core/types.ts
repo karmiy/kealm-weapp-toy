@@ -1,6 +1,6 @@
 import type { Config } from './config';
-import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE } from './constants';
-import { CouponModel } from './model';
+import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE } from './constants';
+import { CouponModel, TaskModel } from './model';
 
 export type ConfigModels = {
     [K in keyof Config]: InstanceType<Config[K]['model']>;
@@ -36,3 +36,14 @@ export type CouponUpdateParams = Pick<
     startTime?: string;
     endTime?: string;
  };
+
+ // ----------------------task--------------------------------
+export type TaskUpdateParams = Pick<
+TaskModel,
+'name' | 'desc' | 'type' | 'categoryId' | 'difficulty'
+> & { 
+  id?: string;
+  rewardType: TASK_REWARD_TYPE;
+  value?: number;
+  couponId?: string;
+};

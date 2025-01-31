@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
-import { sdk, TASK_STATUS } from '@core';
+import { sdk, TASK_REWARD_TYPE, TASK_STATUS, TaskUpdateParams } from '@core';
 import { TASK_ACTION_ID } from './constants';
 
 export function useTaskAction() {
@@ -97,10 +97,106 @@ export function useTaskAction() {
     [isActionLoading],
   );
 
+  const handleUpdate = useCallback(
+    async (
+      params: Partial<Omit<TaskUpdateParams, 'value'>> & {
+        value?: string;
+        onSuccess?: () => void;
+      },
+    ) => {
+      try {
+        const {
+          id,
+          name,
+          desc,
+          type,
+          categoryId,
+          difficulty,
+          rewardType,
+          value,
+          couponId,
+          onSuccess,
+        } = params;
+        if (!name) {
+          showToast({
+            title: '请输入任务名称',
+          });
+          return;
+        }
+        if (!desc) {
+          showToast({
+            title: '请输入任务描述',
+          });
+          return;
+        }
+        if (!type) {
+          showToast({
+            title: '请选择任务类型',
+          });
+          return;
+        }
+        if (!categoryId) {
+          showToast({
+            title: '请选择任务分类',
+          });
+          return;
+        }
+        if (!difficulty) {
+          showToast({
+            title: '请选择任务难度',
+          });
+          return;
+        }
+        if (!rewardType) {
+          showToast({
+            title: '请选择奖励类型',
+          });
+          return;
+        }
+        if (rewardType === TASK_REWARD_TYPE.POINTS && !value) {
+          showToast({
+            title: '请输入奖励积分',
+          });
+          return;
+        }
+        if (rewardType !== TASK_REWARD_TYPE.POINTS && !couponId) {
+          showToast({
+            title: '请选择奖励优惠券',
+          });
+          return;
+        }
+        setIsActionLoading(true);
+        await sdk.modules.task.updateTask({
+          id,
+          name,
+          desc,
+          type,
+          categoryId,
+          difficulty,
+          rewardType,
+          value: Number(value),
+          couponId,
+        });
+        await showToast({
+          title: '保存成功',
+        });
+        onSuccess?.();
+      } catch (error) {
+        showToast({
+          title: error.message ?? '保存失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [],
+  );
+
   return {
     submitApprovalRequest,
     handleApprove,
     handleReject,
+    handleUpdate,
     isActionLoading,
     currentActionId,
   };

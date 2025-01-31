@@ -48,7 +48,7 @@ const WEEKLY_LIST: WeeklyItem[] = [
 export default function () {
   const router = useRouter();
   const coupon = useStoreById(STORE_NAME.COUPON, router.params.id);
-  const { handleUpdate } = useCoupon();
+  const { handleUpdate, isActionLoading } = useCoupon();
   // 名称
   const [couponName, setCouponName] = useState(coupon?.name ?? '');
   // 类型
@@ -336,7 +336,14 @@ export default function () {
           </View>
         ) : null}
       </FormItem>
-      <Button width='100%' type='primary' size='large' onClick={handleSave}>
+      <Button
+        width='100%'
+        type='primary'
+        size='large'
+        onClick={handleSave}
+        disabled={isActionLoading}
+        loading={isActionLoading}
+      >
         保存
       </Button>
     </Layout>
