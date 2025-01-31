@@ -33,7 +33,7 @@ const config = {
   [STORE_NAME.COUPON]: {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: CouponModel,
-    sortValue: (a: CouponModel, b: CouponModel) => b.createTime - a.createTime,
+    sortValue: (a: CouponModel, b: CouponModel) => b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.TASK]: {
     type: HANDLER_TYPE.MULTIPLE as const,

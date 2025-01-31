@@ -36,6 +36,8 @@ export class CouponModel {
 
   createTime: number;
 
+  lastModifiedTime: number;
+
   @observable
   validityTime: CouponValidityTime;
 
@@ -58,6 +60,7 @@ export class CouponModel {
       name,
       user_id,
       create_time,
+      last_modified_time,
       validity_time,
       status,
       type,
@@ -68,6 +71,7 @@ export class CouponModel {
     this.name = name;
     this.userId = user_id;
     this.createTime = create_time;
+    this.lastModifiedTime = last_modified_time;
     this.validityTime = validity_time;
     this.status = status;
     this.type = type;
@@ -171,7 +175,13 @@ export class CouponModel {
     }
     if (isDateList(this.validityTime)) {
       const { dates } = this.validityTime;
-      return !dates.some(date => date >= now);
+      const sortDates = [...dates].sort((a, b) => a - b);
+      const lastDate = sortDates[sortDates.length - 1];
+      if (!lastDate) {
+        return true;
+      }
+      // 对于 dates，后端把日期都存成 23:59:59
+      return lastDate < now;
     }
 
     return true;

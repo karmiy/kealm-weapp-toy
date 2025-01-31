@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { reaction } from '@shared/utils/observer';
-import { showModal } from '@shared/utils/operateFeedback';
-import { COUPON_STATUS, CouponModel, STORE_NAME } from '@core';
+import { showModal, showToast } from '@shared/utils/operateFeedback';
+import {
+  COUPON_STATUS,
+  COUPON_TYPE,
+  COUPON_VALIDITY_TIME_TYPE,
+  CouponUpdateParams,
+  sdk,
+  STORE_NAME,
+} from '@core';
 import { CouponController } from '@ui/controller';
 import { useStoreByIds } from '../base';
 
@@ -21,6 +28,7 @@ export function useCoupon(props?: Props) {
     enableAllIds = false,
     orderScore,
   } = props ?? {};
+  const [isActionLoading, setIsActionLoading] = useState(false);
   const [activeCouponIds, setActiveCouponIds] = useState<string[]>([]);
   const [usedCouponIds, setUsedCouponIds] = useState<string[]>([]);
   const [expiredCouponIds, setExpiredCouponIds] = useState<string[]>([]);
@@ -151,12 +159,131 @@ export function useCoupon(props?: Props) {
     });
   }, [allCouponModels]);
 
-  const handleDelete = useCallback(async (id: string) => {
-    // [TODO] 删除前检测用户使用情况
-    const feedback = await showModal({
-      content: '确定要删除吗？',
-    });
-  }, []);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        if (isActionLoading) {
+          return;
+        }
+        const feedback = await showModal({
+          content: '确定要删除吗？',
+        });
+        if (!feedback) {
+          return;
+        }
+        setIsActionLoading(true);
+        await sdk.modules.coupon.deleteCoupon(id);
+        showToast({
+          title: '删除成功',
+        });
+      } catch (e) {
+        showToast({
+          title: e.message ?? '删除失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [isActionLoading],
+  );
+
+  const handleUpdate = useCallback(
+    async (
+      params: Omit<CouponUpdateParams, 'value' | 'minimumOrderValue'> & {
+        value: string;
+        minimumOrderValue: string;
+        onSuccess?: () => void;
+      },
+    ) => {
+      try {
+        const {
+          id,
+          name,
+          type,
+          value,
+          minimumOrderValue,
+          validityTimeType,
+          startTime,
+          endTime,
+          dates,
+          days,
+          onSuccess,
+        } = params;
+        if (!name) {
+          showToast({
+            title: '请输入优惠券名称',
+          });
+          return;
+        }
+        if (!type) {
+          showToast({
+            title: '请选择优惠券类型',
+          });
+          return;
+        }
+        if (!value) {
+          showToast({
+            title: '请输入满减/打折金额',
+          });
+          return;
+        }
+        if (!minimumOrderValue) {
+          showToast({
+            title: '请输入最低使用门槛',
+          });
+          return;
+        }
+        if (!validityTimeType) {
+          showToast({
+            title: '请选择有效期',
+          });
+          return;
+        }
+        if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.DATE_RANGE && (!startTime || !endTime)) {
+          showToast({
+            title: '请选择有效起止时间',
+          });
+          return;
+        }
+        if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.DATE_LIST && !dates?.length) {
+          showToast({
+            title: '请选择至少一个有效日期',
+          });
+          return;
+        }
+        if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.WEEKLY && !days?.length) {
+          showToast({
+            title: '请选择至少一个有效星期',
+          });
+          return;
+        }
+        setIsActionLoading(true);
+        await sdk.modules.coupon.updateCoupon({
+          id,
+          name,
+          type,
+          value: Number(value),
+          minimumOrderValue: Number(minimumOrderValue),
+          validityTimeType,
+          startTime,
+          endTime,
+          dates,
+          days,
+        });
+        await showToast({
+          title: '保存成功',
+        });
+        onSuccess?.();
+      } catch (error) {
+        showToast({
+          title: error.message ?? '保存失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [],
+  );
 
   return {
     activeCouponIds,
@@ -168,5 +295,6 @@ export function useCoupon(props?: Props) {
     expiredCoupons,
     allCoupons,
     handleDelete,
+    handleUpdate,
   };
 }

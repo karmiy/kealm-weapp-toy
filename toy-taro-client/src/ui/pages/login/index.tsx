@@ -24,7 +24,7 @@ export default function () {
   const handleLoginSuccess = useCallback(async () => {
     try {
       await bootstrap();
-      await showToast({ title: '登录成功', awaitClose: true });
+      await showToast({ title: '登录成功' });
       navigateToPage({ pageName: PAGE_ID.HOME, isRelaunch: true });
     } catch (error) {
       logger.error('reload sdk failed', error);

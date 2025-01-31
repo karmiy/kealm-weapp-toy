@@ -23,6 +23,7 @@ export class AbstractGroupByController<T extends Models> extends Singleton {
   }
 
   dispose() {
+    super.dispose();
     sdk.storeManager.subscribe(this._storeName, this._handleListChange);
     this._idsListeners.clear();
     this._idsStore.clear();

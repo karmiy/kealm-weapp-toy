@@ -26,6 +26,7 @@ export interface CouponEntity {
   name: string;
   user_id: string;
   create_time: number;
+  last_modified_time: number;
   validity_time: CouponValidityTime;
   status: COUPON_STATUS;
   type: COUPON_TYPE;

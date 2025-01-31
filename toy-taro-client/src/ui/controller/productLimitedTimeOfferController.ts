@@ -28,6 +28,7 @@ export class ProductLimitedTimeOfferController extends Singleton {
   }
 
   dispose() {
+    super.dispose();
     sdk.storeManager.unsubscribeIdList(STORE_NAME.PRODUCT, this._handleIdsChange);
     this._listeners.clear();
     this.ids.length = 0;

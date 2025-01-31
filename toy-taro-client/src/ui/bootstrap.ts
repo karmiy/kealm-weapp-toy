@@ -35,7 +35,7 @@ export const unBootstrap = async () => {
     logger.info('start unBootstrap');
     await controllerUnBootstrap();
     await sdk.unload();
-    await showToast({ title: '退出成功', awaitClose: true });
+    await showToast({ title: '退出成功' });
     navigateToPage({ pageName: PAGE_ID.LOGIN, isRelaunch: true });
   } catch (error) {
     logger.info('unBootstrap failed', error.message);

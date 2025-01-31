@@ -39,6 +39,11 @@ export class Singleton {
     }
     return Singleton._instances.get(name);
   }
+
+  dispose<T extends Singleton>(this: T) {
+    const name = (this.constructor as unknown as { identifier: string }).identifier;
+    Singleton._instances.delete(name);
+  }
 }
 
 export const getStorageKey = (key: string) => `kealm-storage-toy-client_${key}`;

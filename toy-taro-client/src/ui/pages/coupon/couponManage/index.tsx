@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 import { Picker, View } from '@tarojs/components';
-import { useRouter } from '@tarojs/taro';
+import { navigateBack, useRouter } from '@tarojs/taro';
 import { format } from 'date-fns';
 import { showToast } from '@shared/utils/operateFeedback';
 import { COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE, STORE_NAME } from '@core';
 import { Button, CheckButton, Input, PickerSelector, Tag, WhiteSpace } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
-import { useStoreById } from '@ui/viewModel';
+import { useCoupon, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface WeeklyItem {
@@ -48,7 +48,10 @@ const WEEKLY_LIST: WeeklyItem[] = [
 export default function () {
   const router = useRouter();
   const coupon = useStoreById(STORE_NAME.COUPON, router.params.id);
+  const { handleUpdate } = useCoupon();
+  // 名称
   const [couponName, setCouponName] = useState(coupon?.name ?? '');
+  // 类型
   const [couponType, setCouponType] = useState(coupon?.type ?? COUPON_TYPE.CASH_DISCOUNT);
   const isCashDiscountType = couponType === COUPON_TYPE.CASH_DISCOUNT;
   const handleSelectCouponType = useCallback((type: COUPON_TYPE, checked: boolean) => {
@@ -57,10 +60,13 @@ export default function () {
     }
     setCouponType(type);
   }, []);
+  // 满减金额
   const [couponValue, setCouponValue] = useState<string>(coupon?.value?.toString() ?? '');
+  // 最低使用门槛
   const [minimumOrderValue, setMinimumOrderValue] = useState<string>(
     coupon?.minimumOrderValue?.toString() ?? '',
   );
+  // 有效时间类型
   const [validityTimeType, setValidityTimeType] = useState(
     coupon?.validityTimeType ?? COUPON_VALIDITY_TIME_TYPE.DATE_RANGE,
   );
@@ -173,6 +179,34 @@ export default function () {
     },
     [weeklyList],
   );
+
+  const handleSave = useCallback(() => {
+    handleUpdate({
+      id: coupon?.id,
+      name: couponName,
+      type: couponType,
+      value: couponValue,
+      minimumOrderValue,
+      validityTimeType,
+      startTime,
+      endTime,
+      dates: dateList,
+      days: weeklyList.map(item => Number(item.value)),
+      onSuccess: () => navigateBack(),
+    });
+  }, [
+    coupon?.id,
+    couponName,
+    couponType,
+    couponValue,
+    dateList,
+    endTime,
+    handleUpdate,
+    minimumOrderValue,
+    startTime,
+    validityTimeType,
+    weeklyList,
+  ]);
 
   return (
     <Layout type='card'>
@@ -302,7 +336,7 @@ export default function () {
           </View>
         ) : null}
       </FormItem>
-      <Button width='100%' type='primary' size='large'>
+      <Button width='100%' type='primary' size='large' onClick={handleSave}>
         保存
       </Button>
     </Layout>

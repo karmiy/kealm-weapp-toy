@@ -1,26 +1,38 @@
 import type { Config } from './config';
-import { HANDLER_TYPE } from './constants';
+import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE } from './constants';
+import { CouponModel } from './model';
 
-type ConfigModels = {
+export type ConfigModels = {
     [K in keyof Config]: InstanceType<Config[K]['model']>;
 };
 
-type Models = {
+export type Models = {
     [K in keyof ConfigModels]: ConfigModels[K];
 }[keyof ConfigModels];
 
-type HasCategoryId<T> = T extends { categoryId: string } ? T : never;
+export type HasCategoryId<T> = T extends { categoryId: string } ? T : never;
 
-type StoreNamesWithCategoryId = {
+export type StoreNamesWithCategoryId = {
     [K in keyof ConfigModels]: HasCategoryId<ConfigModels[K]> extends never ? never : K;
 }[keyof ConfigModels];
 
-type ModelsWithCategoryId = {
+export type ModelsWithCategoryId = {
     [K in keyof ConfigModels]: HasCategoryId<ConfigModels[K]>;
 }[keyof ConfigModels];
 
-type SingleStoreNames = {
+export type SingleStoreNames = {
     [K in keyof Config]: Config[K]['type'] extends HANDLER_TYPE.SINGLE ? K : never;
 }[keyof Config];
 
-export { Models, StoreNamesWithCategoryId, ModelsWithCategoryId, SingleStoreNames };
+// ----------------------coupon--------------------------------
+export type CouponUpdateParams = Pick<
+  CouponModel,
+  'name' | 'minimumOrderValue' | 'type' | 'value'
+> & { 
+    id?: string;
+    validityTimeType: COUPON_VALIDITY_TIME_TYPE;
+    dates?: string[];
+    days?: number[];
+    startTime?: string;
+    endTime?: string;
+ };

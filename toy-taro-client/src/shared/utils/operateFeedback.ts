@@ -33,7 +33,7 @@ export const showToast = async (options: {
   awaitClose?: boolean;
 }) => {
   return new Promise<void>((resolve, reject) => {
-    const { title, icon = 'none', duration = 1500, awaitClose = false } = options;
+    const { title, icon = 'none', duration = 1500, awaitClose = true } = options;
     TaroShowToast({
       title,
       icon,

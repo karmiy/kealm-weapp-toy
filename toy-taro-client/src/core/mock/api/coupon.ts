@@ -1,7 +1,14 @@
 import { faker } from '@faker-js/faker';
-import { sleep } from '@shared/utils/utils';
+import { endOfDay, startOfDay } from 'date-fns';
+import { JsError, sleep } from '@shared/utils/utils';
+import { CouponApiUpdateParams } from '../../api';
 import { UserStorageManager } from '../../base';
-import { COUPON_STATUS, COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE } from '../../constants';
+import {
+  COUPON_STATUS,
+  COUPON_TYPE,
+  COUPON_VALIDITY_TIME_TYPE,
+  SERVER_ERROR_CODE,
+} from '../../constants';
 import { CouponEntity, CouponValidityTime } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
@@ -82,6 +89,7 @@ export const mockCouponApi = {
           name: faker.helpers.arrayElement(COUPON_THEMES),
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
+          last_modified_time: faker.date.recent().getTime(),
           validity_time: generateRandomValidityTime(),
           status: !isAdmin
             ? faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED])
@@ -99,4 +107,70 @@ export const mockCouponApi = {
       },
     );
   }),
+  [MOCK_API_NAME.DELETE_COUPON]: async (id: string): Promise<void> => {
+    await sleep(100);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，请联系管理员'));
+  },
+  [MOCK_API_NAME.UPDATE_COUPON]: async (coupon: CouponApiUpdateParams): Promise<CouponEntity> => {
+    await sleep(500);
+    let entity: CouponEntity;
+    const { validity_time_type, start_time, end_time, dates, days } = coupon;
+
+    const validityTime = {
+      type: validity_time_type,
+    } as CouponValidityTime;
+    if (validityTime.type === COUPON_VALIDITY_TIME_TYPE.DATE_RANGE) {
+      if (!start_time || !end_time) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '有效范围不能为空'));
+      }
+      validityTime.start_time = startOfDay(start_time).getTime();
+      validityTime.end_time = endOfDay(end_time).getTime();
+    }
+    if (validityTime.type === COUPON_VALIDITY_TIME_TYPE.DATE_LIST) {
+      if (!dates?.length) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '有效日期不能为空'));
+      }
+      validityTime.dates = dates.map(date => endOfDay(new Date(date)).getTime());
+    }
+    if (validityTime.type === COUPON_VALIDITY_TIME_TYPE.WEEKLY) {
+      if (!days?.length) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '有效星期不能为空'));
+      }
+      validityTime.days = days;
+    }
+    const now = new Date().getTime();
+    if (coupon.id) {
+      const couponList = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
+      const currentCoupon = couponList.find(c => c.id === coupon.id);
+      if (!currentCoupon) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '优惠券不存在'));
+      }
+      entity = {
+        ...coupon,
+        id: coupon.id,
+        create_time: currentCoupon.create_time,
+        last_modified_time: now,
+        user_id: currentCoupon.user_id,
+        status: currentCoupon.status,
+        validity_time: validityTime,
+      };
+    } else {
+      entity = {
+        ...coupon,
+        id: faker.string.uuid(),
+        create_time: now,
+        last_modified_time: now,
+        user_id: faker.string.ulid(),
+        status: COUPON_STATUS.ACTIVE,
+        validity_time: validityTime,
+      };
+    }
+    return Math.random() > 0.4
+      ? Promise.resolve(entity)
+      : Promise.reject(
+          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, `优惠券${coupon.id ? '更新' : '创建'}失败`),
+        );
+  },
 };
