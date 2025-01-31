@@ -82,7 +82,7 @@ class StoreManager<
     if (!ModelConstructor) throw new Error(`[refresh]ModelConstructor for ${storeName} not found`);
 
     if (type === HANDLER_TYPE.MULTIPLE) {
-      const prevIds = this.getIds(storeName);
+      const prevIds = this.getSortIds(storeName);
       if (!Array.isArray(payload)) {
         throw new Error(`[refresh]Payload for ${storeName} must be an array for type MULTIPLE`);
       }
@@ -98,7 +98,8 @@ class StoreManager<
         this._notifyIdSubscribers(storeName, model.id);
       });
 
-      const currentIds = this.getIds(storeName);
+      this._reorderSortIds(storeName);
+      const currentIds = this.getSortIds(storeName);
       this._notifySubscribers(storeName);
       !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
     } else if (type === HANDLER_TYPE.SINGLE) {
@@ -109,6 +110,7 @@ class StoreManager<
       const model = new ModelConstructor(payload);
       this._singleStores.set(storeName, model);
 
+      this._reorderSortIds(storeName);
       this._notifyIdSubscribers(storeName, model.id);
       this._notifySubscribers(storeName);
       prevModel?.id !== model.id && this._notifyIdListSubscribers(storeName);
@@ -259,9 +261,8 @@ class StoreManager<
     this._sortIdsStores.set(storeName, ids);
   }
 
-  // 触发优先级：_notifyIdSubscribers > _notifySubscribers > _notifyIdListSubscribers，防止 getSortIds 拿不到值
+  // 触发优先级：_notifyIdSubscribers > _notifySubscribers > _notifyIdListSubscribers
   private _notifySubscribers(storeName: STORE_NAME) {
-    this._reorderSortIds(storeName);
     const storeSubscriptions = this._subscriptions.get(storeName);
     if (storeSubscriptions) {
       storeSubscriptions.forEach(callback => {
@@ -338,7 +339,7 @@ class StoreManager<
     if (!ModelConstructor) {
       throw new Error(`[emitUpdate]ModelConstructor for ${storeName} not found`);
     }
-    const prevIds = this.getIds(storeName);
+    const prevIds = this.getSortIds(storeName);
     const { entities, partials } = payload;
 
     if (entities) {
@@ -381,7 +382,8 @@ class StoreManager<
       }
     }
 
-    const currentIds = this.getIds(storeName);
+    this._reorderSortIds(storeName);
+    const currentIds = this.getSortIds(storeName);
     this._notifySubscribers(storeName);
     !isEqual(currentIds, prevIds) && this._notifyIdListSubscribers(storeName);
   }
@@ -417,6 +419,7 @@ class StoreManager<
     } else {
       throw new Error(`[emitDelete]Unknown type for ${storeName}`);
     }
+    this._reorderSortIds(storeName);
     this._notifySubscribers(storeName);
     this._notifyIdListSubscribers(storeName);
   }
