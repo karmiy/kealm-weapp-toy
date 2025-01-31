@@ -120,7 +120,9 @@ export const TASK_TYPE_LIST = [
 // ----------------------order--------------------------------
 export enum ORDER_STATUS {
     INITIAL = 'INITIAL',
-    Revoking = 'Revoking',
+    REVOKING = 'REVOKING',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
 }
 
 // ----------------------checkIn--------------------------------

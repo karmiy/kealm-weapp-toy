@@ -37,38 +37,34 @@ export class TaskModule extends AbstractModule {
   }
 
   async submitApprovalRequest(id: string) {
-    this._logger.info('submitApprovalRequest', 'taskId', id);
-    const taskFlow = await TaskApi.submitApprovalRequest(id);
-    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
-      entities: [taskFlow],
-    });
+    try {
+      this._logger.info('submitApprovalRequest', 'taskId', id);
+      const taskFlow = await TaskApi.submitApprovalRequest(id);
+      storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
+        entities: [taskFlow],
+      });
+    } catch (error) {
+      this._logger.error('submitApprovalRequest error', error.message);
+      throw error;
+    }
   }
 
-  async approveTask(taskFlowId: string) {
-    this._logger.info('approveTask', 'taskFlowId', taskFlowId);
-    await TaskApi.approveTask(taskFlowId);
-    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
-      partials: [
-        {
-          id: taskFlowId,
-          status: TASK_STATUS.APPROVED,
-          last_modified_time: new Date().getTime(),
-        },
-      ],
-    });
-  }
-
-  async rejectTask(taskFlowId: string) {
-    this._logger.info('rejectTask', 'taskFlowId', taskFlowId);
-    await TaskApi.rejectTask(taskFlowId);
-    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
-      partials: [
-        {
-          id: taskFlowId,
-          status: TASK_STATUS.REJECTED,
-          last_modified_time: new Date().getTime(),
-        },
-      ],
-    });
+  async updateTaskFlowStatus(taskFlowId: string, status: TASK_STATUS) {
+    try {
+      this._logger.info('updateTaskFlowStatus', { taskFlowId, status });
+      await TaskApi.updateTaskFlowStatus(taskFlowId, status);
+      storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
+        partials: [
+          {
+            id: taskFlowId,
+            status,
+            last_modified_time: new Date().getTime(),
+          },
+        ],
+      });
+    } catch (error) {
+      this._logger.error('updateTaskFlowStatus error', error.message);
+      throw error;
+    }
   }
 }

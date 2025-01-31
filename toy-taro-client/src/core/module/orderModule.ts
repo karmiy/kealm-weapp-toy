@@ -17,20 +17,21 @@ export class OrderModule extends AbstractModule {
     storeManager.stopLoading(STORE_NAME.ORDER);
   }
 
-  async revokeOrder(id: string) {
+  async updateOrderStatus(id: string, status: ORDER_STATUS) {
     try {
-      this._logger.info('revokeOrder', id);
-      await OrderApi.revokeOrder(id);
+      this._logger.info('updateOrderStatus', id, status);
+      await OrderApi.updateOrderStatus(id, status);
       storeManager.emitUpdate(STORE_NAME.ORDER, {
         partials: [
           {
             id,
-            status: ORDER_STATUS.Revoking,
+            status,
+            last_modified_time: new Date().getTime(),
           },
         ],
       });
     } catch (error) {
-      this._logger.error('revokeOrder error', error);
+      this._logger.error('updateOrderStatus error', error.message);
       throw error;
     }
   }

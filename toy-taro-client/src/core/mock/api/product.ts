@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { startOfToday, startOfTomorrow } from 'date-fns';
-import { sleep } from '@shared/utils/utils';
+import { JsError, sleep } from '@shared/utils/utils';
+import { SERVER_ERROR_CODE } from '../../constants';
 import { ProductCategoryEntity, ProductEntity, ProductShopCartEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
@@ -77,6 +78,8 @@ export const mockProductApi = {
     );
   },
   [MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART]: async (): Promise<void> => {
-    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
+    return Math.random() > 0.5
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
   },
 };

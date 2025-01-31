@@ -18,7 +18,7 @@ export default function () {
 
   return (
     <View className={styles.wrapper}>
-      <StatusWrapper loading={loading} count={ids.length} size='fill'>
+      <StatusWrapper loading={loading} loadingIgnoreCount count={ids.length} size='fill'>
         <View className={styles.list}>
           <ScrollView scrollY className={styles.scrollView}>
             <View className={styles.container}>

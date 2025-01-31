@@ -27,10 +27,16 @@ export class UserModule extends AbstractModule {
   }
 
   async getUserInfo() {
-    const userInfo = await UserApi.getUserInfo();
-    storeManager.emitUpdate(STORE_NAME.USER, {
-      entities: [userInfo],
-    });
+    try {
+      this._logger.info('getUserInfo');
+      const userInfo = await UserApi.getUserInfo();
+      storeManager.emitUpdate(STORE_NAME.USER, {
+        entities: [userInfo],
+      });
+    } catch (error) {
+      this._logger.error('getUserInfo error', error.message);
+      throw error;
+    }
   }
 
   async login(params: LoginParams) {
@@ -39,7 +45,7 @@ export class UserModule extends AbstractModule {
 
       UserStorageManager.getInstance().setUserAuth(token);
     } catch (error) {
-      this._logger.error('login failed', error);
+      this._logger.error('login failed', error.message);
       throw error;
     }
   }
@@ -49,26 +55,38 @@ export class UserModule extends AbstractModule {
     // 可以单独做个配置页面，用 chooseMedia 和 button 组件的 open-type="chooseAvatar" 让用户选头像， 做个弹框让用户输入昵称
     // 官方推荐：https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/userProfile.html
     // mock 本地数据时，清了换成要重启微信开发者工具
-    const avatarUrl = await UserApi.uploadAvatar(tempUrl);
-    const userInfo = storeManager.get(STORE_NAME.USER);
-    if (!userInfo) {
-      throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+    try {
+      this._logger.info('uploadAvatar', tempUrl);
+      const avatarUrl = await UserApi.uploadAvatar(tempUrl);
+      const userInfo = storeManager.get(STORE_NAME.USER);
+      if (!userInfo) {
+        throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+      }
+      storeManager.emitUpdate(STORE_NAME.USER, {
+        partials: [{ id: userInfo.id, avatarUrl }],
+      });
+    } catch (error) {
+      this._logger.error('uploadAvatar error', error.message);
+      throw error;
     }
-    storeManager.emitUpdate(STORE_NAME.USER, {
-      partials: [{ id: userInfo.id, avatarUrl }],
-    });
   }
 
   async uploadProfile(params: { name: string }) {
-    const { name } = params;
-    await UserApi.uploadProfile(params);
-    const userInfo = storeManager.get(STORE_NAME.USER);
-    if (!userInfo) {
-      throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+    try {
+      this._logger.info('uploadProfile', params);
+      const { name } = params;
+      await UserApi.uploadProfile(params);
+      const userInfo = storeManager.get(STORE_NAME.USER);
+      if (!userInfo) {
+        throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+      }
+      storeManager.emitUpdate(STORE_NAME.USER, {
+        partials: [{ id: userInfo.id, name }],
+      });
+    } catch (error) {
+      this._logger.error('uploadProfile error', error.message);
+      throw error;
     }
-    storeManager.emitUpdate(STORE_NAME.USER, {
-      partials: [{ id: userInfo.id, name }],
-    });
   }
 
   getIsAdmin() {

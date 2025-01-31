@@ -1,6 +1,6 @@
-import { ar, fa, faker } from '@faker-js/faker';
-import { sleep } from '@shared/utils/utils';
-import { CHECK_IN_RULE_REWARD_TYPE, CHECK_IN_RULE_TYPE } from '../../constants';
+import { faker } from '@faker-js/faker';
+import { JsError, sleep } from '@shared/utils/utils';
+import { CHECK_IN_RULE_REWARD_TYPE, CHECK_IN_RULE_TYPE, SERVER_ERROR_CODE } from '../../constants';
 import { CheckInEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 
@@ -62,10 +62,14 @@ export const mockCheckInApi = {
   },
   [MOCK_API_NAME.CLAIM_REWARD]: async (): Promise<void> => {
     await sleep(1000);
-    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
+    return Math.random() > 0.5
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
   },
   [MOCK_API_NAME.CHECK_IN_TODAY]: async (): Promise<void> => {
     await sleep(1000);
-    return Math.random() > 0.5 ? Promise.resolve() : Promise.reject();
+    return Math.random() > 0.5
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
   },
 };

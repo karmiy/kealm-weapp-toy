@@ -5,6 +5,7 @@ export interface OrderEntity {
   name: string;
   desc?: string;
   score: number;
+  count: number;
   cover_image: string;
   create_time: number;
   last_modified_time: number;

@@ -1,12 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { BaseEventOrig, Button as TaroButton, Text, View } from '@tarojs/components';
+import { Button as TaroButton, Text, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
-import { Logger } from '@shared/utils/logger';
-import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { sdk, STORE_NAME } from '@core';
-import { unBootstrap } from '@ui/bootstrap';
+import { STORE_NAME } from '@core';
 import {
   Button,
   FallbackImage,
@@ -18,10 +15,8 @@ import {
 } from '@ui/components';
 import { FormItem } from '@ui/container';
 import { withCustomTabBar } from '@ui/hoc';
-import { useSingleStore } from '@ui/viewModel';
+import { useSingleStore, useUserAction } from '@ui/viewModel';
 import styles from './index.module.scss';
-
-const logger = Logger.getLogger('[UI][Mine]');
 
 function Mine() {
   const user = useSingleStore(STORE_NAME.USER);
@@ -29,46 +24,20 @@ function Mine() {
   const subTitle = useMemo(() => {
     return isAdmin ? '角色：管理员' : `积分: ${user?.availableScore ?? 0}`;
   }, [isAdmin, user?.availableScore]);
-  const [isActionLoading, setIsActionLoading] = useState(false);
-  const onChooseAvatar = useCallback(async (e: BaseEventOrig<any>) => {
-    try {
-      const { avatarUrl } = e.detail;
-      await sdk.modules.user.uploadAvatar(avatarUrl);
-    } catch (error) {
-      logger.error('onChooseAvatar error', error.message);
-      showToast({ title: '头像更新失败' });
-    }
-  }, []);
+
+  const { isActionLoading, handleChooseAvatar, handleUpdateNickName, handleLogout } =
+    useUserAction();
 
   const [showEditNickName, setShowEditNickName] = useState(false);
   const [nickName, setNickName] = useState('');
   const onSaveNickName = useCallback(async () => {
     try {
-      setIsActionLoading(true);
-      await sdk.modules.user.uploadProfile({ name: nickName });
+      await handleUpdateNickName({ nickName });
+    } finally {
       setShowEditNickName(false);
       setNickName('');
-    } catch (error) {
-      logger.error('onSaveNickName error', error.message);
-      showToast({ title: '昵称更新失败' });
-    } finally {
-      setIsActionLoading(false);
     }
-  }, [nickName]);
-
-  const onLogout = useCallback(async () => {
-    try {
-      if (isActionLoading) {
-        return;
-      }
-      setIsActionLoading(true);
-      await unBootstrap();
-    } catch {
-      showToast({ title: '退出登录失败，请联系管理员' });
-    } finally {
-      setIsActionLoading(false);
-    }
-  }, [isActionLoading]);
+  }, [handleUpdateNickName, nickName]);
 
   return (
     <View className={styles.wrapper}>
@@ -76,7 +45,7 @@ function Mine() {
         <TaroButton
           className={styles.avatar}
           openType='chooseAvatar'
-          onChooseAvatar={onChooseAvatar}
+          onChooseAvatar={handleChooseAvatar}
         >
           {user ? <FallbackImage src={user.avatar} className={styles.image} /> : null}
         </TaroButton>
@@ -136,7 +105,7 @@ function Mine() {
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>
-          <View className={styles.menuButton} onClick={onLogout}>
+          <View className={styles.menuButton} onClick={handleLogout}>
             <Text>退出登录</Text>
           </View>
         </View>

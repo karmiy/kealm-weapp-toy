@@ -1,11 +1,10 @@
-import { Fragment, useCallback, useMemo, useState } from 'react';
-import { Text, View } from '@tarojs/components';
-import { showModal, showToast } from '@shared/utils/operateFeedback';
-import { sdk, STORE_NAME, TASK_TYPE_LIST } from '@core';
+import { Fragment, useCallback, useMemo } from 'react';
+import { View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { Button, WhiteSpace } from '@ui/components';
 import { TaskCard } from '@ui/container';
-import { useStoreById, useUserInfo } from '@ui/viewModel';
-import { ACTION_ID, ACTION_TITLE } from './constants';
+import { TASK_ACTION_ID, useStoreById, useTaskAction, useUserInfo } from '@ui/viewModel';
+import { ACTION_TITLE } from './constants';
 import styles from './index.module.scss';
 
 interface TaskFlowItemProps {
@@ -17,66 +16,21 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
   const { isAdmin } = useUserInfo();
   const taskFlow = useStoreById(STORE_NAME.TASK_FLOW, id);
   const status = taskFlow?.status;
-  const [isActionLoading, setIsActionLoading] = useState(false);
-
+  const { isActionLoading, handleApprove, handleReject, currentActionId } = useTaskAction();
   const { taskId } = taskFlow ?? {};
   const task = useStoreById(STORE_NAME.TASK, taskId);
 
   const taskCategory = useStoreById(STORE_NAME.TASK_CATEGORY, task?.categoryId);
 
-  const handleApprove = useCallback(async () => {
-    try {
-      const feedback = await showModal({
-        content: '确定要同意审批吗？',
-      });
-      if (!feedback) {
-        return;
-      }
-      setIsActionLoading(true);
-      await sdk.modules.task.approveTask(id);
-      showToast({
-        title: '审批成功',
-      });
-    } catch (error) {
-      showToast({
-        title: error.message ?? '操作失败',
-      });
-    } finally {
-      setIsActionLoading(false);
-    }
-  }, [id]);
-
-  const handleReject = useCallback(async () => {
-    try {
-      const feedback = await showModal({
-        content: '确定要拒绝审批吗？',
-      });
-      if (!feedback) {
-        return;
-      }
-      setIsActionLoading(true);
-      await sdk.modules.task.rejectTask(id);
-      showToast({
-        title: '拒绝审批成功',
-      });
-    } catch (error) {
-      showToast({
-        title: error.message ?? '操作失败',
-      });
-    } finally {
-      setIsActionLoading(false);
-    }
-  }, [id]);
-
   const handleAction = useCallback(
-    async (actionId?: ACTION_ID) => {
+    async (actionId?: TASK_ACTION_ID) => {
       if (!actionId) {
         return;
       }
-      actionId === ACTION_ID.APPROVE && handleApprove();
-      actionId === ACTION_ID.REJECT && handleReject();
+      actionId === TASK_ACTION_ID.APPROVE && handleApprove(id);
+      actionId === TASK_ACTION_ID.REJECT && handleReject(id);
     },
-    [handleApprove, handleReject],
+    [handleApprove, handleReject, id],
   );
 
   const Action = useMemo(() => {
@@ -93,6 +47,11 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
               <Button
                 type={item.type}
                 disabled={isActionLoading || item.disabled}
+                icon={
+                  isActionLoading && currentActionId && currentActionId === item.id
+                    ? 'loading'
+                    : undefined
+                }
                 onClick={() => handleAction(item.id)}
               >
                 {item.label}
@@ -102,7 +61,7 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
         })}
       </View>
     );
-  }, [handleAction, isActionLoading, isAdmin, status]);
+  }, [currentActionId, handleAction, isActionLoading, isAdmin, status]);
 
   if (!task || !taskFlow) {
     return null;

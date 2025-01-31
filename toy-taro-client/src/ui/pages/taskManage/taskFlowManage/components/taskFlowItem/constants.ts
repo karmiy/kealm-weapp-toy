@@ -1,12 +1,8 @@
 import { TASK_STATUS } from '@core';
-
-export enum ACTION_ID {
-  APPROVE = 'APPROVE',
-  REJECT = 'REJECT',
-}
+import { TASK_ACTION_ID } from '@ui/viewModel';
 
 interface ActionItem {
-  id?: ACTION_ID;
+  id?: TASK_ACTION_ID;
   type: 'primary' | 'plain';
   label: string;
   disabled: boolean;
@@ -16,13 +12,13 @@ export const ACTION_TITLE: Record<string, Record<TASK_STATUS, ActionItem[]>> = {
   admin: {
     [TASK_STATUS.PENDING_APPROVAL]: [
       {
-        id: ACTION_ID.REJECT,
+        id: TASK_ACTION_ID.REJECT,
         type: 'plain',
         label: '拒绝',
         disabled: false,
       },
       {
-        id: ACTION_ID.APPROVE,
+        id: TASK_ACTION_ID.APPROVE,
         type: 'primary',
         label: '同意',
         disabled: false,

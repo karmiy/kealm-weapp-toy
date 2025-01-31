@@ -51,7 +51,7 @@ export class ProductModule extends AbstractModule {
       }
       storeManager.emitDelete(STORE_NAME.PRODUCT_SHOP_CART, [id]);
     } catch (error) {
-      this._logger.error('updateProductShopCart error', error);
+      this._logger.error('updateProductShopCart error', error.message);
       throw error;
     }
   }
@@ -73,7 +73,7 @@ export class ProductModule extends AbstractModule {
         ],
       });
     } catch (error) {
-      this._logger.error('addProductShopCart error', error);
+      this._logger.error('addProductShopCart error', error.message);
       throw error;
     }
   }

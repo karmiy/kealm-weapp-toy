@@ -15,6 +15,7 @@ interface StatusWrapperProps extends Omit<StatusViewProps, 'type'> {
   className?: string;
   loading?: boolean;
   count?: number;
+  loadingIgnoreCount?: boolean; // 即使有数据，有 loading 也显示 loading
 }
 
 const emptyStyle = {};
@@ -71,17 +72,17 @@ const StatusView = (props: StatusViewProps) => {
 };
 
 const StatusWrapper = (props: PropsWithChildren<StatusWrapperProps>) => {
-  const { className, loading, count, children, ...rest } = props;
+  const { className, loading, loadingIgnoreCount = false, count, children, ...rest } = props;
 
   const StatusLayout = useMemo(() => {
-    if (loading && !count) {
+    if (loading && (!count || loadingIgnoreCount)) {
       return <StatusView {...rest} type='loading' />;
     }
     if (!loading && !count) {
       return <StatusView {...rest} type='empty' />;
     }
     return null;
-  }, [count, loading, rest]);
+  }, [count, loading, rest, loadingIgnoreCount]);
 
   if (rest.size === 'overlay') {
     return (

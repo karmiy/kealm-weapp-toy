@@ -1,4 +1,5 @@
 import { sleep } from '@shared/utils/utils';
+import { TASK_STATUS } from '../constants';
 import { TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../entity';
 import { mock, MOCK_API_NAME } from '../mock';
 
@@ -24,14 +25,8 @@ export class TaskApi {
     return Math.random() > 0.5 ? Promise.resolve({} as TaskFlowEntity) : Promise.reject();
   }
 
-  @mock({ name: MOCK_API_NAME.APPROVE_TASK })
-  static async approveTask(taskFlowId: string): Promise<void> {
-    await sleep(800);
-    return Promise.resolve();
-  }
-
-  @mock({ name: MOCK_API_NAME.REJECT_TASK })
-  static async rejectTask(taskFlowId: string): Promise<void> {
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK_FLOW_STATUS })
+  static async updateTaskFlowStatus(taskFlowId: string, status: TASK_STATUS): Promise<void> {
     await sleep(800);
     return Promise.resolve();
   }

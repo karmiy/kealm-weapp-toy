@@ -12,11 +12,6 @@ interface TaskItemProps {
   id: string;
 }
 
-const SUBMIT_APPROVE_MES = {
-  SUCCESS: '已发起申请，请等待管理员确认~',
-  FAIL: '发起申请失败，请联系管理员！',
-};
-
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
@@ -25,10 +20,7 @@ const TaskItem = (props: TaskItemProps) => {
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
 
   const handleSubmitApproval = useCallback(() => {
-    submitApprovalRequest(id, {
-      success: () => showToast({ title: SUBMIT_APPROVE_MES.SUCCESS }),
-      fallback: () => showToast({ title: SUBMIT_APPROVE_MES.FAIL }),
-    });
+    submitApprovalRequest(id);
   }, [submitApprovalRequest, id]);
 
   if (!task) {

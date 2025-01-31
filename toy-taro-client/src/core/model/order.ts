@@ -12,6 +12,8 @@ export class OrderModel {
 
   score: number;
 
+  count: number;
+
   coverImage: string;
 
   @observable
@@ -26,12 +28,23 @@ export class OrderModel {
 
   constructor(entity: OrderEntity) {
     makeObserver(this);
-    const { id, name, desc, score, cover_image, create_time, last_modified_time, status, user_id } =
-      entity;
+    const {
+      id,
+      name,
+      desc,
+      score,
+      count,
+      cover_image,
+      create_time,
+      last_modified_time,
+      status,
+      user_id,
+    } = entity;
     this.id = id;
     this.name = name;
     this.desc = desc;
     this.score = score;
+    this.count = count;
     this.coverImage = cover_image;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
@@ -41,7 +54,17 @@ export class OrderModel {
 
   @computed
   get isRevoking() {
-    return this.status === ORDER_STATUS.Revoking;
+    return this.status === ORDER_STATUS.REVOKING;
+  }
+
+  @computed
+  get isApproved() {
+    return this.status === ORDER_STATUS.APPROVED;
+  }
+
+  @computed
+  get isRejected() {
+    return this.status === ORDER_STATUS.REJECTED;
   }
 
   @computed

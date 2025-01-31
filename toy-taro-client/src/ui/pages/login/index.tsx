@@ -1,72 +1,18 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { View } from '@tarojs/components';
-import { login as taroLogin } from '@tarojs/taro';
-import { Logger } from '@shared/utils/logger';
-import { showToast } from '@shared/utils/operateFeedback';
-import { navigateToPage } from '@shared/utils/router';
-import { sdk } from '@core';
-import { bootstrap } from '@ui/bootstrap';
 import { Button, Icon, Input, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { FormItem } from '@ui/container';
-import { COLOR_VARIABLES, PAGE_ID } from '@/shared/utils/constants';
+import { useUserAction } from '@ui/viewModel';
+import { COLOR_VARIABLES } from '@/shared/utils/constants';
 import { LOGIN_PAGE_STATUS } from './constants';
 import styles from './index.module.scss';
-
-const logger = Logger.getLogger('[UI][Login]');
 
 export default function () {
   const [pageStatus, setPageStatus] = useState(LOGIN_PAGE_STATUS.DEFAULT);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const actionIcon = isLoading ? 'loading' : undefined;
-
-  const handleLoginSuccess = useCallback(async () => {
-    try {
-      await bootstrap();
-      await showToast({ title: '登录成功' });
-      navigateToPage({ pageName: PAGE_ID.HOME, isRelaunch: true });
-    } catch (error) {
-      logger.error('reload sdk failed', error);
-      showToast({ title: '登录后发生异常，请联系管理员' });
-    }
-  }, []);
-
-  const handleLogin = useCallback(
-    async (options: { handler: () => Promise<void>; logName: string }) => {
-      const { handler, logName } = options;
-      try {
-        setIsLoading(true);
-        await handler();
-        await handleLoginSuccess();
-      } catch (error) {
-        logger.error(`${logName} login failed`, error);
-        showToast({ title: '登录失败' });
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [handleLoginSuccess],
-  );
-
-  const handleWxLogin = useCallback(async () => {
-    handleLogin({
-      handler: async () => {
-        const { code } = await taroLogin();
-        await sdk.modules.user.login({ code });
-      },
-      logName: 'wx',
-    });
-  }, [handleLogin]);
-
-  const handleAccountLogin = useCallback(async () => {
-    handleLogin({
-      handler: async () => {
-        await sdk.modules.user.login({ username, password });
-      },
-      logName: 'wx',
-    });
-  }, [username, password, handleLogin]);
+  const { isActionLoading, handleWxLogin, handleAccountLogin } = useUserAction();
+  const actionIcon = isActionLoading ? 'loading' : undefined;
 
   return (
     <View className={styles.loginWrapper}>
@@ -92,8 +38,8 @@ export default function () {
               icon={actionIcon}
               className={styles.actionButton}
               size='large'
-              onClick={handleAccountLogin}
-              disabled={isLoading}
+              onClick={() => handleAccountLogin({ username, password })}
+              disabled={isActionLoading}
             >
               登录
             </Button>
@@ -109,7 +55,7 @@ export default function () {
               className={styles.actionButton}
               size='large'
               onClick={handleWxLogin}
-              disabled={isLoading}
+              disabled={isActionLoading}
             >
               微信一键登录
             </Button>

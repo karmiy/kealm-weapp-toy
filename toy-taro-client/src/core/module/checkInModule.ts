@@ -40,7 +40,7 @@ export class CheckInModule extends AbstractModule {
         ],
       });
     } catch (error) {
-      this._logger.info('Claim reward failed', error);
+      this._logger.info('Claim reward failed', error.message);
       throw error;
     }
   }
@@ -63,7 +63,7 @@ export class CheckInModule extends AbstractModule {
         ],
       });
     } catch (error) {
-      this._logger.info('Check in today failed', error);
+      this._logger.info('Check in today failed', error.message);
       throw error;
     }
   }

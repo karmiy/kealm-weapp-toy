@@ -21,37 +21,49 @@ export class CouponModule extends AbstractModule {
   }
 
   async deleteCoupon(id: string) {
-    await CouponApi.deleteCoupon(id);
-    storeManager.emitDelete(STORE_NAME.COUPON, [id]);
+    try {
+      this._logger.info('deleteCoupon', id);
+      await CouponApi.deleteCoupon(id);
+      storeManager.emitDelete(STORE_NAME.COUPON, [id]);
+    } catch (error) {
+      this._logger.info('deleteCoupon error', error.message);
+      throw error;
+    }
   }
 
   async updateCoupon(coupon: CouponUpdateParams) {
-    const {
-      id,
-      name,
-      minimumOrderValue,
-      type,
-      validityTimeType,
-      startTime,
-      endTime,
-      dates,
-      days,
-      value,
-    } = coupon;
-    const entity = await CouponApi.updateCoupon({
-      id,
-      name,
-      minimum_order_value: minimumOrderValue,
-      type,
-      value,
-      validity_time_type: validityTimeType,
-      start_time: startTime,
-      end_time: endTime,
-      dates,
-      days,
-    });
-    storeManager.emitUpdate(STORE_NAME.COUPON, {
-      entities: [entity],
-    });
+    try {
+      const {
+        id,
+        name,
+        minimumOrderValue,
+        type,
+        validityTimeType,
+        startTime,
+        endTime,
+        dates,
+        days,
+        value,
+      } = coupon;
+      this._logger.info('updateCoupon', coupon);
+      const entity = await CouponApi.updateCoupon({
+        id,
+        name,
+        minimum_order_value: minimumOrderValue,
+        type,
+        value,
+        validity_time_type: validityTimeType,
+        start_time: startTime,
+        end_time: endTime,
+        dates,
+        days,
+      });
+      storeManager.emitUpdate(STORE_NAME.COUPON, {
+        entities: [entity],
+      });
+    } catch (error) {
+      this._logger.info('updateCoupon error', error.message);
+      throw error;
+    }
   }
 }

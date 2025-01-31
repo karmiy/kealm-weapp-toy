@@ -1,4 +1,5 @@
 import { sleep } from '@shared/utils/utils';
+import { ORDER_STATUS } from '../constants';
 import { OrderEntity } from '../entity';
 import { mock, MOCK_API_NAME } from '../mock';
 
@@ -8,9 +9,8 @@ export class OrderApi {
     return Promise.resolve([]);
   }
 
-  @mock({ name: MOCK_API_NAME.REVOKE_ORDER })
-  static async revokeOrder(id: string): Promise<void> {
-    await sleep(1000);
-    return Math.random() > 0.6 ? Promise.resolve() : Promise.reject();
+  @mock({ name: MOCK_API_NAME.UPDATE_ORDER_STATUS })
+  static async updateOrderStatus(id: string, status: ORDER_STATUS): Promise<void> {
+    return Promise.resolve();
   }
 }
