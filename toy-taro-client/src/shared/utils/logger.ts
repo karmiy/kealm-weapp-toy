@@ -1,6 +1,10 @@
 export class Logger {
   private _tags: Set<string> = new Set();
 
+  constructor(tags = new Set<string>()) {
+    this._tags = new Set(tags);
+  }
+
   static getLogger(tag: string): Logger {
     const instance = new Logger();
     instance._tags.add(tag);
@@ -8,8 +12,9 @@ export class Logger {
   }
 
   tag(tag: string) {
-    this._tags.add(tag);
-    return this;
+    const newTags = new Set(this._tags);
+    newTags.add(tag);
+    return new Logger(newTags);
   }
 
   private _log(level: string, ...args: unknown[]): void {
