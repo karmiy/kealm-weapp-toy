@@ -76,7 +76,9 @@ export class TaskModel {
     return this.reward.value;
   }
 
-  getRewardTitle(reward: TaskReward) {
+  @computed
+  get rewardTitle() {
+    const reward = this.reward;
     switch (reward.type) {
       case TASK_REWARD_TYPE.POINTS:
         return `+${reward.value}积分`;

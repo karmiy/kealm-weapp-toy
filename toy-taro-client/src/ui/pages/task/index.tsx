@@ -3,31 +3,12 @@ import { Text, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
-import { TASK_TYPE } from '@core';
+import { TASK_TYPE_LIST } from '@core';
 import { FallbackImage, Icon, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
 import { useUserInfo } from '@ui/viewModel';
 import { TaskCategory } from './components';
 import styles from './index.module.scss';
-
-const TASK_TYPE_LIST = [
-  {
-    type: TASK_TYPE.DAILY,
-    label: '每日任务',
-  },
-  {
-    type: TASK_TYPE.WEEKLY,
-    label: '每周任务',
-  },
-  {
-    type: TASK_TYPE.TIMED,
-    label: '限时任务',
-  },
-  {
-    type: TASK_TYPE.CHALLENGE,
-    label: '挑战任务',
-  },
-];
 
 function Task() {
   const { isAdmin } = useUserInfo();

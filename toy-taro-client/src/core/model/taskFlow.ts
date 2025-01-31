@@ -46,12 +46,6 @@ export class TaskFlowModel {
 
   @computed
   get lastModifiedDate() {
-    return format(this.lastModifiedTime, 'yyyy-MM-dd');
-  }
-
-  @computed
-  get operateDateTitle() {
-    const date = this.lastModifiedDate;
-    return this.isPendingApproval ? `审批发起时间：${date}` : `审批完成时间：${date}`;
+    return format(this.lastModifiedTime, 'yyyy-MM-dd HH:mm:ss');
   }
 }

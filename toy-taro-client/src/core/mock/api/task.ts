@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
-import { sleep } from '@shared/utils/utils';
+import { JsError, sleep } from '@shared/utils/utils';
 import { UserStorageManager } from '../../base';
 import {
   COUPON_STATUS,
   COUPON_TYPE,
   COUPON_VALIDITY_TIME_TYPE,
+  SERVER_ERROR_CODE,
   TASK_REWARD_TYPE,
   TASK_STATUS,
   TASK_TYPE,
@@ -182,5 +183,17 @@ export const mockTaskApi = {
           last_modified_time: now,
         })
       : Promise.reject();
+  },
+  [MOCK_API_NAME.APPROVE_TASK]: async (taskFlowId: string): Promise<void> => {
+    await sleep(800);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
+  },
+  [MOCK_API_NAME.REJECT_TASK]: async (taskFlowId: string): Promise<void> => {
+    await sleep(800);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
   },
 };

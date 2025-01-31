@@ -44,7 +44,7 @@ export class Singleton {
 export const getStorageKey = (key: string) => `kealm-storage-toy-client_${key}`;
 
 export class JsError extends Error {
-  constructor(public code: string, message: string) {
+  constructor(public code: string | number, message: string) {
     super(message);
   }
 }

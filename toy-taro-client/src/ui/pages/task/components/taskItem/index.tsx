@@ -41,9 +41,9 @@ const TaskItem = (props: TaskItemProps) => {
 
   return (
     <TaskCard
-      name={task.name + id}
+      name={task.name}
       desc={task.desc}
-      rewardTitle={task.getRewardTitle(task.reward)}
+      rewardTitle={task.rewardTitle}
       difficulty={difficulty}
       action={
         isAdmin ? (

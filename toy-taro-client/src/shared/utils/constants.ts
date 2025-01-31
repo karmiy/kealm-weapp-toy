@@ -18,6 +18,7 @@ export enum PAGE_ID {
     TASK = 'task',
     TASK_MANAGE = 'taskManage',
     TASK_CATEGORY_MANAGE = 'taskCategoryManage',
+    TASK_FLOW_MANAGE = 'taskFlowManage',
     MINE = 'mine',
     COUPON = 'coupon',
     COUPON_MANAGE = 'couponManage',

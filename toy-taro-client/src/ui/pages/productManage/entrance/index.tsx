@@ -23,7 +23,6 @@ export default function () {
           showAddBtn={!pictures.length}
           files={pictures}
           onChange={e => {
-            console.log('[test] e', e);
             setPictures(e);
           }}
         />

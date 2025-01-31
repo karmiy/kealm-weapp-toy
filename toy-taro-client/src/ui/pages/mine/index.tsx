@@ -123,6 +123,16 @@ function Mine() {
               <Icon name='arrow-right' size={14} />
             </View>
           ) : null}
+          <View
+            className={styles.menuItem}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.TASK_FLOW_MANAGE })}
+          >
+            <View className={styles.title}>
+              <Icon name='task' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+              <Text>任务清单</Text>
+            </View>
+            <Icon name='arrow-right' size={14} />
+          </View>
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>

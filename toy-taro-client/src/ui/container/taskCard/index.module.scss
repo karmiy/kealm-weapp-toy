@@ -42,6 +42,16 @@
     }
   }
 
+  .content {
+    margin-top: px(14);
+    font-size: px(12);
+    color: $--text-color-secondary;
+
+    .item + .item {
+      margin-top: px(4);
+    }
+  }
+
   .footer {
     display: flex;
     justify-content: space-between;

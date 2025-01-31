@@ -23,4 +23,16 @@ export class TaskApi {
     await sleep(800);
     return Math.random() > 0.5 ? Promise.resolve({} as TaskFlowEntity) : Promise.reject();
   }
+
+  @mock({ name: MOCK_API_NAME.APPROVE_TASK })
+  static async approveTask(taskFlowId: string): Promise<void> {
+    await sleep(800);
+    return Promise.resolve();
+  }
+
+  @mock({ name: MOCK_API_NAME.REJECT_TASK })
+  static async rejectTask(taskFlowId: string): Promise<void> {
+    await sleep(800);
+    return Promise.resolve();
+  }
 }

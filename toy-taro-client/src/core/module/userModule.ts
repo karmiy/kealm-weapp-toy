@@ -70,4 +70,8 @@ export class UserModule extends AbstractModule {
       partials: [{ id: userInfo.id, name }],
     });
   }
+
+  getIsAdmin() {
+    return UserStorageManager.getInstance().isAdmin;
+  }
 }

@@ -78,7 +78,7 @@ export default defineAppConfig({
     },
     {
       root: 'ui/pages/taskManage/',
-      pages: ['entrance/index', 'categoryManage/index'],
+      pages: ['entrance/index', 'categoryManage/index', 'taskFlowManage/index'],
     },
   ],
   // entryPagePath: 'ui/pages/taskManage/entrance/index',

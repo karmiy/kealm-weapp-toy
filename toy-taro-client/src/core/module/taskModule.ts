@@ -1,12 +1,13 @@
 import { TaskApi } from '../api';
-import { AbstractModule } from '../base';
+import { AbstractModule, UserStorageManager } from '../base';
 import { MODULE_NAME, STORE_NAME, TASK_STATUS } from '../constants';
 import { storeManager } from '../storeManager';
 
 export class TaskModule extends AbstractModule {
   protected onLoad() {
+    const isAdmin = UserStorageManager.getInstance().isAdmin;
     this.syncTaskList();
-    this.syncTaskFlowList();
+    !isAdmin && this.syncTaskFlowList();
     this.syncTaskCategoryList();
   }
   protected onUnload() {}
@@ -36,9 +37,38 @@ export class TaskModule extends AbstractModule {
   }
 
   async submitApprovalRequest(id: string) {
+    this._logger.info('submitApprovalRequest', 'taskId', id);
     const taskFlow = await TaskApi.submitApprovalRequest(id);
     storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
       entities: [taskFlow],
+    });
+  }
+
+  async approveTask(taskFlowId: string) {
+    this._logger.info('approveTask', 'taskFlowId', taskFlowId);
+    await TaskApi.approveTask(taskFlowId);
+    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
+      partials: [
+        {
+          id: taskFlowId,
+          status: TASK_STATUS.APPROVED,
+          last_modified_time: new Date().getTime(),
+        },
+      ],
+    });
+  }
+
+  async rejectTask(taskFlowId: string) {
+    this._logger.info('rejectTask', 'taskFlowId', taskFlowId);
+    await TaskApi.rejectTask(taskFlowId);
+    storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
+      partials: [
+        {
+          id: taskFlowId,
+          status: TASK_STATUS.REJECTED,
+          last_modified_time: new Date().getTime(),
+        },
+      ],
     });
   }
 }

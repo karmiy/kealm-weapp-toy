@@ -10,11 +10,14 @@ export class AbstractGroupByController<T extends Models> extends Singleton {
   private _idsListeners = new Map<string, Set<Listener>>();
   private _idsStore = new Map<string, Set<string>>();
 
-  constructor(private _storeName: STORE_NAME) {
+  constructor(private _storeName: STORE_NAME, private _enable = true) {
     super();
   }
 
   init() {
+    if (!this._enable) {
+      return;
+    }
     this._handleListChange();
     sdk.storeManager.subscribe(this._storeName, this._handleListChange);
   }
