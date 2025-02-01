@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
 import { ConfigListPanel } from '@ui/container';
-import { useStoreList } from '@ui/viewModel';
+import { useProductAction, useStoreList } from '@ui/viewModel';
 import { CategoryForm } from './components';
 import styles from './index.module.scss';
 
@@ -11,7 +11,7 @@ export default function () {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string>();
   const productCategoryList = useStoreList(STORE_NAME.PRODUCT_CATEGORY);
-
+  const { handleDeleteCategory } = useProductAction();
   const handleEdit = useCallback((id: string) => {
     setEditId(id);
     setShowEditModal(true);
@@ -22,6 +22,15 @@ export default function () {
     setShowEditModal(true);
   }, []);
 
+  const handleDelete = useCallback(
+    async (id: string) => {
+      await handleDeleteCategory({
+        id,
+      });
+    },
+    [handleDeleteCategory],
+  );
+
   return (
     <Fragment>
       <ConfigListPanel
@@ -31,6 +40,7 @@ export default function () {
         labelKey='name'
         onAdd={handleAdd}
         onEdit={handleEdit}
+        onDelete={handleDelete}
       />
       <FloatLayout
         visible={showEditModal}

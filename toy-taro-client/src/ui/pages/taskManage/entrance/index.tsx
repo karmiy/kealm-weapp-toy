@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { View } from '@tarojs/components';
 import { navigateBack, useRouter } from '@tarojs/taro';
 import { navigateToPage } from '@shared/utils/router';
@@ -16,16 +16,23 @@ import {
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
 import { useLoading } from '@ui/hooks';
-import { useCoupon, useStoreById, useStoreList, useTaskAction } from '@ui/viewModel';
+import {
+  TASK_ACTION_ID,
+  useCoupon,
+  useStoreById,
+  useStoreList,
+  useTaskAction,
+} from '@ui/viewModel';
 import { COLOR_VARIABLES, PAGE_ID } from '@/shared/utils/constants';
 import { TASK_REWARD_SELECT_TYPE, TASK_TYPE_LIST } from './constants';
 import styles from './index.module.scss';
 
 export default function () {
   const router = useRouter();
+  const id = router.params.id;
   const isLoading = useLoading();
-  const { isActionLoading, handleUpdate } = useTaskAction();
-  const task = useStoreById(STORE_NAME.TASK, router.params.id);
+  const { isActionLoading, currentActionId, handleUpdate, handleDelete } = useTaskAction();
+  const task = useStoreById(STORE_NAME.TASK, id);
   const coupon = useStoreById(STORE_NAME.COUPON, task?.couponId);
   // 任务名称
   const [taskName, setTaskName] = useState(task?.name ?? '');
@@ -128,6 +135,16 @@ export default function () {
     taskTypeIndex,
   ]);
 
+  const handleDeleteTask = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+    await handleDelete({
+      id,
+      onSuccess: () => navigateBack(),
+    });
+  }, [handleDelete, id]);
+
   return (
     <StatusWrapper loading={isLoading} count={isLoading ? 0 : 1} size='overlay'>
       <Layout type='card'>
@@ -218,6 +235,21 @@ export default function () {
         >
           保存
         </Button>
+        {id ? (
+          <Fragment>
+            <WhiteSpace size='medium' />
+            <Button
+              width='100%'
+              type='plain'
+              size='large'
+              disabled={isActionLoading}
+              loading={isActionLoading && currentActionId === TASK_ACTION_ID.DELETE_TASK}
+              onClick={handleDeleteTask}
+            >
+              删除
+            </Button>
+          </Fragment>
+        ) : null}
       </Layout>
     </StatusWrapper>
   );

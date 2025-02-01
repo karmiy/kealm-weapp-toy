@@ -105,4 +105,26 @@ export class TaskModule extends AbstractModule {
       throw error;
     }
   }
+
+  async deleteTask(id: string) {
+    try {
+      this._logger.info('deleteTask', id);
+      await TaskApi.deleteTask(id);
+      storeManager.emitDelete(STORE_NAME.TASK, [id]);
+    } catch (error) {
+      this._logger.info('deleteTask error', error.message);
+      throw error;
+    }
+  }
+
+  async deleteTaskCategory(id: string) {
+    try {
+      this._logger.info('deleteTaskCategory', id);
+      await TaskApi.deleteTaskCategory(id);
+      storeManager.emitDelete(STORE_NAME.TASK_CATEGORY, [id]);
+    } catch (error) {
+      this._logger.info('deleteTaskCategory error', error.message);
+      throw error;
+    }
+  }
 }

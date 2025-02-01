@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { showToast } from '@shared/utils/operateFeedback';
+import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { ProductUpdateParams, sdk } from '@core';
 import { PRODUCT_ACTION_ID } from './constants';
 
@@ -145,9 +145,75 @@ export function useProductAction() {
     [],
   );
 
+  const handleDelete = useCallback(
+    async (params: { id: string; onSuccess?: () => void }) => {
+      const { id, onSuccess } = params;
+      try {
+        if (isActionLoading) {
+          return;
+        }
+        const feedback = await showModal({
+          content: '确定要删除吗？',
+        });
+        if (!feedback) {
+          return;
+        }
+        setIsActionLoading(true);
+        setCurrentActionId(PRODUCT_ACTION_ID.DELETE_PRODUCT);
+        await sdk.modules.product.deleteProduct(id);
+        showToast({
+          title: '删除成功',
+        });
+        onSuccess?.();
+      } catch (e) {
+        showToast({
+          title: e.message ?? '删除失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+        setCurrentActionId(undefined);
+      }
+    },
+    [isActionLoading],
+  );
+
+  const handleDeleteCategory = useCallback(
+    async (params: { id: string; onSuccess?: () => void }) => {
+      const { id, onSuccess } = params;
+      try {
+        if (isActionLoading) {
+          return;
+        }
+        const feedback = await showModal({
+          content: '确定要删除吗？',
+        });
+        if (!feedback) {
+          return;
+        }
+        setIsActionLoading(true);
+        setCurrentActionId(PRODUCT_ACTION_ID.DELETE_PRODUCT_CATEGORY);
+        await sdk.modules.product.deleteProductCategory(id);
+        showToast({
+          title: '删除成功',
+        });
+        onSuccess?.();
+      } catch (e) {
+        showToast({
+          title: e.message ?? '删除失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+        setCurrentActionId(undefined);
+      }
+    },
+    [isActionLoading],
+  );
+
   return {
     handleUpdate,
     handleUpdateCategory,
+    handleDelete,
+    handleDeleteCategory,
     isActionLoading,
     currentActionId,
   };

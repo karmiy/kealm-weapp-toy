@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { navigateBack, useRouter } from '@tarojs/taro';
 import { format } from 'date-fns';
 import type { File } from 'taro-ui/types/image-picker';
@@ -17,14 +17,15 @@ import {
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
 import { useLoading } from '@ui/hooks';
-import { useProductAction, useStoreById, useStoreList } from '@ui/viewModel';
-import styles from './index.module.scss';
+import { PRODUCT_ACTION_ID, useProductAction, useStoreById, useStoreList } from '@ui/viewModel';
+// import styles from './index.module.scss';
 
 export default function () {
   const router = useRouter();
   const isLoading = useLoading();
-  const product = useStoreById(STORE_NAME.PRODUCT, router.params.id);
-  const { isActionLoading, handleUpdate } = useProductAction();
+  const id = router.params.id;
+  const product = useStoreById(STORE_NAME.PRODUCT, id);
+  const { isActionLoading, currentActionId, handleUpdate, handleDelete } = useProductAction();
   // 商品图片
   const [pictures, setPictures] = useState<File[]>(() => {
     if (!product) {
@@ -139,6 +140,16 @@ export default function () {
     startTime,
   ]);
 
+  const handleDeleteProduct = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+    await handleDelete({
+      id,
+      onSuccess: () => navigateBack(),
+    });
+  }, [handleDelete, id]);
+
   return (
     <StatusWrapper loading={isLoading} loadingIgnoreCount count={1} size='overlay'>
       <Layout type='card'>
@@ -227,11 +238,26 @@ export default function () {
           type='primary'
           size='large'
           disabled={isActionLoading}
-          loading={isActionLoading}
+          loading={isActionLoading && currentActionId === PRODUCT_ACTION_ID.UPDATE_PRODUCT}
           onClick={handleSave}
         >
           保存
         </Button>
+        {id ? (
+          <Fragment>
+            <WhiteSpace size='medium' />
+            <Button
+              width='100%'
+              type='plain'
+              size='large'
+              disabled={isActionLoading}
+              loading={isActionLoading && currentActionId === PRODUCT_ACTION_ID.DELETE_PRODUCT}
+              onClick={handleDeleteProduct}
+            >
+              删除
+            </Button>
+          </Fragment>
+        ) : null}
       </Layout>
     </StatusWrapper>
   );

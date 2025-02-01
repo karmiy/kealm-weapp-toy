@@ -226,12 +226,78 @@ export function useTaskAction() {
     [],
   );
 
+  const handleDelete = useCallback(
+    async (params: { id: string; onSuccess?: () => void }) => {
+      const { id, onSuccess } = params;
+      try {
+        if (isActionLoading) {
+          return;
+        }
+        const feedback = await showModal({
+          content: '确定要删除吗？',
+        });
+        if (!feedback) {
+          return;
+        }
+        setIsActionLoading(true);
+        setCurrentActionId(TASK_ACTION_ID.DELETE_TASK);
+        await sdk.modules.task.deleteTask(id);
+        showToast({
+          title: '删除成功',
+        });
+        onSuccess?.();
+      } catch (e) {
+        showToast({
+          title: e.message ?? '删除失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+        setCurrentActionId(undefined);
+      }
+    },
+    [isActionLoading],
+  );
+
+  const handleDeleteCategory = useCallback(
+    async (params: { id: string; onSuccess?: () => void }) => {
+      const { id, onSuccess } = params;
+      try {
+        if (isActionLoading) {
+          return;
+        }
+        const feedback = await showModal({
+          content: '确定要删除吗？',
+        });
+        if (!feedback) {
+          return;
+        }
+        setIsActionLoading(true);
+        setCurrentActionId(TASK_ACTION_ID.DELETE_TASK_CATEGORY);
+        await sdk.modules.task.deleteTaskCategory(id);
+        showToast({
+          title: '删除成功',
+        });
+        onSuccess?.();
+      } catch (e) {
+        showToast({
+          title: e.message ?? '删除失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+        setCurrentActionId(undefined);
+      }
+    },
+    [isActionLoading],
+  );
+
   return {
     submitApprovalRequest,
     handleApprove,
     handleReject,
     handleUpdate,
     handleUpdateCategory,
+    handleDelete,
+    handleDeleteCategory,
     isActionLoading,
     currentActionId,
   };

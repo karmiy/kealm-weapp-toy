@@ -43,4 +43,14 @@ export class ProductApi {
   }): Promise<ProductCategoryEntity> {
     return Promise.resolve({} as ProductCategoryEntity);
   }
+
+  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT })
+  static async deleteProduct(id: string): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT_CATEGORY })
+  static async deleteProductCategory(id: string): Promise<void> {
+    return Promise.resolve();
+  }
 }

@@ -92,6 +92,18 @@ function Mine() {
               <Icon name='arrow-right' size={14} />
             </View>
           ) : null}
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.PRODUCT_CATEGORY_MANAGE })}
+            >
+              <View className={styles.title}>
+                <Icon name='product' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>商品分类</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
+            </View>
+          ) : null}
           <View
             className={styles.menuItem}
             onClick={() => navigateToPage({ pageName: PAGE_ID.TASK_FLOW_MANAGE })}
@@ -102,6 +114,18 @@ function Mine() {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.TASK_CATEGORY_MANAGE })}
+            >
+              <View className={styles.title}>
+                <Icon name='task' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>任务分类</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
+            </View>
+          ) : null}
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>

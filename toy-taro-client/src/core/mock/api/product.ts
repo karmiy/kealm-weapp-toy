@@ -167,4 +167,18 @@ export const mockProductApi = {
           ),
         );
   },
+  [MOCK_API_NAME.DELETE_PRODUCT]: async (id: string): Promise<void> => {
+    await sleep(100);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，请联系管理员'));
+  },
+  [MOCK_API_NAME.DELETE_PRODUCT_CATEGORY]: async (id: string): Promise<void> => {
+    await sleep(100);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(
+          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，请先删除分类下的相关商品'),
+        );
+  },
 };

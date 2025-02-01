@@ -127,4 +127,26 @@ export class ProductModule extends AbstractModule {
       throw error;
     }
   }
+
+  async deleteProduct(id: string) {
+    try {
+      this._logger.info('deleteProduct', id);
+      await ProductApi.deleteProduct(id);
+      storeManager.emitDelete(STORE_NAME.PRODUCT, [id]);
+    } catch (error) {
+      this._logger.info('deleteProduct error', error.message);
+      throw error;
+    }
+  }
+
+  async deleteProductCategory(id: string) {
+    try {
+      this._logger.info('deleteProductCategory', id);
+      await ProductApi.deleteProductCategory(id);
+      storeManager.emitDelete(STORE_NAME.PRODUCT_CATEGORY, [id]);
+    } catch (error) {
+      this._logger.info('deleteProductCategory error', error.message);
+      throw error;
+    }
+  }
 }

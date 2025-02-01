@@ -55,4 +55,14 @@ export class TaskApi {
     await sleep(800);
     return Promise.resolve({} as TaskCategoryEntity);
   }
+
+  @mock({ name: MOCK_API_NAME.DELETE_TASK })
+  static async deleteTask(id: string): Promise<void> {
+    return Promise.resolve();
+  }
+
+  @mock({ name: MOCK_API_NAME.DELETE_TASK_CATEGORY })
+  static async deleteTaskCategory(id: string): Promise<void> {
+    return Promise.resolve();
+  }
 }

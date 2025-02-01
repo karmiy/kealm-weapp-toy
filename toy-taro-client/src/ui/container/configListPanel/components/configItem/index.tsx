@@ -29,11 +29,8 @@ export const ConfigItem = (props: ConfigItemProps) => {
         if (isActionLoading) {
           return;
         }
-        const feedback = await showModal({
-          content: '确定要删除吗？',
-        });
         setIsActionLoading(true);
-        feedback && (await onDelete?.(id));
+        await onDelete?.(id);
       } finally {
         setIsActionLoading(false);
       }
