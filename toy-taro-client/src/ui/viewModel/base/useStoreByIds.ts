@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { sdk, STORE_NAME } from '@core';
 
 export function useStoreByIds<T extends STORE_NAME>(storeName: T, ids: string[]) {
-  const [models, setModels] = useState(
+  const [models, setModels] = useState(() =>
     ids.map(id => sdk.storeManager.getById(storeName, id)!).filter(Boolean),
   );
 

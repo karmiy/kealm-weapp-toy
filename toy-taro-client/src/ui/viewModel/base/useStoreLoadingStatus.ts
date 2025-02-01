@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { sdk, STORE_NAME } from '@core';
 
 export function useStoreLoadingStatus(storeName: STORE_NAME) {
-  const [loading, setLoading] = useState(sdk.storeManager.getLoadingStatus(storeName));
+  const [loading, setLoading] = useState(() => sdk.storeManager.getLoadingStatus(storeName));
 
   useEffect(() => {
     const storeManager = sdk.storeManager;

@@ -3,7 +3,7 @@ import { sdk, SingleStoreNames, STORE_NAME } from '@core';
 import { useForceUpdate } from '@ui/hooks';
 
 export function useSingleStore<T extends SingleStoreNames>(storeName: T) {
-  const [model, setModel] = useState(sdk.storeManager.get(storeName));
+  const [model, setModel] = useState(() => sdk.storeManager.get(storeName));
   const update = useForceUpdate();
 
   useEffect(() => {
