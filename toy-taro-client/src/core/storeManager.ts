@@ -11,6 +11,7 @@ interface Entity {
 
 interface Model {
   id: string;
+  dispose?: () => void;
 }
 
 type ModelConstruct = { new (entity: Entity): Model };
@@ -90,6 +91,7 @@ class StoreManager<
       if (!store) {
         throw new Error(`[refresh]Store for ${storeName} not found`);
       }
+      [...store.values()].forEach(m => m.dispose?.());
       store.clear();
       payload.forEach(entity => {
         const model = new ModelConstructor(entity);
@@ -107,6 +109,7 @@ class StoreManager<
         throw new Error(`[refresh]Payload for ${storeName} must not be an array for type SINGLE`);
       }
       const prevModel = this._singleStores.get(storeName);
+      prevModel?.dispose?.();
       const model = new ModelConstructor(payload);
       this._singleStores.set(storeName, model);
 
@@ -348,11 +351,15 @@ class StoreManager<
         if (!store) throw new Error(`[emitUpdate]Store for ${storeName} not found`);
 
         entities.forEach(entity => {
+          const prevModel = store.get(entity.id);
+          prevModel?.dispose?.();
           const model = new ModelConstructor(entity);
           store.set(model.id, model);
           this._notifyIdSubscribers(storeName, model.id);
         });
       } else if (type === HANDLER_TYPE.SINGLE) {
+        const prevModel = this._singleStores.get(storeName);
+        prevModel?.dispose?.();
         const model = new ModelConstructor(entities[0]);
         this._singleStores.set(storeName, model);
         this._notifyIdSubscribers(storeName, model.id);
@@ -412,9 +419,13 @@ class StoreManager<
       }
 
       ids.forEach(id => {
+        const model = store.get(id);
+        model?.dispose?.();
         store.delete(id);
       });
     } else if (type === HANDLER_TYPE.SINGLE) {
+      const model = this._singleStores.get(storeName);
+      model?.dispose?.();
       this._singleStores.delete(storeName);
     } else {
       throw new Error(`[emitDelete]Unknown type for ${storeName}`);

@@ -334,4 +334,40 @@ describe('reaction', () => {
       prev: 64,
     });
   });
+
+  it('should correctly observe on constructor and dispose correctly', () => {
+    class ReactionExa {
+      @observable
+      id = 1;
+
+      name = '';
+
+      private _disposer: () => void;
+
+      constructor() {
+        makeObserver(this);
+
+        this._disposer = reaction(
+          () => this.id,
+          cur => {
+            this.name = `name_${cur}`;
+          },
+          {
+            fireImmediately: true,
+          },
+        );
+      }
+
+      dispose() {
+        this._disposer();
+      }
+    }
+    const reactionExample = new ReactionExa();
+    expect(reactionExample.name).toBe('name_1');
+    reactionExample.id = 2;
+    expect(reactionExample.name).toBe('name_2');
+    reactionExample.dispose();
+    reactionExample.id = 3;
+    expect(reactionExample.name).toBe('name_2');
+  });
 });
