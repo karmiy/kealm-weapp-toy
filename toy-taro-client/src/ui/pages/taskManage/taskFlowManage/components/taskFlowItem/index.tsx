@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from '@tarojs/components';
-import { STORE_NAME } from '@core';
+import { STORE_NAME, TASK_REWARD_TYPE } from '@core';
 import { Button, WhiteSpace } from '@ui/components';
 import { TaskCard } from '@ui/container';
 import { TASK_ACTION_ID, useStoreById, useTaskAction, useUserInfo } from '@ui/viewModel';
@@ -19,6 +19,10 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
   const { isActionLoading, handleApprove, handleReject, currentActionId } = useTaskAction();
   const { taskId } = taskFlow ?? {};
   const task = useStoreById(STORE_NAME.TASK, taskId);
+  const coupon = useStoreById(
+    STORE_NAME.COUPON,
+    task?.reward.type !== TASK_REWARD_TYPE.POINTS ? task?.reward?.couponId : undefined,
+  );
 
   const taskCategory = useStoreById(STORE_NAME.TASK_CATEGORY, task?.categoryId);
 
@@ -75,7 +79,7 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
       type='plain'
       name={name}
       desc={desc}
-      rewardTitle={task.rewardTitle}
+      rewardTitle={task.getRewardTitleWithCoupon(coupon)}
       difficulty={difficulty}
       taskType={task.type}
       categoryName={taskCategory?.name}

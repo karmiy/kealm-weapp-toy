@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { PAGE_ID } from '@shared/utils/constants';
 import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { STORE_NAME } from '@core';
+import { STORE_NAME, TASK_REWARD_TYPE } from '@core';
 import { Button } from '@ui/components';
 import { TaskCard } from '@ui/container';
 import { useStoreById, useTaskAction, useTaskFlowGroup, useUserInfo } from '@ui/viewModel';
@@ -15,6 +15,10 @@ interface TaskItemProps {
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
+  const coupon = useStoreById(
+    STORE_NAME.COUPON,
+    task?.reward.type !== TASK_REWARD_TYPE.POINTS ? task?.reward?.couponId : undefined,
+  );
   const { taskFlow } = useTaskFlowGroup({ taskId: id });
   const { isAdmin } = useUserInfo();
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
@@ -35,7 +39,7 @@ const TaskItem = (props: TaskItemProps) => {
     <TaskCard
       name={task.name}
       desc={task.desc}
-      rewardTitle={task.rewardTitle}
+      rewardTitle={task.getRewardTitleWithCoupon(coupon)}
       difficulty={difficulty}
       action={
         isAdmin ? (

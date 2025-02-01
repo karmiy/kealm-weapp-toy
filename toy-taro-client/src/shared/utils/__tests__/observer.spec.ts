@@ -340,6 +340,11 @@ describe('reaction', () => {
       @observable
       id = 1;
 
+      @computed
+      get uuid() {
+        return `uuid_${this.id}`;
+      }
+
       name = '';
 
       private _disposer: () => void;
@@ -348,7 +353,7 @@ describe('reaction', () => {
         makeObserver(this);
 
         this._disposer = reaction(
-          () => this.id,
+          () => this.uuid,
           cur => {
             this.name = `name_${cur}`;
           },
@@ -363,11 +368,11 @@ describe('reaction', () => {
       }
     }
     const reactionExample = new ReactionExa();
-    expect(reactionExample.name).toBe('name_1');
+    expect(reactionExample.name).toBe('name_uuid_1');
     reactionExample.id = 2;
-    expect(reactionExample.name).toBe('name_2');
+    expect(reactionExample.name).toBe('name_uuid_2');
     reactionExample.dispose();
     reactionExample.id = 3;
-    expect(reactionExample.name).toBe('name_2');
+    expect(reactionExample.name).toBe('name_uuid_2');
   });
 });
