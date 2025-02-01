@@ -1,8 +1,11 @@
+import { useMemo } from 'react';
 import { View } from '@tarojs/components';
+import { PAGE_ID } from '@shared/utils/constants';
+import { navigateToPage } from '@shared/utils/router';
 import { STORE_NAME } from '@core';
 import { IconButton, StatusWrapper } from '@ui/components';
 import { ProductCard } from '@ui/container';
-import { useProductGroup, useStoreById, useStoreLoadingStatus } from '@ui/viewModel';
+import { useProductGroup, useStoreById, useStoreLoadingStatus, useUserInfo } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface ProductListProps {
@@ -17,11 +20,31 @@ interface ProductItemProps {
 
 const ProductItem = (props: ProductItemProps) => {
   const { id, onAddToCart } = props;
+  const { isAdmin } = useUserInfo();
   const product = useStoreById(STORE_NAME.PRODUCT, id);
+
+  const Action = useMemo(() => {
+    if (!isAdmin) {
+      return <IconButton name='cart-add-fill' onClick={() => onAddToCart?.(id)} />;
+    }
+    return (
+      <IconButton
+        name='edit'
+        onClick={() =>
+          navigateToPage({
+            pageName: PAGE_ID.PRODUCT_MANAGE,
+            params: { id },
+          })
+        }
+      />
+    );
+  }, [isAdmin, id, onAddToCart]);
+
   if (!product) {
     return null;
   }
-  const { coverImage, name, stock, discountedScore, originalScore } = product;
+  const { coverImage, name, stock, discountedScore, originalScore, isLimitedTimeOffer } = product;
+
   return (
     <View className={styles.itemWrapper}>
       <ProductCard
@@ -31,7 +54,8 @@ const ProductItem = (props: ProductItemProps) => {
         subTitle={`库存: ${stock}`}
         discountedScore={discountedScore}
         originalScore={originalScore}
-        action={<IconButton name='cart-add-fill' onClick={() => onAddToCart?.(id)} />}
+        isLimitedTimeOffer={isLimitedTimeOffer}
+        action={Action}
       />
     </View>
   );

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
-import { sleep } from '@shared/utils/utils';
 import { STORE_NAME } from '@core';
 import { Button, Input } from '@ui/components';
 import { FormItem } from '@ui/container';
@@ -38,7 +37,7 @@ export const CategoryForm = (props: CategoryFormProps) => {
       <Button
         size='large'
         width='100%'
-        icon={isActionLoading ? 'loading' : undefined}
+        loading={isActionLoading}
         disabled={!categoryName || isActionLoading}
         onClick={handleSave}
       >

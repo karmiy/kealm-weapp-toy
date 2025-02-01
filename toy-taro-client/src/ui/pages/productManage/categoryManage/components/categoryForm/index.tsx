@@ -1,29 +1,29 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
 import { sleep } from '@shared/utils/utils';
+import { STORE_NAME } from '@core';
 import { Button, Input } from '@ui/components';
 import { FormItem } from '@ui/container';
+import { useProductAction, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface CategoryFormProps {
   id?: string;
-  name?: string;
   afterSave?: () => void;
 }
 
 export const CategoryForm = (props: CategoryFormProps) => {
-  const { id, name, afterSave } = props;
-  const [isActionLoading, setIsActionLoading] = useState(false);
-  const [categoryName, setCategoryName] = useState(name);
+  const { id, afterSave } = props;
+  const productCategory = useStoreById(STORE_NAME.PRODUCT_CATEGORY, id);
+  const { isActionLoading, handleUpdateCategory } = useProductAction();
+  const [categoryName, setCategoryName] = useState(productCategory?.name ?? '');
 
   const handleSave = async () => {
-    try {
-      setIsActionLoading(true);
-      await sleep(1000);
-      afterSave?.();
-    } finally {
-      setIsActionLoading(false);
-    }
+    await handleUpdateCategory({
+      id,
+      name: categoryName,
+      onSuccess: afterSave,
+    });
   };
 
   return (
@@ -38,7 +38,7 @@ export const CategoryForm = (props: CategoryFormProps) => {
       <Button
         size='large'
         width='100%'
-        icon={isActionLoading ? 'loading' : undefined}
+        loading={isActionLoading}
         disabled={!categoryName || isActionLoading}
         onClick={handleSave}
       >

@@ -16,7 +16,7 @@ const ProductItem = (props: ProductItemProps) => {
     return null;
   }
 
-  const { name, desc, coverImage, discountedScore, originalScore } = product;
+  const { name, desc, coverImage, discountedScore, originalScore, isLimitedTimeOffer } = product;
   return (
     <ProductCard
       mode='horizontal'
@@ -26,6 +26,7 @@ const ProductItem = (props: ProductItemProps) => {
       coverImage={coverImage}
       discountedScore={discountedScore}
       originalScore={originalScore}
+      isLimitedTimeOffer={isLimitedTimeOffer}
       action={<Text>x{productShotCart.quantity}</Text>}
     />
   );

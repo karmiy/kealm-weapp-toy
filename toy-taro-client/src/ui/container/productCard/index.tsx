@@ -19,6 +19,7 @@ interface ProductCardProps {
   subTitle?: React.ReactNode;
   discountedScore?: number;
   originalScore: number;
+  isLimitedTimeOffer?: boolean;
   action?: React.ReactNode;
 }
 
@@ -36,6 +37,7 @@ const ProductCard = (props: ProductCardProps) => {
     subTitle,
     discountedScore,
     originalScore,
+    isLimitedTimeOffer = false,
     action,
   } = props;
 
@@ -57,12 +59,24 @@ const ProductCard = (props: ProductCardProps) => {
         <View className={styles.title}>{title}</View>
         <View className={styles.subTitle}>{subTitle}</View>
         <View className={styles.operateWrapper}>
-          <ProductScore discounted={discountedScore} original={originalScore} />
+          <ProductScore
+            discounted={isLimitedTimeOffer ? discountedScore : undefined}
+            original={originalScore}
+          />
           {action}
         </View>
       </>
     );
-  }, [action, coverImage, discountedScore, mode, originalScore, subTitle, title]);
+  }, [
+    action,
+    coverImage,
+    discountedScore,
+    mode,
+    originalScore,
+    isLimitedTimeOffer,
+    subTitle,
+    title,
+  ]);
 
   const HorizontalCard = useMemo(() => {
     if (mode !== 'horizontal') {

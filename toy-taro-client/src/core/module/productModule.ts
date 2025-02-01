@@ -2,6 +2,7 @@ import { ProductApi } from '../api';
 import { AbstractModule } from '../base';
 import { MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
+import { ProductUpdateParams } from '../types';
 
 export class ProductModule extends AbstractModule {
   protected onLoad() {
@@ -74,6 +75,55 @@ export class ProductModule extends AbstractModule {
       });
     } catch (error) {
       this._logger.error('addProductShopCart error', error.message);
+      throw error;
+    }
+  }
+
+  async updateProduct(params: ProductUpdateParams) {
+    try {
+      const {
+        id,
+        name,
+        desc,
+        discountedScore,
+        originalScore,
+        stock,
+        coverImage,
+        categoryId,
+        flashSaleStart,
+        flashSaleEnd,
+      } = params;
+      this._logger.info('updateProduct', params);
+      const entity = await ProductApi.updateProduct({
+        id,
+        name,
+        desc,
+        discounted_score: discountedScore,
+        original_score: originalScore,
+        stock,
+        cover_image: coverImage,
+        category_id: categoryId,
+        flash_sale_start: flashSaleStart,
+        flash_sale_end: flashSaleEnd,
+      });
+      storeManager.emitUpdate(STORE_NAME.PRODUCT, {
+        entities: [entity],
+      });
+    } catch (error) {
+      this._logger.info('updateProduct error', error.message);
+      throw error;
+    }
+  }
+
+  async updateProductCategory(productCategory: { id?: string; name: string }) {
+    try {
+      this._logger.info('updateProductCategory', productCategory);
+      const entity = await ProductApi.updateProductCategory(productCategory);
+      storeManager.emitUpdate(STORE_NAME.PRODUCT_CATEGORY, {
+        entities: [entity],
+      });
+    } catch (error) {
+      this._logger.info('updateProductCategory error', error.message);
       throw error;
     }
   }

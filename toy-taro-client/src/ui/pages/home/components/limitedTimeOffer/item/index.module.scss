@@ -22,3 +22,10 @@
 
     @include single-line-ellipsis;
 }
+
+.subTitle {
+    margin-bottom: px(4);
+    font-size: px(12);
+    
+    @include single-line-ellipsis;
+}

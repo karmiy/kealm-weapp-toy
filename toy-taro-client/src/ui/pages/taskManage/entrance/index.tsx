@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { View } from '@tarojs/components';
 import { navigateBack, useRouter } from '@tarojs/taro';
-import { Undefinable } from '@shared/types';
 import { navigateToPage } from '@shared/utils/router';
 import { COUPON_TYPE, STORE_NAME, TASK_REWARD_TYPE } from '@core';
 import {

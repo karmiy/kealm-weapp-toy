@@ -64,12 +64,12 @@ export class ProductShopCartController extends Singleton {
 
   dispose() {
     super.dispose();
+    this._disposers.forEach(disposer => disposer());
     sdk.storeManager.unsubscribe(STORE_NAME.PRODUCT_SHOP_CART, this._handleProductShopCartChange);
     this.allIds.length = 0;
     this.allProductIds.length = 0;
     this.checkIds.length = 0;
     this.totalScore = 0;
-    this._disposers.forEach(disposer => disposer());
     this.allIds.length = 0;
   }
 

@@ -166,6 +166,7 @@ export function useTaskAction() {
           return;
         }
         setIsActionLoading(true);
+        setCurrentActionId(TASK_ACTION_ID.UPDATE_TASK);
         await sdk.modules.task.updateTask({
           id,
           name,
@@ -187,6 +188,7 @@ export function useTaskAction() {
         });
       } finally {
         setIsActionLoading(false);
+        setCurrentActionId(undefined);
       }
     },
     [],
@@ -203,6 +205,7 @@ export function useTaskAction() {
           return;
         }
         setIsActionLoading(true);
+        setCurrentActionId(TASK_ACTION_ID.UPDATE_TASK_CATEGORY);
         await sdk.modules.task.updateTaskCategory({
           id,
           name,
@@ -217,6 +220,7 @@ export function useTaskAction() {
         });
       } finally {
         setIsActionLoading(false);
+        setCurrentActionId(undefined);
       }
     },
     [],

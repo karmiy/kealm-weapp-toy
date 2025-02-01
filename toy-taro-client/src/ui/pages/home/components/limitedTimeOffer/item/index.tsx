@@ -14,6 +14,7 @@ interface ItemProps {
 const Item = (props: ItemProps) => {
   const { id } = props;
   const product = useStoreById(STORE_NAME.PRODUCT, id);
+  const productCategory = useStoreById(STORE_NAME.PRODUCT_CATEGORY, product?.categoryId);
   const { coverImage } = product ?? {};
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const Item = (props: ItemProps) => {
         ) : null}
       </View>
       <Text className={styles.title}>{name}</Text>
+      <Text className={styles.subTitle}>分类: {productCategory?.name}</Text>
       <ProductScore discounted={discountedScore} original={originalScore} colorMode='inverse' />
     </View>
   );

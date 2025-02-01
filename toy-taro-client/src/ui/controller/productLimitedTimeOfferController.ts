@@ -16,20 +16,20 @@ export class ProductLimitedTimeOfferController extends Singleton {
     });
   };
 
-  private _handleIdsChange = () => {
+  private _handleProductChange = () => {
     const ids = this._getLimitedTimeOfferIds();
     this.ids = ids;
     this._listeners.forEach(listener => listener());
   };
 
   init() {
-    this._handleIdsChange();
-    sdk.storeManager.subscribeIdList(STORE_NAME.PRODUCT, this._handleIdsChange);
+    this._handleProductChange();
+    sdk.storeManager.subscribe(STORE_NAME.PRODUCT, this._handleProductChange);
   }
 
   dispose() {
     super.dispose();
-    sdk.storeManager.unsubscribeIdList(STORE_NAME.PRODUCT, this._handleIdsChange);
+    sdk.storeManager.unsubscribe(STORE_NAME.PRODUCT, this._handleProductChange);
     this._listeners.clear();
     this.ids.length = 0;
   }

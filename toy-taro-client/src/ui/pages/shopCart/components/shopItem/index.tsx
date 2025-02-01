@@ -41,7 +41,7 @@ const ShopItem = (props: ShopItemProps) => {
   if (!productShotCart || !product || !count) {
     return null;
   }
-  const { name, desc, coverImage, discountedScore, originalScore } = product;
+  const { name, desc, coverImage, discountedScore, originalScore, isLimitedTimeOffer } = product;
 
   return (
     <View className={styles.wrapper}>
@@ -55,6 +55,7 @@ const ShopItem = (props: ShopItemProps) => {
         coverImage={coverImage}
         discountedScore={discountedScore}
         originalScore={originalScore}
+        isLimitedTimeOffer={isLimitedTimeOffer}
         action={<Stepper min={0} max={product.stock} value={count} onChange={handleUpdateCount} />}
       />
     </View>

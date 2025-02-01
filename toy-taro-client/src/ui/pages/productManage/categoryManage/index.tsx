@@ -1,25 +1,16 @@
 import { Fragment, useCallback, useState } from 'react';
 import { View } from '@tarojs/components';
+import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
 import { ConfigListPanel } from '@ui/container';
+import { useStoreList } from '@ui/viewModel';
 import { CategoryForm } from './components';
 import styles from './index.module.scss';
-
-const CATEGORY_LIST = [
-  { id: '1', name: '卡牌' },
-  { id: '2', name: '美乐蒂' },
-  { id: '3', name: '玩偶' },
-  { id: '4', name: '赛车' },
-  { id: '5', name: '益智游戏' },
-  { id: '6', name: '泡泡玛特' },
-  { id: '7', name: '贴纸' },
-  { id: '8', name: '安静书' },
-  { id: '9', name: '文具' },
-];
 
 export default function () {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string>();
+  const productCategoryList = useStoreList(STORE_NAME.PRODUCT_CATEGORY);
 
   const handleEdit = useCallback((id: string) => {
     setEditId(id);
@@ -36,7 +27,7 @@ export default function () {
       <ConfigListPanel
         title='商品分类'
         addButtonText='新增分类'
-        list={CATEGORY_LIST}
+        list={productCategoryList}
         labelKey='name'
         onAdd={handleAdd}
         onEdit={handleEdit}
@@ -51,7 +42,7 @@ export default function () {
           <CategoryForm
             key={editId}
             id={editId}
-            name={CATEGORY_LIST.find(item => item.id === editId)?.name}
+            // name={productCategoryList.find(item => item.id === editId)?.name}
             afterSave={() => setShowEditModal(false)}
           />
         </View>

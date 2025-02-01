@@ -65,7 +65,9 @@ export class ProductModel {
 
   @computed
   get score() {
-    return this.discountedScore ?? this.originalScore;
+    return this.isLimitedTimeOffer
+      ? this.discountedScore ?? this.originalScore
+      : this.originalScore;
   }
 
   @computed
