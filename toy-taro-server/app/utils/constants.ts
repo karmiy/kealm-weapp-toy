@@ -1,18 +1,23 @@
-export enum RESPONSE_STATUS {
-  "成功" = 200,
-  "前端错误" = 400,
-  "Token 失效" = 401,
-  "服务端错误" = 500,
-}
+export enum SERVER_CODE {
+  // 成功
+  OK = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
 
-export enum ERROR_MESSAGE {
-  "参数" = "参数错误",
-  "请求" = "请求过程中发生未知错误",
-  "Token 失效" = "Token 失效",
-}
+  // 客户端错误
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  METHOD_NOT_ALLOWED = 405,
 
-export enum SUCCESS_MESSAGE {
-  "请求" = "请求成功",
-  "删除" = "删除成功",
-  "登录" = "登录成功",
+  // 服务器错误
+  INTERNAL_SERVER_ERROR = 500,
+  NOT_IMPLEMENTED = 501,
+  BAD_GATEWAY = 502,
+  SERVICE_UNAVAILABLE = 503,
+  GATEWAY_TIMEOUT = 504,
+
+  // 其他自定义错误
+  UNKNOWN_ERROR = 9999,
 }

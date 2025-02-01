@@ -44,7 +44,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.sequelize = {
     dialect: "mysql", // support: mysql, mariadb, postgres, mssql
-    database: "weapp-accounts",
+    database: "weapp-toy",
     host: "localhost",
     port: 3306,
     username: "karmiy",
@@ -68,7 +68,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.authorization = {
     // 忽略的 path
-    ignorePaths: ["/v1/accounts/user/login"],
+    ignorePaths: ["/user/login"],
   };
 
   // the return config will combines to EggAppConfig

@@ -25,10 +25,26 @@ export default {
     const auth = this.get("Authorization");
 
     const payload = this.app.jwt.decode(auth) as any as {
+      userId?: string;
       openId?: string;
       sessionKey?: string;
+      username?: string;
+      password?: string;
     };
 
     return payload.openId;
+  },
+  getUserId(this: Context) {
+    const auth = this.get("Authorization");
+
+    const payload = this.app.jwt.decode(auth) as any as {
+      userId?: string;
+      openId?: string;
+      sessionKey?: string;
+      username?: string;
+      password?: string;
+    };
+
+    return payload.userId;
   },
 };

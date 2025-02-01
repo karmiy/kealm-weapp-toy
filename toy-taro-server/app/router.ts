@@ -1,6 +1,6 @@
 import { Application } from "egg";
 
-const getPath = (path: string) => `/v1/accounts${path}`;
+const getPath = (path: string) => `/v1/toy${path}`;
 
 export default (app: Application) => {
   const { controller, router } = app;

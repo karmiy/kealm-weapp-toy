@@ -2,12 +2,10 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportAccountRecord from '../../../app/model/account-record';
-import ExportAccountType from '../../../app/model/account-type';
+import ExportUser from '../../../app/model/user';
 
 declare module 'egg' {
   interface IModel {
-    AccountRecord: ReturnType<typeof ExportAccountRecord>;
-    AccountType: ReturnType<typeof ExportAccountType>;
+    User: ReturnType<typeof ExportUser>;
   }
 }

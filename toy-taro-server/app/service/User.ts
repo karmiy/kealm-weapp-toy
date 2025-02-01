@@ -1,7 +1,15 @@
 import { Service } from "egg";
 import { fn, col } from "sequelize";
 import { startOfDay, differenceInDays } from "date-fns";
+import { Logger } from "../utils/logger";
+import { SERVER_CODE } from "../utils/constants";
+import { JsError } from "../utils/error";
 
+const logger = Logger.getLogger("[UserService]");
+
+// 以秒表示或描述时间跨度 zeit / ms 的字符串。如 60，"2 days"，"10h"，"7d"，Expiration time，过期时间
+// 如 10 是 10s，'1000' 是 1s
+const JWT_EXPIRES_IN = "2d";
 /**
  * User Service
  */
@@ -12,7 +20,7 @@ export default class User extends Service {
    * @return
    */
   public async wxLogin(code: string) {
-    const { app } = this;
+    const { app, ctx } = this;
     const { AppID, AppSecret } = app;
 
     const { data, status } = await app.curl<{
@@ -28,18 +36,80 @@ export default class User extends Service {
       }
     );
 
-    if (status !== 200)
-      return Promise.reject(new Error("微信登录接口请求失败"));
+    if (status !== SERVER_CODE.OK)
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "微信登录接口请求失败")
+      );
 
     const { session_key, openid, errcode, errmsg } = data;
+    logger.tag("[wxLogin]").info("wx response", {
+      session_key,
+      openid,
+      errcode,
+      errmsg,
+    });
 
     if (typeof errcode !== "undefined") {
-      return Promise.reject(new Error(errmsg ?? "微信登录过程中发生未知错误"));
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "无效的微信 code")
+      );
     }
 
+    const user = await ctx.model.User.findOne({
+      attributes: ["id", "open_id"] as any,
+      where: {
+        open_id: openid,
+      },
+      raw: true,
+    });
+    logger.tag("[wxLogin]").info("find user", user);
+    if (!user) {
+      return Promise.reject(
+        new JsError(SERVER_CODE.NOT_FOUND, "登录用户不存在")
+      );
+    }
+    const { id } = user as any as { id: string };
+
+    const token = app.jwt.sign(
+      { userId: id, openId: openid, sessionKey: session_key },
+      AppSecret,
+      {
+        expiresIn: JWT_EXPIRES_IN,
+      }
+    );
+
     return {
-      sessionKey: session_key,
-      openId: openid,
+      token,
+    };
+  }
+
+  public async accountLogin(params: { username?: string; password?: string }) {
+    const { username = "", password = "" } = params;
+    const { app, ctx } = this;
+    const { AppSecret } = app;
+
+    const user = await ctx.model.User.findOne({
+      attributes: ["id", "username", "password"] as any,
+      where: {
+        username,
+        password,
+      },
+      raw: true,
+    });
+    logger.tag("[accountLogin]").info("find user", user);
+    if (!user) {
+      return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "登录密码错误"));
+    }
+    const { id } = user as any as {
+      id: string;
+    };
+
+    const token = app.jwt.sign({ userId: id, username, password }, AppSecret, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+
+    return {
+      token,
     };
   }
 
