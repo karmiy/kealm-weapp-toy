@@ -56,7 +56,7 @@ export class AbstractGroupByController<T extends Models> extends Singleton {
 
     [...store.entries()].forEach(([groupByIdentifier, ids]) => {
       const prevIds = prevStore.get(groupByIdentifier);
-      if (prevIds && isEqual(prevIds, ids)) {
+      if (prevIds && isEqual([...prevIds], [...ids])) {
         return;
       }
       this._notifyChange(groupByIdentifier);

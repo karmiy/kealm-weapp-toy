@@ -188,7 +188,7 @@ class StoreManager<
   }
 
   getSortIds<T extends STORE_NAME>(storeName: T) {
-    return this._sortIdsStores.get(storeName) ?? [];
+    return Array.from(this._sortIdsStores.get(storeName) ?? []);
   }
 
   getSortList<T extends STORE_NAME>(storeName: T) {
