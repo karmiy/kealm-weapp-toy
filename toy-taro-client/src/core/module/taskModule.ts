@@ -92,4 +92,17 @@ export class TaskModule extends AbstractModule {
       throw error;
     }
   }
+
+  async updateTaskCategory(taskCategory: { id?: string; name: string }) {
+    try {
+      this._logger.info('updateTaskCategory', taskCategory);
+      const entity = await TaskApi.updateTaskCategory(taskCategory);
+      storeManager.emitUpdate(STORE_NAME.TASK_CATEGORY, {
+        entities: [entity],
+      });
+    } catch (error) {
+      this._logger.info('updateTaskCategory error', error.message);
+      throw error;
+    }
+  }
 }

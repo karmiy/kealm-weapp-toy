@@ -46,4 +46,13 @@ export class TaskApi {
     await sleep(800);
     return Promise.resolve({} as TaskEntity);
   }
+
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK_CATEGORY })
+  static async updateTaskCategory(params: {
+    id?: string;
+    name: string;
+  }): Promise<TaskCategoryEntity> {
+    await sleep(800);
+    return Promise.resolve({} as TaskCategoryEntity);
+  }
 }

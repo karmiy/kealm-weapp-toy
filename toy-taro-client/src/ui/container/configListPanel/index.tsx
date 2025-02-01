@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 interface ConfigListPanelProps {
   title: string;
   addButtonText?: string;
-  list: Array<{ id: string } & Record<string, unknown>>;
+  list: Array<{ id: string } & Record<string, any>>;
   labelKey: string;
   onAdd?: () => void;
   onEdit?: (id: string) => void;

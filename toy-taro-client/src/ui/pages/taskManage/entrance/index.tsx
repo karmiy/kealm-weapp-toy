@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from '@tarojs/components';
 import { navigateBack, useRouter } from '@tarojs/taro';
 import { Undefinable } from '@shared/types';
@@ -33,22 +33,25 @@ export default function () {
   // 任务描述
   const [taskDesc, setTaskDesc] = useState(task?.desc ?? '');
   // 任务类型
-  const [taskTypeIndex, setTaskTypeIndex] = useState<Undefinable<number>>(() => {
-    if (!task) {
+  const [taskTypeId, setTaskTypeId] = useState(task?.type);
+  const taskTypeIndex = useMemo(() => {
+    if (!taskTypeId) {
       return;
     }
-    const index = TASK_TYPE_LIST.findIndex(item => item.id === task.type);
+    const index = TASK_TYPE_LIST.findIndex(item => item.id === taskTypeId);
     return index === -1 ? undefined : index;
-  });
+  }, [taskTypeId]);
   // 任务分类
   const taskCategoryList = useStoreList(STORE_NAME.TASK_CATEGORY);
-  const [taskCategoryIndex, setTaskCategoryIndex] = useState<Undefinable<number>>(() => {
-    if (!task) {
+  const [taskCategoryId, setTaskCategoryId] = useState(task?.categoryId);
+  const taskCategoryIndex = useMemo(() => {
+    if (!taskCategoryId) {
       return;
     }
-    const index = taskCategoryList.findIndex(item => item.id === task.categoryId);
+    const index = taskCategoryList.findIndex(item => item.id === taskCategoryId);
     return index === -1 ? undefined : index;
-  });
+  }, [taskCategoryId, taskCategoryList]);
+
   // 任务难度
   const [taskDifficulty, setTaskDifficulty] = useState(task?.difficulty ?? 1);
   // 任务奖励类型
@@ -72,15 +75,14 @@ export default function () {
   const { activeCoupons } = useCoupon({
     enableActiveIds: true,
   });
-  const [couponIndex, setCouponIndex] = useState<Undefinable<number>>();
-
-  useEffect(() => {
-    if (!coupon?.id) {
+  const [couponId, setCouponId] = useState(coupon?.id);
+  const couponIndex = useMemo(() => {
+    if (!couponId) {
       return;
     }
-    const index = activeCoupons.findIndex(item => item.id === coupon.id);
-    setCouponIndex(index === -1 ? undefined : index);
-  }, [activeCoupons, coupon?.id]);
+    const index = activeCoupons.findIndex(item => item.id === couponId);
+    return index === -1 ? undefined : index;
+  }, [couponId, activeCoupons]);
 
   const handleEditCoupon = useCallback(() => {
     navigateToPage({
@@ -94,9 +96,7 @@ export default function () {
 
   const handleSave = useCallback(() => {
     const type = typeof taskTypeIndex === 'number' ? TASK_TYPE_LIST[taskTypeIndex].id : undefined;
-    const categoryId =
-      typeof taskCategoryIndex === 'number' ? taskCategoryList[taskCategoryIndex].id : undefined;
-    const selectedCoupon = typeof couponIndex === 'number' ? activeCoupons[couponIndex] : undefined;
+    const selectedCoupon = activeCoupons.find(item => item.id === couponId);
     const couponType =
       selectedCoupon?.originalType === COUPON_TYPE.CASH_DISCOUNT
         ? TASK_REWARD_TYPE.CASH_DISCOUNT
@@ -108,7 +108,7 @@ export default function () {
       name: taskName,
       desc: taskDesc,
       type,
-      categoryId,
+      categoryId: taskCategoryId,
       difficulty: taskDifficulty,
       rewardType,
       couponId: selectedCoupon?.id,
@@ -117,12 +117,11 @@ export default function () {
     });
   }, [
     activeCoupons,
-    couponIndex,
+    couponId,
     handleUpdate,
     pointsValue,
     task?.id,
-    taskCategoryIndex,
-    taskCategoryList,
+    taskCategoryId,
     taskDesc,
     taskDifficulty,
     taskName,
@@ -154,7 +153,7 @@ export default function () {
             mode='selector'
             range={TASK_TYPE_LIST}
             rangeKey='name'
-            onChange={e => setTaskTypeIndex(Number(e.detail.value))}
+            onChange={e => setTaskTypeId(TASK_TYPE_LIST[Number(e.detail.value)].id)}
             value={taskTypeIndex}
           />
         </FormItem>
@@ -165,7 +164,7 @@ export default function () {
             mode='selector'
             range={taskCategoryList}
             rangeKey='name'
-            onChange={e => setTaskCategoryIndex(Number(e.detail.value))}
+            onChange={e => setTaskCategoryId(taskCategoryList[Number(e.detail.value)]?.id)}
             value={taskCategoryIndex}
           />
         </FormItem>
@@ -205,7 +204,7 @@ export default function () {
               mode='selector'
               range={activeCoupons}
               rangeKey='detailTip'
-              onChange={e => setCouponIndex(Number(e.detail.value))}
+              onChange={e => setCouponId(activeCoupons[Number(e.detail.value)]?.id)}
               value={couponIndex}
             />
           ) : null}

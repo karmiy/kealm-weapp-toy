@@ -192,11 +192,42 @@ export function useTaskAction() {
     [],
   );
 
+  const handleUpdateCategory = useCallback(
+    async (params: { id?: string; name?: string; onSuccess?: () => void }) => {
+      try {
+        const { id, name, onSuccess } = params;
+        if (!name) {
+          showToast({
+            title: '请输入任务分类名称',
+          });
+          return;
+        }
+        setIsActionLoading(true);
+        await sdk.modules.task.updateTaskCategory({
+          id,
+          name,
+        });
+        await showToast({
+          title: '保存成功',
+        });
+        onSuccess?.();
+      } catch (error) {
+        showToast({
+          title: error.message ?? '保存失败',
+        });
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [],
+  );
+
   return {
     submitApprovalRequest,
     handleApprove,
     handleReject,
     handleUpdate,
+    handleUpdateCategory,
     isActionLoading,
     currentActionId,
   };

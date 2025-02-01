@@ -88,14 +88,16 @@ function isCouponExpired(coupon: CouponEntity) {
 }
 
 export const mockTaskApi = {
-  [MOCK_API_NAME.GET_TASK_CATEGORY_LIST]: async (): Promise<TaskCategoryEntity[]> => {
-    await sleep(300);
-    return CATEGORY_LIST.map(item => ({
-      ...item,
-      create_time: faker.date.recent().getTime(),
-      last_modified_time: faker.date.recent().getTime(),
-    }));
-  },
+  [MOCK_API_NAME.GET_TASK_CATEGORY_LIST]: createMockApiCache(
+    async (): Promise<TaskCategoryEntity[]> => {
+      await sleep(300);
+      return CATEGORY_LIST.map(item => ({
+        ...item,
+        create_time: faker.date.recent().getTime(),
+        last_modified_time: faker.date.recent().getTime(),
+      }));
+    },
+  ),
   [MOCK_API_NAME.GET_TASK_LIST]: createMockApiCache(async (): Promise<TaskEntity[]> => {
     await sleep(300);
     const categoryIds = CATEGORY_LIST.map(item => item.id);
@@ -256,6 +258,42 @@ export const mockTaskApi = {
       ? Promise.resolve(entity)
       : Promise.reject(
           new JsError(SERVER_ERROR_CODE.SERVER_ERROR, `任务${task.id ? '更新' : '创建'}失败`),
+        );
+  },
+  [MOCK_API_NAME.UPDATE_TASK_CATEGORY]: async (taskCategory: {
+    id?: string;
+    name: string;
+  }): Promise<TaskCategoryEntity> => {
+    await sleep(500);
+    let entity: TaskCategoryEntity;
+    const now = new Date().getTime();
+    if (taskCategory.id) {
+      const taskCategoryList = await mockTaskApi[MOCK_API_NAME.GET_TASK_CATEGORY_LIST]();
+      const currentTaskCategory = taskCategoryList.find(c => c.id === taskCategory.id);
+      if (!currentTaskCategory) {
+        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '任务分类不存在'));
+      }
+      entity = {
+        ...taskCategory,
+        id: taskCategory.id,
+        create_time: currentTaskCategory.create_time,
+        last_modified_time: now,
+      };
+    } else {
+      entity = {
+        id: faker.string.uuid(),
+        name: taskCategory.name,
+        create_time: now,
+        last_modified_time: now,
+      };
+    }
+    return Math.random() > 0.4
+      ? Promise.resolve(entity)
+      : Promise.reject(
+          new JsError(
+            SERVER_ERROR_CODE.SERVER_ERROR,
+            `任务分类${taskCategory.id ? '更新' : '创建'}失败`,
+          ),
         );
   },
 };
