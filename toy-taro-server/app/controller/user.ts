@@ -1,5 +1,5 @@
 import { Controller } from "egg";
-import { SERVER_CODE } from "../utils/constants";
+import { FILE_PREFIX, FILE_SCORE, SERVER_CODE } from "../utils/constants";
 import { Logger } from "../utils/logger";
 import { UserEntity } from "../entity/user";
 
@@ -73,9 +73,9 @@ export default class UserController extends Controller {
     //     console.error("上传失败", err);
     //   },
     // });
-    const { ctx } = this;
+    const { ctx, app } = this;
     try {
-      const userId = ctx.getUserId();
+      const { userId } = ctx.getUserInfo();
 
       const file = ctx.request.files[0];
       logger.tag("[uploadAvatar]").info({ hasFile: !!file });
@@ -91,9 +91,11 @@ export default class UserController extends Controller {
       const user = await ctx.service.user.findUserById(userId);
       logger.tag("[uploadAvatar]").info("user", user);
 
-      const fileData = await ctx.service.user.uploadAvatarFile({
+      const fileData = await app.uploadFile({
         file,
+        prefix: FILE_PREFIX.USER_AVATAR,
         userId,
+        score: FILE_SCORE.IMAGES,
       });
 
       const newAvatarUrl = fileData!.filename;
@@ -106,8 +108,7 @@ export default class UserController extends Controller {
         avatar_url: newAvatarUrl,
       });
 
-      oldAvatarUrl &&
-        ctx.service.user.deleteAvatarFile({ avatarUrl: oldAvatarUrl });
+      oldAvatarUrl && app.deleteFile({ fileUrl: oldAvatarUrl });
 
       ctx.responseSuccess({
         data: { avatarUrl: newAvatarUrl },
@@ -128,7 +129,7 @@ export default class UserController extends Controller {
   public async getUserInfo() {
     const { ctx } = this;
     try {
-      const userId = ctx.getUserId();
+      const { userId } = ctx.getUserInfo();
       const user = await ctx.service.user.findUserById(userId);
 
       const userEntity: UserEntity = {
@@ -155,7 +156,7 @@ export default class UserController extends Controller {
   public async uploadProfile() {
     const { ctx } = this;
     try {
-      const userId = ctx.getUserId();
+      const { userId } = ctx.getUserInfo();
       const { name } = ctx.getParams<{ name: string }>();
 
       if (!name) {

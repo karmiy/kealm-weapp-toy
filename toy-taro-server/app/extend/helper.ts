@@ -56,16 +56,22 @@ const division = (arg1: number, arg2: number) => {
   return multiplication(arg1, baseNum) / multiplication(arg2, baseNum);
 };
 
-const cleanEmptyFields = <T extends Record<string, any>>(obj: T): T => {
+const cleanEmptyFields = <T extends Record<string, any>>(
+  obj: T,
+  options?: {
+    ignoreList?: unknown[];
+  }
+): T => {
+  const { ignoreList = [undefined, null, ""] } = options ?? {};
   const cleanedObj: T = {} as T;
 
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key];
 
-      if (value !== undefined && value !== null && value !== "") {
+      if (!ignoreList.includes(value)) {
         if (typeof value === "object" && !Array.isArray(value)) {
-          const cleanedValue = cleanEmptyFields(value); // 递归处理对象
+          const cleanedValue = cleanEmptyFields(value, options); // 递归处理对象
           if (Object.keys(cleanedValue).length > 0) {
             cleanedObj[key] = cleanedValue;
           }

@@ -18,6 +18,14 @@ export default (app: Application) => {
   const { STRING, INTEGER, DATE, ENUM } = app.Sequelize;
 
   const User = app.model.define("user", {
+    id: {
+      type: INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      get() {
+        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+      },
+    },
     username: {
       type: STRING(255),
       allowNull: true,

@@ -1,6 +1,4 @@
 import { Service } from "egg";
-import { extname, join } from "path";
-import { existsSync, mkdirSync, renameSync, unlinkSync } from "fs";
 import { Logger } from "../utils/logger";
 import { SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
@@ -58,11 +56,11 @@ export default class User extends Service {
     }
 
     const user = await ctx.model.User.findOne({
-      attributes: ["id", "open_id"] as any,
+      attributes: ["id", "group_id"] as any,
       where: {
         open_id: openid,
       },
-      raw: true,
+      // raw: true,
     });
     logger.tag("[wxLogin]").info("find user", user);
     if (!user) {
@@ -70,10 +68,15 @@ export default class User extends Service {
         new JsError(SERVER_CODE.NOT_FOUND, "登录用户不存在")
       );
     }
-    const { id } = user as any as { id: string };
+    const { id, group_id } = user as any as { id: string; group_id: string };
 
     const token = app.jwt.sign(
-      { userId: id, openId: openid, sessionKey: session_key },
+      {
+        userId: id,
+        openId: openid,
+        sessionKey: session_key,
+        groupId: group_id,
+      },
       AppSecret,
       {
         expiresIn: JWT_EXPIRES_IN,
@@ -91,40 +94,33 @@ export default class User extends Service {
     const { AppSecret } = app;
 
     const user = await ctx.model.User.findOne({
-      attributes: ["id", "username", "password"] as any,
+      attributes: ["id", "group_id"] as any,
       where: {
         username,
         password,
       },
-      raw: true,
+      // raw: true,
     });
     logger.tag("[accountLogin]").info("find user", user);
     if (!user) {
       return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "登录密码错误"));
     }
-    const { id } = user as any as {
+    const { id, group_id } = user as any as {
       id: string;
+      group_id: string;
     };
 
-    const token = app.jwt.sign({ userId: id, username, password }, AppSecret, {
-      expiresIn: JWT_EXPIRES_IN,
-    });
+    const token = app.jwt.sign(
+      { userId: id, username, password, groupId: group_id },
+      AppSecret,
+      {
+        expiresIn: JWT_EXPIRES_IN,
+      }
+    );
 
     return {
       token,
     };
-  }
-
-  private _getAvatarUrl(avatarFilename: string) {
-    return join("public", "images", avatarFilename);
-  }
-
-  private _getAvatarDir() {
-    return join(this.app.baseDir, "app", "public", "images");
-  }
-
-  private _getAvatarPath(avatarUrl: string) {
-    return join(this.app.baseDir, "app", avatarUrl);
   }
 
   public async findUserById(userId: string) {
@@ -133,7 +129,7 @@ export default class User extends Service {
       where: {
         id: userId,
       },
-      raw: true,
+      // raw: true,
     });
     if (!user) {
       return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "用户不存在"));
@@ -153,50 +149,8 @@ export default class User extends Service {
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(
-        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "用户头像数据更新失败")
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "头像数据更新失败")
       );
     }
-  }
-
-  public async uploadAvatarFile(params: {
-    file: { filename: string; filepath: string };
-    userId: string;
-  }) {
-    try {
-      const { file, userId } = params;
-      // 获取文件的扩展名
-      const extName = extname(file.filename);
-      // 生成唯一的文件名
-      const filename = `avatar-${userId}-${Date.now()}-${Math.random()
-        .toString(36)
-        .substr(2, 9)}${extName}`;
-
-      const uploadDir = this._getAvatarDir();
-      const filePath = join(uploadDir, filename);
-
-      // 确保目标文件夹存在，如果没有则创建
-      if (!existsSync(uploadDir)) {
-        mkdirSync(uploadDir);
-      }
-
-      renameSync(file.filepath, filePath);
-
-      return Promise.resolve({
-        filename: this._getAvatarUrl(filename),
-      });
-    } catch (error) {
-      return Promise.reject(
-        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "上传存储失败")
-      );
-    }
-  }
-
-  public async deleteAvatarFile(params: { avatarUrl: string }) {
-    const { avatarUrl } = params;
-    const filePath = this._getAvatarPath(avatarUrl);
-    if (existsSync(filePath)) {
-      unlinkSync(filePath); // 删除旧头像文件
-    }
-    return Promise.resolve();
   }
 }

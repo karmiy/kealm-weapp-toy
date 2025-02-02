@@ -23,9 +23,9 @@ export default function AuthorizationMiddleware(options: EggAppConfig) {
     try {
       ctx.app.jwt.verify(auth ?? "", ctx.app.AppSecret);
 
-      const userId = ctx.getUserId();
-      if (!userId) {
-        logger.error("cannot get userId");
+      const { userId, groupId } = ctx.getUserInfo();
+      if (!userId || !groupId) {
+        logger.error("cannot get userId, groupId", { userId, groupId });
         ctx.responseFail({
           code: SERVER_CODE.UNAUTHORIZED,
           message: "获取用户信息失败，用户未登录",

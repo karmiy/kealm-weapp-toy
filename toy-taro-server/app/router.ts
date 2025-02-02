@@ -5,35 +5,47 @@ const getPath = (path: string) => `/v1/toy${path}`;
 export default (app: Application) => {
   const { controller, router } = app;
 
+  // user
   router.post(getPath("/user/login"), controller.user.login);
   router.post(getPath("/user/uploadAvatar"), controller.user.uploadAvatar);
   router.post(getPath("/user/uploadProfile"), controller.user.uploadProfile);
   router.get(getPath("/user/getUserInfo"), controller.user.getUserInfo);
-  // router.get(
-  //   getPath("/user/getAccountStatistics"),
-  //   controller.user.getAccountStatistics
-  // );
 
-  // router.get(getPath("/account/getTypeList"), controller.account.getTypeList);
-  // router.post(
-  //   getPath("/account/addOrUpdateRecord"),
-  //   controller.account.addOrUpdateRecord
-  // );
-  // router.get(getPath("/account/getRecords"), controller.account.getRecords);
-  // router.get(
-  //   getPath("/account/getStatistics"),
-  //   controller.account.getStatistics
-  // );
-  // router.get(
-  //   getPath("/account/getTypeExpenditureStatistics"),
-  //   controller.account.getTypeExpenditureStatistics
-  // );
-  // router.get(
-  //   getPath("/account/getRecordById"),
-  //   controller.account.getRecordById
-  // );
-  // router.post(
-  //   getPath("/account/destroyRecordById"),
-  //   controller.account.destroyRecordById
-  // );
+  // product
+  router.get(
+    getPath("/product/getProductCategoryList"),
+    controller.product.getProductCategoryList
+  );
+  router.post(
+    getPath("/product/updateProductCategory"),
+    controller.product.updateProductCategory
+  );
+  router.post(
+    getPath("/product/deleteProductCategory"),
+    controller.product.deleteProductCategory
+  );
+  router.post(
+    getPath("/product/updateProduct"),
+    controller.product.updateProduct
+  );
+  router.get(
+    getPath("/product/getProductList"),
+    controller.product.getProductList
+  );
+  router.post(
+    getPath("/product/deleteProduct"),
+    controller.product.deleteProduct
+  );
+  router.post(
+    getPath("/product/updateProductShopCart"),
+    controller.product.updateProductShopCart
+  );
+  router.post(
+    getPath("/product/deleteProductShopCart"),
+    controller.product.deleteProductShopCart
+  );
+  router.get(
+    getPath("/product/getProductShopCartList"),
+    controller.product.getProductShopCartList
+  );
 };

@@ -41,7 +41,7 @@ export default {
 
     return payload.openId;
   },
-  getUserId(this: Context) {
+  getUserInfo(this: Context) {
     const auth = this.getAuthorization();
 
     const payload = this.app.jwt.decode(auth) as any as {
@@ -50,9 +50,13 @@ export default {
       sessionKey?: string;
       username?: string;
       password?: string;
+      groupId?: string;
     };
 
-    return payload.userId ?? "";
+    return {
+      userId: payload.userId ?? "",
+      groupId: payload.groupId ?? "",
+    };
   },
   toJsError(error: unknown, config?: { code?: SERVER_CODE; message?: string }) {
     const { code = SERVER_CODE.INTERNAL_SERVER_ERROR, message = "请求失败" } =

@@ -26,3 +26,12 @@ export enum ROLE {
   ADMIN = "ADMIN",
   USER = "USER",
 }
+
+export enum FILE_PREFIX {
+  USER_AVATAR = "user-avatar",
+  PRODUCT_COVER = "product-cover-image",
+}
+
+export enum FILE_SCORE {
+  IMAGES = "images",
+}
