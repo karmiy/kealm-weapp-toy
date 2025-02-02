@@ -6,6 +6,9 @@ export default (app: Application) => {
   const { controller, router } = app;
 
   router.post(getPath("/user/login"), controller.user.login);
+  router.post(getPath("/user/uploadAvatar"), controller.user.uploadAvatar);
+  router.post(getPath("/user/uploadProfile"), controller.user.uploadProfile);
+  router.get(getPath("/user/getUserInfo"), controller.user.getUserInfo);
   // router.get(
   //   getPath("/user/getAccountStatistics"),
   //   controller.user.getAccountStatistics

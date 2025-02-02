@@ -1,5 +1,18 @@
 import { Application } from "egg";
+import { ROLE } from "../utils/constants";
 // import { Model } from 'sequelize';
+
+export interface UserModel {
+  id: string;
+  username?: string;
+  password?: string;
+  open_id?: string;
+  avatar_url?: string;
+  role: ROLE;
+  score: number;
+  create_time: Date;
+  last_modified_time: Date;
+}
 
 export default (app: Application) => {
   const { STRING, INTEGER, DATE, ENUM } = app.Sequelize;
@@ -34,21 +47,21 @@ export default (app: Application) => {
     create_time: {
       type: DATE,
       defaultValue: app.Sequelize.literal("CURRENT_TIMESTAMP"), // 自动生成当前时间戳
-      get() {
-        const rawValue = (this as any).getDataValue("create_time") as Date;
-        console.log("[test] create_time", rawValue);
-        return rawValue ? rawValue.getTime() : null; // 转为时间戳
-      },
+      // get() {
+      //   const rawValue = (this as any).getDataValue("create_time") as Date;
+      //   console.log("[test] create_time", rawValue);
+      //   return rawValue ? rawValue.getTime() : null; // 转为时间戳
+      // },
     },
     last_modified_time: {
       type: DATE,
       defaultValue: app.Sequelize.literal("CURRENT_TIMESTAMP"), // 自动生成当前时间戳
-      get() {
-        const rawValue = (this as any).getDataValue(
-          "last_modified_time"
-        ) as Date;
-        return rawValue ? rawValue.getTime() : null; // 转为时间戳
-      },
+      // get() {
+      //   const rawValue = (this as any).getDataValue(
+      //     "last_modified_time"
+      //   ) as Date;
+      //   return rawValue ? rawValue.getTime() : null; // 转为时间戳
+      // },
     },
   });
 

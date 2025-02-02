@@ -8,7 +8,7 @@ export default function AuthorizationMiddleware(options: EggAppConfig) {
   const { ignorePaths = [] } = options;
 
   return async (ctx: Context, next: () => Promise<any>) => {
-    const auth = ctx.get("Authorization");
+    const auth = ctx.getAuthorization();
     const path = ctx.path;
     logger.info(`auth: ${auth}, path: ${path}`);
 
@@ -22,12 +22,22 @@ export default function AuthorizationMiddleware(options: EggAppConfig) {
 
     try {
       ctx.app.jwt.verify(auth ?? "", ctx.app.AppSecret);
+
+      const userId = ctx.getUserId();
+      if (!userId) {
+        logger.error("cannot get userId");
+        ctx.responseFail({
+          code: SERVER_CODE.UNAUTHORIZED,
+          message: "获取用户信息失败，用户未登录",
+        });
+        return;
+      }
     } catch (_error) {
-      ctx.status = SERVER_CODE.UNAUTHORIZED;
-      ctx.body = {
-        data: {},
+      logger.error(`jwt verify error`, _error);
+      ctx.responseFail({
+        code: SERVER_CODE.UNAUTHORIZED,
         message: "token 已过期",
-      };
+      });
       return;
     }
     await next();

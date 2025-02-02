@@ -53,22 +53,28 @@ export default (appInfo: EggAppInfo) => {
       freezeTableName: true, // false 表名后会自动多加个 s
       timestamps: false, // true 会自动往表插 create_time 等字段
     },
-    timezone: "+8:00",
+    timezone: "+08:00",
     dialectOptions: {
       decimalNumbers: true, // 解决 SUM 返回 string 类型的问题
-      /* typeCast(field, next) {
-                if (field.type === 'DATETIME') {
-                    console.log('field', field);
-                    return field.string();
-                }
-                return next();
-            }, */
+      typeCast(field, next) {
+        if (field.type === "TIMESTAMP") {
+          // DB 存的 2025-02-02 00:16:13，Server 会拿到 2025-02-02T00:16:13.000Z，这是 UTC 时间，这里给它多转一下
+          return new Date(field.string());
+        }
+        return next();
+      },
     },
   };
 
   config.authorization = {
     // 忽略的 path
-    ignorePaths: ["/user/login"],
+    ignorePaths: ["/user/login", "/public"],
+  };
+
+  config.multipart = {
+    mode: "file",
+    fileSize: "10mb", // 设置最大文件上传大小
+    fileExtensions: [".png", ".jpg", ".jpeg", ".gif"], // 限制文件扩展名
   };
 
   // the return config will combines to EggAppConfig

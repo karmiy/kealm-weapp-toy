@@ -21,3 +21,8 @@ export enum SERVER_CODE {
   // 其他自定义错误
   UNKNOWN_ERROR = 9999,
 }
+
+export enum ROLE {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}

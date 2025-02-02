@@ -56,14 +56,32 @@ const division = (arg1: number, arg2: number) => {
   return multiplication(arg1, baseNum) / multiplication(arg2, baseNum);
 };
 
+const cleanEmptyFields = <T extends Record<string, any>>(obj: T): T => {
+  const cleanedObj: T = {} as T;
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const value = obj[key];
+
+      if (value !== undefined && value !== null && value !== "") {
+        if (typeof value === "object" && !Array.isArray(value)) {
+          const cleanedValue = cleanEmptyFields(value); // 递归处理对象
+          if (Object.keys(cleanedValue).length > 0) {
+            cleanedObj[key] = cleanedValue;
+          }
+        } else {
+          cleanedObj[key] = value;
+        }
+      }
+    }
+  }
+
+  return cleanedObj;
+};
+
 export default {
   base64Encode(str = "") {
     return new Buffer(str).toString("base64");
-  },
-  asyncWrapper<T>(promise: Promise<T>) {
-    return promise
-      .then((data) => [data, null] as [T, null])
-      .catch((err) => [null, { res: err }] as [null, { res: any }]);
   },
   isEmpty(value: any): value is undefined | null {
     return typeof value === "undefined" || value === null;
@@ -88,8 +106,9 @@ export default {
   },
   getErrorResponse(error: JsError) {
     return {
-      status: error.code as SERVER_CODE,
+      code: (error.code as SERVER_CODE) ?? SERVER_CODE.INTERNAL_SERVER_ERROR,
       message: error.message,
     };
   },
+  cleanEmptyFields,
 };

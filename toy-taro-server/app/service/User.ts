@@ -1,15 +1,17 @@
 import { Service } from "egg";
-import { fn, col } from "sequelize";
-import { startOfDay, differenceInDays } from "date-fns";
+import { extname, join } from "path";
+import { existsSync, mkdirSync, renameSync, unlinkSync } from "fs";
 import { Logger } from "../utils/logger";
 import { SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
+import { UserModel } from "../model/user";
 
 const logger = Logger.getLogger("[UserService]");
 
 // 以秒表示或描述时间跨度 zeit / ms 的字符串。如 60，"2 days"，"10h"，"7d"，Expiration time，过期时间
 // 如 10 是 10s，'1000' 是 1s
 const JWT_EXPIRES_IN = "2d";
+
 /**
  * User Service
  */
@@ -113,51 +115,88 @@ export default class User extends Service {
     };
   }
 
-  public async getUserAccountStatistics(conditions: { open_id: string }) {
-    const { ctx } = this;
-    const { open_id } = conditions;
+  private _getAvatarUrl(avatarFilename: string) {
+    return join("public", "images", avatarFilename);
+  }
 
-    const data = await ctx.model.AccountRecord.findOne({
-      attributes: [
-        fn("MIN", col("create_time")),
-        fn("MAX", col("create_time")),
-        fn("COUNT", "*"),
-      ] as any,
+  private _getAvatarDir() {
+    return join(this.app.baseDir, "app", "public", "images");
+  }
+
+  private _getAvatarPath(avatarUrl: string) {
+    return join(this.app.baseDir, "app", avatarUrl);
+  }
+
+  public async findUserById(userId: string) {
+    const { ctx } = this;
+    const user = await ctx.model.User.findOne({
       where: {
-        open_id,
-      },
-      fieldMap: {
-        "MIN(`create_time`)": "min_create_time",
-        "MAX(`create_time`)": "max_create_time",
-        "COUNT('*')": "count",
+        id: userId,
       },
       raw: true,
     });
-    const { min_create_time, max_create_time, count } = { ...data } as any as {
-      min_create_time: string | null;
-      max_create_time: string | null;
-      count: number;
-    };
-
-    const statistics = {
-      usage_days: 0,
-      account_days: 0,
-      account_count: count,
-    };
-
-    if (min_create_time) {
-      statistics.usage_days =
-        differenceInDays(new Date(), startOfDay(new Date(min_create_time))) + 1;
+    if (!user) {
+      return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "用户不存在"));
     }
+    return user as any as UserModel;
+  }
 
-    if (max_create_time && min_create_time) {
-      statistics.account_days =
-        differenceInDays(
-          startOfDay(new Date(max_create_time)),
-          startOfDay(new Date(min_create_time))
-        ) + 1;
+  public async updateUserById(userId: string, fields: Partial<UserModel>) {
+    try {
+      const { ctx } = this;
+      await ctx.model.User.update(fields, {
+        where: {
+          id: userId,
+        },
+        returning: true,
+      });
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "用户头像数据更新失败")
+      );
     }
+  }
 
-    return statistics;
+  public async uploadAvatarFile(params: {
+    file: { filename: string; filepath: string };
+    userId: string;
+  }) {
+    try {
+      const { file, userId } = params;
+      // 获取文件的扩展名
+      const extName = extname(file.filename);
+      // 生成唯一的文件名
+      const filename = `avatar-${userId}-${Date.now()}-${Math.random()
+        .toString(36)
+        .substr(2, 9)}${extName}`;
+
+      const uploadDir = this._getAvatarDir();
+      const filePath = join(uploadDir, filename);
+
+      // 确保目标文件夹存在，如果没有则创建
+      if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir);
+      }
+
+      renameSync(file.filepath, filePath);
+
+      return Promise.resolve({
+        filename: this._getAvatarUrl(filename),
+      });
+    } catch (error) {
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "上传存储失败")
+      );
+    }
+  }
+
+  public async deleteAvatarFile(params: { avatarUrl: string }) {
+    const { avatarUrl } = params;
+    const filePath = this._getAvatarPath(avatarUrl);
+    if (existsSync(filePath)) {
+      unlinkSync(filePath); // 删除旧头像文件
+    }
+    return Promise.resolve();
   }
 }
