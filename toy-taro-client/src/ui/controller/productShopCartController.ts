@@ -50,7 +50,7 @@ export class ProductShopCartController extends Singleton {
       const product = sdk.storeManager.getById(STORE_NAME.PRODUCT, shopCart.productId);
       if (!product) return sum;
 
-      return sum + (product.score * shopCart.quantity ?? 0);
+      return sum + product.score * Number(shopCart.quantity);
     }, 0);
   };
 
