@@ -17,6 +17,7 @@ interface TaskCardProps {
   categoryName?: string;
   status?: TASK_STATUS;
   operateTime?: string;
+  createTime?: string;
   action?: React.ReactNode;
 }
 
@@ -31,6 +32,7 @@ const TaskCard = (props: TaskCardProps) => {
     categoryName,
     status,
     operateTime,
+    createTime,
     action,
     type = 'primary',
   } = props;
@@ -50,6 +52,12 @@ const TaskCard = (props: TaskCardProps) => {
             <Text>{`${TASK_TYPE_LABEL[taskType]} - ${categoryName}`}</Text>
           </View>
         ) : null}
+        {createTime ? (
+          <View className={styles.item}>
+            <Text>任务开始时间：</Text>
+            <Text>{createTime}</Text>
+          </View>
+        ) : null}
         {operateTime && operateTimeTitle ? (
           <View className={styles.item}>
             <Text>{operateTimeTitle}：</Text>
@@ -58,7 +66,7 @@ const TaskCard = (props: TaskCardProps) => {
         ) : null}
       </View>
     );
-  }, [categoryName, operateTime, status, taskType]);
+  }, [categoryName, createTime, operateTime, status, taskType]);
 
   return (
     <View

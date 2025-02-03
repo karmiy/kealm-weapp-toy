@@ -48,4 +48,9 @@ export class TaskFlowModel {
   get lastModifiedDate() {
     return format(this.lastModifiedTime, 'yyyy-MM-dd HH:mm:ss');
   }
+
+  @computed
+  get createDate() {
+    return format(this.createTime, 'yyyy-MM-dd HH:mm:ss');
+  }
 }
