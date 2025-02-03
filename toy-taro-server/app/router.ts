@@ -48,4 +48,13 @@ export default (app: Application) => {
     getPath("/product/getProductShopCartList"),
     controller.product.getProductShopCartList
   );
+
+  // coupon
+  router.post(getPath("/coupon/updateCoupon"), controller.coupon.updateCoupon);
+  router.post(
+    getPath("/coupon/updateUserCoupon"),
+    controller.coupon.updateUserCoupon
+  );
+  router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
+  router.post(getPath("/coupon/deleteCoupon"), controller.coupon.deleteCoupon);
 };

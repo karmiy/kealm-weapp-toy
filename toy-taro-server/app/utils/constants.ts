@@ -35,3 +35,20 @@ export enum FILE_PREFIX {
 export enum FILE_SCORE {
   IMAGES = "images",
 }
+
+// ------------------------------ coupon ------------------------------
+export enum COUPON_STATUS {
+  ACTIVE = "ACTIVE",
+  USED = "USED",
+}
+
+export enum COUPON_TYPE {
+  CASH_DISCOUNT = "CASH_DISCOUNT",
+  PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
+}
+
+export enum COUPON_VALIDITY_TIME_TYPE {
+  DATE_RANGE = "DATE_RANGE",
+  DATE_LIST = "DATE_LIST",
+  WEEKLY = "WEEKLY",
+}

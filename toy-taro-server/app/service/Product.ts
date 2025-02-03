@@ -21,6 +21,7 @@ export default class Product extends Service {
       // raw: true,
       where: {
         group_id: groupId,
+        is_deleted: 0,
       },
       order: [["last_modified_time", "desc"]],
       // include: [
@@ -47,7 +48,11 @@ export default class Product extends Service {
     const productCategory = await ctx.model.ProductCategory.findByPk(id, {
       // raw: true,
     });
-    return productCategory as any as ProductCategoryModel;
+    const model = productCategory as any as ProductCategoryModel;
+    if (!model || model?.is_deleted) {
+      return null;
+    }
+    return model;
   }
 
   public async upsertProductCategory(fields: Partial<ProductCategoryModel>) {
@@ -93,9 +98,15 @@ export default class Product extends Service {
   public async deleteProductCategory(id: string) {
     try {
       const { ctx } = this;
-      await ctx.model.ProductCategory.destroy({
-        where: { id },
-      });
+      await ctx.model.ProductCategory.update(
+        {
+          is_deleted: 1,
+        },
+        {
+          where: { id },
+          returning: true,
+        }
+      );
     } catch (error) {
       logger.tag("[deleteProductCategory]").error("error", error);
       return Promise.reject(
@@ -107,6 +118,10 @@ export default class Product extends Service {
   public async findProductById(id: string): Promise<ProductModel | null> {
     const { ctx } = this;
     const product = await ctx.model.Product.findByPk(id, {});
+    const model = product as any as ProductModel;
+    if (!model || model?.is_deleted) {
+      return null;
+    }
     return product as any as ProductModel;
   }
 
@@ -154,6 +169,7 @@ export default class Product extends Service {
       // raw: true,
       where: {
         group_id: groupId,
+        is_deleted: 0,
       },
       order: [["last_modified_time", "desc"]],
     });
@@ -169,9 +185,15 @@ export default class Product extends Service {
   public async deleteProduct(id: string) {
     try {
       const { ctx } = this;
-      await ctx.model.Product.destroy({
-        where: { id },
-      });
+      await ctx.model.Product.update(
+        {
+          is_deleted: 1,
+        },
+        {
+          where: { id },
+          returning: true,
+        }
+      );
     } catch (error) {
       logger.tag("[deleteProduct]").error("error", error);
       return Promise.reject(
@@ -185,7 +207,10 @@ export default class Product extends Service {
   ): Promise<ProductModel | null> {
     const { ctx } = this;
     const product = await ctx.model.Product.findOne({
-      where: fields,
+      where: {
+        ...fields,
+        is_deleted: 0,
+      },
       // raw: true,
     });
     return product as any as ProductModel;
@@ -229,6 +254,7 @@ export default class Product extends Service {
       }
       const model = await this.findProductShopCart({
         id,
+        user_id: userId,
       });
       return Promise.resolve(model);
     } catch (error) {

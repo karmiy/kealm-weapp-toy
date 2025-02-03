@@ -1,5 +1,5 @@
 import { Context } from "egg";
-import { SERVER_CODE } from "../utils/constants";
+import { ROLE, SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
 
 function getParams<T>(this: Context): T;
@@ -51,11 +51,13 @@ export default {
       username?: string;
       password?: string;
       groupId?: string;
+      role?: ROLE;
     };
 
     return {
       userId: payload.userId ?? "",
       groupId: payload.groupId ?? "",
+      isAdmin: payload.role === ROLE.ADMIN,
     };
   },
   toJsError(error: unknown, config?: { code?: SERVER_CODE; message?: string }) {

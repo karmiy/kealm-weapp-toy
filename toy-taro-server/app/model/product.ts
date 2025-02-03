@@ -14,10 +14,11 @@ export interface ProductModel {
   flash_sale_end?: Date | null; // 限时特惠结束时间
   category_id: string;
   group_id: string;
+  is_deleted: number;
 }
 
 export default (app: Application) => {
-  const { STRING, DATE, INTEGER, TEXT, DECIMAL } = app.Sequelize;
+  const { STRING, DATE, INTEGER, TEXT, DECIMAL, TINYINT } = app.Sequelize;
 
   const Product = app.model.define("product", {
     id: {
@@ -63,14 +64,18 @@ export default (app: Application) => {
     category_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+        return String((this as any).getDataValue("category_id")); // 访问时自动转为字符串
       },
     },
     group_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+        return String((this as any).getDataValue("group_id")); // 访问时自动转为字符串
       },
+    },
+    is_deleted: {
+      type: TINYINT,
+      defaultValue: 0,
     },
   });
 

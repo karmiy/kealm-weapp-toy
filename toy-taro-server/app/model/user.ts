@@ -12,6 +12,7 @@ export interface UserModel {
   score: number;
   create_time: Date;
   last_modified_time: Date;
+  group_id: string;
 }
 
 export default (app: Application) => {
@@ -71,7 +72,20 @@ export default (app: Application) => {
       //   return rawValue ? rawValue.getTime() : null; // 转为时间戳
       // },
     },
+    group_id: {
+      type: INTEGER,
+      get() {
+        return String((this as any).getDataValue("group_id")); // 访问时自动转为字符串
+      },
+    },
   });
+
+  (User as any).associate = function () {
+    (app.model.User as any).belongsTo(app.model.Group, {
+      foreignKey: "group_id",
+      targetKey: "id",
+    });
+  };
 
   return User;
 };

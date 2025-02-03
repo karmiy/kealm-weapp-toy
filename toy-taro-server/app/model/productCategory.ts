@@ -6,10 +6,11 @@ export interface ProductCategoryModel {
   group_id: string;
   create_time: Date;
   last_modified_time: Date;
+  is_deleted: number;
 }
 
 export default (app: Application) => {
-  const { STRING, DATE, INTEGER } = app.Sequelize;
+  const { STRING, DATE, INTEGER, TINYINT } = app.Sequelize;
 
   const ProductCategory = app.model.define("product_category", {
     id: {
@@ -36,8 +37,12 @@ export default (app: Application) => {
     group_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+        return String((this as any).getDataValue("group_id")); // 访问时自动转为字符串
       },
+    },
+    is_deleted: {
+      type: TINYINT,
+      defaultValue: 0,
     },
   });
 

@@ -35,13 +35,13 @@ export default (app: Application) => {
     product_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+        return String((this as any).getDataValue("product_id")); // 访问时自动转为字符串
       },
     },
     user_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("id")); // 访问时自动转为字符串
+        return String((this as any).getDataValue("user_id")); // 访问时自动转为字符串
       },
     },
   });

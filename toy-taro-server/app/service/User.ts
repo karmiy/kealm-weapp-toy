@@ -1,6 +1,6 @@
 import { Service } from "egg";
 import { Logger } from "../utils/logger";
-import { SERVER_CODE } from "../utils/constants";
+import { ROLE, SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
 import { UserModel } from "../model/user";
 
@@ -56,7 +56,7 @@ export default class User extends Service {
     }
 
     const user = await ctx.model.User.findOne({
-      attributes: ["id", "group_id"] as any,
+      attributes: ["id", "group_id", "role"] as any,
       where: {
         open_id: openid,
       },
@@ -68,7 +68,11 @@ export default class User extends Service {
         new JsError(SERVER_CODE.NOT_FOUND, "登录用户不存在")
       );
     }
-    const { id, group_id } = user as any as { id: string; group_id: string };
+    const { id, group_id, role } = user as any as {
+      id: string;
+      group_id: string;
+      role: ROLE;
+    };
 
     const token = app.jwt.sign(
       {
@@ -76,6 +80,7 @@ export default class User extends Service {
         openId: openid,
         sessionKey: session_key,
         groupId: group_id,
+        role,
       },
       AppSecret,
       {
@@ -94,7 +99,7 @@ export default class User extends Service {
     const { AppSecret } = app;
 
     const user = await ctx.model.User.findOne({
-      attributes: ["id", "group_id"] as any,
+      attributes: ["id", "group_id", "role"] as any,
       where: {
         username,
         password,
@@ -105,13 +110,14 @@ export default class User extends Service {
     if (!user) {
       return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "登录密码错误"));
     }
-    const { id, group_id } = user as any as {
+    const { id, group_id, role } = user as any as {
       id: string;
       group_id: string;
+      role: ROLE;
     };
 
     const token = app.jwt.sign(
-      { userId: id, username, password, groupId: group_id },
+      { userId: id, username, password, groupId: group_id, role },
       AppSecret,
       {
         expiresIn: JWT_EXPIRES_IN,
