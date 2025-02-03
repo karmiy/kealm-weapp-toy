@@ -17,7 +17,9 @@ const ProductScore = (props: ProductScoreProps) => {
       className={clsx(styles.wrapper, { [styles.isInverse]: colorMode === 'inverse' }, className)}
     >
       <Text className={styles.current}>{discounted ?? original}积分</Text>
-      {discounted ? <Text className={styles.origin}>{original}积分</Text> : null}
+      {typeof discounted === 'number' ? (
+        <Text className={styles.origin}>{original}积分</Text>
+      ) : null}
     </View>
   );
 };
