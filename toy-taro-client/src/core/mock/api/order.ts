@@ -11,13 +11,27 @@ export const mockOrderApi = {
     return faker.helpers.multiple(
       () => {
         const isAdmin = UserStorageManager.getInstance().isAdmin;
+        const score = faker.number.int({ min: 50, max: 500 });
+        const hasCoupon = Math.random() > 0.5;
         return {
           id: faker.string.uuid(),
-          name: faker.commerce.productName(),
-          desc: faker.commerce.productDescription(),
-          score: faker.number.int({ min: 1, max: 100 }),
-          count: faker.number.int({ min: 1, max: 5 }),
-          cover_image: faker.image.url({ width: 300, height: 300 }),
+          products: faker.helpers.multiple(
+            () => {
+              return {
+                id: faker.string.uuid(),
+                name: faker.commerce.productName(),
+                desc: faker.commerce.productDescription(),
+                count: faker.number.int({ min: 1, max: 5 }),
+                cover_image: faker.image.url({ width: 300, height: 300 }),
+              };
+            },
+            {
+              count: faker.number.int({ min: 1, max: 5 }),
+            },
+          ),
+          score,
+          coupon_id: hasCoupon ? faker.string.uuid() : undefined,
+          discount_score: hasCoupon ? faker.number.int({ min: 1, max: score }) : undefined,
           create_time: faker.date.recent().getTime(),
           last_modified_time: faker.date.recent().getTime(),
           status: isAdmin

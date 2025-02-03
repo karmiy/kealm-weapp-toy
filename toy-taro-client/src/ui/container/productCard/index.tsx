@@ -18,7 +18,7 @@ interface ProductCardProps {
   title: React.ReactNode;
   subTitle?: React.ReactNode;
   discountedScore?: number;
-  originalScore: number;
+  originalScore?: number;
   isLimitedTimeOffer?: boolean;
   action?: React.ReactNode;
 }
@@ -59,10 +59,12 @@ const ProductCard = (props: ProductCardProps) => {
         <View className={styles.title}>{title}</View>
         <View className={styles.subTitle}>{subTitle}</View>
         <View className={styles.operateWrapper}>
-          <ProductScore
-            discounted={isLimitedTimeOffer ? discountedScore : undefined}
-            original={originalScore}
-          />
+          {originalScore ? (
+            <ProductScore
+              discounted={isLimitedTimeOffer ? discountedScore : undefined}
+              original={originalScore}
+            />
+          ) : null}
           {action}
         </View>
       </>
@@ -95,7 +97,9 @@ const ProductCard = (props: ProductCardProps) => {
             <View className={styles.subTitle}>{subTitle}</View>
           </View>
           <View className={styles.operateWrapper}>
-            <ProductScore discounted={discountedScore} original={originalScore} />
+            {originalScore ? (
+              <ProductScore discounted={discountedScore} original={originalScore} />
+            ) : null}
             {action}
           </View>
         </View>

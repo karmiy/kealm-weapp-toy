@@ -8,6 +8,21 @@ interface ActionItem {
   disabled: boolean;
 }
 
+export const ORDER_TIME_TITLE: Record<string, Record<ORDER_STATUS, string>> = {
+  admin: {
+    [ORDER_STATUS.INITIAL]: '',
+    [ORDER_STATUS.REVOKING]: '撤销时间',
+    [ORDER_STATUS.APPROVED]: '审批时间',
+    [ORDER_STATUS.REJECTED]: '审批时间',
+  },
+  user: {
+    [ORDER_STATUS.INITIAL]: '',
+    [ORDER_STATUS.REVOKING]: '撤销时间',
+    [ORDER_STATUS.APPROVED]: '审批时间',
+    [ORDER_STATUS.REJECTED]: '审批时间',
+  },
+};
+
 export const ACTION_TITLE: Record<string, Record<ORDER_STATUS, ActionItem[]>> = {
   admin: {
     [ORDER_STATUS.INITIAL]: [

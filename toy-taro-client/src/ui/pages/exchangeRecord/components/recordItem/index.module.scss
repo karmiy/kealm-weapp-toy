@@ -4,6 +4,7 @@
   display: flex;
   padding: px(14);
   border-radius: px(12);
+  flex-direction: column;
   background-color: $--fill-default;
 
   .card {
@@ -22,8 +23,30 @@
         margin-top: px(4);
       }
     }
-    
-    .actionWrapper {
+  }
+
+  .orderInfo {
+    font-size: px(14);
+    color: $--text-color-placeholder;
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .label {
+      color: $--text-color-base;
+      margin-right: px(4);
+    }
+  }
+
+  .actionWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .actionButtons {
       display: flex;
       align-items: center;
     }

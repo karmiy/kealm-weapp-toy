@@ -6,19 +6,24 @@ import { OrderEntity } from '../entity';
 export class OrderModel {
   id: string;
 
-  name: string;
-
-  desc?: string;
+  products: Array<{
+    id: string;
+    name: string;
+    desc?: string;
+    count: number;
+    cover_image: string;
+  }>;
 
   score: number;
 
-  count: number;
+  discountScore?: number;
 
-  coverImage: string;
+  couponId?: string;
 
   @observable
   createTime: number;
 
+  @observable
   lastModifiedTime: number;
 
   @observable
@@ -30,22 +35,20 @@ export class OrderModel {
     makeObserver(this);
     const {
       id,
-      name,
-      desc,
+      products,
       score,
-      count,
-      cover_image,
+      discount_score,
+      coupon_id,
       create_time,
       last_modified_time,
       status,
       user_id,
     } = entity;
     this.id = id;
-    this.name = name;
-    this.desc = desc;
+    this.products = products;
     this.score = score;
-    this.count = count;
-    this.coverImage = cover_image;
+    this.discountScore = discount_score;
+    this.couponId = coupon_id;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
     this.status = status;
@@ -69,6 +72,11 @@ export class OrderModel {
 
   @computed
   get orderTime() {
-    return format(this.createTime, 'yyyy-MM-dd');
+    return format(this.createTime, 'yyyy-MM-dd HH:mm:ss');
+  }
+
+  @computed
+  get operateTime() {
+    return format(this.lastModifiedTime, 'yyyy-MM-dd HH:mm:s');
   }
 }
