@@ -475,7 +475,6 @@ export default class TaskController extends Controller {
   public async getTaskList() {
     const { ctx } = this;
     try {
-      // [TODO] 根据角色获取任务列表，用户的任务要看是否已完成
       const list = await ctx.service.task.getTaskList();
 
       const taskList: TaskEntity[] = list.map((item) =>
