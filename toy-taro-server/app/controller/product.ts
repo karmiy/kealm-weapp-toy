@@ -54,6 +54,17 @@ export default class ProductController extends Controller {
         return;
       }
 
+      if (id) {
+        const model = await ctx.service.product.findProductCategoryById(id);
+        if (!model) {
+          ctx.responseFail({
+            code: SERVER_CODE.BAD_REQUEST,
+            message: "分类不存在",
+          });
+          return;
+        }
+      }
+
       const data = await ctx.service.product.upsertProductCategory({
         id,
         name,

@@ -57,4 +57,23 @@ export default (app: Application) => {
   );
   router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
   router.post(getPath("/coupon/deleteCoupon"), controller.coupon.deleteCoupon);
+
+  // task
+  router.post(
+    getPath("/task/updateTaskCategory"),
+    controller.task.updateTaskCategory
+  );
+  router.get(
+    getPath("/task/getTaskCategoryList"),
+    controller.task.getTaskCategoryList
+  );
+  router.post(
+    getPath("/task/deleteTaskCategory"),
+    controller.task.deleteTaskCategory
+  );
+  router.post(getPath("/task/updateTask"), controller.task.updateTask);
+  router.post(getPath("/task/deleteTask"), controller.task.deleteTask);
+  router.get(getPath("/task/getTaskList"), controller.task.getTaskList);
+  router.post(getPath("/task/updateTaskFlow"), controller.task.updateTaskFlow);
+  router.get(getPath("/task/getTaskFlowList"), controller.task.getTaskFlowList);
 };

@@ -7,6 +7,7 @@ import {
   COUPON_TYPE,
   COUPON_STATUS,
   COUPON_VALIDITY_TIME_TYPE,
+  TASK_REWARD_TYPE,
 } from "../utils/constants";
 import { CouponModel } from "../model/coupon";
 import { UserCouponWithCouponModel } from "../model/userCoupon";
@@ -289,6 +290,22 @@ export default class CouponController extends Controller {
       }
 
       const entity = this._couponModelToEntity(couponModel);
+
+      // 更新 task 表中的相关 coupon 数据
+      await ctx.service.task.updateTasksPartial(
+        {
+          reward_coupon_id: couponModel.id,
+          reward_type:
+            couponModel.type === COUPON_TYPE.CASH_DISCOUNT
+              ? TASK_REWARD_TYPE.CASH_DISCOUNT
+              : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
+          reward_value: couponModel.value,
+          reward_minimum_order_value: couponModel.minimum_order_value,
+        },
+        {
+          reward_coupon_id: couponModel.id,
+        }
+      );
 
       ctx.responseSuccess({
         data: entity,

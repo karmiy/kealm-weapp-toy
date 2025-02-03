@@ -52,3 +52,23 @@ export enum COUPON_VALIDITY_TIME_TYPE {
   DATE_LIST = "DATE_LIST",
   WEEKLY = "WEEKLY",
 }
+
+// ------------------------------ task ------------------------------
+export enum TASK_TYPE {
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  TIMED = "TIMED",
+  CHALLENGE = "CHALLENGE",
+}
+
+export enum TASK_STATUS {
+  PENDING_APPROVAL = "PENDING_APPROVAL",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
+export enum TASK_REWARD_TYPE {
+  POINTS = "POINTS", // 积分
+  CASH_DISCOUNT = "CASH_DISCOUNT",
+  PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
+}
