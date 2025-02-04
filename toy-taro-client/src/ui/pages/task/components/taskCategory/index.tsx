@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View } from '@tarojs/components';
 import { TASK_TYPE } from '@core';
-import { TabPanel, Tabs } from '@ui/components';
+import { StatusWrapper, TabPanel, Tabs } from '@ui/components';
 import { useTaskCategoryList } from '@ui/viewModel';
 import { TaskList } from '../taskList';
 import styles from './index.module.scss';
@@ -18,21 +18,25 @@ const TaskCategory = (props: TaskCategoryProps) => {
 
   return (
     <View className={styles.wrapper}>
-      <Tabs
-        className={styles.tabs}
-        current={current}
-        onChange={setCurrent}
-        variant='text'
-        mode='vertical'
-      >
-        {categoryList.map(item => {
-          return (
-            <TabPanel key={item.id} label={item.name}>
-              <TaskList type={type} categoryId={item.id} />
-            </TabPanel>
-          );
-        })}
-      </Tabs>
+      {!categoryList.length ? (
+        <StatusWrapper count={0} size='fill' />
+      ) : (
+        <Tabs
+          className={styles.tabs}
+          current={current}
+          onChange={setCurrent}
+          variant='text'
+          mode='vertical'
+        >
+          {categoryList.map(item => {
+            return (
+              <TabPanel key={item.id} label={item.name}>
+                <TaskList type={type} categoryId={item.id} />
+              </TabPanel>
+            );
+          })}
+        </Tabs>
+      )}
     </View>
   );
 };

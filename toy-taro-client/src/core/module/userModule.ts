@@ -1,20 +1,28 @@
+import { eventCenter } from '@tarojs/taro';
 import { JsError } from '@shared/utils/utils';
 import { LoginParams, UserApi } from '../api';
 import { AbstractModule, UserStorageManager } from '../base';
-import { ERROR_CODE, ERROR_MESSAGE, MODULE_NAME, STORE_NAME } from '../constants';
+import { ERROR_CODE, ERROR_MESSAGE, EVENT_KEYS, MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 
 export class UserModule extends AbstractModule {
   protected onLoad() {
     UserStorageManager.getInstance().init();
     this.syncUserLoginInfo();
+
+    eventCenter.on(EVENT_KEYS.user.SYNC_USER_INFO, this._onSyncUserInfo);
   }
   protected onUnload() {
     UserStorageManager.getInstance().dispose();
+    eventCenter.off(EVENT_KEYS.user.SYNC_USER_INFO, this._onSyncUserInfo);
   }
   protected moduleName(): string {
     return MODULE_NAME.USER;
   }
+
+  private _onSyncUserInfo = () => {
+    this.getUserInfo();
+  };
 
   syncUserLoginInfo() {
     this._logger.info('sync user info');
@@ -57,7 +65,7 @@ export class UserModule extends AbstractModule {
     // mock 本地数据时，清了换成要重启微信开发者工具
     try {
       this._logger.info('uploadAvatar', tempUrl);
-      const avatarUrl = await UserApi.uploadAvatar(tempUrl);
+      const { avatarUrl } = await UserApi.uploadAvatar(tempUrl);
       const userInfo = storeManager.get(STORE_NAME.USER);
       if (!userInfo) {
         throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);

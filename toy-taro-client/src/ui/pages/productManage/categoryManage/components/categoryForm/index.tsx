@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from '@tarojs/components';
 import { sleep } from '@shared/utils/utils';
 import { STORE_NAME } from '@core';
@@ -25,6 +25,10 @@ export const CategoryForm = (props: CategoryFormProps) => {
       onSuccess: afterSave,
     });
   };
+
+  useEffect(() => {
+    !id && setCategoryName('');
+  }, [id]);
 
   return (
     <View className={styles.categoryFormWrapper}>

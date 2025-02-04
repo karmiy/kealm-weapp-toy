@@ -77,7 +77,7 @@ export default class UserController extends Controller {
     try {
       const { userId } = ctx.getUserInfo();
 
-      const file = ctx.request.files[0];
+      const file = ctx.request.files?.[0];
       logger.tag("[uploadAvatar]").info({ hasFile: !!file });
 
       if (!file) {

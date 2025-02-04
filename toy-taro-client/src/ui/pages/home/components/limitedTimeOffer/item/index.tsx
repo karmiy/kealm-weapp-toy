@@ -15,23 +15,23 @@ const Item = (props: ItemProps) => {
   const { id } = props;
   const product = useStoreById(STORE_NAME.PRODUCT, id);
   const productCategory = useStoreById(STORE_NAME.PRODUCT_CATEGORY, product?.categoryId);
-  const { coverImage } = product ?? {};
+  const { coverImageUrl } = product ?? {};
 
   useEffect(() => {
-    if (!coverImage) {
+    if (!coverImageUrl) {
       return;
     }
-    previewImageManager.register(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
-    return () => previewImageManager.unregister(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImage);
-  }, [coverImage]);
+    previewImageManager.register(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImageUrl);
+    return () => previewImageManager.unregister(PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER, coverImageUrl);
+  }, [coverImageUrl]);
 
   const handlePreview = () => {
-    if (!coverImage) {
+    if (!coverImageUrl) {
       return;
     }
     previewImageManager.preview({
       id: PREVIEW_IMAGE_ID.LIMITED_TIME_OFFER,
-      current: coverImage,
+      current: coverImageUrl,
     });
   };
 
@@ -44,8 +44,8 @@ const Item = (props: ItemProps) => {
   return (
     <View className={styles.wrapper}>
       <View className={styles.imgWrapper}>
-        {coverImage ? (
-          <FallbackImage className={styles.img} src={coverImage} onClick={handlePreview} />
+        {coverImageUrl ? (
+          <FallbackImage className={styles.img} src={coverImageUrl} onClick={handlePreview} />
         ) : null}
       </View>
       <Text className={styles.title}>{name}</Text>

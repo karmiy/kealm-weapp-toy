@@ -31,7 +31,7 @@ export default function () {
     if (!product) {
       return [];
     }
-    return [{ url: product.coverImage }];
+    return [{ url: product.coverImageUrl }];
   });
 
   // 商品名称
@@ -179,7 +179,7 @@ export default function () {
         </FormItem>
         <FormItem title='商品分类' required showSettingEntrance onSettingClick={handleEditCategory}>
           <PickerSelector
-            placeholder='请选择商品名称'
+            placeholder='请选择商品分类'
             type='select'
             mode='selector'
             range={productCategoryList}

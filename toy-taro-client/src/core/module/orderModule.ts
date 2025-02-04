@@ -1,6 +1,7 @@
+import { eventCenter } from '@tarojs/taro';
 import { OrderApi } from '../api';
 import { AbstractModule } from '../base';
-import { MODULE_NAME, ORDER_STATUS, STORE_NAME } from '../constants';
+import { COUPON_STATUS, EVENT_KEYS, MODULE_NAME, ORDER_STATUS, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 
 export class OrderModule extends AbstractModule {
@@ -34,5 +35,34 @@ export class OrderModule extends AbstractModule {
       this._logger.error('updateOrderStatus error', error.message);
       throw error;
     }
+  }
+
+  async createOrder(params: { couponId?: string; shopCartIds: string[] }) {
+    try {
+      const { couponId, shopCartIds } = params;
+      await OrderApi.createOrder({
+        coupon_id: couponId,
+        shop_cart_ids: shopCartIds,
+      });
+      storeManager.emitDelete(STORE_NAME.PRODUCT_SHOP_CART, shopCartIds);
+      couponId &&
+        storeManager.emitUpdate(STORE_NAME.COUPON, {
+          partials: [
+            {
+              id: couponId,
+              status: COUPON_STATUS.USED,
+            },
+          ],
+        });
+      this._syncOrderAssociatedData();
+    } catch (error) {
+      this._logger.error('createOrder error', error.message);
+      throw error;
+    }
+  }
+
+  private _syncOrderAssociatedData() {
+    eventCenter.trigger(EVENT_KEYS.product.SYNC_PRODUCT_LIST);
+    eventCenter.trigger(EVENT_KEYS.user.SYNC_USER_INFO);
   }
 }

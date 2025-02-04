@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { reaction } from '@shared/utils/observer';
+import { showToast } from '@shared/utils/operateFeedback';
 import { sdk, STORE_NAME } from '@core';
 import { ProductShopCartController } from '@ui/controller';
 import { useDebounceFunc } from '@ui/hooks/useDebounceFunc';
@@ -100,19 +101,26 @@ export function useProductShopCart(props?: Props) {
   }, []);
 
   const updateProductShopCart = useDebounceFunc(
-    async (
-      id: string,
-      quantity: number,
+    async (params: {
+      id: string;
+      productId: string;
+      quantity: number;
       callback?: {
         success?: () => void;
         fallback?: (prevQuantity: number) => void;
-      },
-    ) => {
+      };
+    }) => {
+      const { id, productId, quantity, callback } = params;
       try {
-        await sdk.modules.product.updateProductShopCart(id, quantity);
+        await sdk.modules.product.updateProductShopCart({
+          id,
+          productId,
+          quantity,
+        });
         callback?.success?.();
-      } catch {
+      } catch (err) {
         const productShopCart = sdk.storeManager.getById(STORE_NAME.PRODUCT_SHOP_CART, id);
+        showToast({ title: err?.message ?? '商品数量更新失败！' });
         productShopCart && callback?.fallback?.(productShopCart.quantity);
       }
     },

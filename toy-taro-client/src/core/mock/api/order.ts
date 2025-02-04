@@ -60,4 +60,10 @@ export const mockOrderApi = {
       ? Promise.resolve()
       : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '订单状态更新失败'));
   },
+  [MOCK_API_NAME.CREATE_ORDER]: async (): Promise<void> => {
+    await sleep(1000);
+    return Math.random() > 0.4
+      ? Promise.resolve()
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '订单状态创建失败'));
+  },
 };

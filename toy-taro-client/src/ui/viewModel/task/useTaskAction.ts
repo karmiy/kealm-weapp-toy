@@ -38,7 +38,7 @@ export function useTaskAction() {
   );
 
   const handleApprove = useCallback(
-    async (id: string) => {
+    async (id: string, taskId: string) => {
       try {
         if (isActionLoading) {
           return;
@@ -51,7 +51,7 @@ export function useTaskAction() {
         }
         setIsActionLoading(true);
         setCurrentActionId(TASK_ACTION_ID.APPROVE);
-        await sdk.modules.task.updateTaskFlowStatus(id, TASK_STATUS.APPROVED);
+        await sdk.modules.task.updateTaskFlowStatus(id, taskId, TASK_STATUS.APPROVED);
         showToast({
           title: '审批成功',
         });
@@ -68,7 +68,7 @@ export function useTaskAction() {
   );
 
   const handleReject = useCallback(
-    async (id: string) => {
+    async (id: string, taskId: string) => {
       try {
         if (isActionLoading) {
           return;
@@ -81,7 +81,7 @@ export function useTaskAction() {
         }
         setIsActionLoading(true);
         setCurrentActionId(TASK_ACTION_ID.REJECT);
-        await sdk.modules.task.updateTaskFlowStatus(id, TASK_STATUS.REJECTED);
+        await sdk.modules.task.updateTaskFlowStatus(id, taskId, TASK_STATUS.REJECTED);
         showToast({
           title: '拒绝审批成功',
         });

@@ -114,12 +114,12 @@ export default class Coupon extends Service {
   public async upsertUserCoupon(fields: Partial<UserCouponWithCouponModel>) {
     try {
       const { ctx } = this;
-      const { groupId, userId } = ctx.getUserInfo();
+      const { groupId, userId, isAdmin } = ctx.getUserInfo();
       const upsertResponse = await ctx.model.UserCoupon.upsert(
         {
           ...fields,
           group_id: groupId,
-          user_id: userId,
+          ...(isAdmin ? {} : { user_id: userId }),
         },
         {
           returning: true,
@@ -139,7 +139,7 @@ export default class Coupon extends Service {
         {
           id,
           group_id: groupId,
-          user_id: userId,
+          ...(isAdmin ? {} : { user_id: userId }),
         },
         {
           group_id: groupId,

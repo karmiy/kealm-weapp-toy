@@ -1,5 +1,6 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { ProductEntity } from '../entity';
+import { getSourceUrl } from '../utils/helper';
 
 export class ProductModel {
   id: string;
@@ -11,6 +12,7 @@ export class ProductModel {
   @observable
   originalScore: number;
   stock: number;
+  @observable
   coverImage: string;
   @observable
   createTime: number;
@@ -73,5 +75,10 @@ export class ProductModel {
   @computed
   get createDate() {
     return new Date(this.createTime);
+  }
+
+  @computed
+  get coverImageUrl() {
+    return getSourceUrl(this.coverImage);
   }
 }

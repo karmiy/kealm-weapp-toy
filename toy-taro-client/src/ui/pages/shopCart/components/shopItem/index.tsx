@@ -27,21 +27,29 @@ const ShopItem = (props: ShopItemProps) => {
 
   const handleUpdateCount = useCallback(
     async (quantity: number) => {
+      if (!product?.id) {
+        showToast({ title: '商品不存在！' });
+        return;
+      }
       setCount(quantity);
-      await updateProductShopCart(id, quantity, {
-        fallback: prevQuantity => {
-          setCount(prevQuantity);
-          showToast({ title: '商品数量更新失败！' });
+      await updateProductShopCart({
+        id,
+        productId: product?.id,
+        quantity,
+        callback: {
+          fallback: prevQuantity => {
+            setCount(prevQuantity);
+          },
         },
       });
     },
-    [updateProductShopCart, id],
+    [updateProductShopCart, id, product?.id],
   );
 
   if (!productShotCart || !product || !count) {
     return null;
   }
-  const { name, desc, coverImage, discountedScore, originalScore, isLimitedTimeOffer } = product;
+  const { name, desc, coverImageUrl, discountedScore, originalScore, isLimitedTimeOffer } = product;
 
   return (
     <View className={styles.wrapper}>
@@ -52,7 +60,7 @@ const ShopItem = (props: ShopItemProps) => {
         paddingSize='none'
         title={name}
         subTitle={desc}
-        coverImage={coverImage}
+        coverImage={coverImageUrl}
         discountedScore={discountedScore}
         originalScore={originalScore}
         isLimitedTimeOffer={isLimitedTimeOffer}

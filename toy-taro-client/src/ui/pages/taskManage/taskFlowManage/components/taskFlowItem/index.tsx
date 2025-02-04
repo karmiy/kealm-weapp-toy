@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useMemo } from 'react';
 import { View } from '@tarojs/components';
+import { showToast } from '@shared/utils/operateFeedback';
 import { STORE_NAME, TASK_REWARD_TYPE } from '@core';
 import { Button, WhiteSpace } from '@ui/components';
 import { TaskCard } from '@ui/container';
@@ -31,10 +32,16 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
       if (!actionId) {
         return;
       }
-      actionId === TASK_ACTION_ID.APPROVE && handleApprove(id);
-      actionId === TASK_ACTION_ID.REJECT && handleReject(id);
+      if (!taskId) {
+        showToast({
+          title: '任务不存在',
+        });
+        return;
+      }
+      actionId === TASK_ACTION_ID.APPROVE && handleApprove(id, taskId);
+      actionId === TASK_ACTION_ID.REJECT && handleReject(id, taskId);
     },
-    [handleApprove, handleReject, id],
+    [handleApprove, handleReject, id, taskId],
   );
 
   const Action = useMemo(() => {

@@ -6,6 +6,7 @@ interface ActionItem {
   type: 'primary' | 'plain';
   label: string;
   disabled: boolean;
+  hide?: boolean;
 }
 
 export const ORDER_TIME_TITLE: Record<string, Record<ORDER_STATUS, string>> = {
@@ -30,6 +31,7 @@ export const ACTION_TITLE: Record<string, Record<ORDER_STATUS, ActionItem[]>> = 
         type: 'plain',
         label: '兑换记录',
         disabled: true,
+        hide: true,
       },
     ],
     [ORDER_STATUS.REVOKING]: [

@@ -1,6 +1,7 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { ROLE } from '../constants';
 import { UserEntity } from '../entity';
+import { getSourceUrl } from '../utils/helper';
 
 export class UserModel {
   id: string;
@@ -33,10 +34,10 @@ export class UserModel {
 
   @computed
   get avatar() {
-    return (
-      this.avatarUrl ||
-      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-avatar.png'
-    );
+    const url =
+      this.avatarUrl ??
+      'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-avatar.png';
+    return getSourceUrl(url);
   }
 
   @computed

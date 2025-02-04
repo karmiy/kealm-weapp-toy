@@ -1,7 +1,8 @@
+import { eventCenter } from '@tarojs/taro';
 import cloneDeep from 'lodash/cloneDeep';
 import { CheckInApi } from '../api';
 import { AbstractModule } from '../base';
-import { MODULE_NAME, STORE_NAME } from '../constants';
+import { EVENT_KEYS, MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 
 export class CheckInModule extends AbstractModule {
@@ -39,6 +40,8 @@ export class CheckInModule extends AbstractModule {
           },
         ],
       });
+      this.syncCheckInInfo();
+      eventCenter.trigger(EVENT_KEYS.user.SYNC_USER_INFO);
     } catch (error) {
       this._logger.info('Claim reward failed', error.message);
       throw error;

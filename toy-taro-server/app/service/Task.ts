@@ -238,12 +238,12 @@ export default class Task extends Service {
   public async upsertTaskFlow(fields: Partial<TaskFlowModel>) {
     try {
       const { ctx } = this;
-      const { groupId, userId } = ctx.getUserInfo();
+      const { groupId, userId, isAdmin } = ctx.getUserInfo();
       const upsertResponse = await ctx.model.TaskFlow.upsert(
         {
           ...fields,
           group_id: groupId,
-          user_id: userId,
+          ...(isAdmin ? {} : { user_id: userId }),
         },
         {
           returning: true,
@@ -262,7 +262,7 @@ export default class Task extends Service {
       const model = await this.findTaskFlow({
         id,
         group_id: groupId,
-        user_id: userId,
+        ...(isAdmin ? {} : { user_id: userId }),
       });
       return Promise.resolve(model);
     } catch (error) {

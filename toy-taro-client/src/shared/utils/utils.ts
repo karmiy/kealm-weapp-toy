@@ -53,3 +53,32 @@ export class JsError extends Error {
     super(message);
   }
 }
+
+export const cleanEmptyFields = <T extends Record<string, any>>(
+  obj: T,
+  options?: {
+    ignoreList?: unknown[];
+  },
+): T => {
+  const { ignoreList = [undefined, null, ''] } = options ?? {};
+  const cleanedObj: T = {} as T;
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const value = obj[key];
+
+      if (!ignoreList.includes(value)) {
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          const cleanedValue = cleanEmptyFields(value, options); // 递归处理对象
+          if (Object.keys(cleanedValue).length > 0) {
+            cleanedObj[key] = cleanedValue;
+          }
+        } else {
+          cleanedObj[key] = value;
+        }
+      }
+    }
+  }
+
+  return cleanedObj;
+};

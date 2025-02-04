@@ -1,6 +1,7 @@
 import { Controller } from "egg";
 import { Logger } from "../utils/logger";
 import {
+  COUPON_STATUS,
   COUPON_TYPE,
   SERVER_CODE,
   TASK_REWARD_TYPE,
@@ -496,7 +497,7 @@ export default class TaskController extends Controller {
 
   public async updateTaskFlow() {
     const { ctx } = this;
-    const { userId, groupId } = ctx.getUserInfo();
+    const { userId, groupId, isAdmin } = ctx.getUserInfo();
     try {
       const params = ctx.getParams<{
         id?: string;
@@ -512,7 +513,7 @@ export default class TaskController extends Controller {
         const model = await ctx.service.task.findTaskFlow({
           id,
           group_id: groupId,
-          user_id: userId,
+          ...(isAdmin ? {} : { user_id: userId }),
         });
         if (!model) {
           ctx.responseFail({
@@ -578,6 +579,51 @@ export default class TaskController extends Controller {
           message: "更新后获取任务流异常",
         });
         return;
+      }
+
+      // 发放奖励
+      if (status === TASK_STATUS.APPROVED) {
+        // 生成优惠券
+        const task = await ctx.service.task.findTask({ id: task_id });
+
+        if (!task) {
+          ctx.responseFail({
+            code: SERVER_CODE.INTERNAL_SERVER_ERROR,
+            message: "任务奖励获取异常",
+          });
+          return;
+        }
+
+        if (task.reward_type === TASK_REWARD_TYPE.POINTS) {
+          const addedScore = task.reward_value ?? 0;
+          const user = await ctx.service.user.findUserById(
+            taskFlowModel.user_id
+          );
+          await ctx.service.user.updateUserById(taskFlowModel.user_id, {
+            score: user.score + addedScore,
+          });
+        }
+
+        if (
+          task.reward_type === TASK_REWARD_TYPE.CASH_DISCOUNT ||
+          task.reward_type === TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
+        ) {
+          const couponId = task.reward_coupon_id;
+
+          if (!couponId) {
+            ctx.responseFail({
+              code: SERVER_CODE.INTERNAL_SERVER_ERROR,
+              message: "奖励优惠券不存在",
+            });
+            return;
+          }
+
+          await ctx.service.coupon.upsertUserCoupon({
+            coupon_id: couponId,
+            status: COUPON_STATUS.ACTIVE,
+            user_id: taskFlowModel.user_id,
+          });
+        }
       }
 
       const entity = this._taskFlowModelToEntity(taskFlowModel);

@@ -8,5 +8,6 @@ export function useUserInfo() {
 
   return {
     isAdmin,
+    score: user?.availableScore ?? 0,
   };
 }

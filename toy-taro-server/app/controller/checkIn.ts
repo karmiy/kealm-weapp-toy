@@ -142,6 +142,7 @@ export default class CheckInController extends Controller {
       const params = ctx.getParams<{
         rule_id?: string;
       }>();
+      const { userId } = ctx.getUserInfo();
 
       logger.tag("[claimReward]").info("claimReward", params);
       const { rule_id } = params;
@@ -189,6 +190,15 @@ export default class CheckInController extends Controller {
       await ctx.service.checkIn.createUserCheckInRule({
         rule_id,
       });
+
+      // 领取奖励
+      if (checkInRule.reward_type === CHECK_IN_RULE_REWARD_TYPE.POINTS) {
+        const addedScore = checkInRule.reward_value ?? 0;
+        const user = await ctx.service.user.findUserById(userId);
+        await ctx.service.user.updateUserById(userId, {
+          score: user.score + addedScore,
+        });
+      }
 
       ctx.responseSuccess({
         message: "领取成功",
@@ -249,7 +259,7 @@ export default class CheckInController extends Controller {
 
       ctx.responseSuccess({
         data: entity,
-        message: "领取成功",
+        message: "请求成功",
       });
     } catch (error) {
       const jsError = ctx.toJsError(error);

@@ -1,6 +1,7 @@
 import { Logger } from '@shared/utils/logger';
 import { AbstractModule } from './base';
 import { MODULE_WEIGHT } from './constants';
+import { httpRequest } from './httpRequest';
 import {
   CheckInModule,
   CouponModule,
@@ -65,6 +66,7 @@ class SDK {
 
   modules = {} as Modules;
   storeManager = storeManager;
+  httpRequest = httpRequest;
 
   async load() {
     storeManager.init();

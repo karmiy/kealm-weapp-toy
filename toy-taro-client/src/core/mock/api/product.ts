@@ -85,10 +85,29 @@ export const mockProductApi = {
       },
     );
   },
-  [MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART]: async (): Promise<void> => {
+  [MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART]: async (params: {
+    id?: string;
+    quantity: number;
+    productId: string;
+  }): Promise<ProductShopCartEntity> => {
+    const { id, quantity, productId } = params;
+    const now = new Date().getTime();
+    const entity = {
+      id: `${now}-${productId}`,
+      product_id: productId,
+      user_id: 'user_id',
+      create_time: now,
+      last_modified_time: now,
+      quantity,
+    };
     return Math.random() > 0.5
-      ? Promise.resolve()
+      ? Promise.resolve(entity)
       : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '操作失败，请联系管理员'));
+  },
+  [MOCK_API_NAME.DELETE_PRODUCT_SHOP_CART]: async (id: string) => {
+    return Math.random() > 0.4
+      ? Promise.resolve({})
+      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '购物车删除失败'));
   },
   [MOCK_API_NAME.UPDATE_PRODUCT]: async (
     product: ProductApiUpdateParams,

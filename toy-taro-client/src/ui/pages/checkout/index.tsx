@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
-import { useCoupon, useProductShopCart } from '@ui/viewModel';
+import { useCoupon, useOrderAction, useProductShopCart } from '@ui/viewModel';
 import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
@@ -11,6 +11,7 @@ export default function () {
     enableCheckIds: true,
     enableTotalScore: true,
   });
+  const { handleCreate } = useOrderAction();
   const { activeCoupons } = useCoupon({ enableActiveIds: true, orderScore: totalScore });
   const hasAvailableCoupon = useMemo(
     () => activeCoupons.some(coupon => coupon.selectable),
@@ -34,6 +35,13 @@ export default function () {
     }
     return selectedCoupon.name;
   }, [hasAvailableCoupon, selectedCoupon]);
+
+  const handlePay = useCallback(() => {
+    handleCreate({
+      shopCartIds: checkedIds,
+      couponId: selectedCouponId,
+    });
+  }, [checkedIds, handleCreate, selectedCouponId]);
 
   return (
     <View className={styles.wrapper}>
@@ -80,7 +88,7 @@ export default function () {
       </View>
       <View className={styles.actionWrapper}>
         <Text className={styles.tip}>共{checkedIds.length}件商品</Text>
-        <Button>支付</Button>
+        <Button onClick={handlePay}>支付</Button>
       </View>
       <CouponActionSheet
         visible={couponVisible}

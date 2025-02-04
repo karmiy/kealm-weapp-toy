@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { navigateBack } from '@tarojs/taro';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { ORDER_STATUS, sdk } from '@core';
 import { ORDER_ACTION_ID } from './constants';
@@ -19,7 +20,7 @@ export function useOrderAction() {
       setCurrentActionId(ORDER_ACTION_ID.REVOKE);
       await sdk.modules.order.updateOrderStatus(id, ORDER_STATUS.REVOKING);
       showToast({
-        title: '撤销成功',
+        title: '撤销成功，请等待管理员审核',
       });
     } catch (error) {
       showToast({
@@ -79,12 +80,48 @@ export function useOrderAction() {
     }
   }, []);
 
+  const handleCreate = useCallback(async (params: { couponId?: string; shopCartIds: string[] }) => {
+    try {
+      const { couponId, shopCartIds } = params;
+      if (!shopCartIds.length) {
+        showToast({
+          title: '请先选择商品',
+        });
+        return;
+      }
+      const feedback = await showModal({
+        content: '您确认要下单这些商品吗？',
+      });
+      if (!feedback) {
+        return;
+      }
+      setIsActionLoading(true);
+      setCurrentActionId(ORDER_ACTION_ID.CREATE);
+      await sdk.modules.order.createOrder({
+        couponId,
+        shopCartIds,
+      });
+      showToast({
+        title: '下单成功',
+      });
+      navigateBack();
+    } catch (error) {
+      showToast({
+        title: error.message ?? '下单失败',
+      });
+    } finally {
+      setIsActionLoading(false);
+      setCurrentActionId(undefined);
+    }
+  }, []);
+
   return {
     isActionLoading,
     currentActionId,
     handleRevoke,
     handleApprove,
     handleReject,
+    handleCreate,
   };
 }
 

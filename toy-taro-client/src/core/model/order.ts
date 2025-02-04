@@ -2,10 +2,12 @@ import { format } from 'date-fns';
 import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { ORDER_STATUS } from '../constants';
 import { OrderEntity } from '../entity';
+import { getSourceUrl } from '../utils/helper';
 
 export class OrderModel {
   id: string;
 
+  @observable
   products: Array<{
     id: string;
     name: string;
@@ -78,5 +80,18 @@ export class OrderModel {
   @computed
   get operateTime() {
     return format(this.lastModifiedTime, 'yyyy-MM-dd HH:mm:s');
+  }
+
+  @computed
+  get productList() {
+    const list = this.products;
+    return list.map(product => {
+      const url = product.cover_image;
+      const coverImageUrl = getSourceUrl(url);
+      return {
+        ...product,
+        cover_image: coverImageUrl,
+      };
+    });
   }
 }

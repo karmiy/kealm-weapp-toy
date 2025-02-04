@@ -98,14 +98,26 @@ const ProductCard = (props: ProductCardProps) => {
           </View>
           <View className={styles.operateWrapper}>
             {originalScore ? (
-              <ProductScore discounted={discountedScore} original={originalScore} />
+              <ProductScore
+                discounted={isLimitedTimeOffer ? discountedScore : undefined}
+                original={originalScore}
+              />
             ) : null}
             {action}
           </View>
         </View>
       </>
     );
-  }, [mode, coverImage, title, subTitle, discountedScore, originalScore, action]);
+  }, [
+    mode,
+    coverImage,
+    title,
+    subTitle,
+    originalScore,
+    isLimitedTimeOffer,
+    discountedScore,
+    action,
+  ]);
 
   return (
     <View

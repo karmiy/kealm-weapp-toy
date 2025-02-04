@@ -29,7 +29,8 @@ export default function () {
             <FormItem title='密码' required>
               <Input
                 placeholder='请输入密码'
-                type='safe-password'
+                // type='safe-password' // safe-password 在真机上拿到的都是 **
+                password
                 value={password}
                 onInput={e => setPassword(e.detail.value)}
               />

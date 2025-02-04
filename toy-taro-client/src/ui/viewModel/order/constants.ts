@@ -2,4 +2,5 @@ export enum ORDER_ACTION_ID {
   REVOKE = 'REVOKE',
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
+  CREATE = 'CREATE',
 }

@@ -195,7 +195,7 @@ export default class ProductController extends Controller {
         flash_sale_start = "",
         flash_sale_end = "",
       } = params;
-      const file = ctx.request.files[0];
+      const file = ctx.request.files?.[0];
       const discountedScore = Number(discounted_score);
 
       logger.tag("[updateProduct]").info(params);

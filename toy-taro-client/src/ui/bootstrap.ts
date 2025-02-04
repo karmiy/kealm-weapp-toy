@@ -8,13 +8,27 @@ import {
   bootstrap as controllerBootstrap,
   unBootstrap as controllerUnBootstrap,
 } from '@ui/controller';
+import { JsError } from '@/shared/utils/utils';
 
 const logger = Logger.getLogger('[bootstrap]');
+
+const errorFallback = (error: JsError) => {
+  switch (error.code) {
+    case ERROR_CODE.NO_LOGIN:
+    case ERROR_CODE.LOGIN_EXPIRED:
+      navigateToPage({ pageName: PAGE_ID.LOGIN, isRelaunch: true });
+      break;
+    default:
+      logger.error('errorFallback', error.code, error.message);
+      break;
+  }
+};
 
 export const bootstrap = async () => {
   try {
     logger.info('start bootstrap');
     getApp().sdk = sdk;
+    sdk.httpRequest.registerErrorFallback(errorFallback);
     await sdk.load();
     await controllerBootstrap();
   } catch (error) {
@@ -35,6 +49,7 @@ export const unBootstrap = async () => {
     logger.info('start unBootstrap');
     await controllerUnBootstrap();
     await sdk.unload();
+    sdk.httpRequest.unregisterErrorFallback();
     await showToast({ title: '退出成功' });
     navigateToPage({ pageName: PAGE_ID.LOGIN, isRelaunch: true });
   } catch (error) {

@@ -19,7 +19,7 @@ const RecordItem = (props: RecordItemProps) => {
   const { isActionLoading, handleRevoke, handleApprove, handleReject, currentActionId } =
     useOrderAction();
 
-  const { products, orderTime, operateTime, score, discountScore, status } = order! ?? {};
+  const { productList, orderTime, operateTime, score, discountScore, status } = order! ?? {};
   const orderTimeTitle = ORDER_TIME_TITLE[role][status];
 
   const handleAction = useCallback(
@@ -36,10 +36,15 @@ const RecordItem = (props: RecordItemProps) => {
 
   const ActionButton = useMemo(() => {
     const action = ACTION_TITLE[role][status];
+    const actionList = action.filter(item => !item.hide);
+
+    if (!actionList.length) {
+      return null;
+    }
 
     return (
       <View className={styles.actionButtons}>
-        {action.map((item, index) => {
+        {actionList.map((item, index) => {
           return (
             <Fragment key={index}>
               {index !== 0 ? <WhiteSpace size='small' isVertical={false} /> : null}
@@ -68,7 +73,7 @@ const RecordItem = (props: RecordItemProps) => {
   }
   return (
     <View className={styles.wrapper}>
-      {products.map((product, index) => {
+      {productList.map((product, index) => {
         return (
           <Fragment key={product.id}>
             {index !== 0 ? <WhiteSpace size='small' /> : null}
@@ -109,8 +114,12 @@ const RecordItem = (props: RecordItemProps) => {
           <ProductScore original={score} discounted={discountScore} />
         </View>
       </View>
-      <WhiteSpace size='medium' />
-      <View className={styles.actionWrapper}>{ActionButton}</View>
+      {ActionButton ? (
+        <Fragment>
+          <WhiteSpace size='medium' />
+          <View className={styles.actionWrapper}>{ActionButton}</View>
+        </Fragment>
+      ) : null}
     </View>
   );
 };

@@ -31,6 +31,15 @@ export enum MODULE_WEIGHT {
     LOW
 }
 
+export const EVENT_KEYS = {
+    user: {
+        SYNC_USER_INFO: 'SYNC_USER_INFO',
+    },
+    product: {
+        SYNC_PRODUCT_LIST: 'SYNC_PRODUCT_LIST',
+    }
+}
+
 // ----------------------error--------------------------------
 export enum SERVER_ERROR_CODE {
     LOGIN_EXPIRED = 401,
@@ -47,6 +56,8 @@ export enum ERROR_MESSAGE {
     NO_LOGIN = '账号未登录',
     LOGIN_EXPIRED = '登录已过期',
     NO_USER_INFO = '用户数据不存在',
+    UNKNOWN_ERROR = '请求过程中发送未知错误',
+    REQUEST_FAILED = '请求失败',
 }
 
 export enum ROLE {

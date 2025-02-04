@@ -43,12 +43,13 @@ const ProductItem = (props: ProductItemProps) => {
   if (!product) {
     return null;
   }
-  const { coverImage, name, stock, discountedScore, originalScore, isLimitedTimeOffer } = product;
+  const { coverImageUrl, name, stock, discountedScore, originalScore, isLimitedTimeOffer } =
+    product;
 
   return (
     <View className={styles.itemWrapper}>
       <ProductCard
-        coverImage={coverImage}
+        coverImage={coverImageUrl}
         title={name}
         paddingSize='small'
         subTitle={`库存: ${stock}`}

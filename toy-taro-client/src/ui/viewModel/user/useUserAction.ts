@@ -33,7 +33,7 @@ export function useUserAction() {
         await handleLoginSuccess();
       } catch (error) {
         logger.tag('[handleLogin]').error(`${logName} login failed`, error);
-        showToast({ title: '登录失败' });
+        showToast({ title: error.message ?? '登录失败' });
       } finally {
         setIsActionLoading(false);
       }

@@ -50,10 +50,10 @@ export class TaskModule extends AbstractModule {
     }
   }
 
-  async updateTaskFlowStatus(taskFlowId: string, status: TASK_STATUS) {
+  async updateTaskFlowStatus(taskFlowId: string, taskId: string, status: TASK_STATUS) {
     try {
       this._logger.info('updateTaskFlowStatus', { taskFlowId, status });
-      await TaskApi.updateTaskFlowStatus(taskFlowId, status);
+      await TaskApi.updateTaskFlowStatus(taskFlowId, taskId, status);
       storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
         partials: [
           {

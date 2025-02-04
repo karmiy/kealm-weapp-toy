@@ -1,6 +1,7 @@
+import { eventCenter } from '@tarojs/taro';
 import { ProductApi } from '../api';
 import { AbstractModule } from '../base';
-import { MODULE_NAME, STORE_NAME } from '../constants';
+import { EVENT_KEYS, MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 import { ProductUpdateParams } from '../types';
 
@@ -9,11 +10,19 @@ export class ProductModule extends AbstractModule {
     this.syncProductList();
     this.syncProductCategoryList();
     this.syncProductShopCartList();
+
+    eventCenter.on(EVENT_KEYS.product.SYNC_PRODUCT_LIST, this._onSyncProductList);
   }
-  protected onUnload() {}
+  protected onUnload() {
+    eventCenter.off(EVENT_KEYS.product.SYNC_PRODUCT_LIST, this._onSyncProductList);
+  }
   protected moduleName(): string {
     return MODULE_NAME.PRODUCT;
   }
+
+  private _onSyncProductList = () => {
+    this.syncProductList();
+  };
 
   async syncProductList() {
     storeManager.startLoading(STORE_NAME.PRODUCT);
@@ -36,10 +45,15 @@ export class ProductModule extends AbstractModule {
     storeManager.stopLoading(STORE_NAME.PRODUCT_SHOP_CART);
   }
 
-  async updateProductShopCart(id: string, quantity: number) {
+  async updateProductShopCart(params: { id: string; quantity: number; productId: string }) {
     try {
-      await ProductApi.updateProductShopCart(id, quantity);
+      const { id, quantity, productId } = params;
       if (quantity > 0) {
+        await ProductApi.updateProductShopCart({
+          id,
+          quantity,
+          product_id: productId,
+        });
         storeManager.emitUpdate(STORE_NAME.PRODUCT_SHOP_CART, {
           partials: [
             {
@@ -50,6 +64,9 @@ export class ProductModule extends AbstractModule {
         });
         return;
       }
+      await ProductApi.deleteProductShopCart({
+        id,
+      });
       storeManager.emitDelete(STORE_NAME.PRODUCT_SHOP_CART, [id]);
     } catch (error) {
       this._logger.error('updateProductShopCart error', error.message);
@@ -59,14 +76,17 @@ export class ProductModule extends AbstractModule {
 
   async addProductShopCart(productId: string, quantity: number) {
     try {
-      await ProductApi.updateProductShopCart(productId, quantity);
+      const entity = await ProductApi.updateProductShopCart({
+        product_id: productId,
+        quantity,
+      });
       const now = new Date().getTime();
       storeManager.emitUpdate(STORE_NAME.PRODUCT_SHOP_CART, {
         entities: [
           {
-            id: `${now}-${productId}`,
+            id: entity.id,
             product_id: productId,
-            user_id: 'user_id',
+            user_id: entity.user_id,
             create_time: now,
             last_modified_time: now,
             quantity,

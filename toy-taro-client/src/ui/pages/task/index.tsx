@@ -11,7 +11,7 @@ import { TaskCategory } from './components';
 import styles from './index.module.scss';
 
 function Task() {
-  const { isAdmin } = useUserInfo();
+  const { isAdmin, score } = useUserInfo();
   const [current, setCurrent] = useState(0);
 
   return (
@@ -31,7 +31,7 @@ function Task() {
         <View className={styles.userHeader}>
           <View className={styles.scoreWrapper}>
             <Text className={styles.title}>当前积分</Text>
-            <Text className={styles.score}>2580</Text>
+            <Text className={styles.score}>{score}</Text>
           </View>
           <FallbackImage
             src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/task-header.png'

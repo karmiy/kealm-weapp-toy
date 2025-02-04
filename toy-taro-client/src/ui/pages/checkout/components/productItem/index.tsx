@@ -16,14 +16,14 @@ const ProductItem = (props: ProductItemProps) => {
     return null;
   }
 
-  const { name, desc, coverImage, discountedScore, originalScore, isLimitedTimeOffer } = product;
+  const { name, desc, coverImageUrl, discountedScore, originalScore, isLimitedTimeOffer } = product;
   return (
     <ProductCard
       mode='horizontal'
       paddingSize='none'
       title={name}
       subTitle={desc}
-      coverImage={coverImage}
+      coverImage={coverImageUrl}
       discountedScore={discountedScore}
       originalScore={originalScore}
       isLimitedTimeOffer={isLimitedTimeOffer}
