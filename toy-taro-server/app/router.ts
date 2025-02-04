@@ -90,4 +90,19 @@ export default (app: Application) => {
     getPath("/order/updateProductOrderStatus"),
     controller.order.updateProductOrderStatus
   );
+
+  // checkIn
+  router.post(
+    getPath("/checkIn/checkInToday"),
+    controller.checkIn.checkInToday
+  );
+  router.post(
+    getPath("/checkIn/createCheckInRule"),
+    controller.checkIn.createCheckInRule
+  );
+  router.post(getPath("/checkIn/claimReward"), controller.checkIn.claimReward);
+  router.get(
+    getPath("/checkIn/getCheckInList"),
+    controller.checkIn.getCheckInList
+  );
 };

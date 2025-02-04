@@ -2,6 +2,7 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
+import ExportCheckIn from '../../../app/controller/checkIn';
 import ExportCoupon from '../../../app/controller/coupon';
 import ExportOrder from '../../../app/controller/order';
 import ExportProduct from '../../../app/controller/product';
@@ -10,6 +11,7 @@ import ExportUser from '../../../app/controller/user';
 
 declare module 'egg' {
   interface IController {
+    checkIn: ExportCheckIn;
     coupon: ExportCoupon;
     order: ExportOrder;
     product: ExportProduct;
