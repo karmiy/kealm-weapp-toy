@@ -155,7 +155,7 @@ export default class User extends Service {
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(
-        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "头像数据更新失败")
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "用户数据更新失败")
       );
     }
   }

@@ -1,10 +1,15 @@
 import { Service } from "egg";
+import { Op } from "sequelize";
 import { Logger } from "../utils/logger";
 import { SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
 import { ProductCategoryModel } from "../model/productCategory";
 import { ProductModel } from "../model/product";
-import { ProductShopCartModel } from "../model/productShopCart";
+import {
+  ProductShopCartModel,
+  ProductShopCartWithProductModel,
+} from "../model/productShopCart";
+import { QueryFields, QueryWhere } from "../utils/types";
 
 const logger = Logger.getLogger("[ProductService]");
 
@@ -161,6 +166,32 @@ export default class Product extends Service {
     }
   }
 
+  public async updateProductsPartial(
+    fields: QueryFields<ProductModel>,
+    where: QueryWhere<ProductModel>
+  ) {
+    try {
+      const { ctx } = this;
+      await ctx.model.Product.update(
+        {
+          ...fields,
+        },
+        {
+          where: {
+            ...where,
+          },
+          returning: true,
+        }
+      );
+      return Promise.resolve();
+    } catch (error) {
+      logger.tag("[updateProductsPartial]").error("error", error);
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, `更新失败`)
+      );
+    }
+  }
+
   async getProductList() {
     const { ctx } = this;
     const { groupId } = ctx.getUserInfo();
@@ -230,11 +261,12 @@ export default class Product extends Service {
   public async upsertProductShopCart(fields: Partial<ProductShopCartModel>) {
     try {
       const { ctx } = this;
-      const { userId } = ctx.getUserInfo();
+      const { userId, groupId } = ctx.getUserInfo();
       const upsertResponse = await ctx.model.ProductShopCart.upsert(
         {
           ...fields,
           user_id: userId,
+          group_id: groupId,
         },
         {
           returning: true,
@@ -282,14 +314,29 @@ export default class Product extends Service {
     }
   }
 
+  public async deleteProductShopCarts(ids: string[]) {
+    try {
+      const { ctx } = this;
+      await ctx.model.ProductShopCart.destroy({
+        where: { id: { [Op.in]: ids } },
+      });
+    } catch (error) {
+      logger.tag("[deleteProductShopCart]").error("error", error);
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "删除失败")
+      );
+    }
+  }
+
   async getProductShopCartList() {
     const { ctx } = this;
-    const { userId } = ctx.getUserInfo();
+    const { userId, groupId } = ctx.getUserInfo();
 
     const productShopCarts = await ctx.model.ProductShopCart.findAll({
       // raw: true,
       where: {
         user_id: userId,
+        group_id: groupId,
       },
       order: [["last_modified_time", "desc"]],
     });
@@ -302,5 +349,40 @@ export default class Product extends Service {
     }
     // 返回结果
     return productShopCarts as any as ProductShopCartModel[];
+  }
+
+  async getProductShopCartListWithProductByIds(ids: string[]) {
+    const { ctx } = this;
+    const { groupId, userId } = ctx.getUserInfo();
+
+    const productShopCarts = await ctx.model.ProductShopCart.findAll({
+      // raw: true,
+      where: {
+        id: { [Op.in]: ids },
+        user_id: userId,
+        group_id: groupId,
+      },
+      order: [["last_modified_time", "desc"]],
+      include: [
+        {
+          model: ctx.model.Product,
+          as: "product",
+          required: true,
+          where: {
+            is_deleted: 0,
+            group_id: groupId,
+          },
+        },
+      ],
+    });
+
+    if (!productShopCarts) {
+      logger
+        .tag("[getProductShopCartListWithProduct]")
+        .error("cannot get product shop cart list");
+      return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "列表获取失败"));
+    }
+    // 返回结果
+    return productShopCarts as any as ProductShopCartWithProductModel[];
   }
 }

@@ -76,4 +76,18 @@ export default (app: Application) => {
   router.get(getPath("/task/getTaskList"), controller.task.getTaskList);
   router.post(getPath("/task/updateTaskFlow"), controller.task.updateTaskFlow);
   router.get(getPath("/task/getTaskFlowList"), controller.task.getTaskFlowList);
+
+  // order
+  router.post(
+    getPath("/order/createProductOrder"),
+    controller.order.createProductOrder
+  );
+  router.get(
+    getPath("/order/getProductOrderList"),
+    controller.order.getProductOrderList
+  );
+  router.post(
+    getPath("/order/updateProductOrderStatus"),
+    controller.order.updateProductOrderStatus
+  );
 };

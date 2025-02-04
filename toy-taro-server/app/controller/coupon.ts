@@ -440,7 +440,7 @@ export default class CouponController extends Controller {
         });
         return;
       }
-      const list = await ctx.service.coupon.getUserCouponList();
+      const list = await ctx.service.coupon.getUserCouponListWithCoupon();
 
       const entities = await Promise.all(
         list.map((item) => this._userCouponWithCouponModelToEntity(item))

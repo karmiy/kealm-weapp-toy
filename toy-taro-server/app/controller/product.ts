@@ -423,6 +423,20 @@ export default class ProductController extends Controller {
         return;
       }
 
+      if (id) {
+        const productShopCartModel =
+          await ctx.service.product.findProductShopCart({
+            id,
+          });
+        if (!productShopCartModel) {
+          ctx.responseFail({
+            code: SERVER_CODE.BAD_REQUEST,
+            message: "购物车不存在",
+          });
+          return;
+        }
+      }
+
       const productModel = await ctx.service.product.findProductById(
         product_id
       );

@@ -72,3 +72,21 @@ export enum TASK_REWARD_TYPE {
   CASH_DISCOUNT = "CASH_DISCOUNT",
   PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
 }
+
+// ------------------------------ order ------------------------------
+export enum PRODUCT_ORDER_STATUS {
+  INITIAL = "INITIAL",
+  REVOKING = "REVOKING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
+// ------------------------------ check-in ------------------------------
+export enum CHECK_IN_RULE_TYPE {
+  STREAK = "STREAK", // 连续签到
+  CUMULATIVE = "CUMULATIVE", // 累计签到
+}
+
+export enum CHECK_IN_RULE_REWARD_TYPE {
+  POINTS = "POINTS",
+}

@@ -1,12 +1,18 @@
 import { Application } from "egg";
+import { ProductModel } from "./product";
 
 export interface ProductShopCartModel {
   id: string;
   product_id: string;
   user_id: string;
+  group_id: string;
   create_time: Date;
   last_modified_time: Date;
   quantity: number;
+}
+
+export interface ProductShopCartWithProductModel extends ProductShopCartModel {
+  product: ProductModel;
 }
 
 export default (app: Application) => {
@@ -42,6 +48,12 @@ export default (app: Application) => {
       type: INTEGER,
       get() {
         return String((this as any).getDataValue("user_id")); // 访问时自动转为字符串
+      },
+    },
+    group_id: {
+      type: INTEGER,
+      get() {
+        return String((this as any).getDataValue("group_id")); // 访问时自动转为字符串
       },
     },
   });

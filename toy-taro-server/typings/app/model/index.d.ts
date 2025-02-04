@@ -6,6 +6,7 @@ import ExportCoupon from '../../../app/model/coupon';
 import ExportGroup from '../../../app/model/group';
 import ExportProduct from '../../../app/model/product';
 import ExportProductCategory from '../../../app/model/productCategory';
+import ExportProductOrder from '../../../app/model/productOrder';
 import ExportProductShopCart from '../../../app/model/productShopCart';
 import ExportTask from '../../../app/model/task';
 import ExportTaskCategory from '../../../app/model/taskCategory';
@@ -19,6 +20,7 @@ declare module 'egg' {
     Group: ReturnType<typeof ExportGroup>;
     Product: ReturnType<typeof ExportProduct>;
     ProductCategory: ReturnType<typeof ExportProductCategory>;
+    ProductOrder: ReturnType<typeof ExportProductOrder>;
     ProductShopCart: ReturnType<typeof ExportProductShopCart>;
     Task: ReturnType<typeof ExportTask>;
     TaskCategory: ReturnType<typeof ExportTaskCategory>;

@@ -188,7 +188,7 @@ export default class Task extends Service {
       );
       return Promise.resolve();
     } catch (error) {
-      logger.tag("[upsertTask]").error("error", error);
+      logger.tag("[updateTasksPartial]").error("error", error);
       return Promise.reject(
         new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, `更新失败`)
       );
