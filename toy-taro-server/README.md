@@ -8,4 +8,7 @@ npm run dev
 npm run stop
 npm run tsc # 报错不管
 npm run start
+
+# DB
+window 上 config.sequelize 的 host 要用 12.7.0.0.1
 ```

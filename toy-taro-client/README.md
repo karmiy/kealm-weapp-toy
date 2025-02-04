@@ -56,3 +56,6 @@ https://gitee.com/mirrors/Taro-Iconfont
 // 生成图标
 npx iconfont-taro
 ```
+
+## 请求
+toy-taro-client\src\core\httpRequest\url.ts 改成自己本机 ip
