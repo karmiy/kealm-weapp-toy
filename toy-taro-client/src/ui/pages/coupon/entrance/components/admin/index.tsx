@@ -44,7 +44,7 @@ export function CouponAdminPage() {
   );
 
   return (
-    <StatusWrapper loading={loading} count={allCoupons.length}>
+    <StatusWrapper loading={loading} count={allCoupons.length} size='fill'>
       <View className={styles.wrapper}>
         <ScrollView scrollY className={styles.scrollView}>
           <View className={styles.container}>

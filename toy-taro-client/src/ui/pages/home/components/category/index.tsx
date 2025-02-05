@@ -32,6 +32,10 @@ const Category = () => {
     [allProductIds, addProductShopCart],
   );
 
+  if (!list.length) {
+    return null;
+  }
+
   return (
     <>
       <Tabs current={current} onChange={setCurrent}>
