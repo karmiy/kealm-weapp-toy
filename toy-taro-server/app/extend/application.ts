@@ -1,6 +1,12 @@
 import { Application } from "egg";
 import { extname, join } from "path";
-import { existsSync, mkdirSync, renameSync, unlinkSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  unlinkSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import { JsError } from "../utils/error";
 import { SERVER_CODE } from "../utils/constants";
 
@@ -157,7 +163,9 @@ export default {
         recursiveMkdirSync(uploadDir);
       }
 
-      renameSync(file.filepath, filePath);
+      const fileData = readFileSync(file.filepath);
+      writeFileSync(filePath, fileData);
+      // renameSync(file.filepath, filePath);
 
       return Promise.resolve({
         filename: this.getFileUrl({
