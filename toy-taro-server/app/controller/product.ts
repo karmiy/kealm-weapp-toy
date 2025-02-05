@@ -6,7 +6,12 @@ import {
   ProductEntity,
   ProductShopCartEntity,
 } from "../entity/product";
-import { FILE_PREFIX, FILE_SCORE, SERVER_CODE } from "../utils/constants";
+import {
+  FILE_SOURCE_TYPE,
+  FILE_MODULE_NAME,
+  FILE_NAME_PREFIX,
+  SERVER_CODE,
+} from "../utils/constants";
 import { ProductModel } from "../model/product";
 import { ProductShopCartModel } from "../model/productShopCart";
 
@@ -169,7 +174,7 @@ export default class ProductController extends Controller {
 
   public async updateProduct() {
     const { ctx, app } = this;
-    const { userId } = ctx.getUserInfo();
+    const { userId, groupId } = ctx.getUserInfo();
     try {
       const params = ctx.getParams<{
         id?: string;
@@ -250,9 +255,11 @@ export default class ProductController extends Controller {
       const fileData = file
         ? await app.uploadFile({
             file,
-            prefix: FILE_PREFIX.PRODUCT_COVER,
+            sourceType: FILE_SOURCE_TYPE.IMAGES,
+            moduleName: FILE_MODULE_NAME.PRODUCT,
+            groupId,
             userId,
-            score: FILE_SCORE.IMAGES,
+            fileNamePrefix: FILE_NAME_PREFIX.PRODUCT_COVER,
           })
         : null;
 

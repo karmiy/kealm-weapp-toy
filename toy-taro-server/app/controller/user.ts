@@ -1,5 +1,10 @@
 import { Controller } from "egg";
-import { FILE_PREFIX, FILE_SCORE, SERVER_CODE } from "../utils/constants";
+import {
+  FILE_SOURCE_TYPE,
+  FILE_MODULE_NAME,
+  FILE_NAME_PREFIX,
+  SERVER_CODE,
+} from "../utils/constants";
 import { Logger } from "../utils/logger";
 import { UserEntity } from "../entity/user";
 
@@ -75,7 +80,7 @@ export default class UserController extends Controller {
     // });
     const { ctx, app } = this;
     try {
-      const { userId } = ctx.getUserInfo();
+      const { userId, groupId } = ctx.getUserInfo();
 
       const file = ctx.request.files?.[0];
       logger.tag("[uploadAvatar]").info({ hasFile: !!file });
@@ -93,9 +98,11 @@ export default class UserController extends Controller {
 
       const fileData = await app.uploadFile({
         file,
-        prefix: FILE_PREFIX.USER_AVATAR,
+        sourceType: FILE_SOURCE_TYPE.IMAGES,
+        moduleName: FILE_MODULE_NAME.USER,
+        groupId,
         userId,
-        score: FILE_SCORE.IMAGES,
+        fileNamePrefix: FILE_NAME_PREFIX.USER_AVATAR,
       });
 
       const newAvatarUrl = fileData!.filename;

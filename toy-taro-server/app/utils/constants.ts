@@ -27,13 +27,18 @@ export enum ROLE {
   USER = "USER",
 }
 
-export enum FILE_PREFIX {
-  USER_AVATAR = "user-avatar",
-  PRODUCT_COVER = "product-cover-image",
+export enum FILE_SOURCE_TYPE {
+  IMAGES = "images",
 }
 
-export enum FILE_SCORE {
-  IMAGES = "images",
+export enum FILE_MODULE_NAME {
+  USER = "user",
+  PRODUCT = "product",
+}
+
+export enum FILE_NAME_PREFIX {
+  USER_AVATAR = "user-avatar",
+  PRODUCT_COVER = "product-cover-image",
 }
 
 // ------------------------------ coupon ------------------------------

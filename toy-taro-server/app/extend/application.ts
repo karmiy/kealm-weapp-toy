@@ -59,6 +59,22 @@ const SECRET_SERIAL = [
   "8",
 ];
 
+function recursiveMkdirSync(dirPath: string) {
+  // 判断目录是否已存在
+  if (existsSync(dirPath)) return;
+
+  // 获取父级目录
+  const parentDir = join(dirPath, "..");
+
+  // 如果父级目录不存在，递归创建父级目录
+  if (!existsSync(parentDir)) {
+    recursiveMkdirSync(parentDir);
+  }
+
+  // 创建当前目录
+  mkdirSync(dirPath);
+}
+
 export default {
   getCurrentTime() {
     return new Date().toLocaleString();
@@ -73,11 +89,37 @@ export default {
   get AppSecret() {
     return SECRET_SERIAL.join("");
   },
-  getFileUrl(filename: string, score: string) {
-    return join("public", score, filename);
+  getFileUrl(params: {
+    sourceType: string;
+    groupId: string;
+    moduleName: string;
+    filename: string;
+  }) {
+    const { filename } = params;
+    return join("public", this._getFileDirPathRelativePublic(params), filename);
   },
-  getFileDir(this: Application, score: string) {
-    return join(this.baseDir, "app", "public", score);
+  _getFileDirPathRelativePublic(params: {
+    sourceType: string;
+    groupId: string;
+    moduleName: string;
+  }) {
+    const { sourceType, groupId, moduleName } = params;
+    return join(sourceType, `group_${groupId}`, moduleName);
+  },
+  getFileDir(
+    this: Application,
+    params: {
+      sourceType: string;
+      groupId: string;
+      moduleName: string;
+    }
+  ) {
+    return join(
+      this.baseDir,
+      "app",
+      "public",
+      this._getFileDirPathRelativePublic(params)
+    );
   },
   getFilePath(this: Application, fileUrl: string) {
     return join(this.baseDir, "app", fileUrl);
@@ -86,32 +128,44 @@ export default {
     this: Application,
     params: {
       file: { filename: string; filepath: string };
-      prefix: string;
-      score: string;
+      sourceType: string;
+      groupId: string;
       userId: string;
+      moduleName: string;
+      fileNamePrefix: string;
     }
   ) {
     try {
-      const { file, userId, prefix, score } = params;
+      const { file, sourceType, groupId, userId, moduleName, fileNamePrefix } =
+        params;
       // 获取文件的扩展名
       const extName = extname(file.filename);
       // 生成唯一的文件名
-      const filename = `${prefix}-${userId}-${Date.now()}-${Math.random()
+      const filename = `${fileNamePrefix}-${userId}-${Date.now()}-${Math.random()
         .toString(36)
         .substr(2, 9)}${extName}`;
 
-      const uploadDir = this.getFileDir(score);
+      const uploadDir = this.getFileDir({
+        sourceType,
+        groupId,
+        moduleName,
+      });
       const filePath = join(uploadDir, filename);
 
       // 确保目标文件夹存在，如果没有则创建
       if (!existsSync(uploadDir)) {
-        mkdirSync(uploadDir);
+        recursiveMkdirSync(uploadDir);
       }
 
       renameSync(file.filepath, filePath);
 
       return Promise.resolve({
-        filename: this.getFileUrl(filename, score),
+        filename: this.getFileUrl({
+          sourceType,
+          groupId,
+          moduleName,
+          filename,
+        }),
       });
     } catch (error) {
       return Promise.reject(
@@ -124,7 +178,7 @@ export default {
       const { fileUrl } = params;
       const filePath = this.getFilePath(fileUrl);
       if (existsSync(filePath)) {
-        unlinkSync(filePath); // 删除旧头像文件
+        unlinkSync(filePath); // 删除旧文件
       }
       return Promise.resolve();
     } catch (error) {
