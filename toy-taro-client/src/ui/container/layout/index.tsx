@@ -18,9 +18,9 @@ const Layout = (props: PropsWithChildren<LayoutProps>) => {
         {type === 'card' ? (
           <View className={styles.cardContainer}>
             <View className={styles.cardList}>{children}</View>
+            <SafeAreaBar inset='bottom' />
           </View>
         ) : null}
-        <SafeAreaBar inset='bottom' />
       </ScrollView>
     </View>
   );

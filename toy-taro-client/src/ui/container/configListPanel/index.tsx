@@ -19,14 +19,15 @@ export const ConfigListPanel = (props: ConfigListPanelProps) => {
   const { list, labelKey, title, addButtonText = '新增', onAdd, onEdit, onDelete } = props;
 
   return (
-    <StatusWrapper count={list.length} size='fill'>
-      <Layout type='card'>
-        <View className={styles.header}>
-          <Text>{title}</Text>
-          <View className={styles.action} onClick={onAdd}>
-            {addButtonText}
-          </View>
+    <Layout type='card'>
+      <View className={styles.header}>
+        <Text>{title}</Text>
+        <View className={styles.action} onClick={onAdd}>
+          {addButtonText}
         </View>
+      </View>
+
+      <StatusWrapper count={list.length} size='flex'>
         {list.map((item, index) => {
           return (
             <Fragment key={item.id}>
@@ -40,7 +41,7 @@ export const ConfigListPanel = (props: ConfigListPanelProps) => {
             </Fragment>
           );
         })}
-      </Layout>
-    </StatusWrapper>
+      </StatusWrapper>
+    </Layout>
   );
 };

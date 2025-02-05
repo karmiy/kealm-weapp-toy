@@ -44,20 +44,20 @@ export function CouponAdminPage() {
   );
 
   return (
-    <StatusWrapper loading={loading} count={allCoupons.length} size='fill'>
-      <View className={styles.wrapper}>
-        <ScrollView scrollY className={styles.scrollView}>
-          <View className={styles.container}>
-            <View className={styles.header}>
-              <View className={styles.action} onClick={() => handleManageCoupon()}>
-                <Icon name='add' color={COLOR_VARIABLES.COLOR_RED} />
-                新增
-              </View>
+    <View className={styles.wrapper}>
+      <ScrollView scrollY className={styles.scrollView}>
+        <View className={styles.container}>
+          <View className={styles.header}>
+            <View className={styles.action} onClick={() => handleManageCoupon()}>
+              <Icon name='add' color={COLOR_VARIABLES.COLOR_RED} />
+              新增
             </View>
-            <CouponList list={allCoupons} renderAction={renderAction} />
           </View>
-        </ScrollView>
-      </View>
-    </StatusWrapper>
+          <StatusWrapper loading={loading} count={allCoupons.length} size='flex'>
+            <CouponList list={allCoupons} renderAction={renderAction} />
+          </StatusWrapper>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
