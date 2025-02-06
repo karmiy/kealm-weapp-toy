@@ -8,7 +8,7 @@ const logger = Logger.getLogger("[UserService]");
 
 // 以秒表示或描述时间跨度 zeit / ms 的字符串。如 60，"2 days"，"10h"，"7d"，Expiration time，过期时间
 // 如 10 是 10s，'1000' 是 1s
-const JWT_EXPIRES_IN = "2d";
+const JWT_EXPIRES_IN = "7d";
 
 /**
  * User Service
