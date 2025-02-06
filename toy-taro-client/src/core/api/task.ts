@@ -36,10 +36,11 @@ export class TaskApi {
   }
 
   @mock({ name: MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST, enable: false })
-  static async submitApprovalRequest(id: string): Promise<TaskFlowEntity> {
+  static async submitApprovalRequest(id: string, taskFlowId?: string): Promise<TaskFlowEntity> {
     return httpRequest.post<TaskFlowEntity>({
       url: '/task/updateTaskFlow',
       data: {
+        id: taskFlowId,
         task_id: id,
         status: TASK_STATUS.PENDING_APPROVAL,
       },

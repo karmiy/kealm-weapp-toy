@@ -8,7 +8,7 @@ export function useTaskAction() {
   const [currentActionId, setCurrentActionId] = useState<TASK_ACTION_ID>();
 
   const submitApprovalRequest = useCallback(
-    async (id: string) => {
+    async (id: string, taskFlow?: string) => {
       try {
         if (isActionLoading) {
           return;
@@ -21,7 +21,7 @@ export function useTaskAction() {
         }
         setIsActionLoading(true);
         setCurrentActionId(TASK_ACTION_ID.APPROVAL_REQUEST);
-        await sdk.modules.task.submitApprovalRequest(id);
+        await sdk.modules.task.submitApprovalRequest(id, taskFlow);
         showToast({
           title: '已发起申请，请等待管理员确认~',
         });

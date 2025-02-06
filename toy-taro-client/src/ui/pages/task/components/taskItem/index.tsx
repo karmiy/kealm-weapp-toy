@@ -24,8 +24,8 @@ const TaskItem = (props: TaskItemProps) => {
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
 
   const handleSubmitApproval = useCallback(() => {
-    submitApprovalRequest(id);
-  }, [submitApprovalRequest, id]);
+    submitApprovalRequest(id, taskFlow?.id);
+  }, [submitApprovalRequest, id, taskFlow?.id]);
 
   if (!task) {
     return null;

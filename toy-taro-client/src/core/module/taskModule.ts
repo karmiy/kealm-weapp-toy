@@ -37,10 +37,13 @@ export class TaskModule extends AbstractModule {
     storeManager.stopLoading(STORE_NAME.TASK_CATEGORY);
   }
 
-  async submitApprovalRequest(id: string) {
+  async submitApprovalRequest(id: string, taskFlowId?: string) {
     try {
-      this._logger.info('submitApprovalRequest', 'taskId', id);
-      const taskFlow = await TaskApi.submitApprovalRequest(id);
+      this._logger.info('submitApprovalRequest', {
+        taskId: id,
+        taskFlowId,
+      });
+      const taskFlow = await TaskApi.submitApprovalRequest(id, taskFlowId);
       storeManager.emitUpdate(STORE_NAME.TASK_FLOW, {
         entities: [taskFlow],
       });
