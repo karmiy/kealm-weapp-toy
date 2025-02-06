@@ -105,7 +105,11 @@ export class CheckInModel {
   getStreakCheckInStatus(n: number) {
     const sortedDays = this.sortedDays;
 
-    let maxStreak = 0;
+    if (sortedDays.length === 0) {
+      return { target: n, current: 0, isSatisfied: false };
+    }
+
+    let maxStreak = 1;
     let currentStreak = 1;
     let hasStreakOfN = false;
 
