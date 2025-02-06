@@ -1,3 +1,4 @@
+import difference from 'lodash/difference';
 import isEqual from 'lodash/isEqual';
 import { Singleton } from '@shared/utils/utils';
 import { Models, sdk, STORE_NAME } from '@core';
@@ -54,11 +55,17 @@ export class AbstractGroupByController<T extends Models> extends Singleton {
     const prevStore = this._idsStore;
     this._idsStore = store;
 
+    const deletedIdentifiers = difference([...prevStore.keys()], [...store.keys()]);
+
     [...store.entries()].forEach(([groupByIdentifier, ids]) => {
       const prevIds = prevStore.get(groupByIdentifier);
       if (prevIds && isEqual([...prevIds], [...ids])) {
         return;
       }
+      this._notifyChange(groupByIdentifier);
+    });
+
+    deletedIdentifiers.forEach(groupByIdentifier => {
       this._notifyChange(groupByIdentifier);
     });
   };
