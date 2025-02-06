@@ -141,9 +141,9 @@ export default {
       fileNamePrefix: string;
     }
   ) {
+    const { file, sourceType, groupId, userId, moduleName, fileNamePrefix } =
+      params;
     try {
-      const { file, sourceType, groupId, userId, moduleName, fileNamePrefix } =
-        params;
       // 获取文件的扩展名
       const extName = extname(file.filename);
       // 生成唯一的文件名
@@ -179,6 +179,8 @@ export default {
       return Promise.reject(
         new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "文件存储失败")
       );
+    } finally {
+      unlinkSync(file.filepath);
     }
   },
   async deleteFile(this: Application, params: { fileUrl: string }) {
