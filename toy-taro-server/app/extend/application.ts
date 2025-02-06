@@ -1,5 +1,5 @@
 import { Application } from "egg";
-import { extname, join } from "path";
+import { extname, posix } from "path";
 import {
   existsSync,
   mkdirSync,
@@ -70,7 +70,7 @@ function recursiveMkdirSync(dirPath: string) {
   if (existsSync(dirPath)) return;
 
   // 获取父级目录
-  const parentDir = join(dirPath, "..");
+  const parentDir = posix.join(dirPath, "..");
 
   // 如果父级目录不存在，递归创建父级目录
   if (!existsSync(parentDir)) {
@@ -102,7 +102,11 @@ export default {
     filename: string;
   }) {
     const { filename } = params;
-    return join("public", this._getFileDirPathRelativePublic(params), filename);
+    return posix.join(
+      "public",
+      this._getFileDirPathRelativePublic(params),
+      filename
+    );
   },
   _getFileDirPathRelativePublic(params: {
     sourceType: string;
@@ -110,7 +114,7 @@ export default {
     moduleName: string;
   }) {
     const { sourceType, groupId, moduleName } = params;
-    return join(sourceType, `group_${groupId}`, moduleName);
+    return posix.join(sourceType, `group_${groupId}`, moduleName);
   },
   getFileDir(
     this: Application,
@@ -120,7 +124,7 @@ export default {
       moduleName: string;
     }
   ) {
-    return join(
+    return posix.join(
       this.baseDir,
       "app",
       "public",
@@ -128,7 +132,7 @@ export default {
     );
   },
   getFilePath(this: Application, fileUrl: string) {
-    return join(this.baseDir, "app", fileUrl);
+    return posix.join(this.baseDir, "app", fileUrl);
   },
   async uploadFile(
     this: Application,
@@ -156,7 +160,7 @@ export default {
         groupId,
         moduleName,
       });
-      const filePath = join(uploadDir, filename);
+      const filePath = posix.join(uploadDir, filename);
 
       // 确保目标文件夹存在，如果没有则创建
       if (!existsSync(uploadDir)) {
