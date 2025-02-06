@@ -27,6 +27,22 @@ const TaskItem = (props: TaskItemProps) => {
     submitApprovalRequest(id, taskFlow?.id);
   }, [submitApprovalRequest, id, taskFlow?.id]);
 
+  const handleEdit = useCallback(() => {
+    if (taskFlow?.isFinished) {
+      showToast({
+        title: '无法编辑，用户已完成任务',
+      });
+      return;
+    }
+    if (taskFlow?.isPendingApproval) {
+      showToast({
+        title: '无法编辑，任务正在审批中',
+      });
+      return;
+    }
+    navigateToPage({ pageName: PAGE_ID.TASK_MANAGE, params: { id } });
+  }, [id, taskFlow?.isFinished, taskFlow?.isPendingApproval]);
+
   if (!task) {
     return null;
   }
@@ -43,12 +59,7 @@ const TaskItem = (props: TaskItemProps) => {
       difficulty={difficulty}
       action={
         isAdmin ? (
-          <Button
-            type='plain'
-            disabled={isActionLoading}
-            icon='edit'
-            onClick={() => navigateToPage({ pageName: PAGE_ID.TASK_MANAGE, params: { id } })}
-          >
+          <Button type='plain' disabled={isActionLoading} icon='edit' onClick={handleEdit}>
             编辑
           </Button>
         ) : (

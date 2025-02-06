@@ -1,14 +1,13 @@
 import { TaskApi } from '../api';
-import { AbstractModule, UserStorageManager } from '../base';
+import { AbstractModule } from '../base';
 import { MODULE_NAME, STORE_NAME, TASK_STATUS } from '../constants';
 import { storeManager } from '../storeManager';
 import { TaskUpdateParams } from '../types';
 
 export class TaskModule extends AbstractModule {
   protected onLoad() {
-    const isAdmin = UserStorageManager.getInstance().isAdmin;
     this.syncTaskList();
-    !isAdmin && this.syncTaskFlowList();
+    this.syncTaskFlowList();
     this.syncTaskCategoryList();
   }
   protected onUnload() {}

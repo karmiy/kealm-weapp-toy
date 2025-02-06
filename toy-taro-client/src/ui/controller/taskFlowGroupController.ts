@@ -1,11 +1,11 @@
-import { sdk, STORE_NAME, TaskFlowModel } from '@core';
+import { STORE_NAME, TaskFlowModel } from '@core';
 import { AbstractGroupByController } from './base';
 
 export class TaskFlowGroupController extends AbstractGroupByController<TaskFlowModel> {
   static identifier = 'TaskFlowGroupController';
 
   constructor() {
-    super(STORE_NAME.TASK_FLOW, !sdk.modules.user.getIsAdmin());
+    super(STORE_NAME.TASK_FLOW);
   }
 
   protected getGroupByIdentifier(model: TaskFlowModel) {
