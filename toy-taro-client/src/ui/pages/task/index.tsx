@@ -6,11 +6,14 @@ import { navigateToPage } from '@shared/utils/router';
 import { TASK_TYPE_LIST } from '@core';
 import { FallbackImage, Icon, TabPanel, Tabs, WhiteSpace } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useUserInfo } from '@ui/viewModel';
 import { TaskCategory } from './components';
 import styles from './index.module.scss';
 
 function Task() {
+  useSyncOnPageShow();
+
   const { isAdmin, score } = useUserInfo();
   const [current, setCurrent] = useState(0);
 

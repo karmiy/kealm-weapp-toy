@@ -60,6 +60,7 @@ const modulesConfig: Array<{
 
 class SDK {
   private _isLoaded = false;
+  private _lastLoadedTime = 0;
   private get _logger() {
     return Logger.getLogger('[SDK]');
   }
@@ -105,6 +106,7 @@ class SDK {
       await Promise.all(normalLevelModules.map(async alias => await loadModule(alias)));
       await Promise.all(lowLevelModules.map(async alias => await loadModule(alias)));
       this._isLoaded = true;
+      this._lastLoadedTime = new Date().getTime();
     } catch (error) {
       this._logger.error('load failed', error);
       await Promise.all(loadedModules.map(async alias => await this.modules[alias].unload()));
@@ -121,6 +123,14 @@ class SDK {
     await Promise.all(Object.values(this.modules).map(async module => await module.unload()));
     storeManager.dispose();
     this._isLoaded = false;
+  }
+
+  getHasLoaded() {
+    return this._isLoaded;
+  }
+
+  getLastLoadedTime() {
+    return this._lastLoadedTime;
   }
 }
 

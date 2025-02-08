@@ -3,11 +3,13 @@ import { View } from '@tarojs/components';
 import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
 import { ConfigListPanel } from '@ui/container';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useStoreList, useTaskAction } from '@ui/viewModel';
 import { CategoryForm } from './components';
 import styles from './index.module.scss';
 
 export default function () {
+  useSyncOnPageShow();
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string>();
   const taskCategoryList = useStoreList(STORE_NAME.TASK_CATEGORY);

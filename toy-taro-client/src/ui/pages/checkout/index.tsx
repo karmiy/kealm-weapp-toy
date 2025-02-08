@@ -2,11 +2,13 @@ import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useCoupon, useOrderAction, useProductShopCart } from '@ui/viewModel';
 import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
+  useSyncOnPageShow();
   const { checkedIds, totalScore } = useProductShopCart({
     enableCheckIds: true,
     enableTotalScore: true,

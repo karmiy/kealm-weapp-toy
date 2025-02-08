@@ -15,10 +15,12 @@ import {
 } from '@ui/components';
 import { FormItem } from '@ui/container';
 import { withCustomTabBar } from '@ui/hoc';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useSingleStore, useUserAction } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 function Mine() {
+  useSyncOnPageShow();
   const user = useSingleStore(STORE_NAME.USER);
   const isAdmin = !!user?.isAdmin;
   const subTitle = useMemo(() => {

@@ -66,14 +66,37 @@ export function navigateToPage(options: NavigateOptions) {
   navigateTo({ url });
 }
 
+function getPageIdByPath(path: string): PAGE_ID | undefined {
+  for (const [key, value] of pagePathMap) {
+    if (value === path) {
+      return key;
+    }
+  }
+  return;
+}
+
 export function getCurrentPageId() {
   const currentPage = [...getCurrentPages()].pop();
   if (!currentPage) {
     return;
   }
-  const pageId = currentPage.route?.split('/')[2];
-  if (!pageId) {
+  // currentPage.route: ui/pages/task/index, ui/pages/taskManage/categoryManage/index
+  // slice(2, -1) 是去掉 ui/pages/ 和 index
+  const pagePath = currentPage.route?.split('/').slice(2, -1).join('/'); // task, taskManage/categoryManage
+  if (!pagePath) {
     return;
   }
-  return pageId as PAGE_ID;
+
+  // 先看纯 pageId 能不能找到
+  const plainPageId = Object.values(PAGE_ID).find(id => id === pagePath);
+  if (plainPageId) {
+    return plainPageId;
+  }
+
+  // 再看 pagePathMap 的映射表
+  const specialPageId = getPageIdByPath(pagePath);
+  if (specialPageId) {
+    return specialPageId;
+  }
+  return;
 }
