@@ -1,4 +1,5 @@
 import { getMenuButtonBoundingClientRect, getWindowInfo } from '@tarojs/taro';
+import debounce from 'lodash/debounce';
 
 const systemInfo = getWindowInfo();
 // 屏幕宽高
@@ -81,4 +82,70 @@ export const cleanEmptyFields = <T extends Record<string, any>>(
   }
 
   return cleanedObj;
+};
+
+type DebouncedFn<T extends (...args: any[]) => any> = (
+  ...args: Parameters<T>
+) => Promise<ReturnType<T>>;
+
+export const debounceWithPromise = <T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number,
+  options?: { leading?: boolean; trailing?: boolean },
+): DebouncedFn<T> => {
+  const { trailing = true } = options ?? {};
+  const pendingPromise = new Set<{
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
+  }>();
+  let lastPromise: Promise<any> | null = null;
+  let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  const debouncedFn = debounce(
+    (args: Parameters<T>, resolve: (value: any) => void, reject: (reason?: any) => void) => {
+      const promises = [...pendingPromise];
+      pendingPromise.clear();
+      try {
+        const result = fn(...args);
+
+        if (result && typeof result.then === 'function') {
+          lastPromise = result;
+          result
+            .then(res => {
+              promises.forEach(({ resolve: r }) => r(res));
+              resolve(res);
+            })
+            .catch(err => {
+              promises.forEach(({ reject: r }) => r(err));
+              reject(err);
+            });
+          return;
+        }
+        promises.forEach(({ resolve: r }) => r(result));
+        resolve(result);
+      } catch (error) {
+        promises.forEach(({ reject: r }) => r(error));
+        reject(error);
+      } finally {
+        if (!trailing) {
+          debounceTimeout = setTimeout(() => {
+            debounceTimeout && clearTimeout(debounceTimeout);
+            lastPromise = null;
+          }, delay);
+        }
+      }
+    },
+    delay,
+    options,
+  );
+
+  return (...args) => {
+    if (!trailing && lastPromise) {
+      return lastPromise;
+    }
+    return new Promise((resolve, reject) => {
+      debouncedFn(args, resolve, reject);
+      trailing && pendingPromise.add({ resolve, reject });
+    });
+  };
 };
