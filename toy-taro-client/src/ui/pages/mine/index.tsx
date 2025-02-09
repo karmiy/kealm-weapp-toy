@@ -20,7 +20,7 @@ import { useSingleStore, useUserAction } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 function Mine() {
-  useSyncOnPageShow();
+  useSyncOnPageShow({ enablePagePullDownRefresh: true });
   const user = useSingleStore(STORE_NAME.USER);
   const isAdmin = !!user?.isAdmin;
   const subTitle = useMemo(() => {

@@ -8,6 +8,7 @@ export enum COLOR_VARIABLES {
     COLOR_RATE_INACTIVE = '#CCC',
     COLOR_RATE_ACTIVE = '#FAB646',
     FILL_DISABLE = '#CCC',
+    FILL_BODY = '#F4F4F4',
 }
 
 export enum PAGE_ID {

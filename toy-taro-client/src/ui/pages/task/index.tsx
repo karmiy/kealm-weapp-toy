@@ -12,7 +12,7 @@ import { TaskCategory } from './components';
 import styles from './index.module.scss';
 
 function Task() {
-  useSyncOnPageShow();
+  useSyncOnPageShow({ enablePagePullDownRefresh: true });
 
   const { isAdmin, score } = useUserInfo();
   const [current, setCurrent] = useState(0);

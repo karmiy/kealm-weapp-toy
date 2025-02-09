@@ -12,28 +12,28 @@ export type ProductApiUpdateParams = Pick<
 };
 
 export class ProductApi {
-  @mock({ name: MOCK_API_NAME.GET_PRODUCT_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_PRODUCT_LIST })
   static async getProductList(): Promise<ProductEntity[]> {
     return httpRequest.get<ProductEntity[]>({
       url: '/product/getProductList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.GET_PRODUCT_CATEGORY_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_PRODUCT_CATEGORY_LIST })
   static async getProductCategoryList(): Promise<ProductCategoryEntity[]> {
     return httpRequest.get<ProductCategoryEntity[]>({
       url: '/product/getProductCategoryList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.GET_PRODUCT_SHOP_CART, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_PRODUCT_SHOP_CART })
   static async getProductShopCart(): Promise<ProductShopCartEntity[]> {
     return httpRequest.get<ProductShopCartEntity[]>({
       url: '/product/getProductShopCartList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT_SHOP_CART })
   static async updateProductShopCart(params: {
     id?: string;
     quantity: number;
@@ -45,7 +45,7 @@ export class ProductApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT_SHOP_CART, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT_SHOP_CART })
   static async deleteProductShopCart(params: { id: string }): Promise<void> {
     return httpRequest.post<void>({
       url: '/product/deleteProductShopCart',
@@ -53,7 +53,7 @@ export class ProductApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT })
   static async updateProduct(params: ProductApiUpdateParams): Promise<ProductEntity> {
     return httpRequest.postFormDataFile<ProductEntity>({
       url: '/product/updateProduct',
@@ -62,7 +62,7 @@ export class ProductApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT_CATEGORY, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_PRODUCT_CATEGORY })
   static async updateProductCategory(params: {
     id?: string;
     name: string;
@@ -73,7 +73,7 @@ export class ProductApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT })
   static async deleteProduct(id: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/product/deleteProduct',
@@ -83,7 +83,7 @@ export class ProductApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT_CATEGORY, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_PRODUCT_CATEGORY })
   static async deleteProductCategory(id: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/product/deleteProductCategory',

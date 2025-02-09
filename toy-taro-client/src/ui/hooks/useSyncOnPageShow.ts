@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { stopPullDownRefresh, useDidShow, usePullDownRefresh } from '@tarojs/taro';
 import { PAGE_ID } from '@shared/utils/constants';
 import { Logger } from '@shared/utils/logger';
@@ -8,7 +8,7 @@ import { debounceWithPromise } from '@shared/utils/utils';
 import { sdk } from '@core';
 import { useDebounceFunc } from './useDebounceFunc';
 
-const PAGE_SYNC_DEBOUNCE_TIME = 10 * 1000; // 同一个页面的请求 debounce
+const PAGE_SYNC_DEBOUNCE_TIME = 20 * 1000; // 同一个页面的请求 debounce
 const SDK_SYNC_LOADED_THRESHOLD_TIME = 10 * 1000; // 切页面同步数据至少要在 bootstrap 后的 Ns 后
 const SDK_API_SYNC_DEBOUNCE_TIME = 10 * 1000; // 同一个 API 的 debounce 时间
 
@@ -42,76 +42,89 @@ const syncApi = Object.keys(syncContext).reduce((acc, key) => {
 }, {} as typeof syncContext);
 
 export function useSyncOnPageShow(options?: {
-  enablePullDownRefresh?: boolean;
+  enableSyncOnPageShow?: boolean;
+  // 非 scrollView 滚动的页面使用，需要在页面 config.ts 配置 enablePullDownRefresh
+  // 页面由 scrollView 滚动时需要为 false，配合 scrollView 下拉
+  enablePagePullDownRefresh?: boolean;
   refreshMinDuration?: number;
 }) {
-  const { enablePullDownRefresh = true, refreshMinDuration = 1500 } = options || {};
+  const {
+    enableSyncOnPageShow = true,
+    enablePagePullDownRefresh = false,
+    refreshMinDuration = 1500,
+  } = options || {};
 
-  const handleSync = useCallback(async (params?: { errorToast?: boolean }) => {
-    const { errorToast = false } = params || {};
-    const pageId = getCurrentPageId();
-    if (!pageId) {
-      logger.info('handleSync', 'skip sync on page show, no pageId');
-      return;
-    }
-    if (!sdk.getHasLoaded()) {
-      logger.info('handleSync', 'skip sync on page show, has not loaded', {
-        pageId,
-      });
-      return;
-    }
-    logger.info('handleSync', 'pending sync', {
-      pageId,
-    });
+  const [refresherTriggered, setRefresherTriggered] = useState(false);
 
-    try {
-      switch (pageId) {
-        case PAGE_ID.HOME:
-          await Promise.all([syncApi.syncProductCategoryList(), syncApi.syncProductList()]);
-          break;
-        case PAGE_ID.TASK:
-          await Promise.all([
-            syncApi.syncTaskCategoryList(),
-            syncApi.syncTaskFlowList(),
-            syncApi.syncTaskList(),
-            syncApi.syncUserInfo(),
-          ]);
-          break;
-        case PAGE_ID.TASK_CATEGORY_MANAGE:
-          await syncApi.syncTaskCategoryList();
-          break;
-        case PAGE_ID.TASK_FLOW_MANAGE:
-          await syncApi.syncTaskFlowList();
-          break;
-        case PAGE_ID.MINE:
-          await syncApi.syncUserInfo();
-          break;
-        case PAGE_ID.CHECKOUT:
-          await Promise.all([syncApi.syncUserInfo(), syncApi.syncCouponList()]);
-          break;
-        case PAGE_ID.COUPON:
-          await syncApi.syncCouponList();
-          break;
-        case PAGE_ID.PRODUCT_CATEGORY_MANAGE:
-          await syncApi.syncProductCategoryList();
-          break;
-        default:
-          break;
+  const handleSync = useCallback(
+    async (params?: { errorToast?: boolean; debounceApi?: boolean }) => {
+      const { errorToast = false, debounceApi = true } = params || {};
+      const pageId = getCurrentPageId();
+      if (!pageId) {
+        logger.info('handleSync', 'skip sync on page show, no pageId');
+        return;
       }
-      logger.info('handleSync', 'sync success', {
-        pageId,
-      });
-    } catch (error) {
-      logger.error('handleSync', 'sync on page show error', {
-        pageId,
-        error: error?.message,
-      });
-      errorToast &&
-        showToast({
-          title: error?.message ?? '数据同步失败',
+      if (!sdk.getHasLoaded()) {
+        logger.info('handleSync', 'skip sync on page show, has not loaded', {
+          pageId,
         });
-    }
-  }, []);
+        return;
+      }
+      logger.info('handleSync', 'pending sync', {
+        pageId,
+      });
+
+      try {
+        const api = debounceApi ? syncApi : syncContext;
+        switch (pageId) {
+          case PAGE_ID.HOME:
+            await Promise.all([api.syncProductCategoryList(), api.syncProductList()]);
+            break;
+          case PAGE_ID.TASK:
+            await Promise.all([
+              api.syncTaskCategoryList(),
+              api.syncTaskFlowList(),
+              api.syncTaskList(),
+              api.syncUserInfo(),
+            ]);
+            break;
+          case PAGE_ID.TASK_CATEGORY_MANAGE:
+            await api.syncTaskCategoryList();
+            break;
+          case PAGE_ID.TASK_FLOW_MANAGE:
+            await api.syncTaskFlowList();
+            break;
+          case PAGE_ID.MINE:
+            await api.syncUserInfo();
+            break;
+          case PAGE_ID.CHECKOUT:
+            await Promise.all([api.syncUserInfo(), api.syncCouponList()]);
+            break;
+          case PAGE_ID.COUPON:
+            await api.syncCouponList();
+            break;
+          case PAGE_ID.PRODUCT_CATEGORY_MANAGE:
+            await api.syncProductCategoryList();
+            break;
+          default:
+            break;
+        }
+        logger.info('handleSync', 'sync success', {
+          pageId,
+        });
+      } catch (error) {
+        logger.error('handleSync', 'sync on page show error', {
+          pageId,
+          error: error?.message,
+        });
+        errorToast &&
+          showToast({
+            title: error?.message ?? '数据同步失败',
+          });
+      }
+    },
+    [],
+  );
 
   const handleSyncDebounce = useDebounceFunc(
     () => {
@@ -124,6 +137,9 @@ export function useSyncOnPageShow(options?: {
   // getCurrentPages TabBars 之间切换，都是只有 1 个
   // 没登录也会先到 home 页面再重定向到 login，登录后到 home getCurrentPages 也是 1 个
   useDidShow(() => {
+    if (!enableSyncOnPageShow) {
+      return;
+    }
     const pageId = getCurrentPageId();
     if (!pageId) {
       logger.info('useDidShow', 'skip sync on page show, no pageId');
@@ -146,17 +162,28 @@ export function useSyncOnPageShow(options?: {
   });
 
   usePullDownRefresh(async () => {
-    if (!enablePullDownRefresh) {
+    if (!enablePagePullDownRefresh) {
       return;
     }
-    // 页面需要开启配置 enablePullDownRefresh，关闭 disableScroll
+    // 页面需要开启配置 enablePagePullDownRefresh，关闭 disableScroll
     logger.info('usePullDownRefresh', 'start pull down refresh');
 
     const minDelay = new Promise(resolve => setTimeout(resolve, refreshMinDuration));
-    await Promise.all([minDelay, handleSync({ errorToast: true })]);
+    await Promise.all([minDelay, handleSync({ errorToast: true, debounceApi: false })]);
     logger.info('usePullDownRefresh', 'end pull down refresh');
     stopPullDownRefresh();
   });
 
-  return { handleSync };
+  const handleRefresh = useCallback(async () => {
+    logger.info('handleRefresh', 'start pull down refresh');
+    setRefresherTriggered(true);
+
+    const minDelay = new Promise(resolve => setTimeout(resolve, refreshMinDuration));
+    await Promise.all([minDelay, handleSync({ errorToast: true, debounceApi: false })]);
+
+    logger.info('handleRefresh', 'stop pull down refresh');
+    setRefresherTriggered(false);
+  }, [handleSync, refreshMinDuration]);
+
+  return { handleSync, handleRefresh, refresherTriggered };
 }

@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { ScrollView, View } from '@tarojs/components';
+import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { STORE_NAME } from '@core';
 import { SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
 import { useSyncOnPageShow } from '@ui/hooks';
@@ -8,15 +9,22 @@ import { TaskFlowItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
-  useSyncOnPageShow();
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
   const ids = useStoreIds(STORE_NAME.TASK_FLOW);
   const loading = useStoreLoadingStatus(STORE_NAME.TASK_FLOW);
 
   return (
     <View className={styles.wrapper}>
-      <StatusWrapper loading={loading} loadingIgnoreCount count={ids.length} size='fill'>
+      <StatusWrapper loading={loading} count={ids.length} size='fill'>
         <View className={styles.list}>
-          <ScrollView scrollY className={styles.scrollView}>
+          <ScrollView
+            scrollY
+            className={styles.scrollView}
+            refresherEnabled
+            refresherTriggered={refresherTriggered}
+            refresherBackground={COLOR_VARIABLES.FILL_BODY}
+            onRefresherRefresh={handleRefresh}
+          >
             <View className={styles.container}>
               {ids.map((id, index) => {
                 return (

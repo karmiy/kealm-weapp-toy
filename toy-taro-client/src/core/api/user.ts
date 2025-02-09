@@ -14,14 +14,14 @@ export type LoginResponse = {
 };
 
 export class UserApi {
-  @mock({ name: MOCK_API_NAME.GET_USER_INFO, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_USER_INFO })
   static async getUserInfo(): Promise<UserEntity> {
     return httpRequest.get<UserEntity>({
       url: '/user/getUserInfo',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.USER_LOGIN, enable: false })
+  @mock({ name: MOCK_API_NAME.USER_LOGIN })
   static async login(params: LoginParams): Promise<LoginResponse> {
     return httpRequest.post<LoginResponse>({
       url: '/user/login',
@@ -29,7 +29,7 @@ export class UserApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPLOAD_AVATAR, enable: false })
+  @mock({ name: MOCK_API_NAME.UPLOAD_AVATAR })
   static async uploadAvatar(tempUrl: string): Promise<{ avatarUrl: string }> {
     return httpRequest.postFormDataFile<{ avatarUrl: string }>({
       url: '/user/uploadAvatar',
@@ -37,7 +37,7 @@ export class UserApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPLOAD_PROFILE, enable: false })
+  @mock({ name: MOCK_API_NAME.UPLOAD_PROFILE })
   static async uploadProfile(params: { name: string }): Promise<void> {
     return httpRequest.post<void>({
       url: '/user/uploadProfile',

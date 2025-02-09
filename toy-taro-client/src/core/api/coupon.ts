@@ -16,14 +16,14 @@ export type CouponApiUpdateParams = Pick<
 };
 
 export class CouponApi {
-  @mock({ name: MOCK_API_NAME.GET_COUPON_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_COUPON_LIST })
   static async getCouponList(): Promise<CouponEntity[]> {
     return httpRequest.get<CouponEntity[]>({
       url: '/coupon/getCouponList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_COUPON, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_COUPON })
   static async deleteCoupon(id: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/coupon/deleteCoupon',
@@ -31,7 +31,7 @@ export class CouponApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_COUPON, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_COUPON })
   static async updateCoupon(coupon: CouponApiUpdateParams): Promise<CouponEntity> {
     return httpRequest.post<CouponEntity>({
       url: '/coupon/updateCoupon',

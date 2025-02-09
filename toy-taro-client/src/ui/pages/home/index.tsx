@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
 import { ScrollView, View } from '@tarojs/components';
 import { TAB_BAR_ID } from '@shared/tabBar';
+import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { SafeAreaBar } from '@ui/components';
 import { withCustomTabBar } from '@ui/hoc';
 import { useSyncOnPageShow } from '@ui/hooks';
@@ -8,15 +8,9 @@ import { Carousel, Category, Hub, LimitedTimeOffer, TopBar } from './components'
 import styles from './index.module.scss';
 
 function Home() {
-  const [refresherTriggered, setRefresherTriggered] = useState(false);
-  const { handleSync } = useSyncOnPageShow({ enablePullDownRefresh: false });
-
-  const handleRefresh = useCallback(async () => {
-    setRefresherTriggered(true);
-    await handleSync();
-
-    setRefresherTriggered(false);
-  }, [handleSync]);
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow({
+    enablePagePullDownRefresh: false,
+  });
 
   return (
     <View className={styles.wrapper}>
@@ -29,6 +23,7 @@ function Home() {
         className={styles.container}
         refresherEnabled
         refresherTriggered={refresherTriggered}
+        refresherBackground={COLOR_VARIABLES.FILL_BODY}
         onRefresherRefresh={handleRefresh}
       >
         <Carousel />

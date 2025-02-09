@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from '@tarojs/components';
+import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
@@ -8,7 +9,7 @@ import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
-  useSyncOnPageShow();
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
   const { checkedIds, totalScore } = useProductShopCart({
     enableCheckIds: true,
     enableTotalScore: true,
@@ -48,7 +49,14 @@ export default function () {
   return (
     <View className={styles.wrapper}>
       <View className={styles.detail}>
-        <ScrollView scrollY className={styles.scrollView}>
+        <ScrollView
+          scrollY
+          className={styles.scrollView}
+          refresherEnabled
+          refresherTriggered={refresherTriggered}
+          onRefresherRefresh={handleRefresh}
+          refresherBackground={COLOR_VARIABLES.FILL_BODY}
+        >
           <View className={styles.container}>
             <View className={styles.area}>
               {checkedIds.map((id, index) => {

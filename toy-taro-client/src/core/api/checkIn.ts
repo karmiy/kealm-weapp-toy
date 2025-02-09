@@ -3,14 +3,14 @@ import { httpRequest } from '../httpRequest';
 import { mock, MOCK_API_NAME } from '../mock';
 
 export class CheckInApi {
-  @mock({ name: MOCK_API_NAME.GET_CHECK_IN_INFO, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_CHECK_IN_INFO })
   static async getCheckInList(): Promise<CheckInEntity> {
     return httpRequest.get<CheckInEntity>({
       url: '/checkIn/getCheckInList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.CLAIM_REWARD, enable: false })
+  @mock({ name: MOCK_API_NAME.CLAIM_REWARD })
   static async claimReward(ruleId: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/checkIn/claimReward',
@@ -20,7 +20,7 @@ export class CheckInApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.CHECK_IN_TODAY, enable: false })
+  @mock({ name: MOCK_API_NAME.CHECK_IN_TODAY })
   static async checkInToday(): Promise<void> {
     return httpRequest.post<void>({
       url: '/checkIn/checkInToday',

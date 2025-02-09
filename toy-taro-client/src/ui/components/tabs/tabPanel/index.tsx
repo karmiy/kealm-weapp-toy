@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext } from 'react';
-import { ScrollView } from '@tarojs/components';
+import { ScrollView, ScrollViewProps } from '@tarojs/components';
 import clsx from 'clsx';
 import { LazyWrapper } from '../../lazyWrapper';
 import { RenderWrapper } from '../../renderWrapper';
@@ -14,10 +14,18 @@ interface TabPanelProps {
   visible?: boolean;
   lazy?: boolean;
   isScrollable?: boolean;
+  scrollViewProps?: ScrollViewProps;
 }
 
 const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
-  const { className, visible, lazy = true, isScrollable = false, children } = props;
+  const {
+    className,
+    visible,
+    lazy = true,
+    isScrollable = false,
+    scrollViewProps,
+    children,
+  } = props;
   const { mode } = useContext(TabsContext);
   const isHorizontal = mode === 'horizontal';
   const isVertical = mode === 'vertical';
@@ -34,7 +42,7 @@ const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
       visible={visible}
     >
       {isVertical || isScrollable ? (
-        <ScrollView scrollY className={styles.scrollView} enableFlex>
+        <ScrollView scrollY className={styles.scrollView} enableFlex {...scrollViewProps}>
           {children}
         </ScrollView>
       ) : (

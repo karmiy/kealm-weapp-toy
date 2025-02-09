@@ -6,10 +6,12 @@ import { STORE_NAME } from '@core';
 import { Icon, StatusWrapper, WhiteSpace } from '@ui/components';
 import type { CouponRenderAction } from '@ui/container';
 import { CouponList } from '@ui/container';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useCoupon, useStoreLoadingStatus } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 export function CouponAdminPage() {
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
   const loading = useStoreLoadingStatus(STORE_NAME.COUPON);
   const { allCoupons, handleDelete } = useCoupon({
     enableAllIds: true,
@@ -45,7 +47,14 @@ export function CouponAdminPage() {
 
   return (
     <View className={styles.wrapper}>
-      <ScrollView scrollY className={styles.scrollView}>
+      <ScrollView
+        scrollY
+        className={styles.scrollView}
+        refresherEnabled
+        refresherTriggered={refresherTriggered}
+        onRefresherRefresh={handleRefresh}
+        refresherBackground={COLOR_VARIABLES.FILL_BODY}
+      >
         <View className={styles.container}>
           <View className={styles.header}>
             <View className={styles.action} onClick={() => handleManageCoupon()}>

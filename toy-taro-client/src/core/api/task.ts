@@ -14,28 +14,28 @@ export type TaskApiUpdateParams = Pick<
 };
 
 export class TaskApi {
-  @mock({ name: MOCK_API_NAME.GET_TASK_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_TASK_LIST })
   static async getTaskList(): Promise<TaskEntity[]> {
     return httpRequest.get<TaskEntity[]>({
       url: '/task/getTaskList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.GET_TASK_FLOW_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_TASK_FLOW_LIST })
   static async getTaskFlowList(): Promise<TaskFlowEntity[]> {
     return httpRequest.get<TaskFlowEntity[]>({
       url: '/task/getTaskFlowList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.GET_TASK_CATEGORY_LIST, enable: false })
+  @mock({ name: MOCK_API_NAME.GET_TASK_CATEGORY_LIST })
   static async getTaskCategoryList(): Promise<TaskCategoryEntity[]> {
     return httpRequest.get<TaskCategoryEntity[]>({
       url: '/task/getTaskCategoryList',
     });
   }
 
-  @mock({ name: MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST, enable: false })
+  @mock({ name: MOCK_API_NAME.SUBMIT_APPROVAL_REQUEST })
   static async submitApprovalRequest(id: string, taskFlowId?: string): Promise<TaskFlowEntity> {
     return httpRequest.post<TaskFlowEntity>({
       url: '/task/updateTaskFlow',
@@ -47,7 +47,7 @@ export class TaskApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_TASK_FLOW_STATUS, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK_FLOW_STATUS })
   static async updateTaskFlowStatus(
     taskFlowId: string,
     taskId: string,
@@ -63,7 +63,7 @@ export class TaskApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_TASK, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK })
   static async updateTask(params: TaskApiUpdateParams): Promise<TaskEntity> {
     return httpRequest.post<TaskEntity>({
       url: '/task/updateTask',
@@ -71,7 +71,7 @@ export class TaskApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.UPDATE_TASK_CATEGORY, enable: false })
+  @mock({ name: MOCK_API_NAME.UPDATE_TASK_CATEGORY })
   static async updateTaskCategory(params: {
     id?: string;
     name: string;
@@ -82,7 +82,7 @@ export class TaskApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_TASK, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_TASK })
   static async deleteTask(id: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/task/deleteTask',
@@ -92,7 +92,7 @@ export class TaskApi {
     });
   }
 
-  @mock({ name: MOCK_API_NAME.DELETE_TASK_CATEGORY, enable: false })
+  @mock({ name: MOCK_API_NAME.DELETE_TASK_CATEGORY })
   static async deleteTaskCategory(id: string): Promise<void> {
     return httpRequest.post<void>({
       url: '/task/deleteTaskCategory',

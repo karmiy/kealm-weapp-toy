@@ -121,11 +121,19 @@ export const debounceWithPromise = <T extends (...args: any[]) => any>(
             });
           return;
         }
-        promises.forEach(({ resolve: r }) => r(result));
-        resolve(result);
+
+        lastPromise = Promise.resolve(result);
+        lastPromise.then(res => {
+          promises.forEach(({ resolve: r }) => r(res));
+          resolve(res);
+        });
       } catch (error) {
-        promises.forEach(({ reject: r }) => r(error));
-        reject(error);
+        const rejectPromise = Promise.reject(error);
+        lastPromise = rejectPromise;
+        rejectPromise.catch(res => {
+          promises.forEach(({ reject: r }) => r(error));
+          reject(res);
+        });
       } finally {
         if (!trailing) {
           debounceTimeout = setTimeout(() => {

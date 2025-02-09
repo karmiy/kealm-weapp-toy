@@ -18,7 +18,7 @@ const mockApis: Record<MOCK_API_NAME, (...args: any[]) => unknown> = Object.assi
   mockCheckInApi,
 );
 
-const DEFAULT_ENABLE_MOCK = true;
+const DEFAULT_ENABLE_MOCK = false;
 
 export function mock(options: { name: MOCK_API_NAME; enable?: boolean }) {
   return function (target: unknown, propertyKey: string, descriptor: PropertyDescriptor) {

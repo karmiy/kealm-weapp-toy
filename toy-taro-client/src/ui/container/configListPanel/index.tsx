@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Text, View } from '@tarojs/components';
+import { ScrollViewProps, Text, View } from '@tarojs/components';
 import { StatusWrapper, WhiteSpace } from '@ui/components';
 import { Layout } from '@ui/container';
 import { ConfigItem } from './components';
@@ -13,13 +13,23 @@ interface ConfigListPanelProps {
   onAdd?: () => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => Promise<void>;
+  scrollViewProps?: ScrollViewProps;
 }
 
 export const ConfigListPanel = (props: ConfigListPanelProps) => {
-  const { list, labelKey, title, addButtonText = '新增', onAdd, onEdit, onDelete } = props;
+  const {
+    list,
+    labelKey,
+    title,
+    addButtonText = '新增',
+    scrollViewProps,
+    onAdd,
+    onEdit,
+    onDelete,
+  } = props;
 
   return (
-    <Layout type='card'>
+    <Layout type='card' scrollViewProps={scrollViewProps}>
       <View className={styles.header}>
         <Text>{title}</Text>
         <View className={styles.action} onClick={onAdd}>
