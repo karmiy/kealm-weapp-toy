@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components';
 import { PAGE_ID } from '@shared/utils/constants';
+import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
 import { WhiteSpace } from '@ui/components';
 import { Item } from './item';
@@ -22,6 +23,11 @@ const Hub = () => {
           <Item
             title='推荐专区'
             coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-hub-1.png'
+            onClick={() => {
+              showToast({
+                title: '尚未开放，敬请期待',
+              });
+            }}
           />
         </View>
       </View>
