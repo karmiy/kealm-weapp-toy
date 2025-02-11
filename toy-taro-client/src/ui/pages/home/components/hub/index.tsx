@@ -1,4 +1,6 @@
 import { View } from '@tarojs/components';
+import { PAGE_ID } from '@shared/utils/constants';
+import { navigateToPage } from '@shared/utils/router';
 import { WhiteSpace } from '@ui/components';
 import { Item } from './item';
 import styles from './index.module.scss';
@@ -11,6 +13,11 @@ const Hub = () => {
           <Item
             title='上新清单'
             coverImage='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-melody-banner.png'
+            onClick={() => {
+              navigateToPage({
+                pageName: PAGE_ID.PRODUCT_FRESH_ARRIVAL,
+              });
+            }}
           />
           <Item
             title='推荐专区'

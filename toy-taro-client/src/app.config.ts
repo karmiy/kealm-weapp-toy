@@ -84,6 +84,10 @@ export default defineAppConfig({
       root: 'ui/pages/productSearch/',
       pages: ['index'],
     },
+    {
+      root: 'ui/pages/productFreshArrival/',
+      pages: ['index'],
+    },
   ],
   // entryPagePath: 'ui/pages/productSearch/index',
 });

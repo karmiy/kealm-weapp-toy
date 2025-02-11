@@ -1,0 +1,32 @@
+@import '@ui/styles/index.scss';
+
+.productSearchWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $--fill-default;
+
+  .list {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .scrollView {
+    height: 100%;
+  }
+
+  .container {
+    padding: px(16);
+    padding-bottom: 0;
+  }
+
+  .desc {
+    @include single-line-ellipsis;
+  }
+
+  .createTime {
+    color: $--text-color-base;
+    margin-top: px(4);
+  }
+}
+

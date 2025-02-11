@@ -5,12 +5,13 @@ import styles from './index.module.scss';
 interface ItemProps {
   title: string;
   coverImage: string;
+  onClick?: () => void;
 }
 
 const Item = (props: ItemProps) => {
-  const { title, coverImage } = props;
+  const { title, coverImage, onClick } = props;
   return (
-    <View className={styles.wrapper}>
+    <View className={styles.wrapper} onClick={onClick}>
       <View className={styles.container}>
         <Text className={styles.title}>{title}</Text>
         <View className={styles.coverWrapper}>

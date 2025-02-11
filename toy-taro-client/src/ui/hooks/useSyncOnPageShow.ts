@@ -106,6 +106,10 @@ export function useSyncOnPageShow(options?: {
           case PAGE_ID.PRODUCT_CATEGORY_MANAGE:
             await api.syncProductCategoryList();
             break;
+          case PAGE_ID.PRODUCT_SEARCH:
+          case PAGE_ID.PRODUCT_FRESH_ARRIVAL:
+            await api.syncProductList();
+            break;
           default:
             break;
         }
