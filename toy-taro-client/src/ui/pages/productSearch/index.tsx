@@ -71,7 +71,6 @@ export default function () {
                 } = product;
                 return (
                   <Fragment key={id}>
-                    {index !== 0 ? <WhiteSpace size='medium' /> : null}
                     <ProductCard
                       className={styles.card}
                       mode='horizontal'
@@ -91,6 +90,7 @@ export default function () {
                         ) : null
                       }
                     />
+                    <WhiteSpace size='medium' line />
                   </Fragment>
                 );
               })}
