@@ -6,6 +6,8 @@ export type ConfigModels = {
     [K in keyof Config]: InstanceType<Config[K]['model']>;
 };
 
+export type GetModel<T extends keyof ConfigModels> = ConfigModels[T];
+
 export type Models = {
     [K in keyof ConfigModels]: ConfigModels[K];
 }[keyof ConfigModels];

@@ -128,7 +128,17 @@ export function useProductShopCart(props?: Props) {
   );
 
   const addProductShopCart = useCallback(async (productId: string, quantity: number) => {
-    await sdk.modules.product.addProductShopCart(productId, quantity);
+    try {
+      const allIds = ProductShopCartController.getInstance().allProductIds;
+      if (allIds.includes(productId)) {
+        showToast({ title: '购物车里已存在该商品！' });
+        return;
+      }
+      await sdk.modules.product.addProductShopCart(productId, quantity);
+      showToast({ title: '已加入购物车！' });
+    } catch {
+      showToast({ title: '添加失败！' });
+    }
   }, []);
 
   const getProductShopCartScore = useCallback((id: string) => {

@@ -80,6 +80,10 @@ export default defineAppConfig({
       root: 'ui/pages/taskManage/',
       pages: ['entrance/index', 'categoryManage/index', 'taskFlowManage/index'],
     },
+    {
+      root: 'ui/pages/productSearch/',
+      pages: ['index'],
+    },
   ],
-  // entryPagePath: 'ui/pages/taskManage/entrance/index',
+  // entryPagePath: 'ui/pages/productSearch/index',
 });

@@ -27,4 +27,5 @@ export enum PAGE_ID {
     CHECK_IN = 'checkIn',
     PRODUCT_MANAGE = 'productManage',
     PRODUCT_CATEGORY_MANAGE = 'productCategoryManage',
+    PRODUCT_SEARCH = 'productSearch',
 }
