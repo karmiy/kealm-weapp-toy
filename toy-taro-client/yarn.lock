@@ -1589,6 +1589,13 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
+"@lucky-canvas/taro@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@lucky-canvas/taro/-/taro-0.0.15.tgz#a4c8c0a1aecec3e693e551e89b611aeb982e717c"
+  integrity sha512-oDn0EKOsKWin6Bnbk+SO2sm44ZA5z9+IQTImsk2GviOAWe0FqOV5d+65Y4ZMfl5dk9MgBTbGCWRwQR1AuahLHw==
+  dependencies:
+    lucky-canvas "~1.7.19"
+
 "@napi-rs/triples@1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@napi-rs/triples/-/triples-1.2.0.tgz#bcd9c936acb93890e7015818e0181f3db421aafa"
@@ -8286,6 +8293,11 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
+
+lucky-canvas@~1.7.19:
+  version "1.7.27"
+  resolved "https://registry.yarnpkg.com/lucky-canvas/-/lucky-canvas-1.7.27.tgz#ce4689e99aa1945d981f0489304f5f3c1789023d"
+  integrity sha512-Ftz6qD+863bI7xijBmZg3dw3cNEc7odPr70EZQcGA14y3TgTAzH65HPosOCd6kKUlMwhntBaHMx3onoj9MtJRQ==
 
 magic-string@0.30.12:
   version "0.30.12"

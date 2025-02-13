@@ -42,6 +42,7 @@
   "dependencies": {
     "@babel/runtime": "^7.26.0",
     "@faker-js/faker": "^9.3.0",
+    "@lucky-canvas/taro": "^0.0.15",
     "@tarojs/components": "4.0.7",
     "@tarojs/helper": "4.0.7",
     "@tarojs/plugin-framework-react": "4.0.7",
