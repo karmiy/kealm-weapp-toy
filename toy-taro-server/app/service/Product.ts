@@ -192,18 +192,16 @@ export default class Product extends Service {
     }
   }
 
-  async getProductList() {
+  async getProductList(params: { filterEmptyStock?: boolean }) {
+    const { filterEmptyStock = false } = params;
     const { ctx } = this;
     const { groupId } = ctx.getUserInfo();
-
     const products = await ctx.model.Product.findAll({
       // raw: true,
       where: {
         group_id: groupId,
         is_deleted: 0,
-        stock: {
-          [Op.gt]: 0,
-        },
+        ...(filterEmptyStock ? { stock: { [Op.gt]: 0 } } : {}),
       },
       order: [["last_modified_time", "desc"]],
     });

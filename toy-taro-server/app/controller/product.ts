@@ -322,7 +322,11 @@ export default class ProductController extends Controller {
   public async getProductList() {
     const { ctx } = this;
     try {
-      const list = await ctx.service.product.getProductList();
+      const { filterEmptyStock = false } =
+        ctx.getParams<{ filterEmptyStock?: boolean }>();
+      const list = await ctx.service.product.getProductList({
+        filterEmptyStock,
+      });
 
       const productList: ProductEntity[] = list.map((item) => {
         return this._productModelToEntity(item);

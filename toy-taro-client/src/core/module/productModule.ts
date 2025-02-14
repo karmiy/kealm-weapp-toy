@@ -1,6 +1,6 @@
 import { eventCenter } from '@tarojs/taro';
 import { ProductApi } from '../api';
-import { AbstractModule } from '../base';
+import { AbstractModule, UserStorageManager } from '../base';
 import { EVENT_KEYS, MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 import { ProductUpdateParams } from '../types';
@@ -26,7 +26,9 @@ export class ProductModule extends AbstractModule {
 
   async syncProductList() {
     storeManager.startLoading(STORE_NAME.PRODUCT);
-    const productList = await ProductApi.getProductList();
+    const productList = await ProductApi.getProductList({
+      filterEmptyStock: !UserStorageManager.getInstance().isAdmin,
+    });
     storeManager.refresh(STORE_NAME.PRODUCT, productList);
     storeManager.stopLoading(STORE_NAME.PRODUCT);
   }

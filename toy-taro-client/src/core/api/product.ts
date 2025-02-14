@@ -13,9 +13,10 @@ export type ProductApiUpdateParams = Pick<
 
 export class ProductApi {
   @mock({ name: MOCK_API_NAME.GET_PRODUCT_LIST })
-  static async getProductList(): Promise<ProductEntity[]> {
+  static async getProductList(params: { filterEmptyStock?: boolean }): Promise<ProductEntity[]> {
     return httpRequest.get<ProductEntity[]>({
       url: '/product/getProductList',
+      data: params,
     });
   }
 
