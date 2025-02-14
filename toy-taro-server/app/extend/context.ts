@@ -2,16 +2,48 @@ import { Context } from "egg";
 import { ROLE, SERVER_CODE } from "../utils/constants";
 import { JsError } from "../utils/error";
 
+const deserializationGetParamValue = (value: string) => {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  if (value === "null") return null;
+  if (value === "undefined") return undefined;
+
+  const num = Number(value.trim());
+  if (!isNaN(num) && value.trim() !== "") return num;
+
+  try {
+    const parsed = JSON.parse(value);
+    if (typeof parsed === "object" || Array.isArray(parsed)) return parsed;
+  } catch {
+    return value;
+  }
+  return value;
+};
+
 function getParams<T>(this: Context): T;
 function getParams<T = string>(this: Context, key: string): T | undefined;
 function getParams<T>(this: Context, key?: string): T | undefined {
   const { method } = this.request;
 
   switch (method) {
-    case "GET":
-      if (key) return this.query[key] as any as T;
+    case "GET": {
+      if (key) {
+        const rawValue = this.query[key];
+        return rawValue !== undefined
+          ? (deserializationGetParamValue(rawValue) as T)
+          : undefined;
+      }
 
-      return (this.query ?? {}) as any as T;
+      const deserializedQuery = Object.keys(this.query ?? {}).reduce(
+        (acc, k) => {
+          acc[k] = deserializationGetParamValue(this.query[k] as string);
+          return acc;
+        },
+        {} as Record<string, any>
+      );
+
+      return deserializedQuery as T;
+    }
     case "POST":
       if (key) return this.request.body[key] as any as T;
 
