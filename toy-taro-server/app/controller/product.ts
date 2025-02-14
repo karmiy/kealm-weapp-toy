@@ -165,7 +165,7 @@ export default class ProductController extends Controller {
         category_id: model.category_id,
       },
       {
-        ignoreList: [0, undefined],
+        ignoreList: [undefined],
       }
     );
 

@@ -201,6 +201,9 @@ export default class Product extends Service {
       where: {
         group_id: groupId,
         is_deleted: 0,
+        stock: {
+          [Op.gt]: 0,
+        },
       },
       order: [["last_modified_time", "desc"]],
     });
