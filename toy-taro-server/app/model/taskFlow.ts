@@ -7,6 +7,7 @@ export interface TaskFlowModel {
   task_id: string;
   user_id: string;
   group_id: string;
+  approver_id?: string;
   create_time: Date;
   last_modified_time: Date;
   is_deleted: number;
@@ -48,6 +49,12 @@ export default (app: Application) => {
       type: INTEGER,
       get() {
         return String((this as any).getDataValue("user_id")); // 访问时自动转为字符串
+      },
+    },
+    approver_id: {
+      type: INTEGER,
+      get() {
+        return String((this as any).getDataValue("approver_id")); // 访问时自动转为字符串
       },
     },
     create_time: {

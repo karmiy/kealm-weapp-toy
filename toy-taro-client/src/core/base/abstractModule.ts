@@ -1,6 +1,9 @@
 import { Logger } from '@shared/utils/logger';
+import { ISDK } from '../types';
 
 export abstract class AbstractModule {
+  constructor(protected _sdk: ISDK) {}
+
   protected get _logger() {
     return Logger.getLogger(`[${this.moduleName()}]`);
   }

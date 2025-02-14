@@ -16,6 +16,7 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
   const { id } = props;
   const { isAdmin } = useUserInfo();
   const taskFlow = useStoreById(STORE_NAME.TASK_FLOW, id);
+  const approver = useStoreById(STORE_NAME.CONTACT, taskFlow?.approverId);
   const status = taskFlow?.status;
   const { isActionLoading, handleApprove, handleReject, currentActionId } = useTaskAction();
   const { taskId } = taskFlow ?? {};
@@ -92,6 +93,7 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
       categoryName={taskCategory?.name}
       operateTime={taskFlow.lastModifiedDate}
       createTime={taskFlow.createDate}
+      approverName={approver?.name}
       status={taskFlow.status}
       action={Action}
     />

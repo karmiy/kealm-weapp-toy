@@ -18,6 +18,7 @@ interface TaskCardProps {
   status?: TASK_STATUS;
   operateTime?: string;
   createTime?: string;
+  approverName?: string;
   action?: React.ReactNode;
 }
 
@@ -33,6 +34,7 @@ const TaskCard = (props: TaskCardProps) => {
     status,
     operateTime,
     createTime,
+    approverName,
     action,
     type = 'primary',
   } = props;
@@ -64,9 +66,15 @@ const TaskCard = (props: TaskCardProps) => {
             <Text>{operateTime}</Text>
           </View>
         ) : null}
+        {approverName ? (
+          <View className={styles.item}>
+            <Text>审批人：</Text>
+            <Text>{approverName}</Text>
+          </View>
+        ) : null}
       </View>
     );
-  }, [categoryName, createTime, operateTime, status, taskType]);
+  }, [categoryName, createTime, operateTime, status, taskType, approverName]);
 
   return (
     <View

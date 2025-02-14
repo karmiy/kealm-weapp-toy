@@ -21,6 +21,7 @@ import {
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
 import { mockCouponApi } from './coupon';
+import { mockUserApi } from './user';
 
 const verbNounMap: Record<string, string[]> = {
   完成: ['今日阅读任务', '功课', '数学练习', '拼图300片', '拼图500片', '拼图1000片', '英语听力'],
@@ -159,19 +160,26 @@ export const mockTaskApi = {
   [MOCK_API_NAME.GET_TASK_FLOW_LIST]: async (): Promise<TaskFlowEntity[]> => {
     await sleep(300);
     const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
+    const contactList = await mockUserApi[MOCK_API_NAME.GET_CONTACT_LIST]();
     return faker.helpers.multiple(
       () => {
+        const status = faker.helpers.arrayElement([
+          TASK_STATUS.PENDING_APPROVAL,
+          TASK_STATUS.APPROVED,
+          TASK_STATUS.REJECTED,
+        ]);
+        const approverId =
+          status !== TASK_STATUS.PENDING_APPROVAL
+            ? faker.helpers.arrayElement(contactList).id
+            : undefined;
         return {
           id: faker.string.uuid(),
           task_id: faker.helpers.arrayElement(taskList).id,
-          status: faker.helpers.arrayElement([
-            TASK_STATUS.PENDING_APPROVAL,
-            TASK_STATUS.APPROVED,
-            TASK_STATUS.REJECTED,
-          ]),
+          status,
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
           last_modified_time: faker.date.recent().getTime(),
+          approver_id: approverId,
         };
       },
       {

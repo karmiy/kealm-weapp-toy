@@ -7,10 +7,21 @@ import {
 } from "../utils/constants";
 import { Logger } from "../utils/logger";
 import { UserEntity } from "../entity/user";
+import { UserModel } from "../model/user";
 
 const logger = Logger.getLogger("[UserController]");
 
 export default class UserController extends Controller {
+  private _userModelToEntity(user: UserModel): UserEntity {
+    const userEntity: UserEntity = {
+      id: user.id,
+      name: user.username,
+      avatarUrl: user.avatar_url,
+      role: user.role,
+      score: user.score,
+    };
+    return userEntity;
+  }
   public async login() {
     const { ctx } = this;
     try {
@@ -139,13 +150,7 @@ export default class UserController extends Controller {
       const { userId } = ctx.getUserInfo();
       const user = await ctx.service.user.findUserById(userId);
 
-      const userEntity: UserEntity = {
-        id: user.id,
-        name: user.username,
-        avatarUrl: user.avatar_url,
-        role: user.role,
-        score: user.score,
-      };
+      const userEntity = this._userModelToEntity(user);
 
       ctx.responseSuccess({
         data: ctx.helper.cleanEmptyFields(userEntity),
@@ -186,6 +191,28 @@ export default class UserController extends Controller {
       logger
         .tag("[uploadProfile]")
         .error("upload profile error", jsError.message);
+      ctx.responseFail({
+        code: jsError.code,
+        message: jsError?.message,
+      });
+    }
+  }
+
+  public async getContactList() {
+    const { ctx } = this;
+    try {
+      const list = await ctx.service.user.getUserListOnGroup();
+
+      const contactList: UserEntity[] = list.map((item) => {
+        return this._userModelToEntity(item);
+      });
+      logger.tag("[getContactList]").info("list", contactList);
+
+      ctx.responseSuccess({
+        data: contactList,
+      });
+    } catch (error) {
+      const jsError = ctx.toJsError(error);
       ctx.responseFail({
         code: jsError.code,
         message: jsError?.message,

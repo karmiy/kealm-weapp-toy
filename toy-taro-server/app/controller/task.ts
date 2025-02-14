@@ -87,6 +87,7 @@ export default class TaskController extends Controller {
         task_id: model.task_id,
         status: model.status,
         user_id: model.user_id,
+        approver_id: model.approver_id,
         create_time: model.create_time.getTime(),
         last_modified_time: model.last_modified_time.getTime(),
       },

@@ -22,6 +22,7 @@ const syncContext = {
   syncTaskList: () => sdk.modules.task.syncTaskList(),
   syncCouponList: () => sdk.modules.coupon.syncCouponList(),
   syncUserInfo: () => sdk.modules.user.getUserInfo(),
+  syncContactList: () => sdk.modules.user.syncContactList(),
 };
 const syncApi = Object.keys(syncContext).reduce((acc, key) => {
   const api = debounceWithPromise(
@@ -86,13 +87,14 @@ export function useSyncOnPageShow(options?: {
               api.syncTaskFlowList(),
               api.syncTaskList(),
               api.syncUserInfo(),
+              api.syncContactList(),
             ]);
             break;
           case PAGE_ID.TASK_CATEGORY_MANAGE:
             await api.syncTaskCategoryList();
             break;
           case PAGE_ID.TASK_FLOW_MANAGE:
-            await api.syncTaskFlowList();
+            await Promise.all([api.syncTaskFlowList(), api.syncContactList()]);
             break;
           case PAGE_ID.MINE:
             await api.syncUserInfo();

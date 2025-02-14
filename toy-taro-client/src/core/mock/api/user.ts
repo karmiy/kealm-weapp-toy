@@ -2,8 +2,9 @@ import { faker } from '@faker-js/faker';
 import { sleep } from '@shared/utils/utils';
 import { UserStorageManager } from '../..//base';
 import { ROLE } from '../../constants';
-import { UserEntity } from '../../entity';
+import { ContactEntity, UserEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
+import { createMockApiCache } from '../utils';
 
 export const mockUserApi = {
   [MOCK_API_NAME.GET_USER_INFO]: async (): Promise<UserEntity> => {
@@ -36,4 +37,23 @@ export const mockUserApi = {
     await sleep(100);
     return Promise.resolve();
   },
+  [MOCK_API_NAME.GET_CONTACT_LIST]: createMockApiCache(async (): Promise<ContactEntity[]> => {
+    await sleep(1000);
+    return faker.helpers.multiple(
+      () => {
+        const role = Math.random() > 0.5 ? ROLE.ADMIN : ROLE.USER;
+        return {
+          id: faker.string.ulid(),
+          name: role === ROLE.ADMIN ? 'Little Sheep Susie' : '洪以妍',
+          avatarUrl:
+            'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/login-cover-image.png',
+          role,
+          score: role === ROLE.ADMIN ? undefined : faker.number.int({ min: 1, max: 100 }),
+        };
+      },
+      {
+        count: 5,
+      },
+    );
+  }),
 };

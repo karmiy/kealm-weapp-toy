@@ -1,6 +1,7 @@
 import { HANDLER_TYPE, STORE_NAME } from './constants';
 import {
   CheckInModel,
+  ContactModel,
   CouponModel,
   OrderModel,
   ProductCategoryModel,
@@ -55,6 +56,11 @@ const config = {
     type: HANDLER_TYPE.SINGLE as const,
     model: UserModel,
     sortValue: (a: UserModel, b: UserModel) => 1,
+  },
+  [STORE_NAME.CONTACT]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: ContactModel,
+    sortValue: (a: ContactModel, b: ContactModel) => a.id.localeCompare(b.id),
   },
   [STORE_NAME.ORDER]: {
     type: HANDLER_TYPE.MULTIPLE as const,
