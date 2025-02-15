@@ -18,15 +18,18 @@ export class TaskFlowModel {
   @observable
   lastModifiedTime: number;
 
+  approverId?: string;
+
   constructor(entity: TaskFlowEntity) {
     makeObserver(this);
-    const { id, task_id, status, user_id, create_time, last_modified_time } = entity;
+    const { id, task_id, status, user_id, create_time, last_modified_time, approver_id } = entity;
     this.id = id;
     this.taskId = task_id;
     this.status = status;
     this.userId = user_id;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
+    this.approverId = approver_id;
   }
 
   @computed

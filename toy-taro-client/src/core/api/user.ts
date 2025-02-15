@@ -1,5 +1,5 @@
 import { uploadFile } from '@tarojs/taro';
-import { UserEntity } from '../entity';
+import { ContactEntity, UserEntity } from '../entity';
 import { httpRequest } from '../httpRequest';
 import { mock, MOCK_API_NAME } from '../mock';
 
@@ -42,6 +42,13 @@ export class UserApi {
     return httpRequest.post<void>({
       url: '/user/uploadProfile',
       data: params,
+    });
+  }
+
+  @mock({ name: MOCK_API_NAME.GET_CONTACT_LIST })
+  static async getContactList(): Promise<ContactEntity[]> {
+    return httpRequest.get<ContactEntity[]>({
+      url: '/user/getContactList',
     });
   }
 }

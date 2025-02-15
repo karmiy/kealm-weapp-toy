@@ -87,6 +87,7 @@ export default class TaskController extends Controller {
         task_id: model.task_id,
         status: model.status,
         user_id: model.user_id,
+        approver_id: model.approver_id,
         create_time: model.create_time.getTime(),
         last_modified_time: model.last_modified_time.getTime(),
       },
@@ -398,7 +399,7 @@ export default class TaskController extends Controller {
         reward_minimum_order_value: couponModel?.minimum_order_value ?? null,
         difficulty: difficulty ?? 0,
         category_id,
-        user_id: userId,
+        user_id: !id ? userId : undefined,
       });
 
       if (!taskModel) {

@@ -194,13 +194,14 @@ export default class Product extends Service {
 
   async getProductList() {
     const { ctx } = this;
+    const { isAdmin } = ctx.getUserInfo();
     const { groupId } = ctx.getUserInfo();
-
     const products = await ctx.model.Product.findAll({
       // raw: true,
       where: {
         group_id: groupId,
         is_deleted: 0,
+        ...(!isAdmin ? { stock: { [Op.gt]: 0 } } : {}),
       },
       order: [["last_modified_time", "desc"]],
     });

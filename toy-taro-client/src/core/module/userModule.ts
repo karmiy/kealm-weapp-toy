@@ -9,8 +9,9 @@ export class UserModule extends AbstractModule {
   protected onLoad() {
     UserStorageManager.getInstance().init();
     this.syncUserLoginInfo();
-
     eventCenter.on(EVENT_KEYS.user.SYNC_USER_INFO, this._onSyncUserInfo);
+
+    this.syncContactList();
   }
   protected onUnload() {
     UserStorageManager.getInstance().dispose();
@@ -34,9 +35,17 @@ export class UserModule extends AbstractModule {
     this.getUserInfo();
   }
 
-  async getUserInfo() {
+  async getUserInfo(forceRemote = true) {
     try {
-      this._logger.info('getUserInfo');
+      this._logger.info('getUserInfo', {
+        forceRemote,
+      });
+      if (!forceRemote) {
+        const userInfo = UserStorageManager.getInstance().getUserInfo();
+        if (userInfo) {
+          return userInfo;
+        }
+      }
       const userInfo = await UserApi.getUserInfo();
       storeManager.emitUpdate(STORE_NAME.USER, {
         entities: [userInfo],
@@ -99,5 +108,16 @@ export class UserModule extends AbstractModule {
 
   getIsAdmin() {
     return UserStorageManager.getInstance().isAdmin;
+  }
+
+  getLocalUserInfo() {
+    return UserStorageManager.getInstance().getUserInfo();
+  }
+
+  async syncContactList() {
+    storeManager.startLoading(STORE_NAME.CONTACT);
+    const contactList = await UserApi.getContactList();
+    storeManager.refresh(STORE_NAME.CONTACT, contactList);
+    storeManager.stopLoading(STORE_NAME.CONTACT);
   }
 }

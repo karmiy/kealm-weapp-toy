@@ -10,6 +10,7 @@ export default (app: Application) => {
   router.post(getPath("/user/uploadAvatar"), controller.user.uploadAvatar);
   router.post(getPath("/user/uploadProfile"), controller.user.uploadProfile);
   router.get(getPath("/user/getUserInfo"), controller.user.getUserInfo);
+  router.get(getPath("/user/getContactList"), controller.user.getContactList);
 
   // product
   router.get(

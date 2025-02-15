@@ -159,4 +159,23 @@ export default class User extends Service {
       );
     }
   }
+
+  async getUserListOnGroup() {
+    const { ctx } = this;
+    const { groupId } = ctx.getUserInfo();
+    const users = await ctx.model.User.findAll({
+      // raw: true,
+      where: {
+        group_id: groupId,
+      },
+      order: [["id", "asc"]],
+    });
+
+    if (!users) {
+      logger.error("[getUserListOnGroup] cannot get user list");
+      return Promise.reject(new JsError(SERVER_CODE.NOT_FOUND, "列表获取失败"));
+    }
+    // 返回结果
+    return users as any as UserModel[];
+  }
 }

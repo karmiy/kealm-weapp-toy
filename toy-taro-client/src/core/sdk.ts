@@ -11,19 +11,11 @@ import {
   UserModule,
 } from './module';
 import { storeManager } from './storeManager';
-
-type Modules = {
-  product: ProductModule;
-  user: UserModule;
-  coupon: CouponModule;
-  task: TaskModule;
-  order: OrderModule;
-  checkIn: CheckInModule;
-};
+import { ISDK, Modules } from './types';
 
 const modulesConfig: Array<{
   weight: MODULE_WEIGHT;
-  module: new () => AbstractModule;
+  module: new (sdk: ISDK) => AbstractModule;
   alias: keyof Modules;
 }> = [
   {
@@ -84,7 +76,7 @@ class SDK {
       // const sortModulesConfig = [...modulesConfig].sort((a, b) => a.weight - b.weight);
       modulesConfig.forEach(config => {
         const { module: ModuleConstructor, alias, weight } = config;
-        this.modules[alias] = new (ModuleConstructor as any)();
+        this.modules[alias] = new (ModuleConstructor as any)(this);
 
         switch (weight) {
           case MODULE_WEIGHT.HIGH:

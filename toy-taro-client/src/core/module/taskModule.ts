@@ -62,6 +62,7 @@ export class TaskModule extends AbstractModule {
             id: taskFlowId,
             status,
             last_modified_time: new Date().getTime(),
+            approver_id: this._sdk.modules.user.getLocalUserInfo()?.id,
           },
         ],
       });

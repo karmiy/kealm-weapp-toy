@@ -1,7 +1,16 @@
 import type { Config } from './config';
+import {
+    CheckInModule,
+    CouponModule,
+    OrderModule,
+    ProductModule,
+    TaskModule,
+    UserModule,
+  } from './module';
 import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE } from './constants';
 import { CouponModel, TaskModel, ProductModel } from './model';
 
+ // ----------------------storeManager--------------------------------
 export type ConfigModels = {
     [K in keyof Config]: InstanceType<Config[K]['model']>;
 };
@@ -25,6 +34,20 @@ export type ModelsWithCategoryId = {
 export type SingleStoreNames = {
     [K in keyof Config]: Config[K]['type'] extends HANDLER_TYPE.SINGLE ? K : never;
 }[keyof Config];
+
+ // ----------------------sdk--------------------------------
+ export type Modules = {
+    product: ProductModule;
+    user: UserModule;
+    coupon: CouponModule;
+    task: TaskModule;
+    order: OrderModule;
+    checkIn: CheckInModule;
+};
+
+export type ISDK = {
+    modules: Modules;
+};
 
  // ----------------------product--------------------------------
  export type ProductUpdateParams = Pick<

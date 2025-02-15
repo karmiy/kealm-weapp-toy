@@ -7,3 +7,5 @@ export interface UserEntity {
   role: ROLE;
   score?: number;
 }
+
+export type ContactEntity = UserEntity;

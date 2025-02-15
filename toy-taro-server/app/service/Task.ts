@@ -244,6 +244,7 @@ export default class Task extends Service {
           ...fields,
           group_id: groupId,
           ...(isAdmin ? {} : { user_id: userId }),
+          approver_id: isAdmin ? userId : null,
         },
         {
           returning: true,
