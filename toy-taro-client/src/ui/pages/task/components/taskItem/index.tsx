@@ -59,6 +59,7 @@ const TaskItem = (props: TaskItemProps) => {
       contentSpace='small'
       rewardTitle={task.getRewardTitleWithCoupon(coupon)}
       difficulty={difficulty}
+      creatorType='creator'
       creatorName={creator?.name}
       action={
         isAdmin ? (

@@ -94,6 +94,7 @@ const TaskFlowItem = (props: TaskFlowItemProps) => {
       categoryName={taskCategory?.name}
       operateTime={taskFlow.lastModifiedDate}
       createTime={taskFlow.createDate}
+      creatorType='initiator'
       creatorName={creator?.name}
       approverName={approver?.name}
       status={taskFlow.status}

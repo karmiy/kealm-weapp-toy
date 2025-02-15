@@ -19,10 +19,16 @@ interface TaskCardProps {
   status?: TASK_STATUS;
   operateTime?: string;
   createTime?: string;
+  creatorType?: 'creator' | 'initiator';
   creatorName?: string;
   approverName?: string;
   action?: React.ReactNode;
 }
+
+const CREATOR_LABEL = {
+  creator: '发布人',
+  initiator: '发起人',
+};
 
 const TaskCard = (props: TaskCardProps) => {
   const {
@@ -37,6 +43,7 @@ const TaskCard = (props: TaskCardProps) => {
     status,
     operateTime,
     createTime,
+    creatorType = 'creator',
     creatorName,
     approverName,
     action,
@@ -54,17 +61,17 @@ const TaskCard = (props: TaskCardProps) => {
         </View>
       ) : null;
 
+    const creatorContent = creatorName ? (
+      <View className={styles.item}>
+        <Text>{CREATOR_LABEL[creatorType]}：</Text>
+        <Text>{creatorName}</Text>
+      </View>
+    ) : null;
+
     const createTimeContent = createTime ? (
       <View className={styles.item}>
         <Text>任务开始时间：</Text>
         <Text>{createTime}</Text>
-      </View>
-    ) : null;
-
-    const creatorContent = creatorName ? (
-      <View className={styles.item}>
-        <Text>发起人：</Text>
-        <Text>{creatorName}</Text>
       </View>
     ) : null;
 
@@ -109,13 +116,14 @@ const TaskCard = (props: TaskCardProps) => {
     );
   }, [
     status,
-    contentSpace,
     taskType,
     categoryName,
+    creatorName,
+    creatorType,
     createTime,
     operateTime,
     approverName,
-    creatorName,
+    contentSpace,
   ]);
 
   return (
