@@ -399,7 +399,7 @@ export default class TaskController extends Controller {
         reward_minimum_order_value: couponModel?.minimum_order_value ?? null,
         difficulty: difficulty ?? 0,
         category_id,
-        user_id: userId,
+        user_id: !id ? userId : undefined,
       });
 
       if (!taskModel) {

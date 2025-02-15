@@ -15,6 +15,7 @@ interface TaskItemProps {
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
   const task = useStoreById(STORE_NAME.TASK, id);
+  const creator = useStoreById(STORE_NAME.CONTACT, task?.userId);
   const coupon = useStoreById(
     STORE_NAME.COUPON,
     task?.reward.type !== TASK_REWARD_TYPE.POINTS ? task?.reward?.couponId : undefined,
@@ -55,8 +56,10 @@ const TaskItem = (props: TaskItemProps) => {
     <TaskCard
       name={task.name}
       desc={task.desc}
+      contentSpace='small'
       rewardTitle={task.getRewardTitleWithCoupon(coupon)}
       difficulty={difficulty}
+      creatorName={creator?.name}
       action={
         isAdmin ? (
           <Button type='plain' disabled={isActionLoading} icon='edit' onClick={handleEdit}>

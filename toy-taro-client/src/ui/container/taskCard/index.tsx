@@ -11,6 +11,7 @@ interface TaskCardProps {
   type?: 'primary' | 'plain';
   name: string;
   desc: string;
+  contentSpace?: 'small' | 'medium';
   rewardTitle: string;
   difficulty: number;
   taskType?: TASK_TYPE;
@@ -18,6 +19,7 @@ interface TaskCardProps {
   status?: TASK_STATUS;
   operateTime?: string;
   createTime?: string;
+  creatorName?: string;
   approverName?: string;
   action?: React.ReactNode;
 }
@@ -27,6 +29,7 @@ const TaskCard = (props: TaskCardProps) => {
     className,
     name,
     desc,
+    contentSpace = 'medium',
     rewardTitle,
     difficulty,
     taskType,
@@ -34,47 +37,86 @@ const TaskCard = (props: TaskCardProps) => {
     status,
     operateTime,
     createTime,
+    creatorName,
     approverName,
     action,
     type = 'primary',
   } = props;
 
   const Content = useMemo(() => {
-    if (!taskType || !categoryName || !operateTime) {
+    const operateTimeTitle = status ? OPERATE_TIME_TITLE[status] : '';
+
+    const taskTypeContent =
+      taskType && categoryName ? (
+        <View className={styles.item}>
+          <Text>任务类型：</Text>
+          <Text>{`${TASK_TYPE_LABEL[taskType]} - ${categoryName}`}</Text>
+        </View>
+      ) : null;
+
+    const createTimeContent = createTime ? (
+      <View className={styles.item}>
+        <Text>任务开始时间：</Text>
+        <Text>{createTime}</Text>
+      </View>
+    ) : null;
+
+    const creatorContent = creatorName ? (
+      <View className={styles.item}>
+        <Text>发起人：</Text>
+        <Text>{creatorName}</Text>
+      </View>
+    ) : null;
+
+    const operateTimeContent =
+      operateTime && operateTimeTitle ? (
+        <View className={styles.item}>
+          <Text>{operateTimeTitle}：</Text>
+          <Text>{operateTime}</Text>
+        </View>
+      ) : null;
+
+    const approverContent = approverName ? (
+      <View className={styles.item}>
+        <Text>审批人：</Text>
+        <Text>{approverName}</Text>
+      </View>
+    ) : null;
+
+    if (
+      !taskTypeContent &&
+      !createTimeContent &&
+      !operateTimeContent &&
+      !approverContent &&
+      !creatorContent
+    ) {
       return null;
     }
 
-    const operateTimeTitle = status ? OPERATE_TIME_TITLE[status] : '';
-
     return (
-      <View className={styles.content}>
-        {taskType && categoryName ? (
-          <View className={styles.item}>
-            <Text>任务类型：</Text>
-            <Text>{`${TASK_TYPE_LABEL[taskType]} - ${categoryName}`}</Text>
-          </View>
-        ) : null}
-        {createTime ? (
-          <View className={styles.item}>
-            <Text>任务开始时间：</Text>
-            <Text>{createTime}</Text>
-          </View>
-        ) : null}
-        {operateTime && operateTimeTitle ? (
-          <View className={styles.item}>
-            <Text>{operateTimeTitle}：</Text>
-            <Text>{operateTime}</Text>
-          </View>
-        ) : null}
-        {approverName ? (
-          <View className={styles.item}>
-            <Text>审批人：</Text>
-            <Text>{approverName}</Text>
-          </View>
-        ) : null}
+      <View
+        className={clsx(styles.content, {
+          [styles.isSpaceMedium]: contentSpace === 'medium',
+          [styles.isSpaceSmall]: contentSpace === 'small',
+        })}
+      >
+        {taskTypeContent}
+        {creatorContent}
+        {createTimeContent}
+        {operateTimeContent}
+        {approverContent}
       </View>
     );
-  }, [categoryName, createTime, operateTime, status, taskType, approverName]);
+  }, [
+    status,
+    contentSpace,
+    taskType,
+    categoryName,
+    createTime,
+    operateTime,
+    approverName,
+    creatorName,
+  ]);
 
   return (
     <View

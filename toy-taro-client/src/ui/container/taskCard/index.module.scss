@@ -43,12 +43,19 @@
   }
 
   .content {
-    margin-top: px(14);
     font-size: px(12);
     color: $--text-color-secondary;
 
     .item + .item {
       margin-top: px(4);
+    }
+
+    &.isSpaceSmall {
+      margin-top: px(6);
+    }
+
+    &.isSpaceMedium {
+      margin-top: px(14);
     }
   }
 
