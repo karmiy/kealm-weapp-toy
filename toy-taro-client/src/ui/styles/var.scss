@@ -15,6 +15,26 @@ $--color-red-opacity-4: rgba($--color-red, 0.2);
 $--color-black: #000;
 $--color-white: #fff;
 
+$--color-white-opacity-1: rgba($--color-white, 0.1);
+$--color-white-opacity-2: rgba($--color-white, 0.2);
+$--color-white-opacity-3: rgba($--color-white, 0.3);
+$--color-white-opacity-4: rgba($--color-white, 0.4);
+$--color-white-opacity-5: rgba($--color-white, 0.5);
+$--color-white-opacity-6: rgba($--color-white, 0.6);
+$--color-white-opacity-7: rgba($--color-white, 0.7);
+$--color-white-opacity-8: rgba($--color-white, 0.8);
+$--color-white-opacity-9: rgba($--color-white, 0.9);
+
+$--color-black-opacity-1: rgba($--color-black, 0.1);
+$--color-black-opacity-2: rgba($--color-black, 0.2);
+$--color-black-opacity-3: rgba($--color-black, 0.3);
+$--color-black-opacity-4: rgba($--color-black, 0.4);
+$--color-black-opacity-5: rgba($--color-black, 0.5);
+$--color-black-opacity-6: rgba($--color-black, 0.6);
+$--color-black-opacity-7: rgba($--color-black, 0.7);
+$--color-black-opacity-8: rgba($--color-black, 0.8);
+$--color-black-opacity-9: rgba($--color-black, 0.9);
+
 /* Text Color */
 $--text-color-base: #333 !default;         // 主要文字颜色
 $--text-color-base-inverse: #fff !default; // 文字反色

@@ -29,4 +29,5 @@ export enum PAGE_ID {
     PRODUCT_CATEGORY_MANAGE = 'productCategoryManage',
     PRODUCT_SEARCH = 'productSearch',
     PRODUCT_FRESH_ARRIVAL = 'productFreshArrival',
+    LUCKY_DRAW = 'luckyDraw',
 }

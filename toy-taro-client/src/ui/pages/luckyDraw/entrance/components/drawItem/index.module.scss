@@ -1,0 +1,37 @@
+@import '@ui/styles/index.scss';
+
+.drawItemWrapper {
+  border-radius: px(16);
+  background-color: $--fill-default;
+  overflow: hidden;
+  box-shadow: $--box-shadow-menu;
+
+  .coverImg {
+    height: px(200);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-lucky-cover.png');
+  }
+
+  .content {
+    padding: px(16);
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: px(16);
+
+      .label {
+        font-size: px(18);
+        font-weight: bold;
+      }
+
+      .tip {
+        font-size: px(14);
+        color: $--color-red;
+      }
+    }
+  }
+}

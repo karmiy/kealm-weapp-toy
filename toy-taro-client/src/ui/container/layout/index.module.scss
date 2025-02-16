@@ -8,6 +8,11 @@
   .scrollView {
     height: 100%;
 
+    .plainContainer {
+      box-sizing: border-box;
+      padding: px(12) px(16);
+    }
+
     .cardContainer {
       box-sizing: border-box;
       padding: px(12) px(16);

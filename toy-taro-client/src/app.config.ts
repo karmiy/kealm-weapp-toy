@@ -88,6 +88,10 @@ export default defineAppConfig({
       root: 'ui/pages/productFreshArrival/',
       pages: ['index'],
     },
+    {
+      root: 'ui/pages/luckyDraw/',
+      pages: ['entrance/index'],
+    },
   ],
-  // entryPagePath: 'ui/pages/productSearch/index',
+  entryPagePath: 'ui/pages/luckyDraw/entrance/index',
 });

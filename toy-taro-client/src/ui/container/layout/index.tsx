@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 
 interface LayoutProps {
   className?: string;
-  type: 'card';
+  type: 'card' | 'plain';
   scrollViewProps?: ScrollViewProps;
 }
 
@@ -19,6 +19,12 @@ const Layout = (props: PropsWithChildren<LayoutProps>) => {
         {type === 'card' ? (
           <View className={styles.cardContainer}>
             <View className={styles.cardList}>{children}</View>
+            <SafeAreaBar inset='bottom' />
+          </View>
+        ) : null}
+        {type === 'plain' ? (
+          <View className={styles.plainContainer}>
+            {children}
             <SafeAreaBar inset='bottom' />
           </View>
         ) : null}

@@ -20,6 +20,7 @@ const pagePathMap = new Map<PAGE_ID, string>([
   [PAGE_ID.PRODUCT_CATEGORY_MANAGE, 'productManage/categoryManage'],
   [PAGE_ID.COUPON, 'coupon/entrance'],
   [PAGE_ID.COUPON_MANAGE, 'coupon/couponManage'],
+  [PAGE_ID.LUCKY_DRAW, 'luckyDraw/entrance'],
 ]);
 /* 跳转页面 */
 export function navigateToPage(options: NavigateOptions) {
