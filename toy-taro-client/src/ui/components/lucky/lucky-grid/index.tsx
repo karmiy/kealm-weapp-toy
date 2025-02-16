@@ -59,7 +59,7 @@ const layoutConfigMap = new Map<number, PrizeConfig>([
         font: { top: '60%', fontSize: 14 },
         img: { width: 40, height: 40, top: '10%' },
       },
-      button: { x: 1, y: 1, width: '110%', height: '110%', top: '-5%', col: 1, row: 1 },
+      button: { x: 1, y: 1, width: '150%', height: '150%', top: '-25%', col: 1, row: 1 },
     },
   ],
   [
@@ -73,7 +73,7 @@ const layoutConfigMap = new Map<number, PrizeConfig>([
         font: { top: '60%', fontSize: 12 },
         img: { width: 30, height: 30, top: '10%' },
       },
-      button: { x: 2, y: 1, width: '110%', height: '110%', top: '-5%', col: 1, row: 1 },
+      button: { x: 2, y: 1, width: '150%', height: '150%', top: '-25%', col: 1, row: 1 },
     },
   ],
   [
@@ -87,7 +87,7 @@ const layoutConfigMap = new Map<number, PrizeConfig>([
         font: { top: '60%', fontSize: 12 },
         img: { width: 30, height: 30, top: '10%' },
       },
-      button: { x: 1, y: 2, width: '110%', height: '110%', top: '-5%', col: 1, row: 1 },
+      button: { x: 1, y: 2, width: '150%', height: '150%', top: '-25%', col: 1, row: 1 },
     },
   ],
   [
@@ -101,7 +101,7 @@ const layoutConfigMap = new Map<number, PrizeConfig>([
         font: { top: '55%', fontSize: 10 },
         img: { width: 24, height: 24, top: '6%' },
       },
-      button: { x: 1, y: 2, width: '110%', height: '110%', top: '-5%', col: 1, row: 1 },
+      button: { x: 1, y: 2, width: '150%', height: '150%', top: '-25%', col: 1, row: 1 },
     },
   ],
   [
@@ -115,7 +115,7 @@ const layoutConfigMap = new Map<number, PrizeConfig>([
         font: { top: '55%', fontSize: 10 },
         img: { width: 24, height: 24, top: '6%' },
       },
-      button: { x: 2, y: 2, width: '110%', height: '110%', top: '-5%', col: 1, row: 1 },
+      button: { x: 2, y: 2, width: '150%', height: '150%', top: '-25%', col: 1, row: 1 },
     },
   ],
 ]);
