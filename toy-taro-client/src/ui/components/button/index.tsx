@@ -2,7 +2,7 @@ import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import { Button as TaroButton, ITouchEvent, View } from '@tarojs/components';
 import { clsx } from 'clsx';
 import { Undefinable } from '@shared/types';
-import { colorToRgba } from '@shared/utils/color';
+import { hexToRgba } from '@shared/utils/color';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Icon, IconNames } from '../icon';
 import styles from './index.module.scss';
@@ -50,7 +50,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
 
   const customStyles = useMemo(() => {
     const baseStyles: Record<string, Undefinable<string | number>> = {
-      '--button-plain-active-color': colorToRgba(color ?? COLOR_VARIABLES.COLOR_RED, 0.1),
+      '--button-plain-active-color': hexToRgba(color ?? COLOR_VARIABLES.COLOR_RED, 0.1),
       width,
       padding: typeof width !== 'undefined' ? 0 : undefined,
     };
