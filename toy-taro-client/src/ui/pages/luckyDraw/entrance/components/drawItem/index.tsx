@@ -12,7 +12,7 @@ export function DrawItem() {
           <View className={styles.tip}>需要3张券</View>
         </View>
         <Button size='large' width='100%' icon='gift-fill'>
-          去抽奖
+          去祈愿
         </Button>
       </View>
     </View>

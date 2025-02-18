@@ -1,4 +1,4 @@
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment } from 'react';
 import { View } from '@tarojs/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Icon, WhiteSpace } from '@ui/components';
@@ -13,7 +13,7 @@ export default function () {
         <View className={styles.headerCoverImg} />
         <View className={styles.headerContent}>
           <Icon name='gift-fill' size={16} color={COLOR_VARIABLES.COLOR_RED} />
-          <View className={styles.title}>我的抽奖券:</View>
+          <View className={styles.title}>我的祈愿券:</View>
           <View className={styles.info}>8张</View>
         </View>
       </View>

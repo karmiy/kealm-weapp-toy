@@ -21,6 +21,7 @@ const pagePathMap = new Map<PAGE_ID, string>([
   [PAGE_ID.COUPON, 'coupon/entrance'],
   [PAGE_ID.COUPON_MANAGE, 'coupon/couponManage'],
   [PAGE_ID.LUCKY_DRAW, 'luckyDraw/entrance'],
+  [PAGE_ID.LUCKY_DRAW_DETAIL, 'luckyDraw/detail'],
 ]);
 /* 跳转页面 */
 export function navigateToPage(options: NavigateOptions) {

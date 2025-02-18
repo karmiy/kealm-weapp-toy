@@ -30,4 +30,5 @@ export enum PAGE_ID {
     PRODUCT_SEARCH = 'productSearch',
     PRODUCT_FRESH_ARRIVAL = 'productFreshArrival',
     LUCKY_DRAW = 'luckyDraw',
+    LUCKY_DRAW_DETAIL = 'luckyDrawDetail',
 }

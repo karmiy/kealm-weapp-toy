@@ -1,0 +1,49 @@
+@import '@ui/styles/index.scss';
+
+.recordItemWrapper {
+  display: flex;
+  padding: px(16);
+  align-items: center;
+
+  &.line {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: px(0.5);
+      background-color: $--color-divider-base;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  .coverImg {
+    width: px(48);
+    height: px(48);
+    margin-right: px(12);
+    flex-shrink: 0;
+  }
+
+  .contentWrapper {
+    flex: 1;
+
+    .title {
+      font-size: px(14);
+      color: $--color-red;
+
+      @include single-line-ellipsis;
+    }
+
+    .secondary {
+      font-size: px(12);
+      color: $--text-color-secondary;
+      @include single-line-ellipsis;
+
+      text + text {
+        margin-left: px(4);
+      }
+    }
+  }
+}
