@@ -3,20 +3,21 @@ import clsx from 'clsx';
 import { FallbackImage } from '@ui/components';
 import styles from './index.module.scss';
 
-interface RecordItemProps {
+interface PrizeItemProps {
+  id: string;
   line?: boolean;
 }
-export function RecordItem(props: RecordItemProps) {
-  const { line = true } = props;
+export function PrizeItem(props: PrizeItemProps) {
+  const { id, line = true } = props;
 
   return (
-    <View className={clsx(styles.recordItemWrapper, { [styles.line]: line })}>
+    <View className={clsx(styles.prizeItemWrapper, { [styles.line]: line })}>
       <FallbackImage
         className={styles.coverImg}
         src='https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-red-envelop.png'
       />
       <View className={styles.contentWrapper}>
-        <View className={styles.title}>5折券</View>
+        <View className={styles.title}>5折券({id})</View>
         <View className={styles.secondary}>
           <Text>祈愿人:</Text>
           <Text>洪以妍</Text>

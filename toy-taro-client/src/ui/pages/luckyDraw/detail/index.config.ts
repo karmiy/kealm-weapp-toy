@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '幸运抽奖',
+  navigationBarTitleText: '祈愿池',
   disableScroll: true,
 });

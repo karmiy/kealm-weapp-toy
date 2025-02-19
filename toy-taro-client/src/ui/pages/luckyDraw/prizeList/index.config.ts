@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '祈愿广场',
+  navigationBarTitleText: '我的祈愿记录',
   disableScroll: true,
 });

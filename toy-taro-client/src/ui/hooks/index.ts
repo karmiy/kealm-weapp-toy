@@ -5,3 +5,4 @@ export * from './useGetSet';
 export * from './useConsistentFunc';
 export * from './useLoading';
 export * from './useSyncOnPageShow';
+export * from './useLoadMore';
