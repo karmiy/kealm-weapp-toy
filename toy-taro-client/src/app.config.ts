@@ -90,8 +90,8 @@ export default defineAppConfig({
     },
     {
       root: 'ui/pages/luckyDraw/',
-      pages: ['entrance/index', 'detail/index', 'prizeList/index'],
+      pages: ['entrance/index', 'detail/index', 'history/index', 'configuration/index'],
     },
   ],
-  // entryPagePath: 'ui/pages/luckyDraw/entrance/index',
+  entryPagePath: 'ui/pages/luckyDraw/configuration/index',
 });
