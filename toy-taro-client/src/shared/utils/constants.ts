@@ -31,5 +31,6 @@ export enum PAGE_ID {
     PRODUCT_FRESH_ARRIVAL = 'productFreshArrival',
     LUCKY_DRAW = 'luckyDraw',
     LUCKY_DRAW_DETAIL = 'luckyDrawDetail',
-    LUCKY_PRIZE_LIST = 'luckyPrizeList',
+    LUCKY_DRAW_HISTORY = 'luckyDrawHistory',
+    LUCKY_DRAW_CONFIGURATION = 'luckyDrawConfiguration',
 }

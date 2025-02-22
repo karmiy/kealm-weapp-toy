@@ -1,0 +1,30 @@
+@import '@ui/styles/index.scss';
+
+.dragSortList {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: px(40);
+  text-align: center;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  // transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.dragging {
+  background: #ffe4b5;
+  opacity: 0.8;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+

@@ -14,7 +14,7 @@ export default function () {
         <View className={styles.prizeListEntrance}>
           <View
             className={styles.action}
-            onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_PRIZE_LIST })}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_HISTORY })}
           >
             我的祈愿记录
             <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />

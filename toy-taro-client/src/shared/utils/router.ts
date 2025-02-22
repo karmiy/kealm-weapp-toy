@@ -22,7 +22,8 @@ const pagePathMap = new Map<PAGE_ID, string>([
   [PAGE_ID.COUPON_MANAGE, 'coupon/couponManage'],
   [PAGE_ID.LUCKY_DRAW, 'luckyDraw/entrance'],
   [PAGE_ID.LUCKY_DRAW_DETAIL, 'luckyDraw/detail'],
-  [PAGE_ID.LUCKY_PRIZE_LIST, 'luckyDraw/prizeList'],
+  [PAGE_ID.LUCKY_DRAW_HISTORY, 'luckyDraw/history'],
+  [PAGE_ID.LUCKY_DRAW_CONFIGURATION, 'luckyDraw/configuration'],
 ]);
 /* 跳转页面 */
 export function navigateToPage(options: NavigateOptions) {
