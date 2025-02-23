@@ -9,8 +9,10 @@ interface ConfigListPanelProps {
   title: string;
   addButtonText?: string;
   list: Array<{ id: string } & Record<string, any>>;
-  labelKey: string;
+  renderContent: (params: { id: string; index: number }) => React.ReactNode;
   onAdd?: () => void;
+  editable?: boolean;
+  deletable?: boolean;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => Promise<void>;
   scrollViewProps?: ScrollViewProps;
@@ -19,11 +21,13 @@ interface ConfigListPanelProps {
 export const ConfigListPanel = (props: ConfigListPanelProps) => {
   const {
     list,
-    labelKey,
+    renderContent,
     title,
     addButtonText = '新增',
     scrollViewProps,
     onAdd,
+    editable = true,
+    deletable = true,
     onEdit,
     onDelete,
   } = props;
@@ -44,9 +48,11 @@ export const ConfigListPanel = (props: ConfigListPanelProps) => {
               {index !== 0 ? <WhiteSpace size='medium' /> : null}
               <ConfigItem
                 id={item.id}
-                label={item[labelKey] as string}
+                renderContent={({ id }) => renderContent({ id, index })}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                editable={editable}
+                deletable={deletable}
               />
             </Fragment>
           );

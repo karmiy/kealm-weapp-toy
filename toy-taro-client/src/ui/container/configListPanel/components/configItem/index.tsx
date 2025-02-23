@@ -1,19 +1,20 @@
 import { useCallback, useState } from 'react';
 import { ITouchEvent, Text, View } from '@tarojs/components';
-import { showModal } from '@shared/utils/operateFeedback';
-import { Icon, WhiteSpace } from '@ui/components';
+import { Icon } from '@ui/components';
 import { COLOR_VARIABLES } from '@/shared/utils/constants';
 import styles from './index.module.scss';
 
 interface ConfigItemProps {
   id: string;
-  label: string;
+  renderContent: (params: { id: string }) => React.ReactNode;
+  editable?: boolean;
+  deletable?: boolean;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => Promise<void>;
 }
 
 export const ConfigItem = (props: ConfigItemProps) => {
-  const { id, label, onEdit, onDelete } = props;
+  const { id, renderContent, editable = true, deletable = true, onEdit, onDelete } = props;
   const [isActionLoading, setIsActionLoading] = useState(false);
   const handleEdit = useCallback(
     (e: ITouchEvent) => {
@@ -40,15 +41,20 @@ export const ConfigItem = (props: ConfigItemProps) => {
 
   return (
     <View className={styles.configItemWrapper}>
-      <Text>{label}</Text>
+      <View className={styles.contentWrapper}>
+        <Text>{renderContent({ id })}</Text>
+      </View>
       <View className={styles.actionWrapper}>
-        <View onClick={handleEdit}>
-          <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
-        </View>
-        <WhiteSpace isVertical={false} size='small' />
-        <View onClick={handleDelete}>
-          <Icon name='delete' color={COLOR_VARIABLES.TEXT_COLOR_BASE} />
-        </View>
+        {editable && (
+          <View className={styles.actionItem} onClick={handleEdit}>
+            <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
+          </View>
+        )}
+        {deletable && (
+          <View className={styles.actionItem} onClick={handleDelete}>
+            <Icon name='delete' color={COLOR_VARIABLES.TEXT_COLOR_BASE} />
+          </View>
+        )}
       </View>
     </View>
   );
