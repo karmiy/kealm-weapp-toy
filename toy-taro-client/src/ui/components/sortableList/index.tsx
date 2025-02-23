@@ -30,6 +30,7 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
   const areaPageRef = useRef<{ min: number; max: number } | null>(null);
   const touchInfoRef = useRef({
     startReady: false,
+    startMove: false,
   });
 
   const [getStartY, setStartY] = useGetSet(0);
@@ -110,6 +111,7 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
         // touch start 时需要计算元素信息
         return;
       }
+      touchInfoRef.current.startMove = true;
       draggingPromiseTaskRef.current = new Promise(resolve => {
         nextTick(() => {
           const { pageY } = e.changedTouches[0];
@@ -138,6 +140,11 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
   const onTouchEnd = useCallback(
     async (e: any) => {
       e.stopPropagation();
+      // 触碰一下也会算 touchStart, touchEnd，所以需要至少有 touchMove 事件
+      if (!touchInfoRef.current.startMove) {
+        return;
+      }
+      touchInfoRef.current.startMove = false;
       await draggingPromiseTaskRef.current;
       draggingPromiseTaskRef.current = null;
       setDraggingData({
