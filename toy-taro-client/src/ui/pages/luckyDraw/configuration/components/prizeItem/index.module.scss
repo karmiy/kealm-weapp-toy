@@ -17,6 +17,22 @@
     margin-left: px(4);
     width: px(28);
     height: px(28);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: $--fill-fallback;
+
+    &.isPoints {
+      background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-red-envelop.png');
+    }
+
+    &.isCoupon {
+      background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-coupon.png');
+    }
+
+    &.isNone {
+      background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-sad.png');
+    }
   }
 
   .contentWrapper {

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { View } from '@tarojs/components';
+import clsx from 'clsx';
 import { STORE_NAME } from '@core';
 import { FallbackImage, Icon } from '@ui/components';
 import { useStoreById } from '@ui/viewModel';
@@ -53,7 +54,15 @@ export function PrizeItem(props: PrizeItemProps) {
       <View className={styles.sortIconWrapper}>
         <Icon name='sort' size={16} color={COLOR_VARIABLES.TEXT_COLOR_SECONDARY} />
       </View>
-      <FallbackImage className={styles.coverImg} src={PRIZE_COVER_IMG[type]} />
+      {/* 用 image 排序后会闪烁出排序前的那张图，应该是因为 image 会有缓存之前的图片 */}
+      {/* <FallbackImage className={styles.coverImg} src={PRIZE_COVER_IMG[type]} /> */}
+      <View
+        className={clsx(styles.coverImg, {
+          [styles.isPoints]: type === PRIZE_TYPE.POINTS,
+          [styles.isCoupon]: type === PRIZE_TYPE.COUPON,
+          [styles.isNone]: type === PRIZE_TYPE.NONE,
+        })}
+      />
       <View className={styles.contentWrapper}>
         <View className={styles.title}>{title}</View>
         <View className={styles.desc}>{desc}</View>
