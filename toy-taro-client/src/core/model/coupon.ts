@@ -82,6 +82,9 @@ export class CouponModel {
     return '全场商品可用';
   }
 
+  // 优惠券折扣信息
+  // 满减: 5
+  // 折扣: 5折
   @computed
   get discountTip() {
     if (this.type === COUPON_TYPE.CASH_DISCOUNT) {
@@ -90,6 +93,8 @@ export class CouponModel {
     return `${this.value / 10}折`;
   }
 
+  // 优惠券门槛信息
+  // 无门槛、满200可用
   @computed
   get conditionTip() {
     if (this.minimumOrderValue === 0) {
@@ -98,6 +103,19 @@ export class CouponModel {
     return `满${this.minimumOrderValue}可用`;
   }
 
+  // 优惠券描述信息
+  // 满减: 减8(满200可用)
+  // 折扣: 5折(满200可用)
+  @computed
+  get descriptionTip() {
+    const discount =
+      this.type === COUPON_TYPE.CASH_DISCOUNT ? `减${this.value}` : `${this.value / 10}折`;
+    return `${discount}(${this.conditionTip})`;
+  }
+
+  // 优惠券详情信息
+  // 满减: 勇敢萌宝专享券 减8(满200可用)
+  // 折扣: 勇敢萌宝专享券 5折(满200可用)
   @computed
   get detailTip() {
     const discount =

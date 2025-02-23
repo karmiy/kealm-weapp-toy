@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // present | present-fill | task | delete | product | edit | loading | empty | exchange-record | coupon | star-fill | star | close | arrow-up | arrow-down | arrow-right | arrow-left | uncheck | check | add | minus | cart-add-fill | check-in
+    // sort | present | present-fill | task | delete | product | edit | loading | empty | exchange-record | coupon | star-fill | star | close | arrow-up | arrow-down | arrow-right | arrow-left | uncheck | check | add | minus | cart-add-fill | check-in
     name: {
       type: String,
     },
