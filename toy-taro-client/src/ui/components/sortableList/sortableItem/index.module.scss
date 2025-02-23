@@ -1,7 +1,7 @@
 @import '@ui/styles/index.scss';
 
 .sortableItem {
-  display: flex;
+  // display: flex;
 
   &.isDragging {
     transition: transform 0.2s ease;
