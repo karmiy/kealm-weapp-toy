@@ -6,6 +6,7 @@ import {
   CheckInModule,
   CouponModule,
   OrderModule,
+  PrizeModule,
   ProductModule,
   TaskModule,
   UserModule,
@@ -47,6 +48,11 @@ const modulesConfig: Array<{
     weight: MODULE_WEIGHT.NORMAL,
     module: CheckInModule,
     alias: 'checkIn',
+  },
+  {
+    weight: MODULE_WEIGHT.NORMAL,
+    module: PrizeModule,
+    alias: 'prize',
   },
 ];
 

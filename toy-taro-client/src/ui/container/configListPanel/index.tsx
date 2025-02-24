@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { ScrollViewProps, Text, View } from '@tarojs/components';
-import { StatusWrapper, WhiteSpace } from '@ui/components';
+import { SortableItem, SortableList, StatusWrapper, WhiteSpace } from '@ui/components';
 import { Layout } from '@ui/container';
 import { ConfigItem } from './components';
 import styles from './index.module.scss';
@@ -16,6 +16,9 @@ interface ConfigListPanelProps {
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => Promise<void>;
   scrollViewProps?: ScrollViewProps;
+  sortable?: boolean;
+  onSortStart?: () => void;
+  onSortEnd?: (params: { oldIndex: number; newIndex: number }) => void;
 }
 
 export const ConfigListPanel = (props: ConfigListPanelProps) => {
@@ -30,7 +33,11 @@ export const ConfigListPanel = (props: ConfigListPanelProps) => {
     deletable = true,
     onEdit,
     onDelete,
+    sortable = false,
+    onSortStart,
+    onSortEnd,
   } = props;
+  const listSize = list.length;
 
   return (
     <Layout type='card' scrollViewProps={scrollViewProps}>
@@ -42,21 +49,23 @@ export const ConfigListPanel = (props: ConfigListPanelProps) => {
       </View>
 
       <StatusWrapper count={list.length} size='flex'>
-        {list.map((item, index) => {
-          return (
-            <Fragment key={item.id}>
-              {index !== 0 ? <WhiteSpace size='medium' /> : null}
-              <ConfigItem
-                id={item.id}
-                renderContent={({ id }) => renderContent({ id, index })}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                editable={editable}
-                deletable={deletable}
-              />
-            </Fragment>
-          );
-        })}
+        <SortableList disabled={!sortable} onSortStart={onSortStart} onSortEnd={onSortEnd}>
+          {list.map((item, index) => {
+            return (
+              <SortableItem key={item.id} index={index}>
+                <ConfigItem
+                  id={item.id}
+                  renderContent={({ id }) => renderContent({ id, index })}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  editable={editable}
+                  deletable={deletable}
+                />
+                {index !== listSize - 1 ? <WhiteSpace size='medium' /> : null}
+              </SortableItem>
+            );
+          })}
+        </SortableList>
       </StatusWrapper>
     </Layout>
   );

@@ -41,9 +41,7 @@ export const ConfigItem = (props: ConfigItemProps) => {
 
   return (
     <View className={styles.configItemWrapper}>
-      <View className={styles.contentWrapper}>
-        <Text>{renderContent({ id })}</Text>
-      </View>
+      <View className={styles.contentWrapper}>{renderContent({ id })}</View>
       <View className={styles.actionWrapper}>
         {editable && (
           <View className={styles.actionItem} onClick={handleEdit}>
@@ -52,7 +50,7 @@ export const ConfigItem = (props: ConfigItemProps) => {
         )}
         {deletable && (
           <View className={styles.actionItem} onClick={handleDelete}>
-            <Icon name='delete' color={COLOR_VARIABLES.TEXT_COLOR_BASE} />
+            <Icon name='delete' color={COLOR_VARIABLES.COLOR_RED} />
           </View>
         )}
       </View>

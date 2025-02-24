@@ -34,4 +34,5 @@ export enum PAGE_ID {
     LUCKY_DRAW_DETAIL = 'luckyDrawDetail',
     LUCKY_DRAW_HISTORY = 'luckyDrawHistory',
     LUCKY_DRAW_CONFIGURATION = 'luckyDrawConfiguration',
+    PRIZE_MANAGE = 'prizeManage',
 }

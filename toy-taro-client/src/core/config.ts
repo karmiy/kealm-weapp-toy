@@ -4,6 +4,7 @@ import {
   ContactModel,
   CouponModel,
   OrderModel,
+  PrizeModel,
   ProductCategoryModel,
   ProductModel,
   ProductShopCartModel,
@@ -71,6 +72,11 @@ const config = {
     type: HANDLER_TYPE.SINGLE as const,
     model: CheckInModel,
     sortValue: (a: CheckInModel, b: CheckInModel) => 1,
+  },
+  [STORE_NAME.PRIZE]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: PrizeModel,
+    sortValue: (a: PrizeModel, b: PrizeModel) => a.sortValue - b.sortValue,
   },
 };
 

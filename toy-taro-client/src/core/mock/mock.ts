@@ -2,6 +2,7 @@ import {
   mockCheckInApi,
   mockCouponApi,
   mockOrderApi,
+  mockPrizeApi,
   mockProductApi,
   mockTaskApi,
   mockUserApi,
@@ -16,9 +17,10 @@ const mockApis: Record<MOCK_API_NAME, (...args: any[]) => unknown> = Object.assi
   mockTaskApi,
   mockOrderApi,
   mockCheckInApi,
+  mockPrizeApi,
 );
 
-const DEFAULT_ENABLE_MOCK = false;
+const DEFAULT_ENABLE_MOCK = true;
 
 export function mock(options: { name: MOCK_API_NAME; enable?: boolean }) {
   return function (target: unknown, propertyKey: string, descriptor: PropertyDescriptor) {

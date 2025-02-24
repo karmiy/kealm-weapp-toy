@@ -23,6 +23,7 @@ const syncContext = {
   syncCouponList: () => sdk.modules.coupon.syncCouponList(),
   syncUserInfo: () => sdk.modules.user.getUserInfo(),
   syncContactList: () => sdk.modules.user.syncContactList(),
+  syncPrizeList: () => sdk.modules.prize.syncPrizeList(),
 };
 const syncApi = Object.keys(syncContext).reduce((acc, key) => {
   const api = debounceWithPromise(
@@ -111,6 +112,9 @@ export function useSyncOnPageShow(options?: {
           case PAGE_ID.PRODUCT_SEARCH:
           case PAGE_ID.PRODUCT_FRESH_ARRIVAL:
             await api.syncProductList();
+            break;
+          case PAGE_ID.PRIZE_MANAGE:
+            await Promise.all([api.syncPrizeList(), api.syncCouponList()]);
             break;
           default:
             break;

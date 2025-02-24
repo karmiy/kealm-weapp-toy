@@ -6,6 +6,7 @@ import {
     ProductModule,
     TaskModule,
     UserModule,
+    PrizeModule,
   } from './module';
 import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE } from './constants';
 import { CouponModel, TaskModel, ProductModel } from './model';
@@ -43,6 +44,7 @@ export type SingleStoreNames = {
     task: TaskModule;
     order: OrderModule;
     checkIn: CheckInModule;
+    prize: PrizeModule;
 };
 
 export type ISDK = {

@@ -10,6 +10,7 @@ export enum STORE_NAME {
     TASK_CATEGORY = 'TASK_CATEGORY',
     ORDER = 'ORDER',
     CHECK_IN = 'CHECK_IN',
+    PRIZE = 'PRIZE',
 }
 
 export enum HANDLER_TYPE {
@@ -24,6 +25,7 @@ export enum MODULE_NAME {
     TASK = 'TaskModule',
     ORDER = 'OrderModule',
     CHECK_IN = 'CheckInModule',
+    PRIZE = 'PrizeModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -147,4 +149,10 @@ export enum CHECK_IN_RULE_REWARD_TYPE {
     POINTS = 'POINTS', // 积分
     CASH_DISCOUNT = 'CASH_DISCOUNT',
     PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
+}
+
+// ----------------------prize--------------------------------
+export enum PRIZE_TYPE {
+    POINTS = 'POINTS',
+    COUPON = 'COUPON',
 }

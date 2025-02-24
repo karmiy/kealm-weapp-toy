@@ -130,6 +130,16 @@ function Mine() {
           ) : null}
           <View
             className={styles.menuItem}
+            onClick={() => navigateToPage({ pageName: PAGE_ID.PRIZE_MANAGE })}
+          >
+            <View className={styles.title}>
+              <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+              <Text>奖品管理</Text>
+            </View>
+            <Icon name='arrow-right' size={14} />
+          </View>
+          <View
+            className={styles.menuItem}
             onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW })}
           >
             <View className={styles.title}>
