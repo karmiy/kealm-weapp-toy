@@ -22,6 +22,7 @@ const SortableItem = (props: PropsWithChildren<SortableItemProps>) => {
     startIndex,
     endIndex,
     transform,
+    disabled = false,
     getItemRects,
   } = useContext(SortableListContext);
 
@@ -57,9 +58,9 @@ const SortableItem = (props: PropsWithChildren<SortableItemProps>) => {
         className,
       )}
       catchMove
-      onTouchStart={e => onTouchStart(e, index)}
-      onTouchMove={e => onTouchMove(e)}
-      onTouchEnd={e => onTouchEnd(e)}
+      onTouchStart={e => !disabled && onTouchStart(e, index)}
+      onTouchMove={e => !disabled && onTouchMove(e)}
+      onTouchEnd={e => !disabled && onTouchEnd(e)}
       style={{
         ...style,
         transform: translateY,

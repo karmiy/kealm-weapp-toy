@@ -20,11 +20,13 @@ import styles from './index.module.scss';
 interface SortableListProps {
   className?: string;
   style?: React.CSSProperties;
+  disabled?: boolean;
+  onSortStart?: () => void;
   onSortEnd?: (params: { oldIndex: number; newIndex: number }) => void;
 }
 
 const SortableList = (props: PropsWithChildren<SortableListProps>) => {
-  const { className, style, children, onSortEnd } = props;
+  const { className, style, disabled = false, children, onSortStart, onSortEnd } = props;
   const wrapperRef = useRef<{ ctx: TaroGeneral.IAnyObject }>(null);
   const itemRectsRef = useRef<Rect[]>([]);
   const areaPageRef = useRef<{ min: number; max: number } | null>(null);
@@ -70,6 +72,7 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
   const onTouchStart = useCallback(
     async (e: any, index: number) => {
       e.stopPropagation();
+      onSortStart?.();
       const { pageY } = e.changedTouches[0];
       const itemRects = await getSortItemRects();
       itemRectsRef.current = itemRects;
@@ -81,7 +84,7 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
       areaPageRef.current = { min: minPageY, max: maxPageY };
       touchInfoRef.current.startReady = true;
     },
-    [getSortItemRects, setStartIndex, setStartY, getSortListWrapperRect],
+    [getSortItemRects, setStartIndex, setStartY, getSortListWrapperRect, onSortStart],
   );
 
   const updateEndIndex = useCallback(
@@ -177,6 +180,7 @@ const SortableList = (props: PropsWithChildren<SortableListProps>) => {
         startIndex,
         endIndex,
         transform: draggingData.transform,
+        disabled,
         getItemRects: () => itemRectsRef.current,
       }}
     >

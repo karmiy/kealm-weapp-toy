@@ -11,6 +11,7 @@ interface SortableListContextProp {
   startIndex: number;
   endIndex: number;
   transform: number;
+  disabled: boolean;
   getItemRects: () => Rect[];
 }
 
@@ -24,4 +25,5 @@ export const SortableListContext = createContext<SortableListContextProp>({
   endIndex: 0,
   transform: 0,
   getItemRects: () => [],
+  disabled: false,
 });
