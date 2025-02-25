@@ -8,7 +8,7 @@ import {
     UserModule,
     PrizeModule,
   } from './module';
-import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE } from './constants';
+import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE, PRIZE_TYPE } from './constants';
 import { CouponModel, TaskModel, ProductModel } from './model';
 
  // ----------------------storeManager--------------------------------
@@ -84,3 +84,11 @@ TaskModel,
   value?: number;
   couponId?: string;
 };
+
+// ----------------------prize--------------------------------
+export type PrizeUpdateParams = {
+    id: string;
+    type: PRIZE_TYPE;
+    couponId?: string;
+    points?: number;
+}
