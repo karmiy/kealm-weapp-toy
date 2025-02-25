@@ -1,6 +1,6 @@
 import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { PRIZE_TYPE } from '../constants';
-import { CouponEntity, PrizeEntity } from '../entity';
+import { PrizeEntity } from '../entity';
 import { CouponModel } from './coupon';
 
 export class PrizeModel {
@@ -10,7 +10,7 @@ export class PrizeModel {
 
   points?: number;
 
-  coupon?: CouponEntity;
+  couponId?: string;
 
   sortValue: number;
 
@@ -22,11 +22,11 @@ export class PrizeModel {
 
   constructor(entity: PrizeEntity) {
     makeObserver(this);
-    const { id, type, points, coupon, sort_value, create_time, last_modified_time } = entity;
+    const { id, type, points, coupon_id, sort_value, create_time, last_modified_time } = entity;
     this.id = id;
     this.type = type;
     this.points = points;
-    this.coupon = coupon;
+    this.couponId = coupon_id;
     this.sortValue = sort_value;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
@@ -41,17 +41,5 @@ export class PrizeModel {
       return '优惠券奖励';
     }
     return '谢谢惠顾';
-  }
-
-  @computed
-  get prizeDesc() {
-    if (this.type === PRIZE_TYPE.POINTS && this.points) {
-      return `${this.points}积分`;
-    }
-    if (this.type === PRIZE_TYPE.COUPON && this.coupon) {
-      const couponModel = new CouponModel(this.coupon);
-      return couponModel.descriptionTip;
-    }
-    return '';
   }
 }

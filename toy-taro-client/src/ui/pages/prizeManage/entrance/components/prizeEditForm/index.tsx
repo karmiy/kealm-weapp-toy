@@ -39,7 +39,7 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
     enableActiveIds: true,
   });
 
-  const [couponId, setCouponId] = useState<string>(prize?.coupon?.id ?? '');
+  const [couponId, setCouponId] = useState<string>(prize?.couponId ?? '');
   const couponIndex = useMemo(() => {
     if (!couponId) {
       return;

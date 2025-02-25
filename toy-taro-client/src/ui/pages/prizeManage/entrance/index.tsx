@@ -3,10 +3,10 @@ import { View } from '@tarojs/components';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
-import { ConfigListPanel, PrizeItem } from '@ui/container';
+import { ConfigListPanel } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
 import { useStoreList } from '@ui/viewModel';
-import { PrizeEditForm } from './components';
+import { PrizeEditForm, PrizeItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
@@ -69,19 +69,7 @@ export default function () {
   const renderContent = useCallback(
     ({ index }: { index: number }) => {
       const prize = list[index];
-      return (
-        <PrizeItem
-          classes={{
-            root: styles.prizeItemWrapper,
-          }}
-          transparent
-          type={prize.type}
-          prizeTitle={prize.prizeTitle}
-          prizeDesc={prize.prizeDesc}
-          editable={false}
-          deletable={false}
-        />
-      );
+      return <PrizeItem id={prize.id} />;
     },
     [list],
   );

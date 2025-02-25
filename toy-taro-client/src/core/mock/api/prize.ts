@@ -10,7 +10,9 @@ export const mockPrizeApi = {
   [MOCK_API_NAME.GET_PRIZE_LIST]: async (): Promise<PrizeEntity[]> => {
     await sleep(1000);
     const couponList = await mockCouponApi.GET_COUPON_LIST();
-    const activeCouponList = couponList.filter(item => item.status === COUPON_STATUS.ACTIVE);
+    const activeCouponIds = couponList
+      .filter(item => item.status === COUPON_STATUS.ACTIVE)
+      .map(item => item.id);
     return faker.helpers.multiple(
       () => {
         // const isAdmin = UserStorageManager.getInstance().isAdmin;
@@ -21,7 +23,7 @@ export const mockPrizeApi = {
         return {
           id: faker.string.uuid(),
           type,
-          coupon: isCoupon ? faker.helpers.arrayElement(activeCouponList) : undefined,
+          coupon_id: isCoupon ? faker.helpers.arrayElement(activeCouponIds) : undefined,
           points: isPoints ? points : undefined,
           sort_value: faker.number.int({ min: 1, max: 100 }),
           create_time: faker.date.recent().getTime(),
