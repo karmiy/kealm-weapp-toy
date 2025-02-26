@@ -76,7 +76,7 @@ const config = {
   [STORE_NAME.PRIZE]: {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: PrizeModel,
-    sortValue: (a: PrizeModel, b: PrizeModel) => a.sortValue - b.sortValue,
+    sortValue: (a: PrizeModel, b: PrizeModel) => b.sortValue - a.sortValue,
   },
 };
 

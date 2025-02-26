@@ -5,12 +5,14 @@ import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
 import { ConfigListPanel } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
-import { useStoreList } from '@ui/viewModel';
+import { usePrizeAction, useStoreList } from '@ui/viewModel';
 import { PrizeEditForm, PrizeItem } from './components';
+import { getRangeItems } from './utils';
 import styles from './index.module.scss';
 
 export default function () {
   const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const { handleDeletePrize, handleSortPrize, isSortLoading } = usePrizeAction();
   const [isSorting, setIsSorting] = useState(false);
   const scrollViewProps = useMemo(() => {
     if (isSorting) {
@@ -36,16 +38,23 @@ export default function () {
   }, []);
   const handleSortEnd = useCallback(
     ({ oldIndex, newIndex }) => {
+      const resetArray = [...list];
       const newArray = [...list];
       const [removedItem] = newArray.splice(oldIndex, 1);
       newArray.splice(newIndex, 0, removedItem);
       setList(newArray);
       setIsSorting(false);
+      const rangeIds = getRangeItems(newArray, [oldIndex, newIndex]).map(item => item.id);
+      handleSortPrize({
+        ids: rangeIds,
+        onError: () => {
+          setList(resetArray);
+        },
+      });
     },
-    [list],
+    [list, handleSortPrize],
   );
 
-  // const { handleDeleteCategory } = useTaskAction();
   const handleEdit = useCallback((id: string) => {
     setEditId(id);
     setShowEditModal(true);
@@ -60,11 +69,14 @@ export default function () {
     setShowEditModal(false);
   }, []);
 
-  const handleDelete = useCallback(async (id: string) => {
-    // await handleDeleteCategory({
-    //   id,
-    // });
-  }, []);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      await handleDeletePrize({
+        id,
+      });
+    },
+    [handleDeletePrize],
+  );
 
   const renderContent = useCallback(
     ({ index }: { index: number }) => {
@@ -85,7 +97,7 @@ export default function () {
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        sortable
+        sortable={!isSortLoading}
         onSortStart={handleSortStart}
         onSortEnd={handleSortEnd}
       />

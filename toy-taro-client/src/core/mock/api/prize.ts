@@ -41,16 +41,23 @@ export const mockPrizeApi = {
   sortValue: 1,
   [MOCK_API_NAME.GET_PRIZE_LIST]: mockGetPrizeListApiCache,
   [MOCK_API_NAME.DELETE_PRIZE]: async (id: string): Promise<void> => {
-    await sleep(100);
-    return Math.random() > 0.4
-      ? Promise.resolve()
-      : Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，请联系管理员'));
-  },
-  [MOCK_API_NAME.UPDATE_PRIZE]: async (prize: PrizeApiUpdateParams): Promise<PrizeEntity> => {
-    await sleep(100);
+    await sleep(1000);
     const throwError = Math.random() <= 0.4;
     if (throwError) {
       return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，请联系管理员'));
+    }
+    const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
+    const index = prizeList.findIndex(item => item.id === id);
+    const list = [...prizeList];
+    list.splice(index, 1);
+    mockGetPrizeListApiCache.update(list);
+    return Promise.resolve();
+  },
+  [MOCK_API_NAME.UPDATE_PRIZE]: async (prize: PrizeApiUpdateParams): Promise<PrizeEntity> => {
+    await sleep(1000);
+    const throwError = Math.random() <= 0.4;
+    if (throwError) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '更新失败，请联系管理员'));
     }
     let entity: PrizeEntity;
     const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
@@ -59,13 +66,14 @@ export const mockPrizeApi = {
       const prevEntity = prizeList[index];
       if (!prevEntity) {
         return Promise.reject(
-          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '删除失败，更新的奖品不存在'),
+          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '更新失败，更新的奖品不存在'),
         );
       }
       entity = {
         id: prize.id,
         type: prize.type,
-        points: prize.points,
+        points: prize.type === PRIZE_TYPE.POINTS ? prize.points : undefined,
+        coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : undefined,
         sort_value: prevEntity.sort_value,
         create_time: prevEntity.create_time,
         last_modified_time: prevEntity.last_modified_time,
@@ -78,6 +86,7 @@ export const mockPrizeApi = {
         id: faker.string.uuid(),
         type: prize.type,
         points: prize.points,
+        coupon_id: prize.coupon_id,
         sort_value: mockPrizeApi.sortValue++,
         create_time: faker.date.recent().getTime(),
         last_modified_time: faker.date.recent().getTime(),
@@ -85,5 +94,39 @@ export const mockPrizeApi = {
       mockGetPrizeListApiCache.update([...prizeList, entity]);
     }
     return Promise.resolve(entity);
+  },
+  [MOCK_API_NAME.SORT_PRIZE]: async (
+    ids: string[],
+  ): Promise<Array<{ id: string; sort_value: number }>> => {
+    const throwError = Math.random() <= 0.4;
+    if (throwError) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '排序失败，请联系管理员'));
+    }
+    const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
+    const sortValues = prizeList
+      .filter(item => ids.includes(item.id))
+      .map(item => item.sort_value)
+      .sort((a, b) => b - a);
+    if (sortValues.length !== ids.length) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '排序失败，存在无效 id'));
+    }
+    const idToSortValue = new Map<string, number>();
+    ids.forEach((id, index) => {
+      idToSortValue.set(id, sortValues[index]);
+    });
+
+    prizeList.forEach(item => {
+      if (idToSortValue.has(item.id)) {
+        item.sort_value = idToSortValue.get(item.id)!;
+      }
+    });
+
+    const response = [...idToSortValue.entries()].map(([id, sort_value]) => {
+      return {
+        id,
+        sort_value,
+      };
+    });
+    return Promise.resolve(response);
   },
 };

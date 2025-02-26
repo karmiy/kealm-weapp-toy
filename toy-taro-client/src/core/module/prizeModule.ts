@@ -41,11 +41,26 @@ export class PrizeModule extends AbstractModule {
         coupon_id: couponId,
         points,
       });
+      this._logger.info('updatePrize success', entity);
       storeManager.emitUpdate(STORE_NAME.PRIZE, {
         entities: [entity],
       });
     } catch (error) {
       this._logger.info('updatePrize error', error.message);
+      throw error;
+    }
+  }
+
+  async sortPrize(ids: string[]) {
+    try {
+      this._logger.info('sortPrize', ids);
+      const sortItems = await PrizeApi.sortPrize(ids);
+      this._logger.info('sortPrize success', sortItems);
+      storeManager.emitUpdate(STORE_NAME.PRIZE, {
+        partials: sortItems,
+      });
+    } catch (error) {
+      this._logger.info('sortPrize error', error.message);
       throw error;
     }
   }

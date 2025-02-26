@@ -87,7 +87,7 @@ TaskModel,
 
 // ----------------------prize--------------------------------
 export type PrizeUpdateParams = {
-    id: string;
+    id?: string;
     type: PRIZE_TYPE;
     couponId?: string;
     points?: number;

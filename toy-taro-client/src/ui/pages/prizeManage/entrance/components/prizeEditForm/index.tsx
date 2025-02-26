@@ -5,7 +5,7 @@ import { navigateToPage } from '@shared/utils/router';
 import { PRIZE_TYPE, STORE_NAME } from '@core';
 import { Button, CheckButton, Icon, Input, PickerSelector, WhiteSpace } from '@ui/components';
 import { FormItem } from '@ui/container';
-import { useCoupon, useStoreById } from '@ui/viewModel';
+import { useCoupon, usePrizeAction, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface PrizeEditFormProps {
@@ -16,8 +16,7 @@ interface PrizeEditFormProps {
 export const PrizeEditForm = (props: PrizeEditFormProps) => {
   const { id, afterSave } = props;
   const prize = useStoreById(STORE_NAME.PRIZE, id);
-  // const { isActionLoading, handleUpdateCategory } = useTaskAction();
-  const isActionLoading = false;
+  const { isUpdateLoading, handleUpdatePrize } = usePrizeAction();
   const [prizeType, setPrizeType] = useState(prize?.type ?? PRIZE_TYPE.POINTS);
 
   const handleSelectPrizeType = useCallback((type: PRIZE_TYPE, checked: boolean) => {
@@ -58,11 +57,13 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
   }, [prizeType, pointsValue, couponId]);
 
   const handleSave = async () => {
-    // await handleUpdateCategory({
-    //   id,
-    //   name: categoryName,
-    //   onSuccess: afterSave,
-    // });
+    await handleUpdatePrize({
+      id,
+      type: prizeType,
+      points: Number(pointsValue),
+      couponId,
+      onSuccess: afterSave,
+    });
   };
 
   return (
@@ -108,8 +109,8 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
       <Button
         size='large'
         width='100%'
-        loading={isActionLoading}
-        disabled={isSavePrizeBtnDisabled || isActionLoading}
+        loading={isUpdateLoading}
+        disabled={isSavePrizeBtnDisabled || isUpdateLoading}
         onClick={handleSave}
       >
         保存

@@ -33,4 +33,12 @@ export class PrizeApi {
       data: { id },
     });
   }
+
+  @mock({ name: MOCK_API_NAME.SORT_PRIZE })
+  static async sortPrize(ids: string[]): Promise<Array<{ id: string; sort_value: number }>> {
+    return httpRequest.post<Array<{ id: string; sort_value: number }>>({
+      url: '/prize/sortPrize',
+      data: { ids },
+    });
+  }
 }
