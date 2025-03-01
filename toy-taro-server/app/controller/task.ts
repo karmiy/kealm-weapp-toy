@@ -1,23 +1,9 @@
 import { Controller } from "egg";
 import { Logger } from "../utils/logger";
-import {
-  COUPON_STATUS,
-  COUPON_TYPE,
-  SERVER_CODE,
-  TASK_REWARD_TYPE,
-  TASK_STATUS,
-  TASK_TYPE,
-} from "../utils/constants";
-import {
-  TaskCategoryEntity,
-  TaskEntity,
-  TaskFlowEntity,
-  TaskReward,
-} from "../entity/task";
+import { SERVER_CODE, TASK_STATUS, TASK_TYPE } from "../utils/constants";
+import { TaskCategoryEntity, TaskEntity, TaskFlowEntity } from "../entity/task";
 import { TaskCategoryModel } from "../model/taskCategory";
-import { CouponModel } from "../model/coupon";
 import { TaskModel } from "../model/task";
-import { JsError } from "../utils/error";
 import { TaskFlowModel } from "../model/taskFlow";
 
 const logger = Logger.getLogger("[TaskController]");
@@ -42,23 +28,6 @@ export default class TaskController extends Controller {
 
   private _taskModelToEntity(model: TaskModel) {
     const { ctx } = this;
-    const reward = {
-      type: model.reward_type,
-    } as TaskReward;
-    if (reward.type === TASK_REWARD_TYPE.POINTS) {
-      reward.value = model.reward_value;
-    }
-    if (
-      reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT ||
-      reward.type === TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
-    ) {
-      if (!model.reward_coupon_id) {
-        throw new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "优惠券不存在");
-      }
-      reward.couponId = model.reward_coupon_id;
-      reward.value = model.reward_value;
-      reward.minimumOrderValue = model.reward_minimum_order_value ?? 0;
-    }
     const entity: TaskEntity = ctx.helper.cleanEmptyFields(
       {
         id: model.id,
@@ -66,7 +35,7 @@ export default class TaskController extends Controller {
         desc: model.description,
         type: model.type,
         category_id: model.category_id,
-        reward,
+        prize_id: model.prize_id,
         difficulty: model.difficulty,
         user_id: model.user_id,
         create_time: model.create_time.getTime(),
@@ -230,22 +199,11 @@ export default class TaskController extends Controller {
         type: TASK_TYPE;
         category_id: string;
         difficulty: number;
-        reward_type: TASK_REWARD_TYPE;
-        value?: number;
-        coupon_id?: string;
+        prize_id: string;
       }>();
 
-      const {
-        id,
-        name,
-        desc,
-        type,
-        category_id,
-        difficulty,
-        reward_type,
-        value,
-        coupon_id,
-      } = params;
+      const { id, name, desc, type, category_id, difficulty, prize_id } =
+        params;
 
       logger.tag("[updateTask]").info(params);
 
@@ -316,40 +274,20 @@ export default class TaskController extends Controller {
         return;
       }
 
-      if (!reward_type) {
+      if (!prize_id) {
         ctx.responseFail({
           code: SERVER_CODE.BAD_REQUEST,
-          message: "任务奖励类型不能为空",
+          message: "奖品不能为空",
         });
         return;
       }
-
-      if (
-        ![
-          TASK_REWARD_TYPE.POINTS,
-          TASK_REWARD_TYPE.CASH_DISCOUNT,
-          TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-        ].includes(reward_type)
-      ) {
+      const prizeModel = await ctx.service.prize.findPrize({
+        id: prize_id,
+      });
+      if (!prizeModel) {
         ctx.responseFail({
           code: SERVER_CODE.BAD_REQUEST,
-          message: "任务奖励类型错误",
-        });
-        return;
-      }
-
-      if (reward_type === TASK_REWARD_TYPE.POINTS && !value) {
-        ctx.responseFail({
-          code: SERVER_CODE.BAD_REQUEST,
-          message: "任务奖励积分不能为空",
-        });
-        return;
-      }
-
-      if (reward_type !== TASK_REWARD_TYPE.POINTS && !coupon_id) {
-        ctx.responseFail({
-          code: SERVER_CODE.BAD_REQUEST,
-          message: "优惠券不能为空",
+          message: "奖品不存在",
         });
         return;
       }
@@ -363,40 +301,12 @@ export default class TaskController extends Controller {
         return;
       }
 
-      let couponModel: CouponModel | null = null;
-
-      if (reward_type !== TASK_REWARD_TYPE.POINTS) {
-        couponModel = await ctx.service.coupon.findCoupon({
-          id: coupon_id,
-          group_id: groupId,
-        });
-        if (!couponModel) {
-          ctx.responseFail({
-            code: SERVER_CODE.BAD_REQUEST,
-            message: "优惠券不存在",
-          });
-          return;
-        }
-      }
-
-      const rewardValue =
-        reward_type === TASK_REWARD_TYPE.POINTS ? value : couponModel?.value;
-      const rewardType =
-        reward_type === TASK_REWARD_TYPE.POINTS
-          ? TASK_REWARD_TYPE.POINTS
-          : couponModel?.type === COUPON_TYPE.CASH_DISCOUNT
-          ? TASK_REWARD_TYPE.CASH_DISCOUNT
-          : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT;
-
       const taskModel = await ctx.service.task.upsertTask({
         id,
         name,
         description: desc ?? "",
         type,
-        reward_type: rewardType,
-        reward_value: rewardValue ?? 0,
-        reward_coupon_id: coupon_id ?? null,
-        reward_minimum_order_value: couponModel?.minimum_order_value ?? null,
+        prize_id,
         difficulty: difficulty ?? 0,
         category_id,
         user_id: !id ? userId : undefined,
@@ -587,7 +497,7 @@ export default class TaskController extends Controller {
         // 生成优惠券
         const task = await ctx.service.task.findTask({ id: task_id });
 
-        if (!task) {
+        if (!task || !task.prize_id) {
           ctx.responseFail({
             code: SERVER_CODE.INTERNAL_SERVER_ERROR,
             message: "任务奖励获取异常",
@@ -595,36 +505,11 @@ export default class TaskController extends Controller {
           return;
         }
 
-        if (task.reward_type === TASK_REWARD_TYPE.POINTS) {
-          const addedScore = task.reward_value ?? 0;
-          const user = await ctx.service.user.findUserById(
-            taskFlowModel.user_id
-          );
-          await ctx.service.user.updateUserById(taskFlowModel.user_id, {
-            score: user.score + addedScore,
-          });
-        }
-
-        if (
-          task.reward_type === TASK_REWARD_TYPE.CASH_DISCOUNT ||
-          task.reward_type === TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
-        ) {
-          const couponId = task.reward_coupon_id;
-
-          if (!couponId) {
-            ctx.responseFail({
-              code: SERVER_CODE.INTERNAL_SERVER_ERROR,
-              message: "奖励优惠券不存在",
-            });
-            return;
-          }
-
-          await ctx.service.coupon.upsertUserCoupon({
-            coupon_id: couponId,
-            status: COUPON_STATUS.ACTIVE,
-            user_id: taskFlowModel.user_id,
-          });
-        }
+        // 发放奖励
+        await ctx.service.prize.grantReward({
+          id: task.prize_id,
+          userId: taskFlowModel.user_id,
+        });
       }
 
       const entity = this._taskFlowModelToEntity(taskFlowModel);

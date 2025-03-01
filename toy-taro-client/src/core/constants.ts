@@ -98,12 +98,6 @@ export enum TASK_STATUS {
     REJECTED = 'REJECTED',
 }
 
-export enum TASK_REWARD_TYPE {
-    POINTS = 'POINTS', // 积分
-    CASH_DISCOUNT = 'CASH_DISCOUNT',
-    PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
-}
-
 export const TASK_TYPE_LABEL = {
     [TASK_TYPE.DAILY]: '每日任务',
     [TASK_TYPE.WEEKLY]: '每周任务',
@@ -155,4 +149,5 @@ export enum CHECK_IN_RULE_REWARD_TYPE {
 export enum PRIZE_TYPE {
     POINTS = 'POINTS',
     COUPON = 'COUPON',
+    LUCKY_DRAW = 'LUCKY_DRAW',
 }

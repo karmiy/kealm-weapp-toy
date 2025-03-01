@@ -38,6 +38,10 @@
       background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-coupon.png');
     }
 
+    &.isDraw {
+      background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-draw.png');
+    }
+
     &.isNone {
       background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-sad.png');
     }

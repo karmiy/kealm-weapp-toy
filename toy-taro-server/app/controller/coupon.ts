@@ -7,7 +7,6 @@ import {
   COUPON_TYPE,
   COUPON_STATUS,
   COUPON_VALIDITY_TIME_TYPE,
-  TASK_REWARD_TYPE,
 } from "../utils/constants";
 import { CouponModel } from "../model/coupon";
 import { UserCouponWithCouponModel } from "../model/userCoupon";
@@ -292,20 +291,20 @@ export default class CouponController extends Controller {
       const entity = this._couponModelToEntity(couponModel);
 
       // 更新 task 表中的相关 coupon 数据
-      await ctx.service.task.updateTasksPartial(
-        {
-          reward_coupon_id: couponModel.id,
-          reward_type:
-            couponModel.type === COUPON_TYPE.CASH_DISCOUNT
-              ? TASK_REWARD_TYPE.CASH_DISCOUNT
-              : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-          reward_value: couponModel.value,
-          reward_minimum_order_value: couponModel.minimum_order_value,
-        },
-        {
-          reward_coupon_id: couponModel.id,
-        }
-      );
+      // await ctx.service.task.updateTasksPartial(
+      //   {
+      //     reward_coupon_id: couponModel.id,
+      //     reward_type:
+      //       couponModel.type === COUPON_TYPE.CASH_DISCOUNT
+      //         ? TASK_REWARD_TYPE.CASH_DISCOUNT
+      //         : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
+      //     reward_value: couponModel.value,
+      //     reward_minimum_order_value: couponModel.minimum_order_value,
+      //   },
+      //   {
+      //     reward_coupon_id: couponModel.id,
+      //   }
+      // );
 
       ctx.responseSuccess({
         data: entity,
@@ -487,6 +486,16 @@ export default class CouponController extends Controller {
         ctx.responseFail({
           code: SERVER_CODE.BAD_REQUEST,
           message: "无法删除，优惠券正在被用户使用",
+        });
+        return;
+      }
+      const prizeModel = await ctx.service.prize.findPrize({
+        coupon_id: id,
+      });
+      if (prizeModel) {
+        ctx.responseFail({
+          code: SERVER_CODE.BAD_REQUEST,
+          message: `无法删除，奖品《${prizeModel.id}》正在占用`,
         });
         return;
       }

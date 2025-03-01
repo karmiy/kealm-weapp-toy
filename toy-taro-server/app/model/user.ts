@@ -10,6 +10,7 @@ export interface UserModel {
   avatar_url?: string;
   role: ROLE;
   score: number;
+  draw_ticket: number;
   create_time: Date;
   last_modified_time: Date;
   group_id: string;
@@ -50,6 +51,10 @@ export default (app: Application) => {
       defaultValue: "USER", // 默认是普通用户
     },
     score: {
+      type: INTEGER,
+      defaultValue: 0, // 默认积分为 0
+    },
+    draw_ticket: {
       type: INTEGER,
       defaultValue: 0, // 默认积分为 0
     },

@@ -4,23 +4,16 @@ import { TaskApiUpdateParams } from '../../api';
 import { UserStorageManager } from '../../base';
 import {
   COUPON_STATUS,
-  COUPON_TYPE,
   COUPON_VALIDITY_TIME_TYPE,
   SERVER_ERROR_CODE,
-  TASK_REWARD_TYPE,
   TASK_STATUS,
   TASK_TYPE,
 } from '../../constants';
-import {
-  CouponEntity,
-  TaskCategoryEntity,
-  TaskEntity,
-  TaskFlowEntity,
-  TaskReward,
-} from '../../entity';
+import { CouponEntity, TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
 import { mockCouponApi } from './coupon';
+import { mockPrizeApi } from './prize';
 import { mockUserApi } from './user';
 
 const verbNounMap: Record<string, string[]> = {
@@ -106,31 +99,11 @@ export const mockTaskApi = {
     const activeCoupons = coupons.filter(
       coupon => coupon.status === COUPON_STATUS.ACTIVE && !isCouponExpired(coupon),
     );
+    const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
     return faker.helpers.multiple(
       () => {
         const name = faker.helpers.arrayElement(taskTitles);
         const isAdmin = UserStorageManager.getInstance().isAdmin;
-        const type = faker.helpers.arrayElement([
-          TASK_REWARD_TYPE.POINTS,
-          TASK_REWARD_TYPE.CASH_DISCOUNT,
-          TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-        ]);
-        const coupon = faker.helpers.arrayElement(activeCoupons);
-        const reward =
-          type === TASK_REWARD_TYPE.POINTS || !coupon
-            ? {
-                type: TASK_REWARD_TYPE.POINTS as const,
-                value: faker.number.int({ min: 10, max: 99 }),
-              }
-            : {
-                type:
-                  coupon.type === COUPON_TYPE.CASH_DISCOUNT
-                    ? (TASK_REWARD_TYPE.CASH_DISCOUNT as const)
-                    : (TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT as const),
-                couponId: coupon.id,
-                minimumOrderValue: coupon.minimum_order_value,
-                value: coupon.value,
-              };
         return {
           id: faker.string.uuid(),
           name,
@@ -142,10 +115,10 @@ export const mockTaskApi = {
             TASK_TYPE.CHALLENGE,
           ]),
           category_id: faker.helpers.arrayElement(categoryIds),
+          prize_id: faker.helpers.arrayElement(prizeList.map(item => item.id)),
           // status: !isAdmin
           //   ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
           //   : undefined,
-          reward,
           difficulty: faker.number.int({ min: 1, max: 5 }),
           user_id: faker.string.ulid(),
           create_time: faker.date.recent().getTime(),
@@ -210,32 +183,11 @@ export const mockTaskApi = {
   [MOCK_API_NAME.UPDATE_TASK]: async (task: TaskApiUpdateParams): Promise<TaskEntity> => {
     await sleep(500);
     let entity: TaskEntity;
-    const { reward_type, coupon_id, value } = task;
+    const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
+    const { prize_id } = task;
 
-    const reward = {
-      type: reward_type,
-    } as TaskReward;
-    if (reward.type === TASK_REWARD_TYPE.POINTS) {
-      if (typeof value !== 'number') {
-        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖励不能为空'));
-      }
-      reward.value = value;
-    }
-    if (
-      reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT ||
-      reward.type === TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
-    ) {
-      if (!coupon_id) {
-        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖励优惠券不能为空'));
-      }
-      const coupons = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
-      const coupon = coupons.find(c => c.id === coupon_id);
-      if (!coupon) {
-        return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '优惠券不存在'));
-      }
-      reward.couponId = coupon.id;
-      reward.value = coupon.value;
-      reward.minimumOrderValue = coupon.minimum_order_value;
+    if (!prizeList.find(item => item.id === prize_id)) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖品不存在'));
     }
     const now = new Date().getTime();
     if (task.id) {
@@ -250,7 +202,6 @@ export const mockTaskApi = {
         create_time: currentTask.create_time,
         last_modified_time: now,
         user_id: currentTask.user_id,
-        reward,
       };
     } else {
       entity = {
@@ -259,7 +210,6 @@ export const mockTaskApi = {
         create_time: now,
         last_modified_time: now,
         user_id: faker.string.ulid(),
-        reward,
       };
     }
     return Math.random() > 0.4

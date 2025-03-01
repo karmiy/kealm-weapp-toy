@@ -1,7 +1,7 @@
 import { literal, Op } from "sequelize";
 
 export type QueryFields<T> = Partial<{
-  [K in keyof T]?: T[K] | ReturnType<typeof literal>;
+  [K in keyof T]?: T[K] | ReturnType<typeof literal> | null;
 }>;
 
 export type QueryWhere<T> = Partial<{

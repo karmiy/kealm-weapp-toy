@@ -72,12 +72,6 @@ export enum TASK_STATUS {
   REJECTED = "REJECTED",
 }
 
-export enum TASK_REWARD_TYPE {
-  POINTS = "POINTS", // 积分
-  CASH_DISCOUNT = "CASH_DISCOUNT",
-  PERCENTAGE_DISCOUNT = "PERCENTAGE_DISCOUNT",
-}
-
 // ------------------------------ order ------------------------------
 export enum PRODUCT_ORDER_STATUS {
   INITIAL = "INITIAL",
@@ -94,4 +88,11 @@ export enum CHECK_IN_RULE_TYPE {
 
 export enum CHECK_IN_RULE_REWARD_TYPE {
   POINTS = "POINTS",
+}
+
+// ------------------------------ prize ------------------------------
+export enum PRIZE_TYPE {
+  POINTS = "POINTS",
+  COUPON = "COUPON",
+  LUCKY_DRAW = "LUCKY_DRAW",
 }

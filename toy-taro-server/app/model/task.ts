@@ -1,15 +1,12 @@
 import { Application } from "egg";
-import { TASK_REWARD_TYPE, TASK_TYPE } from "../utils/constants";
+import { TASK_TYPE } from "../utils/constants";
 
 export interface TaskModel {
   id: string;
   name: string;
   description: string;
   type: TASK_TYPE;
-  reward_type: TASK_REWARD_TYPE;
-  reward_value: number;
-  reward_coupon_id?: string | null;
-  reward_minimum_order_value?: number | null;
+  prize_id: string;
   difficulty: number;
   category_id: string;
   group_id: string;
@@ -46,25 +43,11 @@ export default (app: Application) => {
       ),
       defaultValue: TASK_TYPE.DAILY,
     },
-    reward_type: {
-      type: ENUM(
-        TASK_REWARD_TYPE.POINTS,
-        TASK_REWARD_TYPE.CASH_DISCOUNT,
-        TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT
-      ),
-      defaultValue: TASK_REWARD_TYPE.POINTS,
-    },
-    reward_value: {
-      type: INTEGER, // 库存数量
-    },
-    reward_coupon_id: {
+    prize_id: {
       type: INTEGER,
       get() {
-        return String((this as any).getDataValue("reward_coupon_id"));
+        return String((this as any).getDataValue("prize_id"));
       },
-    },
-    reward_minimum_order_value: {
-      type: INTEGER,
     },
     difficulty: {
       type: INTEGER,
@@ -102,6 +85,10 @@ export default (app: Application) => {
   });
 
   (Task as any).associate = function () {
+    (app.model.Task as any).belongsTo(app.model.Prize, {
+      foreignKey: "prize_id",
+      targetKey: "id",
+    });
     (app.model.Task as any).belongsTo(app.model.TaskCategory, {
       foreignKey: "category_id",
       targetKey: "id",

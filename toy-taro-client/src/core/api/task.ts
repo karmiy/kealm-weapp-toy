@@ -1,4 +1,4 @@
-import { TASK_REWARD_TYPE, TASK_STATUS } from '../constants';
+import { TASK_STATUS } from '../constants';
 import { TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../entity';
 import { httpRequest } from '../httpRequest';
 import { mock, MOCK_API_NAME } from '../mock';
@@ -8,9 +8,7 @@ export type TaskApiUpdateParams = Pick<
   'name' | 'desc' | 'type' | 'category_id' | 'difficulty'
 > & {
   id?: string;
-  reward_type: TASK_REWARD_TYPE;
-  value?: number;
-  coupon_id?: string;
+  prize_id: string;
 };
 
 export class TaskApi {

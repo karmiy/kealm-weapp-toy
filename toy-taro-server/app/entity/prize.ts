@@ -1,4 +1,4 @@
-import { PRIZE_TYPE } from '../constants';
+import { PRIZE_TYPE } from "../utils/constants";
 
 export interface PrizeEntity {
   id: string;

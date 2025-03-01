@@ -2,10 +2,16 @@ import { useCallback } from 'react';
 import { PAGE_ID } from '@shared/utils/constants';
 import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { STORE_NAME, TASK_REWARD_TYPE } from '@core';
+import { STORE_NAME } from '@core';
 import { Button } from '@ui/components';
 import { TaskCard } from '@ui/container';
-import { useStoreById, useTaskAction, useTaskFlowGroup, useUserInfo } from '@ui/viewModel';
+import {
+  useStoreById,
+  useTaskAction,
+  useTaskFlowGroup,
+  useTaskItem,
+  useUserInfo,
+} from '@ui/viewModel';
 // import styles from './index.module.scss';
 
 interface TaskItemProps {
@@ -14,12 +20,8 @@ interface TaskItemProps {
 
 const TaskItem = (props: TaskItemProps) => {
   const { id } = props;
-  const task = useStoreById(STORE_NAME.TASK, id);
+  const task = useTaskItem({ id });
   const creator = useStoreById(STORE_NAME.CONTACT, task?.userId);
-  const coupon = useStoreById(
-    STORE_NAME.COUPON,
-    task?.reward.type !== TASK_REWARD_TYPE.POINTS ? task?.reward?.couponId : undefined,
-  );
   const { taskFlow } = useTaskFlowGroup({ taskId: id });
   const { isAdmin } = useUserInfo();
   const { submitApprovalRequest, isActionLoading } = useTaskAction();
@@ -57,7 +59,7 @@ const TaskItem = (props: TaskItemProps) => {
       name={task.name}
       desc={task.desc}
       contentSpace='small'
-      rewardTitle={task.getRewardTitleWithCoupon(coupon)}
+      rewardTitle={task.rewardTitle}
       difficulty={difficulty}
       creatorType='creator'
       creatorName={creator?.name}

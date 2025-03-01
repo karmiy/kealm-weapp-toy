@@ -4,6 +4,7 @@ import { showModal, showToast } from '@shared/utils/operateFeedback';
 import {
   COUPON_STATUS,
   COUPON_VALIDITY_TIME_TYPE,
+  CouponModel,
   CouponUpdateParams,
   sdk,
   STORE_NAME,
@@ -89,6 +90,17 @@ export function useCoupon(props?: Props) {
     return () => disposer();
   }, [enableAllIds]);
 
+  const getNormalCouponInfo = useCallback((coupon: CouponModel) => {
+    return {
+      discountTip: coupon.discountTip,
+      usageScopeTip: coupon.usageScopeTip,
+      conditionTip: coupon.conditionTip,
+      expirationTip: coupon.expirationTip,
+      detailTip: coupon.detailTip,
+      shortTip: coupon.shortTip,
+    };
+  }, []);
+
   const activeCoupons = useMemo(() => {
     return activeCouponModels.map(coupon => {
       const discountInfo =
@@ -97,48 +109,36 @@ export function useCoupon(props?: Props) {
           : { score: 0, enabled: true };
       return {
         ...coupon,
-        discountTip: coupon.discountTip,
-        usageScopeTip: coupon.usageScopeTip,
-        conditionTip: coupon.conditionTip,
-        expirationTip: coupon.expirationTip,
-        detailTip: coupon.detailTip,
+        ...getNormalCouponInfo(coupon),
         type: discountInfo.enabled ? ('selectable' as const) : ('unselectable' as const),
         originalType: coupon.type,
         selectable: discountInfo.enabled,
         discountScore: discountInfo.score,
       };
     });
-  }, [activeCouponModels, orderScore]);
+  }, [activeCouponModels, orderScore, getNormalCouponInfo]);
 
   const usedCoupons = useMemo(() => {
     return usedCouponModels.map(coupon => {
       return {
         ...coupon,
-        discountTip: coupon.discountTip,
-        usageScopeTip: coupon.usageScopeTip,
-        conditionTip: coupon.conditionTip,
-        expirationTip: coupon.expirationTip,
-        detailTip: coupon.detailTip,
+        ...getNormalCouponInfo(coupon),
         type: 'used' as const,
         originalType: coupon.type,
       };
     });
-  }, [usedCouponModels]);
+  }, [usedCouponModels, getNormalCouponInfo]);
 
   const expiredCoupons = useMemo(() => {
     return expiredCouponModels.map(coupon => {
       return {
         ...coupon,
-        discountTip: coupon.discountTip,
-        usageScopeTip: coupon.usageScopeTip,
-        conditionTip: coupon.conditionTip,
-        expirationTip: coupon.expirationTip,
-        detailTip: coupon.detailTip,
+        ...getNormalCouponInfo(coupon),
         type: 'expired' as const,
         originalType: coupon.type,
       };
     });
-  }, [expiredCouponModels]);
+  }, [expiredCouponModels, getNormalCouponInfo]);
 
   const allCoupons = useMemo(() => {
     return allCouponModels.map(coupon => {
@@ -151,16 +151,20 @@ export function useCoupon(props?: Props) {
           : ('used' as const);
       return {
         ...coupon,
-        discountTip: coupon.discountTip,
-        usageScopeTip: coupon.usageScopeTip,
-        conditionTip: coupon.conditionTip,
-        expirationTip: coupon.expirationTip,
-        detailTip: coupon.detailTip,
+        ...getNormalCouponInfo(coupon),
         type,
         originalType: coupon.type,
       };
     });
-  }, [allCouponModels]);
+  }, [allCouponModels, getNormalCouponInfo]);
+
+  const couponDict = useMemo(() => {
+    const dict = new Map<string, (typeof allCoupons)[number]>();
+    allCoupons.forEach(item => {
+      dict.set(item.id, item);
+    });
+    return dict;
+  }, [allCoupons]);
 
   const handleDelete = useCallback(
     async (id: string) => {
@@ -297,6 +301,7 @@ export function useCoupon(props?: Props) {
     usedCoupons,
     expiredCoupons,
     allCoupons,
+    couponDict,
     handleDelete,
     handleUpdate,
     isActionLoading,

@@ -74,7 +74,7 @@ export class TaskModule extends AbstractModule {
 
   async updateTask(task: TaskUpdateParams) {
     try {
-      const { id, name, desc, type, categoryId, difficulty, rewardType, value, couponId } = task;
+      const { id, name, desc, type, categoryId, difficulty, prizeId } = task;
       this._logger.info('updateTask', task);
       const entity = await TaskApi.updateTask({
         id,
@@ -83,9 +83,7 @@ export class TaskModule extends AbstractModule {
         type,
         category_id: categoryId,
         difficulty,
-        reward_type: rewardType,
-        value,
-        coupon_id: couponId,
+        prize_id: prizeId,
       });
       storeManager.emitUpdate(STORE_NAME.TASK, {
         entities: [entity],

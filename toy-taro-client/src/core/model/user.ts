@@ -17,14 +17,18 @@ export class UserModel {
   @observable
   score?: number;
 
+  @observable
+  drawTicket?: number;
+
   constructor(entity: UserEntity) {
     makeObserver(this);
-    const { id, name, avatarUrl, role, score } = entity;
+    const { id, name, avatarUrl, role, score, draw_ticket } = entity;
     this.id = id;
     this.name = name;
     this.avatarUrl = avatarUrl;
     this.role = role;
     this.score = score;
+    this.drawTicket = draw_ticket;
   }
 
   @computed
@@ -43,6 +47,11 @@ export class UserModel {
   @computed
   get availableScore() {
     return this.score ?? 0;
+  }
+
+  @computed
+  get availableDrawTicket() {
+    return this.drawTicket ?? 0;
   }
 
   @computed

@@ -47,6 +47,8 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
     return index === -1 ? undefined : index;
   }, [couponId, activeCoupons]);
 
+  const [drawCount, setDrawCount] = useState(prize?.drawCount?.toString() ?? '');
+
   const isSavePrizeBtnDisabled = useMemo(() => {
     if (prizeType === PRIZE_TYPE.POINTS) {
       return !Number(pointsValue);
@@ -54,7 +56,10 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
     if (prizeType === PRIZE_TYPE.COUPON) {
       return !couponId;
     }
-  }, [prizeType, pointsValue, couponId]);
+    if (prizeType === PRIZE_TYPE.LUCKY_DRAW) {
+      return !Number(drawCount);
+    }
+  }, [prizeType, pointsValue, couponId, drawCount]);
 
   const handleSave = async () => {
     await handleUpdatePrize({
@@ -62,6 +67,7 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
       type: prizeType,
       points: Number(pointsValue),
       couponId,
+      drawCount: Number(drawCount),
       onSuccess: afterSave,
     });
   };
@@ -84,6 +90,12 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
           <View className={styles.editCoupon} onClick={handleEditCoupon}>
             <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
           </View>
+          <WhiteSpace isVertical={false} size='medium' />
+          <CheckButton
+            label='祈愿券'
+            checked={prizeType === PRIZE_TYPE.LUCKY_DRAW}
+            onChange={v => handleSelectPrizeType(PRIZE_TYPE.LUCKY_DRAW, v)}
+          />
         </View>
         <WhiteSpace size='small' />
         {prizeType === PRIZE_TYPE.POINTS ? (
@@ -103,6 +115,14 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
             rangeKey='detailTip'
             onChange={e => setCouponId(activeCoupons[Number(e.detail.value)]?.id)}
             value={couponIndex}
+          />
+        ) : null}
+        {prizeType === PRIZE_TYPE.LUCKY_DRAW ? (
+          <Input
+            type='number'
+            placeholder='请输入祈愿券数量'
+            value={drawCount}
+            onInput={e => setDrawCount(e.detail.value)}
           />
         ) : null}
       </FormItem>

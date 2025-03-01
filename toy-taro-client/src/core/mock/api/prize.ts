@@ -18,14 +18,21 @@ const mockGetPrizeListApiCache = createMockApiCache(async (): Promise<PrizeEntit
     () => {
       // const isAdmin = UserStorageManager.getInstance().isAdmin;
       const points = faker.number.int({ min: 1, max: 100 });
-      const type = faker.helpers.arrayElement([PRIZE_TYPE.POINTS, PRIZE_TYPE.COUPON]);
+      const drawCount = faker.number.int({ min: 1, max: 10 });
+      const type = faker.helpers.arrayElement([
+        PRIZE_TYPE.POINTS,
+        PRIZE_TYPE.COUPON,
+        PRIZE_TYPE.LUCKY_DRAW,
+      ]);
       const isCoupon = type === PRIZE_TYPE.COUPON;
       const isPoints = type === PRIZE_TYPE.POINTS;
+      const isLuckDraw = type === PRIZE_TYPE.LUCKY_DRAW;
       return {
         id: faker.string.uuid(),
         type,
         coupon_id: isCoupon ? faker.helpers.arrayElement(activeCouponIds) : undefined,
         points: isPoints ? points : undefined,
+        draw_count: isLuckDraw ? drawCount : undefined,
         sort_value: mockPrizeApi.sortValue++,
         create_time: faker.date.recent().getTime(),
         last_modified_time: faker.date.recent().getTime(),
@@ -72,8 +79,9 @@ export const mockPrizeApi = {
       entity = {
         id: prize.id,
         type: prize.type,
-        points: prize.type === PRIZE_TYPE.POINTS ? prize.points : undefined,
-        coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : undefined,
+        points: prize.type === PRIZE_TYPE.POINTS ? prize.points : prevEntity.points,
+        coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : prevEntity.coupon_id,
+        draw_count: prize.type === PRIZE_TYPE.LUCKY_DRAW ? prize.draw_count : prevEntity.draw_count,
         sort_value: prevEntity.sort_value,
         create_time: prevEntity.create_time,
         last_modified_time: prevEntity.last_modified_time,
@@ -85,8 +93,9 @@ export const mockPrizeApi = {
       entity = {
         id: faker.string.uuid(),
         type: prize.type,
-        points: prize.points,
-        coupon_id: prize.coupon_id,
+        points: prize.type === PRIZE_TYPE.POINTS ? prize.points : undefined,
+        coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : undefined,
+        draw_count: prize.type === PRIZE_TYPE.LUCKY_DRAW ? prize.draw_count : undefined,
         sort_value: mockPrizeApi.sortValue++,
         create_time: faker.date.recent().getTime(),
         last_modified_time: faker.date.recent().getTime(),

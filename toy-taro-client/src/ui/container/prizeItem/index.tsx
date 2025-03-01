@@ -45,11 +45,18 @@ export function PrizeItem(props: PrizeItemProps) {
     if (type === PRIZE_TYPE.COUPON) {
       return prizeTitle ?? '优惠券奖励';
     }
+    if (type === PRIZE_TYPE.LUCKY_DRAW) {
+      return prizeTitle ?? '祈愿券奖励';
+    }
     return '谢谢惠顾';
   }, [type, prizeTitle]);
 
   const desc = useMemo(() => {
-    if (type === PRIZE_TYPE.POINTS || type === PRIZE_TYPE.COUPON) {
+    if (
+      type === PRIZE_TYPE.POINTS ||
+      type === PRIZE_TYPE.COUPON ||
+      type === PRIZE_TYPE.LUCKY_DRAW
+    ) {
       return prizeDesc;
     }
     return '无奖品';
@@ -79,6 +86,7 @@ export function PrizeItem(props: PrizeItemProps) {
         className={clsx(styles.coverImg, {
           [styles.isPoints]: type === PRIZE_TYPE.POINTS,
           [styles.isCoupon]: type === PRIZE_TYPE.COUPON,
+          [styles.isDraw]: type === PRIZE_TYPE.LUCKY_DRAW,
           [styles.isNone]: !type,
         })}
       />

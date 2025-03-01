@@ -5,7 +5,7 @@ import { useAction } from '../base';
 export function usePrizeAction() {
   const [handleUpdatePrize, isUpdateLoading] = useAction(
     async (params: Partial<PrizeUpdateParams>) => {
-      const { id, type, points, couponId } = params;
+      const { id, type, points, couponId, drawCount } = params;
       if (!type) {
         showToast({
           title: '请输入奖品类型',
@@ -24,11 +24,18 @@ export function usePrizeAction() {
         });
         return false;
       }
+      if (type === PRIZE_TYPE.LUCKY_DRAW && !drawCount) {
+        showToast({
+          title: '请输入祈愿券数量',
+        });
+        return false;
+      }
       await sdk.modules.prize.updatePrize({
         id,
         type,
         points,
         couponId,
+        drawCount,
       });
     },
     {

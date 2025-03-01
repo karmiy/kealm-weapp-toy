@@ -99,5 +99,6 @@ export default defineAppConfig({
   ],
   // entryPagePath: 'ui/pages/luckyDraw/configuration/index',
   // entryPagePath: 'ui/pages/taskManage/categoryManage/index',
-  entryPagePath: 'ui/pages/prizeManage/entrance/index',
+  // entryPagePath: 'ui/pages/prizeManage/entrance/index',
+  entryPagePath: 'ui/pages/task/index',
 });

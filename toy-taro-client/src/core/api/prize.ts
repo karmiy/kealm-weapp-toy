@@ -8,6 +8,7 @@ export type PrizeApiUpdateParams = {
   type: PRIZE_TYPE;
   coupon_id?: string;
   points?: number;
+  draw_count?: number;
 };
 
 export class PrizeApi {
