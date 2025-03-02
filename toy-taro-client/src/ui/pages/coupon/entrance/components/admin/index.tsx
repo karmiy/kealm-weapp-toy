@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ScrollView, View } from '@tarojs/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
@@ -7,15 +7,28 @@ import { Icon, StatusWrapper, WhiteSpace } from '@ui/components';
 import type { CouponRenderAction } from '@ui/container';
 import { CouponList } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
-import { useCoupon, useStoreLoadingStatus } from '@ui/viewModel';
+import { useCouponAction, useCouponList, useStoreLoadingStatus } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 export function CouponAdminPage() {
   const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
   const loading = useStoreLoadingStatus(STORE_NAME.COUPON);
-  const { allCoupons, handleDelete } = useCoupon({
-    enableAllIds: true,
-  });
+  const { activeCoupons } = useCouponList();
+  const couponList = useMemo(() => {
+    return activeCoupons.map(coupon => {
+      return {
+        ...coupon,
+        discountTip: coupon.discountTip,
+        usageScopeTip: coupon.usageScopeTip,
+        conditionTip: coupon.conditionTip,
+        expirationTip: coupon.expirationTip,
+        detailTip: coupon.detailTip,
+        shortTip: coupon.shortTip,
+        type: 'selectable' as const,
+      };
+    });
+  }, [activeCoupons]);
+  const { handleDelete } = useCouponAction();
 
   const handleManageCoupon = useCallback((id?: string) => {
     navigateToPage({
@@ -36,7 +49,7 @@ export function CouponAdminPage() {
               <WhiteSpace size='small' isVertical={false} />
             </>
           ) : null}
-          <View onClick={() => handleDelete(id)}>
+          <View onClick={() => handleDelete({ id })}>
             <Icon name='delete' />
           </View>
         </View>
@@ -62,8 +75,8 @@ export function CouponAdminPage() {
               新增
             </View>
           </View>
-          <StatusWrapper loading={loading} count={allCoupons.length} size='flex'>
-            <CouponList list={allCoupons} renderAction={renderAction} />
+          <StatusWrapper loading={loading} count={activeCoupons.length} size='flex'>
+            <CouponList list={couponList} renderAction={renderAction} />
           </StatusWrapper>
         </View>
       </ScrollView>

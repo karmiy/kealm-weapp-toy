@@ -4,6 +4,7 @@ export enum COLOR_VARIABLES {
     COLOR_WHITE = '#FFF',
     COLOR_BLACK = '#000',
     TEXT_COLOR_BASE = '#333',
+    TEXT_COLOR_SECONDARY = '#7F7F7F',
     TEXT_COLOR_DISABLED = '#CCC',
     COLOR_RATE_INACTIVE = '#CCC',
     COLOR_RATE_ACTIVE = '#FAB646',
@@ -29,4 +30,9 @@ export enum PAGE_ID {
     PRODUCT_CATEGORY_MANAGE = 'productCategoryManage',
     PRODUCT_SEARCH = 'productSearch',
     PRODUCT_FRESH_ARRIVAL = 'productFreshArrival',
+    LUCKY_DRAW = 'luckyDraw',
+    LUCKY_DRAW_DETAIL = 'luckyDrawDetail',
+    LUCKY_DRAW_HISTORY = 'luckyDrawHistory',
+    LUCKY_DRAW_CONFIGURATION = 'luckyDrawConfiguration',
+    PRIZE_MANAGE = 'prizeManage',
 }

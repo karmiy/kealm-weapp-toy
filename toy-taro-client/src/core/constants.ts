@@ -5,11 +5,13 @@ export enum STORE_NAME {
     PRODUCT_CATEGORY = 'PRODUCT_CATEGORY',
     PRODUCT_SHOP_CART = 'PRODUCT_SHOP_CART',
     COUPON = 'COUPON',
+    USER_COUPON = 'USER_COUPON',
     TASK = 'TASK',
     TASK_FLOW = 'TASK_FLOW',
     TASK_CATEGORY = 'TASK_CATEGORY',
     ORDER = 'ORDER',
     CHECK_IN = 'CHECK_IN',
+    PRIZE = 'PRIZE',
 }
 
 export enum HANDLER_TYPE {
@@ -24,6 +26,7 @@ export enum MODULE_NAME {
     TASK = 'TaskModule',
     ORDER = 'OrderModule',
     CHECK_IN = 'CheckInModule',
+    PRIZE = 'PrizeModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -43,15 +46,16 @@ export const EVENT_KEYS = {
 
 // ----------------------error--------------------------------
 export enum SERVER_ERROR_CODE {
+    NO_LOGIN = 401,
     LOGIN_EXPIRED = 401,
     SERVER_ERROR = 500,
 }
 
-export enum ERROR_CODE {
-    NO_LOGIN = 'NO_LOGIN',
-    LOGIN_EXPIRED = 'LOGIN_EXPIRED',
-    NO_USER_INFO = 'NO_USER_INFO',
-}
+// export enum ERROR_CODE {
+//     NO_LOGIN = 'NO_LOGIN',
+//     LOGIN_EXPIRED = 'LOGIN_EXPIRED',
+//     NO_USER_INFO = 'NO_USER_INFO',
+// }
 
 export enum ERROR_MESSAGE {
     NO_LOGIN = '账号未登录',
@@ -94,12 +98,6 @@ export enum TASK_STATUS {
     PENDING_APPROVAL = 'PENDING_APPROVAL',
     APPROVED = 'APPROVED',
     REJECTED = 'REJECTED',
-}
-
-export enum TASK_REWARD_TYPE {
-    POINTS = 'POINTS', // 积分
-    CASH_DISCOUNT = 'CASH_DISCOUNT',
-    PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
 }
 
 export const TASK_TYPE_LABEL = {
@@ -147,4 +145,11 @@ export enum CHECK_IN_RULE_REWARD_TYPE {
     POINTS = 'POINTS', // 积分
     CASH_DISCOUNT = 'CASH_DISCOUNT',
     PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
+}
+
+// ----------------------prize--------------------------------
+export enum PRIZE_TYPE {
+    POINTS = 'POINTS',
+    COUPON = 'COUPON',
+    LUCKY_DRAW = 'LUCKY_DRAW',
 }

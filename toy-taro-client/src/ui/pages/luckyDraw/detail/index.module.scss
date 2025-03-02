@@ -1,0 +1,80 @@
+@import '@ui/styles/index.scss';
+
+.wrapper {
+  // background-color: $--fill-body;
+  background-color: $--color-red-opacity-1;
+  box-sizing: border-box;
+  padding: px(12) px(16);
+  min-height: 100%;
+}
+
+.drawWrapper {
+  box-sizing: border-box;
+  border-radius: px(16);
+  background-color: $--fill-default;
+  padding: px(24);
+  overflow: hidden;
+  box-shadow: $--box-shadow-menu;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header {
+    font-size: px(18);
+    line-height: px(28);
+    color: $--color-red;
+    margin-bottom: px(8);
+  }
+
+  .secondary {
+    font-size: px(14);
+    line-height: px(20);
+    color: $--text-color-secondary;
+    margin-bottom: px(16);
+  }
+
+  .luckyWrapper {
+    width: px(300);
+    height: px(300);
+  }
+
+  .ruleWrapper {
+    margin-top: px(24);
+    border-radius: px(16);
+    padding: px(12) px(24);
+    background-color: $--color-red-opacity-2;
+
+    .title {
+      font-size: px(14);
+    }
+
+    .rule {
+      margin-top: px(8);
+      font-size: px(12);
+      color: $--text-color-secondary;
+
+      .highlight {
+        color: $--color-red;
+        font-weight: bold;
+      }
+
+      .listItem {
+        position: relative;
+        display: flex;
+        padding-left: px(24);
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: px(16);
+          top: 50%;
+          transform: translateY(-50%);
+          width: px(4);
+          height: px(4);
+          background-color: $--text-color-base;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}

@@ -4,12 +4,14 @@ import {
   ContactModel,
   CouponModel,
   OrderModel,
+  PrizeModel,
   ProductCategoryModel,
   ProductModel,
   ProductShopCartModel,
   TaskCategoryModel,
   TaskFlowModel,
   TaskModel,
+  UserCouponModel,
   UserModel,
 } from './model';
 
@@ -35,6 +37,11 @@ const config = {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: CouponModel,
     sortValue: (a: CouponModel, b: CouponModel) => b.lastModifiedTime - a.lastModifiedTime,
+  },
+  [STORE_NAME.USER_COUPON]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: UserCouponModel,
+    sortValue: (a: UserCouponModel, b: UserCouponModel) => b.lastModifiedTime - a.lastModifiedTime,
   },
   [STORE_NAME.TASK]: {
     type: HANDLER_TYPE.MULTIPLE as const,
@@ -71,6 +78,11 @@ const config = {
     type: HANDLER_TYPE.SINGLE as const,
     model: CheckInModel,
     sortValue: (a: CheckInModel, b: CheckInModel) => 1,
+  },
+  [STORE_NAME.PRIZE]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: PrizeModel,
+    sortValue: (a: PrizeModel, b: PrizeModel) => b.sortValue - a.sortValue,
   },
 };
 

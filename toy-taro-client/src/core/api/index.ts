@@ -4,3 +4,4 @@ export * from './coupon';
 export * from './task';
 export * from './order';
 export * from './checkIn';
+export * from './prize';

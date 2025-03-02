@@ -19,3 +19,5 @@ export * from './input';
 export * from './picketSelector';
 export * from './tag';
 export * from './lucky';
+export * from './loadingMore';
+export * from './sortableList';

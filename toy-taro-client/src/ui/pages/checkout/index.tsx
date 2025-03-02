@@ -4,7 +4,7 @@ import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Button, SafeAreaBar, WhiteSpace } from '@ui/components';
 import { CouponActionSheet } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
-import { useCoupon, useOrderAction, useProductShopCart } from '@ui/viewModel';
+import { useOrderAction, useProductShopCart, useUserCouponList } from '@ui/viewModel';
 import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
@@ -15,7 +15,7 @@ export default function () {
     enableTotalScore: true,
   });
   const { handleCreate } = useOrderAction();
-  const { activeCoupons } = useCoupon({ enableActiveIds: true, orderScore: totalScore });
+  const { activeCoupons } = useUserCouponList({ enableActiveIds: true, orderScore: totalScore });
   const hasAvailableCoupon = useMemo(
     () => activeCoupons.some(coupon => coupon.selectable),
     [activeCoupons],

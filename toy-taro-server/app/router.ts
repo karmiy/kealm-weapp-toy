@@ -57,6 +57,10 @@ export default (app: Application) => {
     controller.coupon.updateUserCoupon
   );
   router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
+  router.get(
+    getPath("/coupon/getUserCouponList"),
+    controller.coupon.getUserCouponList
+  );
   router.post(getPath("/coupon/deleteCoupon"), controller.coupon.deleteCoupon);
 
   // task
@@ -106,4 +110,11 @@ export default (app: Application) => {
     getPath("/checkIn/getCheckInList"),
     controller.checkIn.getCheckInList
   );
+
+  // prize
+  router.post(getPath("/prize/deletePrize"), controller.prize.deletePrize);
+  router.get(getPath("/prize/getPrizeList"), controller.prize.getPrizeList);
+  router.post(getPath("/prize/updatePrize"), controller.prize.updatePrize);
+  router.post(getPath("/prize/sortPrize"), controller.prize.sortPrize);
+  router.post(getPath("/prize/grantReward"), controller.prize.grantReward);
 };

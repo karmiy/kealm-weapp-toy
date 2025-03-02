@@ -1,7 +1,6 @@
-import { computed, makeObserver, observable } from '@shared/utils/observer';
-import { COUPON_TYPE, TASK_REWARD_TYPE, TASK_TYPE } from '../constants';
-import { TaskEntity, TaskReward } from '../entity';
-import { CouponModel } from './coupon';
+import { makeObserver, observable } from '@shared/utils/observer';
+import { TASK_TYPE } from '../constants';
+import { TaskEntity } from '../entity';
 
 export class TaskModel {
   id: string;
@@ -19,10 +18,7 @@ export class TaskModel {
   categoryId: string;
 
   @observable
-  reward: TaskReward;
-
-  @observable
-  couponReward?: TaskReward;
+  prizeId: string;
 
   @observable
   difficulty: number;
@@ -44,7 +40,7 @@ export class TaskModel {
       desc,
       type,
       category_id,
-      reward,
+      prize_id,
       difficulty,
     } = entity;
     this.id = id;
@@ -55,84 +51,7 @@ export class TaskModel {
     this.desc = desc;
     this.type = type;
     this.categoryId = category_id;
-    this.reward = reward;
+    this.prizeId = prize_id;
     this.difficulty = difficulty;
   }
-
-  @computed
-  get couponId() {
-    if (this.reward.type === TASK_REWARD_TYPE.POINTS) {
-      return;
-    }
-    return this.reward.couponId;
-  }
-
-  @computed
-  get isCouponReward() {
-    return this.reward.type !== TASK_REWARD_TYPE.POINTS;
-  }
-
-  @computed
-  get pointsValue() {
-    if (this.isCouponReward) {
-      return;
-    }
-    return this.reward.value;
-  }
-
-  getRewardTitleWithCoupon(coupon?: CouponModel) {
-    if (!coupon) {
-      return this.getRewardTitle(this.reward);
-    }
-    const couponReward = {
-      type:
-        coupon.type === COUPON_TYPE.CASH_DISCOUNT
-          ? TASK_REWARD_TYPE.CASH_DISCOUNT
-          : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-      couponId: coupon.id,
-      value: coupon.value,
-      minimumOrderValue: coupon.minimumOrderValue,
-    };
-    return this.getRewardTitle(couponReward);
-  }
-
-  getRewardTitle(reward: TaskReward) {
-    switch (reward.type) {
-      case TASK_REWARD_TYPE.POINTS:
-        return `+${reward.value}积分`;
-      case TASK_REWARD_TYPE.CASH_DISCOUNT:
-      case TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT:
-        const conditionTip = reward.minimumOrderValue
-          ? `满${reward.minimumOrderValue}可用`
-          : '无门槛';
-        const titleTip =
-          reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT
-            ? `减${reward.value}券`
-            : `${reward.value / 10}折券`;
-        return `${titleTip}(${conditionTip})`;
-      default:
-        return '';
-    }
-  }
-
-  // @computed
-  // get rewardTitle() {
-  //   const reward = this.reward;
-  //   switch (reward.type) {
-  //     case TASK_REWARD_TYPE.POINTS:
-  //       return `+${reward.value}积分`;
-  //     case TASK_REWARD_TYPE.CASH_DISCOUNT:
-  //     case TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT:
-  //       const conditionTip = reward.minimumOrderValue
-  //         ? `满${reward.minimumOrderValue}可用`
-  //         : '无门槛';
-  //       const titleTip =
-  //         reward.type === TASK_REWARD_TYPE.CASH_DISCOUNT
-  //           ? `减${reward.value}券`
-  //           : `${reward.value / 10}折券`;
-  //       return `${titleTip}(${conditionTip})`;
-  //     default:
-  //       return '';
-  //   }
-  // }
 }

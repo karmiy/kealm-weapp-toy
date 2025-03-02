@@ -1,5 +1,5 @@
 import { COUPON_VALIDITY_TIME_TYPE } from '../constants';
-import { CouponEntity } from '../entity';
+import { CouponEntity, UserCouponEntity } from '../entity';
 import { httpRequest } from '../httpRequest';
 import { mock, MOCK_API_NAME } from '../mock';
 
@@ -20,6 +20,13 @@ export class CouponApi {
   static async getCouponList(): Promise<CouponEntity[]> {
     return httpRequest.get<CouponEntity[]>({
       url: '/coupon/getCouponList',
+    });
+  }
+
+  @mock({ name: MOCK_API_NAME.GET_USER_COUPON_LIST })
+  static async getUserCouponList(): Promise<UserCouponEntity[]> {
+    return httpRequest.get<UserCouponEntity[]>({
+      url: '/coupon/getUserCouponList',
     });
   }
 

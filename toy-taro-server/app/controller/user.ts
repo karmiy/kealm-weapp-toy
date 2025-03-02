@@ -19,6 +19,7 @@ export default class UserController extends Controller {
       avatarUrl: user.avatar_url,
       role: user.role,
       score: user.score,
+      draw_ticket: user.draw_ticket,
     };
     return userEntity;
   }

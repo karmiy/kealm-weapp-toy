@@ -6,8 +6,9 @@ import {
     ProductModule,
     TaskModule,
     UserModule,
+    PrizeModule,
   } from './module';
-import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, TASK_REWARD_TYPE } from './constants';
+import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, PRIZE_TYPE } from './constants';
 import { CouponModel, TaskModel, ProductModel } from './model';
 
  // ----------------------storeManager--------------------------------
@@ -43,6 +44,7 @@ export type SingleStoreNames = {
     task: TaskModule;
     order: OrderModule;
     checkIn: CheckInModule;
+    prize: PrizeModule;
 };
 
 export type ISDK = {
@@ -78,7 +80,14 @@ TaskModel,
 'name' | 'desc' | 'type' | 'categoryId' | 'difficulty'
 > & { 
   id?: string;
-  rewardType: TASK_REWARD_TYPE;
-  value?: number;
-  couponId?: string;
+  prizeId: string;
 };
+
+// ----------------------prize--------------------------------
+export type PrizeUpdateParams = {
+    id?: string;
+    type: PRIZE_TYPE;
+    couponId?: string;
+    points?: number;
+    drawCount?: number;
+}

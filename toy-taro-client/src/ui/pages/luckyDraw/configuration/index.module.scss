@@ -1,0 +1,25 @@
+@import '@ui/styles/index.scss';
+
+.checkButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.editCoupon {
+  margin-left: px(2);
+}
+
+.editModalWrapper {
+  padding: px(16);
+}
+
+.actionButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.tip {
+  padding: 0 px(8);
+  font-size: px(12);
+  color: $--text-color-secondary
+}

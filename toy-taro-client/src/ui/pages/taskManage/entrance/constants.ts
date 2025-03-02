@@ -1,9 +1,4 @@
-import { TASK_TYPE } from "@core";
-
-export enum TASK_REWARD_SELECT_TYPE {
-  POINTS = 'POINTS',
-  COUPON = 'COUPON',
-}
+import { TASK_TYPE } from '@core';
 
 export const TASK_TYPE_LIST = [
   { id: TASK_TYPE.DAILY, name: '每日任务' },

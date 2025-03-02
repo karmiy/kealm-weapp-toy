@@ -1,13 +1,16 @@
 import { Controller } from "egg";
 import { startOfDay, endOfDay } from "date-fns";
 import { Logger } from "../utils/logger";
-import { CouponEntity, CouponValidityTime } from "../entity/coupon";
+import {
+  CouponEntity,
+  UserCouponEntity,
+  CouponValidityTime,
+} from "../entity/coupon";
 import {
   SERVER_CODE,
   COUPON_TYPE,
   COUPON_STATUS,
   COUPON_VALIDITY_TIME_TYPE,
-  TASK_REWARD_TYPE,
 } from "../utils/constants";
 import { CouponModel } from "../model/coupon";
 import { UserCouponWithCouponModel } from "../model/userCoupon";
@@ -60,7 +63,7 @@ export default class CouponController extends Controller {
       create_time: couponModel.create_time.getTime(),
       last_modified_time: couponModel.last_modified_time.getTime(),
       validity_time: validityTime,
-      status: COUPON_STATUS.ACTIVE,
+      // status: COUPON_STATUS.ACTIVE,
       type: couponModel.type,
       value: couponModel.value,
       minimum_order_value: couponModel.minimum_order_value,
@@ -82,6 +85,20 @@ export default class CouponController extends Controller {
     const entity: CouponEntity = {
       ...baseEntity,
       id: userCouponModel.id,
+      user_id: userCouponModel.user_id,
+      create_time: userCouponModel.create_time.getTime(),
+      last_modified_time: userCouponModel.last_modified_time.getTime(),
+      // status: userCouponModel.status,
+    };
+    return entity;
+  }
+
+  private async _userCouponModelToEntity(
+    userCouponModel: UserCouponWithCouponModel
+  ) {
+    const entity: UserCouponEntity = {
+      id: userCouponModel.id,
+      coupon_id: userCouponModel.coupon_id,
       user_id: userCouponModel.user_id,
       create_time: userCouponModel.create_time.getTime(),
       last_modified_time: userCouponModel.last_modified_time.getTime(),
@@ -292,20 +309,20 @@ export default class CouponController extends Controller {
       const entity = this._couponModelToEntity(couponModel);
 
       // 更新 task 表中的相关 coupon 数据
-      await ctx.service.task.updateTasksPartial(
-        {
-          reward_coupon_id: couponModel.id,
-          reward_type:
-            couponModel.type === COUPON_TYPE.CASH_DISCOUNT
-              ? TASK_REWARD_TYPE.CASH_DISCOUNT
-              : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
-          reward_value: couponModel.value,
-          reward_minimum_order_value: couponModel.minimum_order_value,
-        },
-        {
-          reward_coupon_id: couponModel.id,
-        }
-      );
+      // await ctx.service.task.updateTasksPartial(
+      //   {
+      //     reward_coupon_id: couponModel.id,
+      //     reward_type:
+      //       couponModel.type === COUPON_TYPE.CASH_DISCOUNT
+      //         ? TASK_REWARD_TYPE.CASH_DISCOUNT
+      //         : TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT,
+      //     reward_value: couponModel.value,
+      //     reward_minimum_order_value: couponModel.minimum_order_value,
+      //   },
+      //   {
+      //     reward_coupon_id: couponModel.id,
+      //   }
+      // );
 
       ctx.responseSuccess({
         data: entity,
@@ -431,19 +448,32 @@ export default class CouponController extends Controller {
     try {
       logger.tag("[getCouponList]").info("isAdmin", isAdmin);
 
-      if (isAdmin) {
-        const list = await ctx.service.coupon.getCouponList();
-        const entities = list.map((item) => this._couponModelToEntity(item));
+      const list = await ctx.service.coupon.getCouponList();
+      const entities = list.map((item) => this._couponModelToEntity(item));
 
-        ctx.responseSuccess({
-          data: entities,
-        });
-        return;
-      }
+      ctx.responseSuccess({
+        data: entities,
+      });
+      return;
+    } catch (error) {
+      const jsError = ctx.toJsError(error);
+      ctx.responseFail({
+        code: jsError.code,
+        message: jsError?.message,
+      });
+    }
+  }
+
+  public async getUserCouponList() {
+    const { ctx } = this;
+    const { isAdmin } = ctx.getUserInfo();
+    try {
+      logger.tag("[getUserCouponList]").info("isAdmin", isAdmin);
+
       const list = await ctx.service.coupon.getUserCouponListWithCoupon();
 
       const entities = await Promise.all(
-        list.map((item) => this._userCouponWithCouponModelToEntity(item))
+        list.map((item) => this._userCouponModelToEntity(item))
       );
 
       ctx.responseSuccess({
@@ -487,6 +517,16 @@ export default class CouponController extends Controller {
         ctx.responseFail({
           code: SERVER_CODE.BAD_REQUEST,
           message: "无法删除，优惠券正在被用户使用",
+        });
+        return;
+      }
+      const prizeModel = await ctx.service.prize.findPrize({
+        coupon_id: id,
+      });
+      if (prizeModel) {
+        ctx.responseFail({
+          code: SERVER_CODE.BAD_REQUEST,
+          message: `无法删除，奖品《${prizeModel.id}》正在占用`,
         });
         return;
       }

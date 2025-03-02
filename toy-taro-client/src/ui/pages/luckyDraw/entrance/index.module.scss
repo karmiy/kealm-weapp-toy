@@ -1,0 +1,52 @@
+@import '@ui/styles/index.scss';
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .prizeListEntrance {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: px(12);
+
+    .action {
+      display: flex;
+      align-items: center;
+      color: $--color-red;
+      font-size: px(14);
+    }
+
+  }
+
+  .headerCoverImg {
+    width: 100%;
+    height: px(128);
+    background-color: $--fill-default;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-entrance-header.jpeg');
+    border-radius: px(16);
+  }
+
+  .headerContent {
+    display: flex;
+    align-items: center;
+    font-size: px(14);
+
+    .title {
+      margin-left: px(4);
+      margin-right: px(4);
+    }
+
+    .info {
+      font-size: px(18);
+      font-weight: bold;
+      color: $--color-red;
+    }
+  }
+}

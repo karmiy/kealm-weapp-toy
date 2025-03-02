@@ -3,7 +3,7 @@ import { PAGE_ID } from '@shared/utils/constants';
 import { Logger } from '@shared/utils/logger';
 import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { ERROR_CODE, sdk } from '@core';
+import { sdk, SERVER_ERROR_CODE } from '@core';
 import {
   bootstrap as controllerBootstrap,
   unBootstrap as controllerUnBootstrap,
@@ -14,8 +14,8 @@ const logger = Logger.getLogger('[bootstrap]');
 
 const errorFallback = (error: JsError) => {
   switch (error.code) {
-    case ERROR_CODE.NO_LOGIN:
-    case ERROR_CODE.LOGIN_EXPIRED:
+    case SERVER_ERROR_CODE.NO_LOGIN:
+    case SERVER_ERROR_CODE.LOGIN_EXPIRED:
       navigateToPage({ pageName: PAGE_ID.LOGIN, isRelaunch: true });
       break;
     default:
@@ -33,8 +33,8 @@ export const bootstrap = async () => {
     await controllerBootstrap();
   } catch (error) {
     switch (error.code) {
-      case ERROR_CODE.NO_LOGIN:
-      case ERROR_CODE.LOGIN_EXPIRED:
+      case SERVER_ERROR_CODE.NO_LOGIN:
+      case SERVER_ERROR_CODE.LOGIN_EXPIRED:
         navigateToPage({ pageName: PAGE_ID.LOGIN, isRelaunch: true });
         break;
       default:

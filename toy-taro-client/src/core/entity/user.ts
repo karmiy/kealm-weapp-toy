@@ -6,6 +6,7 @@ export interface UserEntity {
   avatarUrl?: string;
   role: ROLE;
   score?: number;
+  draw_ticket?: number;
 }
 
 export type ContactEntity = UserEntity;

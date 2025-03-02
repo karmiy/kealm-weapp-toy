@@ -21,6 +21,7 @@ export const mockUserApi = {
       avatarUrl: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/login-cover-image.png',
       role,
       score: role === ROLE.ADMIN ? undefined : faker.number.int({ min: 1, max: 100 }),
+      draw_ticket: role === ROLE.ADMIN ? undefined : faker.number.int({ min: 1, max: 10 }),
     };
   },
   [MOCK_API_NAME.USER_LOGIN]: async (): Promise<{ token: string }> => {

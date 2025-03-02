@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
-import { sdk, TASK_REWARD_TYPE, TASK_STATUS, TaskUpdateParams } from '@core';
+import { sdk, TASK_STATUS, TaskUpdateParams } from '@core';
 import { TASK_ACTION_ID } from './constants';
 
 export function useTaskAction() {
@@ -100,23 +100,11 @@ export function useTaskAction() {
   const handleUpdate = useCallback(
     async (
       params: Partial<Omit<TaskUpdateParams, 'value'>> & {
-        value?: string;
         onSuccess?: () => void;
       },
     ) => {
       try {
-        const {
-          id,
-          name,
-          desc,
-          type,
-          categoryId,
-          difficulty,
-          rewardType,
-          value,
-          couponId,
-          onSuccess,
-        } = params;
+        const { id, name, desc, type, categoryId, difficulty, prizeId, onSuccess } = params;
         if (!name) {
           showToast({
             title: '请输入任务名称',
@@ -147,21 +135,9 @@ export function useTaskAction() {
           });
           return;
         }
-        if (!rewardType) {
+        if (!prizeId) {
           showToast({
-            title: '请选择奖励类型',
-          });
-          return;
-        }
-        if (rewardType === TASK_REWARD_TYPE.POINTS && !value) {
-          showToast({
-            title: '请输入奖励积分',
-          });
-          return;
-        }
-        if (rewardType !== TASK_REWARD_TYPE.POINTS && !couponId) {
-          showToast({
-            title: '请选择奖励优惠券',
+            title: '请选择任务奖品',
           });
           return;
         }
@@ -174,9 +150,7 @@ export function useTaskAction() {
           type,
           categoryId,
           difficulty,
-          rewardType,
-          value: Number(value),
-          couponId,
+          prizeId,
         });
         await showToast({
           title: '保存成功',

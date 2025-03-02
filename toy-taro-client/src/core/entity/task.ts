@@ -1,22 +1,4 @@
-import { TASK_REWARD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
-
-export type TaskReward =
-  | {
-      type: TASK_REWARD_TYPE.POINTS;
-      value: number;
-    }
-  | {
-      couponId: string;
-      type: TASK_REWARD_TYPE.CASH_DISCOUNT;
-      value: number;
-      minimumOrderValue: number;
-    }
-  | {
-      couponId: string;
-      type: TASK_REWARD_TYPE.PERCENTAGE_DISCOUNT;
-      value: number;
-      minimumOrderValue: number;
-    };
+import { TASK_STATUS, TASK_TYPE } from '../constants';
 
 export interface TaskEntity {
   id: string;
@@ -24,7 +6,7 @@ export interface TaskEntity {
   desc: string;
   type: TASK_TYPE;
   category_id: string;
-  reward: TaskReward;
+  prize_id: string;
   difficulty: number;
   user_id: string;
   create_time: number;

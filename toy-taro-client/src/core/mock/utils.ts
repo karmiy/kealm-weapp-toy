@@ -10,7 +10,7 @@ export const createMockApiCache = <T>(
   let cache: { data: T; timestamp: number } | null = null;
   let pendingPromise: Promise<T> | null = null;
 
-  return async (...args: any[]): Promise<T> => {
+  const api = async (...args: any[]): Promise<T> => {
     const { enabled = true, ttl = 0 } = options ?? {};
     const now = new Date().getTime();
 
@@ -39,4 +39,25 @@ export const createMockApiCache = <T>(
 
     return pendingPromise;
   };
+  const update = (data: T) => {
+    cache = { data, timestamp: new Date().getTime() };
+  };
+  api.update = update;
+  return api;
+};
+
+type MockApiCache<T> = ReturnType<typeof createMockApiCache<T>>;
+
+export const updateMockApiCache = async <T extends { id?: string }>(
+  mockApiCache: MockApiCache<T[]>,
+  entity: T,
+) => {
+  const list = await mockApiCache();
+  const index = list.findIndex(item => item.id === entity.id);
+  if (index !== -1) {
+    list.splice(index, 1, entity);
+    mockApiCache.update(list);
+    return;
+  }
+  mockApiCache.update([...list, entity]);
 };

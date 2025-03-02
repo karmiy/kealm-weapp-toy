@@ -2,7 +2,13 @@ import { eventCenter } from '@tarojs/taro';
 import { JsError } from '@shared/utils/utils';
 import { LoginParams, UserApi } from '../api';
 import { AbstractModule, UserStorageManager } from '../base';
-import { ERROR_CODE, ERROR_MESSAGE, EVENT_KEYS, MODULE_NAME, STORE_NAME } from '../constants';
+import {
+  ERROR_MESSAGE,
+  EVENT_KEYS,
+  MODULE_NAME,
+  SERVER_ERROR_CODE,
+  STORE_NAME,
+} from '../constants';
 import { storeManager } from '../storeManager';
 
 export class UserModule extends AbstractModule {
@@ -30,7 +36,7 @@ export class UserModule extends AbstractModule {
     const auth = UserStorageManager.getInstance().getUserAuth();
     if (!auth) {
       this._logger.error('without login');
-      throw new JsError(ERROR_CODE.NO_LOGIN, ERROR_MESSAGE.NO_LOGIN);
+      throw new JsError(SERVER_ERROR_CODE.NO_LOGIN, ERROR_MESSAGE.NO_LOGIN);
     }
     this.getUserInfo();
   }
@@ -77,7 +83,7 @@ export class UserModule extends AbstractModule {
       const { avatarUrl } = await UserApi.uploadAvatar(tempUrl);
       const userInfo = storeManager.get(STORE_NAME.USER);
       if (!userInfo) {
-        throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+        throw new JsError(SERVER_ERROR_CODE.NO_LOGIN, ERROR_MESSAGE.NO_USER_INFO);
       }
       storeManager.emitUpdate(STORE_NAME.USER, {
         partials: [{ id: userInfo.id, avatarUrl }],
@@ -95,7 +101,7 @@ export class UserModule extends AbstractModule {
       await UserApi.uploadProfile(params);
       const userInfo = storeManager.get(STORE_NAME.USER);
       if (!userInfo) {
-        throw new JsError(ERROR_CODE.NO_USER_INFO, ERROR_MESSAGE.NO_USER_INFO);
+        throw new JsError(SERVER_ERROR_CODE.NO_LOGIN, ERROR_MESSAGE.NO_USER_INFO);
       }
       storeManager.emitUpdate(STORE_NAME.USER, {
         partials: [{ id: userInfo.id, name }],

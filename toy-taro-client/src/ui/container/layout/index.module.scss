@@ -4,26 +4,33 @@
   box-sizing: border-box;
   height: 100%;
   background-color: $--fill-body;
+}
 
-  .scrollView {
-    height: 100%;
+.scrollView {
+  height: 100%;
+}
 
-    .cardContainer {
-      box-sizing: border-box;
-      padding: px(12) px(16);
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    
-      .cardList {
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        padding: px(16);
-        border-radius: px(12);
-        background-color: $--fill-default;
-      }
-    }
-  }
+.plainContainer {
+  box-sizing: border-box;
+  padding: px(12) px(16);
+}
+
+.cardContainer {
+  box-sizing: border-box;
+  padding: px(12) px(16);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.cardList {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: px(16);
+  border-radius: px(12);
+  background-color: $--fill-default;
 }

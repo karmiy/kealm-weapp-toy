@@ -42,13 +42,20 @@ export default function () {
     [handleDeleteCategory],
   );
 
+  const renderContent = useCallback(
+    ({ index }: { index: number }) => {
+      return productCategoryList[index].name;
+    },
+    [productCategoryList],
+  );
+
   return (
     <Fragment>
       <ConfigListPanel
         title='商品分类'
         addButtonText='新增分类'
         list={productCategoryList}
-        labelKey='name'
+        renderContent={renderContent}
         scrollViewProps={scrollViewProps}
         onAdd={handleAdd}
         onEdit={handleEdit}

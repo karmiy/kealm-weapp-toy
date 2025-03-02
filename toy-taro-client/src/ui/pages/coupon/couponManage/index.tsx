@@ -6,7 +6,7 @@ import { showToast } from '@shared/utils/operateFeedback';
 import { COUPON_TYPE, COUPON_VALIDITY_TIME_TYPE, STORE_NAME } from '@core';
 import { Button, CheckButton, Input, PickerSelector, Tag, WhiteSpace } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
-import { useCoupon, useStoreById } from '@ui/viewModel';
+import { useCouponAction, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface WeeklyItem {
@@ -48,7 +48,7 @@ const WEEKLY_LIST: WeeklyItem[] = [
 export default function () {
   const router = useRouter();
   const coupon = useStoreById(STORE_NAME.COUPON, router.params.id);
-  const { handleUpdate, isActionLoading } = useCoupon();
+  const { handleUpdate, isUpdateLoading: isActionLoading } = useCouponAction();
   // 名称
   const [couponName, setCouponName] = useState(coupon?.name ?? '');
   // 类型

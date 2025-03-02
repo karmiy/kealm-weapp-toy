@@ -88,6 +88,17 @@ export default defineAppConfig({
       root: 'ui/pages/productFreshArrival/',
       pages: ['index'],
     },
+    {
+      root: 'ui/pages/luckyDraw/',
+      pages: ['entrance/index', 'detail/index', 'history/index', 'configuration/index'],
+    },
+    {
+      root: 'ui/pages/prizeManage/',
+      pages: ['entrance/index'],
+    },
   ],
-  // entryPagePath: 'ui/pages/productSearch/index',
+  // entryPagePath: 'ui/pages/luckyDraw/configuration/index',
+  // entryPagePath: 'ui/pages/taskManage/categoryManage/index',
+  // entryPagePath: 'ui/pages/prizeManage/entrance/index',
+  entryPagePath: 'ui/pages/task/index',
 });
