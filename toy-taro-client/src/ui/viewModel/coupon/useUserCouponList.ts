@@ -3,6 +3,7 @@ import { reaction } from '@shared/utils/observer';
 import { COUPON_STATUS, COUPON_TYPE, CouponModel, sdk, STORE_NAME } from '@core';
 import { UserCouponController } from '@ui/controller';
 import { useStoreByIds } from '../base';
+import { getNormalCouponInfo } from './utils';
 
 interface Props {
   enableActiveIds?: boolean;
@@ -123,18 +124,6 @@ export function useUserCouponList(props?: Props) {
     return () => disposer();
   }, [enableAllIds]);
 
-  const getNormalCouponInfo = useCallback((coupon: CouponModel) => {
-    // get 属性需要手动取，无法 ...coupon 获取到
-    return {
-      discountTip: coupon.discountTip,
-      usageScopeTip: coupon.usageScopeTip,
-      conditionTip: coupon.conditionTip,
-      expirationTip: coupon.expirationTip,
-      detailTip: coupon.detailTip,
-      shortTip: coupon.shortTip,
-    };
-  }, []);
-
   const activeCoupons = useMemo(() => {
     const list: ActiveCoupon[] = [];
     activeCouponModels.forEach(userCoupon => {
@@ -148,6 +137,7 @@ export function useUserCouponList(props?: Props) {
           : { score: 0, enabled: true };
       list.push({
         ...coupon,
+        ...userCoupon,
         ...getNormalCouponInfo(coupon),
         type: discountInfo.enabled ? ('selectable' as const) : ('unselectable' as const),
         originalType: coupon.type,
@@ -156,7 +146,7 @@ export function useUserCouponList(props?: Props) {
       });
     });
     return list;
-  }, [activeCouponModels, orderScore, getNormalCouponInfo]);
+  }, [activeCouponModels, orderScore]);
 
   const usedCoupons = useMemo(() => {
     const list: UsedCoupon[] = [];
@@ -167,13 +157,14 @@ export function useUserCouponList(props?: Props) {
       }
       list.push({
         ...coupon,
+        ...userCoupon,
         ...getNormalCouponInfo(coupon),
         type: 'used' as const,
         originalType: coupon.type,
       });
     });
     return list;
-  }, [usedCouponModels, getNormalCouponInfo]);
+  }, [usedCouponModels]);
 
   const expiredCoupons = useMemo(() => {
     const list: ExpiredCoupon[] = [];
@@ -184,13 +175,14 @@ export function useUserCouponList(props?: Props) {
       }
       list.push({
         ...coupon,
+        ...userCoupon,
         ...getNormalCouponInfo(coupon),
         type: 'expired' as const,
         originalType: coupon.type,
       });
     });
     return list;
-  }, [expiredCouponModels, getNormalCouponInfo]);
+  }, [expiredCouponModels]);
 
   const allCoupons = useMemo(() => {
     const list: AllCoupon[] = [];
@@ -208,13 +200,14 @@ export function useUserCouponList(props?: Props) {
           : ('used' as const);
       list.push({
         ...coupon,
+        ...userCoupon,
         ...getNormalCouponInfo(coupon),
         type,
         originalType: coupon.type,
       });
     });
     return list;
-  }, [allCouponModels, getNormalCouponInfo]);
+  }, [allCouponModels]);
 
   const couponDict = useMemo(() => {
     const dict = new Map<string, (typeof allCoupons)[number]>();

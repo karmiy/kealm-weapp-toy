@@ -57,6 +57,10 @@ export default (app: Application) => {
     controller.coupon.updateUserCoupon
   );
   router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
+  router.get(
+    getPath("/coupon/getUserCouponList"),
+    controller.coupon.getUserCouponList
+  );
   router.post(getPath("/coupon/deleteCoupon"), controller.coupon.deleteCoupon);
 
   // task

@@ -1,7 +1,11 @@
 import { Controller } from "egg";
 import { startOfDay, endOfDay } from "date-fns";
 import { Logger } from "../utils/logger";
-import { CouponEntity, CouponValidityTime } from "../entity/coupon";
+import {
+  CouponEntity,
+  UserCouponEntity,
+  CouponValidityTime,
+} from "../entity/coupon";
 import {
   SERVER_CODE,
   COUPON_TYPE,
@@ -59,7 +63,7 @@ export default class CouponController extends Controller {
       create_time: couponModel.create_time.getTime(),
       last_modified_time: couponModel.last_modified_time.getTime(),
       validity_time: validityTime,
-      status: COUPON_STATUS.ACTIVE,
+      // status: COUPON_STATUS.ACTIVE,
       type: couponModel.type,
       value: couponModel.value,
       minimum_order_value: couponModel.minimum_order_value,
@@ -81,6 +85,20 @@ export default class CouponController extends Controller {
     const entity: CouponEntity = {
       ...baseEntity,
       id: userCouponModel.id,
+      user_id: userCouponModel.user_id,
+      create_time: userCouponModel.create_time.getTime(),
+      last_modified_time: userCouponModel.last_modified_time.getTime(),
+      // status: userCouponModel.status,
+    };
+    return entity;
+  }
+
+  private async _userCouponModelToEntity(
+    userCouponModel: UserCouponWithCouponModel
+  ) {
+    const entity: UserCouponEntity = {
+      id: userCouponModel.id,
+      coupon_id: userCouponModel.coupon_id,
       user_id: userCouponModel.user_id,
       create_time: userCouponModel.create_time.getTime(),
       last_modified_time: userCouponModel.last_modified_time.getTime(),
@@ -430,19 +448,32 @@ export default class CouponController extends Controller {
     try {
       logger.tag("[getCouponList]").info("isAdmin", isAdmin);
 
-      if (isAdmin) {
-        const list = await ctx.service.coupon.getCouponList();
-        const entities = list.map((item) => this._couponModelToEntity(item));
+      const list = await ctx.service.coupon.getCouponList();
+      const entities = list.map((item) => this._couponModelToEntity(item));
 
-        ctx.responseSuccess({
-          data: entities,
-        });
-        return;
-      }
+      ctx.responseSuccess({
+        data: entities,
+      });
+      return;
+    } catch (error) {
+      const jsError = ctx.toJsError(error);
+      ctx.responseFail({
+        code: jsError.code,
+        message: jsError?.message,
+      });
+    }
+  }
+
+  public async getUserCouponList() {
+    const { ctx } = this;
+    const { isAdmin } = ctx.getUserInfo();
+    try {
+      logger.tag("[getUserCouponList]").info("isAdmin", isAdmin);
+
       const list = await ctx.service.coupon.getUserCouponListWithCoupon();
 
       const entities = await Promise.all(
-        list.map((item) => this._userCouponWithCouponModelToEntity(item))
+        list.map((item) => this._userCouponModelToEntity(item))
       );
 
       ctx.responseSuccess({
