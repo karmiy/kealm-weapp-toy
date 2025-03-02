@@ -102,8 +102,19 @@ export class CouponModel {
   }
 
   // 优惠券描述信息
-  // 满减: 减8(满200可用)
-  // 折扣: 5折(满200可用)
+  // 满减: 减8券
+  // 折扣: 5折券
+  @computed
+  get terseTip() {
+    const discount =
+      this.type === COUPON_TYPE.CASH_DISCOUNT ? `减${this.value}积分` : `${this.value / 10}折`;
+    // return `${discount}券(${this.conditionTip})`;
+    return `${discount}券`;
+  }
+
+  // 优惠券描述信息
+  // 满减: 减8券(满200可用)
+  // 折扣: 5折券(满200可用)
   @computed
   get shortTip() {
     const discount =

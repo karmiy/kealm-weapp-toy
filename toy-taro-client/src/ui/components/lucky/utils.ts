@@ -31,7 +31,7 @@ export const pxGetter =
     return unit ? `${value}px` : value;
   };
 
-export const getImgSrc = (type: 'coupon' | 'score' | 'none') => {
+export const getImgSrc = (type: 'coupon' | 'points' | 'none') => {
   return type === 'none'
     ? 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-sad.png'
     : type === 'coupon'
@@ -95,4 +95,25 @@ export function generateSpiralCoords(row: number, col: number) {
   }
 
   return result;
+}
+
+export function generateWheelColors(n: number, colorList: string[]) {
+  const isEven = n % 2 === 0;
+  const colorCount = isEven ? 2 : 3;
+  const colors: string[] = [];
+
+  // 基础颜色分配
+  for (let i = 0; i < n; i++) {
+    colors.push(colorList[i % colorCount]);
+  }
+
+  // 奇数时校验首尾颜色
+  if (!isEven && colors[0] === colors[n - 1]) {
+    const previousColor = colors[n - 2]; // 倒数第二格颜色
+    // 找到既不是首色，也不是前一个颜色的候选色
+    const availableColors = colorList.filter(c => c !== colors[0] && c !== previousColor);
+    colors[n - 1] = availableColors.length > 0 ? availableColors[0] : colorList[0];
+  }
+
+  return colors;
 }

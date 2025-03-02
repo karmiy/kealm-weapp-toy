@@ -5,7 +5,7 @@ import { useAction } from '../base';
 export function usePrizeAction() {
   const [handleUpdatePrize, isUpdateLoading] = useAction(
     async (params: Partial<PrizeUpdateParams>) => {
-      const { id, type, points, couponId, drawCount } = params;
+      const { id, type, points, couponId, drawCount, text } = params;
       if (!type) {
         showToast({
           title: '请输入奖品类型',
@@ -30,12 +30,19 @@ export function usePrizeAction() {
         });
         return false;
       }
+      if (type === PRIZE_TYPE.NONE && !text) {
+        showToast({
+          title: '请输入无奖品时的提示信息',
+        });
+        return false;
+      }
       await sdk.modules.prize.updatePrize({
         id,
         type,
         points,
         couponId,
         drawCount,
+        text,
       });
     },
     {

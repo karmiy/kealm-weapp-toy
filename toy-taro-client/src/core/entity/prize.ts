@@ -6,6 +6,7 @@ export interface PrizeEntity {
   coupon_id?: string;
   points?: number;
   draw_count?: number;
+  text?: string;
   sort_value: number;
   create_time: number;
   last_modified_time: number;

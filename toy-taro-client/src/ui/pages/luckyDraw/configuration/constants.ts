@@ -1,15 +1,3 @@
-export enum PRIZE_TYPE {
-  POINTS = 'POINTS',
-  COUPON = 'COUPON',
-  NONE = 'NONE',
-}
-
-export const PRIZE_COVER_IMG = {
-  [PRIZE_TYPE.POINTS]: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-red-envelop.png',
-  [PRIZE_TYPE.COUPON]: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-coupon.png',
-  [PRIZE_TYPE.NONE]: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/lucky-sad.png',
-};
-
 export enum LUCKY_DRAW_TYPE {
   WHEEL = 'WHEEL',
   GRID = 'GRID',

@@ -140,6 +140,18 @@ function Mine() {
               <Icon name='arrow-right' size={14} />
             </View>
           ) : null}
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_CONFIGURATION })}
+            >
+              <View className={styles.title}>
+                <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>祈愿池管理</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
+            </View>
+          ) : null}
           {/* <View
             className={styles.menuItem}
             onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW })}

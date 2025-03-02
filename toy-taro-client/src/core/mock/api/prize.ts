@@ -21,16 +21,21 @@ const mockGetPrizeListApiCache = createMockApiCache(async (): Promise<PrizeEntit
         PRIZE_TYPE.POINTS,
         PRIZE_TYPE.COUPON,
         PRIZE_TYPE.LUCKY_DRAW,
+        PRIZE_TYPE.NONE,
       ]);
       const isCoupon = type === PRIZE_TYPE.COUPON;
       const isPoints = type === PRIZE_TYPE.POINTS;
       const isLuckDraw = type === PRIZE_TYPE.LUCKY_DRAW;
+      const isNothing = type === PRIZE_TYPE.NONE;
       return {
         id: faker.string.uuid(),
         type,
         coupon_id: isCoupon ? faker.helpers.arrayElement(activeCouponIds) : undefined,
         points: isPoints ? points : undefined,
         draw_count: isLuckDraw ? drawCount : undefined,
+        text: isNothing
+          ? faker.helpers.arrayElement(['谢谢惠顾', '敬请期待', '再接再厉'])
+          : undefined,
         sort_value: mockPrizeApi.sortValue++,
         create_time: faker.date.recent().getTime(),
         last_modified_time: faker.date.recent().getTime(),
@@ -80,6 +85,7 @@ export const mockPrizeApi = {
         points: prize.type === PRIZE_TYPE.POINTS ? prize.points : prevEntity.points,
         coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : prevEntity.coupon_id,
         draw_count: prize.type === PRIZE_TYPE.LUCKY_DRAW ? prize.draw_count : prevEntity.draw_count,
+        text: prize.type === PRIZE_TYPE.NONE ? prize.text : prevEntity.text,
         sort_value: prevEntity.sort_value,
         create_time: prevEntity.create_time,
         last_modified_time: prevEntity.last_modified_time,
@@ -94,6 +100,7 @@ export const mockPrizeApi = {
         points: prize.type === PRIZE_TYPE.POINTS ? prize.points : undefined,
         coupon_id: prize.type === PRIZE_TYPE.COUPON ? prize.coupon_id : undefined,
         draw_count: prize.type === PRIZE_TYPE.LUCKY_DRAW ? prize.draw_count : undefined,
+        text: prize.type === PRIZE_TYPE.NONE ? prize.text : undefined,
         sort_value: mockPrizeApi.sortValue++,
         create_time: faker.date.recent().getTime(),
         last_modified_time: faker.date.recent().getTime(),

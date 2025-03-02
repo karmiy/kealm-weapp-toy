@@ -12,6 +12,7 @@ export enum STORE_NAME {
     ORDER = 'ORDER',
     CHECK_IN = 'CHECK_IN',
     PRIZE = 'PRIZE',
+    LUCKY_DRAW = 'LUCKY_DRAW',
 }
 
 export enum HANDLER_TYPE {
@@ -27,6 +28,7 @@ export enum MODULE_NAME {
     ORDER = 'OrderModule',
     CHECK_IN = 'CheckInModule',
     PRIZE = 'PrizeModule',
+    LUCKY_DRAW = 'LuckyDrawModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -152,4 +154,13 @@ export enum PRIZE_TYPE {
     POINTS = 'POINTS',
     COUPON = 'COUPON',
     LUCKY_DRAW = 'LUCKY_DRAW',
+    NONE = 'NONE',
 }
+
+// ----------------------lucky draw--------------------------------
+export enum LUCKY_DRAW_TYPE {
+    WHEEL = 'WHEEL',
+    GRID = 'GRID',
+}
+
+export const LUCK_DRAW_PREVIEW_ID = 'LUCK_DRAW_PREVIEW_ID';

@@ -5,3 +5,4 @@ export { TaskModule } from './taskModule';
 export { OrderModule } from './orderModule';
 export { CheckInModule } from './checkInModule';
 export { PrizeModule } from './prizeModule';
+export { LuckyDrawModule } from './luckyDrawModule';

@@ -47,6 +47,8 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
 
   const [drawCount, setDrawCount] = useState(prize?.drawCount?.toString() ?? '');
 
+  const [text, setText] = useState(prize?.text ?? '');
+
   const isSavePrizeBtnDisabled = useMemo(() => {
     if (prizeType === PRIZE_TYPE.POINTS) {
       return !Number(pointsValue);
@@ -57,7 +59,10 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
     if (prizeType === PRIZE_TYPE.LUCKY_DRAW) {
       return !Number(drawCount);
     }
-  }, [prizeType, pointsValue, couponId, drawCount]);
+    if (prizeType === PRIZE_TYPE.NONE) {
+      return !text;
+    }
+  }, [prizeType, pointsValue, couponId, drawCount, text]);
 
   const handleSave = async () => {
     await handleUpdatePrize({
@@ -66,6 +71,7 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
       points: Number(pointsValue),
       couponId,
       drawCount: Number(drawCount),
+      text,
       onSuccess: afterSave,
     });
   };
@@ -94,6 +100,12 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
             checked={prizeType === PRIZE_TYPE.LUCKY_DRAW}
             onChange={v => handleSelectPrizeType(PRIZE_TYPE.LUCKY_DRAW, v)}
           />
+          <WhiteSpace isVertical={false} size='medium' />
+          <CheckButton
+            label='无'
+            checked={prizeType === PRIZE_TYPE.NONE}
+            onChange={v => handleSelectPrizeType(PRIZE_TYPE.NONE, v)}
+          />
         </View>
         <WhiteSpace size='small' />
         {prizeType === PRIZE_TYPE.POINTS ? (
@@ -121,6 +133,13 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
             placeholder='请输入祈愿券数量'
             value={drawCount}
             onInput={e => setDrawCount(e.detail.value)}
+          />
+        ) : null}
+        {prizeType === PRIZE_TYPE.NONE ? (
+          <Input
+            placeholder='请输入提示信息（如：谢谢惠顾）'
+            value={text}
+            onInput={e => setText(e.detail.value)}
           />
         ) : null}
       </FormItem>

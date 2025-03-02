@@ -27,6 +27,7 @@ type CommonCouponInfo = Pick<
   | 'expirationTip'
   | 'detailTip'
   | 'shortTip'
+  | 'terseTip'
 >;
 
 type ActiveCoupon = CommonCouponInfo & {

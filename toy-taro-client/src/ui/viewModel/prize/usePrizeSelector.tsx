@@ -4,11 +4,13 @@ import { usePrizeList } from './usePrizeList';
 
 interface Props {
   defaultValue?: string;
+  includeNone?: boolean;
+  includeLuckyDraw?: boolean;
 }
 
 export function usePrizeSelector(props: Props) {
-  const { defaultValue } = props;
-  const { activePrizeList } = usePrizeList();
+  const { defaultValue, includeNone, includeLuckyDraw } = props;
+  const { activePrizeList } = usePrizeList({ includeNone, includeLuckyDraw });
   const [prizeId, setPrizeId] = useState(defaultValue);
 
   const prizeIndex = useMemo(() => {
@@ -34,6 +36,7 @@ export function usePrizeSelector(props: Props) {
   }, [activePrizeList, prizeIndex]);
   return {
     prizeId,
+    setPrizeId,
     PrizeSelector,
   };
 }

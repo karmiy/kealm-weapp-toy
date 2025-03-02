@@ -12,6 +12,7 @@ export interface PrizeItemProps {
     sortIconWrapper?: string;
   };
   transparent?: boolean;
+  gray?: boolean;
   type?: PRIZE_TYPE;
   prizeTitle?: string;
   prizeDesc?: string;
@@ -27,6 +28,7 @@ export function PrizeItem(props: PrizeItemProps) {
   const {
     classes,
     transparent = false,
+    gray = false,
     type,
     prizeTitle,
     prizeDesc,
@@ -48,6 +50,9 @@ export function PrizeItem(props: PrizeItemProps) {
     if (type === PRIZE_TYPE.LUCKY_DRAW) {
       return prizeTitle ?? '祈愿券奖励';
     }
+    if (type === PRIZE_TYPE.NONE) {
+      return prizeTitle ?? '谢谢惠顾';
+    }
     return '谢谢惠顾';
   }, [type, prizeTitle]);
 
@@ -55,7 +60,8 @@ export function PrizeItem(props: PrizeItemProps) {
     if (
       type === PRIZE_TYPE.POINTS ||
       type === PRIZE_TYPE.COUPON ||
-      type === PRIZE_TYPE.LUCKY_DRAW
+      type === PRIZE_TYPE.LUCKY_DRAW ||
+      type === PRIZE_TYPE.NONE
     ) {
       return prizeDesc;
     }
@@ -74,6 +80,7 @@ export function PrizeItem(props: PrizeItemProps) {
       className={clsx(
         styles.prizeItemWrapper,
         { [styles.isTransparent]: transparent },
+        { [styles.isGray]: gray },
         classes?.root,
       )}
     >
@@ -87,7 +94,7 @@ export function PrizeItem(props: PrizeItemProps) {
           [styles.isPoints]: type === PRIZE_TYPE.POINTS,
           [styles.isCoupon]: type === PRIZE_TYPE.COUPON,
           [styles.isDraw]: type === PRIZE_TYPE.LUCKY_DRAW,
-          [styles.isNone]: !type,
+          [styles.isNone]: !type || type === PRIZE_TYPE.NONE,
         })}
       />
       <View className={styles.contentWrapper}>

@@ -4,7 +4,7 @@ import { lightenColor } from '@shared/utils/color';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { Prize } from '../types';
 import { useLuckyAction } from '../useLuckyAction';
-import { getImgSrc, pxGetter } from '../utils';
+import { generateWheelColors, getImgSrc, pxGetter } from '../utils';
 
 interface LuckyWheelProps {
   canvasId?: string;
@@ -21,6 +21,7 @@ const getColors = (baseColor: string) => {
     a02: lightenColor(baseColor, 0.5),
     a03: lightenColor(baseColor, 0.3),
     a04: lightenColor(baseColor, 0.1),
+    a05: COLOR_VARIABLES.COLOR_WHITE,
   };
 };
 
@@ -83,6 +84,7 @@ export function LuckyWheel(props: LuckyWheelProps) {
     ];
   }, [colors, px]);
   const prizes = useMemo(() => {
+    const prizeColors = generateWheelColors(_prizes.length, [colors.a03, colors.a04, colors.a05]);
     return _prizes.map((prize, index) => {
       return {
         __local: {
@@ -91,7 +93,7 @@ export function LuckyWheel(props: LuckyWheelProps) {
           range: prize.range,
         },
         fonts: [{ text: prize.text, top: '25%' }],
-        background: index % 2 === 0 ? colors.a03 : colors.a04,
+        background: prizeColors[index] ?? colors.a05,
         imgs: [{ src: getImgSrc(prize.type), top: '50%', ...priceStyle }],
       };
     });
