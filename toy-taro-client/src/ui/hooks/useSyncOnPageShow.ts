@@ -21,6 +21,7 @@ const syncContext = {
   syncTaskFlowList: () => sdk.modules.task.syncTaskFlowList(),
   syncTaskList: () => sdk.modules.task.syncTaskList(),
   syncCouponList: () => sdk.modules.coupon.syncCouponList(),
+  syncUserCouponList: () => sdk.modules.coupon.syncUserCouponList(),
   syncUserInfo: () => sdk.modules.user.getUserInfo(),
   syncContactList: () => sdk.modules.user.syncContactList(),
   syncPrizeList: () => sdk.modules.prize.syncPrizeList(),
@@ -101,10 +102,10 @@ export function useSyncOnPageShow(options?: {
             await api.syncUserInfo();
             break;
           case PAGE_ID.CHECKOUT:
-            await Promise.all([api.syncUserInfo(), api.syncCouponList()]);
+            await Promise.all([api.syncUserInfo(), api.syncUserCouponList()]);
             break;
           case PAGE_ID.COUPON:
-            await api.syncCouponList();
+            await Promise.all([api.syncUserCouponList(), api.syncCouponList()]);
             break;
           case PAGE_ID.PRODUCT_CATEGORY_MANAGE:
             await api.syncProductCategoryList();

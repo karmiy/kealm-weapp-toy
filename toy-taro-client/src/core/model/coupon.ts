@@ -41,8 +41,8 @@ export class CouponModel {
   @observable
   validityTime: CouponValidityTime;
 
-  @observable
-  status: COUPON_STATUS;
+  // @observable
+  // status: COUPON_STATUS;
 
   @observable
   type: COUPON_TYPE;
@@ -62,7 +62,6 @@ export class CouponModel {
       create_time,
       last_modified_time,
       validity_time,
-      status,
       type,
       value,
       minimum_order_value,
@@ -73,7 +72,6 @@ export class CouponModel {
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
     this.validityTime = validity_time;
-    this.status = status;
     this.type = type;
     this.value = value;
     this.minimumOrderValue = minimum_order_value;
@@ -107,10 +105,10 @@ export class CouponModel {
   // 满减: 减8(满200可用)
   // 折扣: 5折(满200可用)
   @computed
-  get descriptionTip() {
+  get shortTip() {
     const discount =
       this.type === COUPON_TYPE.CASH_DISCOUNT ? `减${this.value}` : `${this.value / 10}折`;
-    return `${discount}(${this.conditionTip})`;
+    return `${discount}券(${this.conditionTip})`;
   }
 
   // 优惠券详情信息
@@ -177,10 +175,10 @@ export class CouponModel {
     return '';
   }
 
-  @computed
-  get isUsed() {
-    return this.status === COUPON_STATUS.USED;
-  }
+  // @computed
+  // get isUsed() {
+  //   return this.status === COUPON_STATUS.USED;
+  // }
 
   @computed
   get isExpired() {
@@ -207,7 +205,7 @@ export class CouponModel {
 
   getDiscountInfo(score: number) {
     switch (true) {
-      case this.status !== COUPON_STATUS.ACTIVE:
+      // case this.status !== COUPON_STATUS.ACTIVE:
       case score < this.minimumOrderValue:
       case this.isExpired:
         return {

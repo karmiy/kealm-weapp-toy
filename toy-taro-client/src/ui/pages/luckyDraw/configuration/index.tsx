@@ -17,7 +17,7 @@ import {
   WhiteSpace,
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
-import { useCoupon } from '@ui/viewModel';
+import { useCouponList } from '@ui/viewModel';
 import { PrizeItem, PrizeItemProps } from './components';
 import { LUCKY_DRAW_TYPE, LUCKY_DRAW_TYPE_LIST, MAX_PRIZE_COUNT, PRIZE_TYPE } from './constants';
 import styles from './index.module.scss';
@@ -88,9 +88,7 @@ export default function () {
   // 奖品编辑弹框 - 选择 - 积分
   const [pointsValue, setPointsValue] = useState('');
   // 奖品编辑弹框 - 选择 - 优惠券
-  const { activeCoupons } = useCoupon({
-    enableActiveIds: true,
-  });
+  const { activeCoupons } = useCouponList();
   const [couponId, setCouponId] = useState<string>();
   const couponIndex = useMemo(() => {
     if (!couponId) {

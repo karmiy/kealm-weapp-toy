@@ -11,9 +11,7 @@ import { mockCouponApi } from './coupon';
 const mockGetPrizeListApiCache = createMockApiCache(async (): Promise<PrizeEntity[]> => {
   await sleep(1000);
   const couponList = await mockCouponApi.GET_COUPON_LIST();
-  const activeCouponIds = couponList
-    .filter(item => item.status === COUPON_STATUS.ACTIVE)
-    .map(item => item.id);
+  const activeCouponIds = couponList.map(item => item.id);
   return faker.helpers.multiple(
     () => {
       // const isAdmin = UserStorageManager.getInstance().isAdmin;

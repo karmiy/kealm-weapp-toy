@@ -11,7 +11,7 @@ import {
 } from '../../constants';
 import { CouponEntity, TaskCategoryEntity, TaskEntity, TaskFlowEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
-import { createMockApiCache } from '../utils';
+import { createMockApiCache, updateMockApiCache } from '../utils';
 import { mockCouponApi } from './coupon';
 import { mockPrizeApi } from './prize';
 import { mockUserApi } from './user';
@@ -65,6 +65,41 @@ const CATEGORY_LIST = [
   { id: '15', name: '自我提升' },
 ];
 
+const mockGetTaskListApiCache = createMockApiCache(async (): Promise<TaskEntity[]> => {
+  await sleep(300);
+  const categoryIds = CATEGORY_LIST.map(item => item.id);
+  const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
+  return faker.helpers.multiple(
+    () => {
+      const name = faker.helpers.arrayElement(taskTitles);
+      const isAdmin = UserStorageManager.getInstance().isAdmin;
+      return {
+        id: faker.string.uuid(),
+        name,
+        desc: `在${faker.date.soon().toLocaleString()}之前${name}，并${getRandomTaskTitle()}`,
+        type: faker.helpers.arrayElement([
+          TASK_TYPE.DAILY,
+          TASK_TYPE.WEEKLY,
+          TASK_TYPE.TIMED,
+          TASK_TYPE.CHALLENGE,
+        ]),
+        category_id: faker.helpers.arrayElement(categoryIds),
+        prize_id: faker.helpers.arrayElement(prizeList.map(item => item.id)),
+        // status: !isAdmin
+        //   ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
+        //   : undefined,
+        difficulty: faker.number.int({ min: 1, max: 5 }),
+        user_id: faker.string.ulid(),
+        create_time: faker.date.recent().getTime(),
+        last_modified_time: faker.date.recent().getTime(),
+      };
+    },
+    {
+      count: faker.number.int({ min: 80, max: 118 }),
+    },
+  );
+});
+
 function isCouponExpired(coupon: CouponEntity) {
   if (coupon.validity_time.type === COUPON_VALIDITY_TIME_TYPE.WEEKLY) {
     return false;
@@ -92,44 +127,7 @@ export const mockTaskApi = {
       }));
     },
   ),
-  [MOCK_API_NAME.GET_TASK_LIST]: createMockApiCache(async (): Promise<TaskEntity[]> => {
-    await sleep(300);
-    const categoryIds = CATEGORY_LIST.map(item => item.id);
-    const coupons = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
-    const activeCoupons = coupons.filter(
-      coupon => coupon.status === COUPON_STATUS.ACTIVE && !isCouponExpired(coupon),
-    );
-    const prizeList = await mockPrizeApi.GET_PRIZE_LIST();
-    return faker.helpers.multiple(
-      () => {
-        const name = faker.helpers.arrayElement(taskTitles);
-        const isAdmin = UserStorageManager.getInstance().isAdmin;
-        return {
-          id: faker.string.uuid(),
-          name,
-          desc: `在${faker.date.soon().toLocaleString()}之前${name}，并${getRandomTaskTitle()}`,
-          type: faker.helpers.arrayElement([
-            TASK_TYPE.DAILY,
-            TASK_TYPE.WEEKLY,
-            TASK_TYPE.TIMED,
-            TASK_TYPE.CHALLENGE,
-          ]),
-          category_id: faker.helpers.arrayElement(categoryIds),
-          prize_id: faker.helpers.arrayElement(prizeList.map(item => item.id)),
-          // status: !isAdmin
-          //   ? faker.helpers.arrayElement([TASK_STATUS.INITIAL, TASK_STATUS.PENDING_APPROVAL])
-          //   : undefined,
-          difficulty: faker.number.int({ min: 1, max: 5 }),
-          user_id: faker.string.ulid(),
-          create_time: faker.date.recent().getTime(),
-          last_modified_time: faker.date.recent().getTime(),
-        };
-      },
-      {
-        count: faker.number.int({ min: 80, max: 118 }),
-      },
-    );
-  }),
+  [MOCK_API_NAME.GET_TASK_LIST]: mockGetTaskListApiCache,
   [MOCK_API_NAME.GET_TASK_FLOW_LIST]: async (): Promise<TaskFlowEntity[]> => {
     await sleep(300);
     const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
@@ -190,8 +188,8 @@ export const mockTaskApi = {
       return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '奖品不存在'));
     }
     const now = new Date().getTime();
+    const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
     if (task.id) {
-      const taskList = await mockTaskApi[MOCK_API_NAME.GET_TASK_LIST]();
       const currentTask = taskList.find(c => c.id === task.id);
       if (!currentTask) {
         return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '任务不存在'));
@@ -212,7 +210,9 @@ export const mockTaskApi = {
         user_id: faker.string.ulid(),
       };
     }
-    return Math.random() > 0.4
+    const isSuccess = Math.random() > 0.4;
+    isSuccess && updateMockApiCache(mockGetTaskListApiCache, entity);
+    return isSuccess
       ? Promise.resolve(entity)
       : Promise.reject(
           new JsError(SERVER_ERROR_CODE.SERVER_ERROR, `任务${task.id ? '更新' : '创建'}失败`),

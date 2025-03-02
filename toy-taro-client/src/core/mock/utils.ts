@@ -45,3 +45,19 @@ export const createMockApiCache = <T>(
   api.update = update;
   return api;
 };
+
+type MockApiCache<T> = ReturnType<typeof createMockApiCache<T>>;
+
+export const updateMockApiCache = async <T extends { id?: string }>(
+  mockApiCache: MockApiCache<T[]>,
+  entity: T,
+) => {
+  const list = await mockApiCache();
+  const index = list.findIndex(item => item.id === entity.id);
+  if (index !== -1) {
+    list.splice(index, 1, entity);
+    mockApiCache.update(list);
+    return;
+  }
+  mockApiCache.update([...list, entity]);
+};

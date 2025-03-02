@@ -1,10 +1,10 @@
 import { getApp } from '@tarojs/taro';
-import { CouponController } from './couponController';
 import { ProductGroupController } from './productGroupController';
 import { ProductLimitedTimeOfferController } from './productLimitedTimeOfferController';
 import { ProductShopCartController } from './productShopCartController';
 import { TaskFlowGroupController } from './taskFlowGroupController';
 import { TaskGroupController } from './taskGroupController';
+import { UserCouponController } from './userCouponController';
 
 const controllers: Array<{
   getInstance: () => {
@@ -16,7 +16,7 @@ const controllers: Array<{
   ProductLimitedTimeOfferController,
   ProductGroupController,
   ProductShopCartController,
-  CouponController,
+  UserCouponController,
   TaskGroupController,
   TaskFlowGroupController,
 ];
@@ -40,7 +40,7 @@ export {
   ProductLimitedTimeOfferController,
   ProductGroupController,
   ProductShopCartController,
-  CouponController,
+  UserCouponController,
   TaskGroupController,
   TaskFlowGroupController,
 };

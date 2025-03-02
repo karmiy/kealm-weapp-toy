@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { STORE_NAME } from '@core';
 import { useStoreList } from '../base';
-import { useCoupon } from '../coupon';
+import { useCouponList } from '../coupon';
 import { getPrizeDetailDesc, getPrizeShortDesc } from './utils';
 
 export function usePrizeList() {
-  const { couponDict } = useCoupon({ enableAllIds: true });
+  const { couponDict } = useCouponList();
   const prizeList = useStoreList(STORE_NAME.PRIZE);
   const activePrizeList = useMemo(() => {
     return prizeList.map(item => {

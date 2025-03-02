@@ -85,6 +85,7 @@ export class TaskModule extends AbstractModule {
         difficulty,
         prize_id: prizeId,
       });
+      this._logger.info('updateTask end', entity);
       storeManager.emitUpdate(STORE_NAME.TASK, {
         entities: [entity],
       });

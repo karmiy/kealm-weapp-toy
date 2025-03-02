@@ -5,6 +5,7 @@ export enum STORE_NAME {
     PRODUCT_CATEGORY = 'PRODUCT_CATEGORY',
     PRODUCT_SHOP_CART = 'PRODUCT_SHOP_CART',
     COUPON = 'COUPON',
+    USER_COUPON = 'USER_COUPON',
     TASK = 'TASK',
     TASK_FLOW = 'TASK_FLOW',
     TASK_CATEGORY = 'TASK_CATEGORY',
@@ -45,15 +46,16 @@ export const EVENT_KEYS = {
 
 // ----------------------error--------------------------------
 export enum SERVER_ERROR_CODE {
+    NO_LOGIN = 401,
     LOGIN_EXPIRED = 401,
     SERVER_ERROR = 500,
 }
 
-export enum ERROR_CODE {
-    NO_LOGIN = 'NO_LOGIN',
-    LOGIN_EXPIRED = 'LOGIN_EXPIRED',
-    NO_USER_INFO = 'NO_USER_INFO',
-}
+// export enum ERROR_CODE {
+//     NO_LOGIN = 'NO_LOGIN',
+//     LOGIN_EXPIRED = 'LOGIN_EXPIRED',
+//     NO_USER_INFO = 'NO_USER_INFO',
+// }
 
 export enum ERROR_MESSAGE {
     NO_LOGIN = '账号未登录',

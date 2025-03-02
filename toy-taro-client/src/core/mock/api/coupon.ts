@@ -9,7 +9,7 @@ import {
   COUPON_VALIDITY_TIME_TYPE,
   SERVER_ERROR_CODE,
 } from '../../constants';
-import { CouponEntity, CouponValidityTime } from '../../entity';
+import { CouponEntity, CouponValidityTime, UserCouponEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
 
@@ -83,7 +83,7 @@ export const mockCouponApi = {
           type === COUPON_TYPE.CASH_DISCOUNT
             ? faker.number.int({ min: 1, max: 100 })
             : faker.number.int({ min: 10, max: 99 });
-        const isAdmin = UserStorageManager.getInstance().isAdmin;
+        // const isAdmin = UserStorageManager.getInstance().isAdmin;
         return {
           id: faker.string.uuid(),
           name: faker.helpers.arrayElement(COUPON_THEMES),
@@ -91,9 +91,6 @@ export const mockCouponApi = {
           create_time: faker.date.recent().getTime(),
           last_modified_time: faker.date.recent().getTime(),
           validity_time: generateRandomValidityTime(),
-          status: !isAdmin
-            ? faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED])
-            : COUPON_STATUS.ACTIVE,
           type,
           value,
           minimum_order_value: faker.helpers.arrayElement([
@@ -107,6 +104,30 @@ export const mockCouponApi = {
       },
     );
   }),
+  [MOCK_API_NAME.GET_USER_COUPON_LIST]: createMockApiCache(
+    async (): Promise<UserCouponEntity[]> => {
+      await sleep(100);
+      const couponList = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
+      return faker.helpers.multiple(
+        () => {
+          const isAdmin = UserStorageManager.getInstance().isAdmin;
+          return {
+            id: faker.string.uuid(),
+            coupon_id: faker.helpers.arrayElement(couponList.map(item => item.id)),
+            user_id: faker.string.ulid(),
+            create_time: faker.date.recent().getTime(),
+            last_modified_time: faker.date.recent().getTime(),
+            status: !isAdmin
+              ? faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED])
+              : COUPON_STATUS.ACTIVE,
+          };
+        },
+        {
+          count: faker.number.int({ min: 16, max: 36 }),
+        },
+      );
+    },
+  ),
   [MOCK_API_NAME.DELETE_COUPON]: async (id: string): Promise<void> => {
     await sleep(100);
     return Math.random() > 0.4
@@ -153,7 +174,6 @@ export const mockCouponApi = {
         create_time: currentCoupon.create_time,
         last_modified_time: now,
         user_id: currentCoupon.user_id,
-        status: currentCoupon.status,
         validity_time: validityTime,
       };
     } else {
@@ -163,7 +183,6 @@ export const mockCouponApi = {
         create_time: now,
         last_modified_time: now,
         user_id: faker.string.ulid(),
-        status: COUPON_STATUS.ACTIVE,
         validity_time: validityTime,
       };
     }

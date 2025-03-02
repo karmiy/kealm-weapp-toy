@@ -5,7 +5,7 @@ import { navigateToPage } from '@shared/utils/router';
 import { PRIZE_TYPE, STORE_NAME } from '@core';
 import { Button, CheckButton, Icon, Input, PickerSelector, WhiteSpace } from '@ui/components';
 import { FormItem } from '@ui/container';
-import { useCoupon, usePrizeAction, useStoreById } from '@ui/viewModel';
+import { useCouponList, usePrizeAction, useStoreById } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 interface PrizeEditFormProps {
@@ -34,9 +34,7 @@ export const PrizeEditForm = (props: PrizeEditFormProps) => {
 
   const [pointsValue, setPointsValue] = useState(prize?.points?.toString() ?? '');
 
-  const { activeCoupons } = useCoupon({
-    enableActiveIds: true,
-  });
+  const { activeCoupons } = useCouponList();
 
   const [couponId, setCouponId] = useState<string>(prize?.couponId ?? '');
   const couponIndex = useMemo(() => {

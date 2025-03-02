@@ -5,7 +5,7 @@ import { STORE_NAME } from '@core';
 import { StatusWrapper, TabPanel, Tabs } from '@ui/components';
 import { CouponList } from '@ui/container';
 import { useSyncOnPageShow } from '@ui/hooks';
-import { useCoupon, useStoreLoadingStatus } from '@ui/viewModel';
+import { useStoreLoadingStatus, useUserCouponList } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 export function CouponUserPage() {
@@ -20,7 +20,7 @@ export function CouponUserPage() {
   }, [handleRefresh, refresherTriggered]);
   const [current, setCurrent] = useState(0);
   const loading = useStoreLoadingStatus(STORE_NAME.COUPON);
-  const { activeCoupons, usedCoupons, expiredCoupons } = useCoupon({
+  const { activeCoupons, usedCoupons, expiredCoupons } = useUserCouponList({
     enableActiveIds: true,
     enableUsedIds: true,
     enableExpiredIds: true,

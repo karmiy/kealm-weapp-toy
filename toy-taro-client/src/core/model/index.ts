@@ -4,6 +4,7 @@ export * from './productShopCart';
 export * from './user';
 export * from './contact';
 export * from './coupon';
+export * from './userCoupon';
 export * from './task';
 export * from './taskFlow';
 export * from './taskCategory';

@@ -7,6 +7,7 @@ import { CouponUpdateParams } from '../types';
 export class CouponModule extends AbstractModule {
   protected onLoad() {
     this.syncCouponList();
+    this.syncUserCouponList();
   }
   protected onUnload() {}
   protected moduleName(): string {
@@ -18,6 +19,13 @@ export class CouponModule extends AbstractModule {
     const couponList = await CouponApi.getCouponList();
     storeManager.refresh(STORE_NAME.COUPON, couponList);
     storeManager.stopLoading(STORE_NAME.COUPON);
+  }
+
+  async syncUserCouponList() {
+    storeManager.startLoading(STORE_NAME.USER_COUPON);
+    const userCouponList = await CouponApi.getUserCouponList();
+    storeManager.refresh(STORE_NAME.USER_COUPON, userCouponList);
+    storeManager.stopLoading(STORE_NAME.USER_COUPON);
   }
 
   async deleteCoupon(id: string) {
