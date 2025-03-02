@@ -128,17 +128,19 @@ function Mine() {
               <Icon name='arrow-right' size={14} />
             </View>
           ) : null}
-          <View
-            className={styles.menuItem}
-            onClick={() => navigateToPage({ pageName: PAGE_ID.PRIZE_MANAGE })}
-          >
-            <View className={styles.title}>
-              <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-              <Text>奖品管理</Text>
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.PRIZE_MANAGE })}
+            >
+              <View className={styles.title}>
+                <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>奖品管理</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
             </View>
-            <Icon name='arrow-right' size={14} />
-          </View>
-          <View
+          ) : null}
+          {/* <View
             className={styles.menuItem}
             onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW })}
           >
@@ -157,7 +159,7 @@ function Mine() {
               <Text>祈愿池管理</Text>
             </View>
             <Icon name='arrow-right' size={14} />
-          </View>
+          </View> */}
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>
