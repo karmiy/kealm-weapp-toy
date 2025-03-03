@@ -1,11 +1,15 @@
-import { makeObserver, observable } from '@shared/utils/observer';
+import { computed, makeObserver, observable } from '@shared/utils/observer';
 import { LUCKY_DRAW_TYPE } from '../constants';
 import { LuckDrawPrize, LuckyDrawEntity } from '../entity';
+import { getSourceUrl } from '../utils/helper';
 
 export class LuckyDrawModel {
   id: string;
 
   type: LUCKY_DRAW_TYPE;
+
+  @observable
+  coverImage: string;
 
   name: string;
 
@@ -29,5 +33,10 @@ export class LuckyDrawModel {
     this.list = list;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
+  }
+
+  @computed
+  get coverImageUrl() {
+    return getSourceUrl(this.coverImage);
   }
 }

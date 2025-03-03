@@ -14,7 +14,7 @@ export class LuckyDrawModule extends AbstractModule {
 
   async createMockLuckyDraw(luckyDraw: LuckyDrawUpdateParams) {
     try {
-      const { type, name, quantity, list } = luckyDraw;
+      const { type, coverImage, name, quantity, list } = luckyDraw;
       const mockLuckyDraw = storeManager.getById(STORE_NAME.LUCKY_DRAW, LUCK_DRAW_PREVIEW_ID);
       if (mockLuckyDraw) {
         await this.clearMockLuckyDraw();
@@ -23,6 +23,7 @@ export class LuckyDrawModule extends AbstractModule {
       const now = new Date().getTime();
       const entity: LuckyDrawEntity = {
         id: LUCK_DRAW_PREVIEW_ID,
+        cover_image: coverImage,
         type,
         name,
         quantity,

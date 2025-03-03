@@ -98,7 +98,7 @@ export type PrizeUpdateParams = {
 // ----------------------luckyDraw--------------------------------
 export type LuckyDrawUpdateParams = Pick<
   LuckyDrawModel,
-  'type' | 'name' | 'quantity' | 'list'
+  'type' | 'coverImage' | 'name' | 'quantity' | 'list'
 > & { 
     id?: string;
  };

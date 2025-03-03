@@ -17,7 +17,13 @@ import { usePrizeList } from '../prize';
 export function useLuckyDrawAction() {
   const [createPreviewLuckyDraw] = useAction(
     async (params: Partial<LuckyDrawUpdateParams>) => {
-      const { name, type, quantity, list } = params;
+      const { coverImage, name, type, quantity, list } = params;
+      if (!coverImage) {
+        showToast({
+          title: '请选择祈愿池封面',
+        });
+        return false;
+      }
       if (!name) {
         showToast({
           title: '请输入祈愿池名称',
@@ -49,6 +55,7 @@ export function useLuckyDrawAction() {
         return false;
       }
       await sdk.modules.luckyDraw.createMockLuckyDraw({
+        coverImage,
         name,
         type,
         quantity,

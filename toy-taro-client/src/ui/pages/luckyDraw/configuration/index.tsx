@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from '@tarojs/components';
+import { navigateBack, useRouter } from '@tarojs/taro';
 import isNil from 'lodash/isNil';
+import type { File } from 'taro-ui/types/image-picker';
 import { PAGE_ID } from '@shared/utils/constants';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
@@ -8,6 +10,7 @@ import { sleep } from '@shared/utils/utils';
 import {
   Button,
   FloatLayout,
+  ImagePicker,
   Input,
   PickerSelector,
   SortableItem,
@@ -21,7 +24,17 @@ import { LUCKY_DRAW_TYPE, LUCKY_DRAW_TYPE_LIST, MAX_PRIZE_COUNT } from './consta
 import styles from './index.module.scss';
 
 export default function () {
+  const router = useRouter();
+  const id = router.params.id;
   const { createPreviewLuckyDraw } = useLuckyDrawAction();
+  // 祈愿池封面
+  const [pictures, setPictures] = useState<File[]>(() => {
+    return [];
+    // if (!product) {
+    //   return [];
+    // }
+    // return [{ url: product.coverImageUrl }];
+  });
   // 祈愿池名称
   const [drawName, setDrawName] = useState('');
 
@@ -156,8 +169,7 @@ export default function () {
     (index: number) => {
       setEditedPrizeIndex(index);
       const prize = prizeList[index];
-      const { id } = prize;
-      setPrizeId(id);
+      setPrizeId(prize.id);
       setPrizeRange(prize.range?.toString() ?? '');
       setShowEditModal(true);
     },
@@ -190,6 +202,7 @@ export default function () {
 
   const handlePreview = useCallback(() => {
     createPreviewLuckyDraw({
+      coverImage: pictures[0]?.url,
       name: drawName,
       type: drawType,
       quantity: Number(drawQuantity),
@@ -200,10 +213,30 @@ export default function () {
         };
       }),
     });
-  }, [createPreviewLuckyDraw, drawName, drawQuantity, drawType, prizeList]);
+  }, [createPreviewLuckyDraw, drawName, drawQuantity, drawType, prizeList, pictures]);
+
+  const handleDeleteLuckyDraw = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+    // await handleDelete({
+    //   id,
+    //   onSuccess: () => navigateBack(),
+    // });
+  }, [id]);
 
   return (
     <Layout type='card'>
+      <FormItem title='祈愿池封面' required>
+        <ImagePicker
+          count={1}
+          showAddBtn={!pictures.length}
+          files={pictures}
+          onChange={e => {
+            setPictures(e);
+          }}
+        />
+      </FormItem>
       <FormItem title='祈愿池名称' required>
         <Input
           placeholder='请输入祈愿池名称'
@@ -245,7 +278,7 @@ export default function () {
             onClick={handleAddPrize}
             disabled={prizeList.length >= maxPrizeCount}
           >
-            添加奖品
+            添加奖品({prizeList.length})
           </Button>
           <WhiteSpace isVertical={false} size='small' />
           <Button
@@ -309,6 +342,21 @@ export default function () {
       <Button width='100%' type='primary' size='large'>
         保存
       </Button>
+      {id ? (
+        <>
+          <WhiteSpace size='medium' />
+          <Button
+            width='100%'
+            type='plain'
+            size='large'
+            // disabled={isActionLoading}
+            // loading={isActionLoading && currentActionId === PRODUCT_ACTION_ID.DELETE_PRODUCT}
+            onClick={handleDeleteLuckyDraw}
+          >
+            删除
+          </Button>
+        </>
+      ) : null}
     </Layout>
   );
 }

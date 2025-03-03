@@ -8,6 +8,7 @@ export interface LuckDrawPrize {
 export interface LuckyDrawEntity {
   id: string;
   type: LUCKY_DRAW_TYPE;
+  cover_image: string;
   name: string;
   quantity: number;
   list: Array<LuckDrawPrize>;

@@ -97,8 +97,8 @@ export default defineAppConfig({
       pages: ['entrance/index'],
     },
   ],
-  // entryPagePath: 'ui/pages/luckyDraw/detail/index',
-  // entryPagePath: 'ui/pages/taskManage/categoryManage/index',
+  entryPagePath: 'ui/pages/luckyDraw/entrance/index',
+  // entryPagePath: 'ui/pages/mine/index',
   // entryPagePath: 'ui/pages/prizeManage/entrance/index',
   // entryPagePath: 'ui/pages/task/index',
 });

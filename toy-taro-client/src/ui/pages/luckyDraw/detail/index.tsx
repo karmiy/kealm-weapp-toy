@@ -53,7 +53,7 @@ export default function () {
       return null;
     }
 
-    const levelItems = luckDraw.levelPrizeItems.slice(0, 3);
+    const levelGroups = luckDraw.levelPrizeGroups.slice(0, 3);
     return (
       <View className={styles.ruleWrapper}>
         <View className={styles.title}>祈愿信息</View>
@@ -62,13 +62,20 @@ export default function () {
         </View>
         <View className={styles.rule}>
           <Text>2.祈愿池奖品: </Text>
-          {levelItems.map((item, index) => {
+          {levelGroups.map((group, gIdx) => {
             return (
-              <Text key={`${item.id}_${index}`} className={styles.listItem}>
-                <Text className={styles.highlight}>
-                  {item.shortDesc} (奖品等级: {LEVEL_TITLES[index]})
+              <View key={gIdx} className={styles.listItem}>
+                <Text className={styles.title}>
+                  稀有度 <Text className={styles.highlight}>{LEVEL_TITLES[gIdx]}</Text>
                 </Text>
-              </Text>
+                {group.map((item, idx) => {
+                  return (
+                    <View key={`${item.id}_${idx}`} className={styles.listItem}>
+                      <Text className={styles.highlight}>{item.shortDesc}</Text>
+                    </View>
+                  );
+                })}
+              </View>
             );
           })}
         </View>
@@ -80,7 +87,7 @@ export default function () {
   return (
     <View className={styles.wrapper}>
       <View className={styles.drawWrapper}>
-        <View className={styles.header}>今日幸运抽奖</View>
+        <View className={styles.header}>{luckDraw?.name ?? '幸运祈愿池'}</View>
         <View className={styles.secondary}>我的祈愿券：3张</View>
         <View className={styles.luckyWrapper}>
           {LuckyCanvas}
@@ -113,15 +120,39 @@ export default function () {
           </View>
           <View className={styles.rule}>
             <Text>2.祈愿池奖品: </Text>
-            <Text className={styles.listItem}>
-              <Text className={styles.highlight}>5折券 (奖品等级: SSR)</Text>
-            </Text>
-            <Text className={styles.listItem}>
-              <Text className={styles.highlight}>5积分 (奖品等级: SR)</Text>
-            </Text>
-            <Text className={styles.listItem}>
-              <Text className={styles.highlight}>3积分 (奖品等级: R)</Text>
-            </Text>
+            <View className={styles.listItem}>
+              <Text className={styles.title}>稀有度 SSR</Text>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>5折券</Text>
+              </View>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>
+                  5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券
+                </Text>
+              </View>
+            </View>
+            <View className={styles.listItem}>
+              <Text className={styles.title}>稀有度 SSR</Text>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>5折券</Text>
+              </View>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>
+                  5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券
+                </Text>
+              </View>
+            </View>
+            <View className={styles.listItem}>
+              <Text className={styles.title}>稀有度 SSR</Text>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>5折券</Text>
+              </View>
+              <View className={styles.listItem}>
+                <Text className={styles.highlight}>
+                  5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券5折券
+                </Text>
+              </View>
+            </View>
           </View>
           <View className={styles.rule}>3.祈愿后奖品将自动发放至您的账户中</View>
         </View> */}

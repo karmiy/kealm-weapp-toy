@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
-import { PRIZE_TYPE, STORE_NAME } from '@core';
+import { LUCK_DRAW_PREVIEW_ID, PRIZE_TYPE, STORE_NAME } from '@core';
 import { useStoreById } from '../base';
 import { usePrizeList } from '../prize';
+import { groupByRange, uniqueById } from './utils';
 
 interface Props {
   id?: string;
@@ -39,17 +40,23 @@ export function useLuckyDrawItem(props: Props) {
         shortDesc: prize?.shortDesc,
       };
     });
-    const levelPrizeItems = [...prizeItems]
-      .filter(item => item.prizeType && item.prizeType !== PRIZE_TYPE.NONE)
-      .sort((a, b) => a.range - b.range);
+    const prizeItemsWithoutNone = uniqueById(
+      prizeItems.filter(item => item.prizeType && item.prizeType !== PRIZE_TYPE.NONE),
+    );
+    const levelPrizeItems = [...prizeItemsWithoutNone].sort((a, b) => a.range - b.range);
+
+    const levelPrizeGroups = groupByRange([...prizeItemsWithoutNone]);
+
     return {
       ...luckDrawModel,
       prizes: prizeItems,
       levelPrizeItems,
+      levelPrizeGroups,
     };
   }, [luckDrawModel, prizeDict]);
 
   return {
     luckDraw,
+    isPreView: id === LUCK_DRAW_PREVIEW_ID,
   };
 }

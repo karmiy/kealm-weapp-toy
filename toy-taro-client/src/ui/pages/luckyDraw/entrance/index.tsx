@@ -1,25 +1,43 @@
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { View } from '@tarojs/components';
 import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { navigateToPage } from '@shared/utils/router';
 import { Icon, WhiteSpace } from '@ui/components';
 import { Layout } from '@ui/container';
+import { useUserInfo } from '@ui/viewModel';
 import { DrawItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
+  const { isAdmin } = useUserInfo();
+
+  const HeaderAction = useMemo(() => {
+    if (!isAdmin) {
+      return (
+        <View
+          className={styles.action}
+          onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_HISTORY })}
+        >
+          我的祈愿记录
+          <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />
+        </View>
+      );
+    }
+    return (
+      <View
+        className={styles.action}
+        onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_CONFIGURATION })}
+      >
+        新增祈愿池
+        <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />
+      </View>
+    );
+  }, [isAdmin]);
+
   return (
     <Layout type='plain' className={styles.wrapper}>
       <View className={styles.header}>
-        <View className={styles.prizeListEntrance}>
-          <View
-            className={styles.action}
-            onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_HISTORY })}
-          >
-            我的祈愿记录
-            <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />
-          </View>
-        </View>
+        <View className={styles.prizeListEntrance}>{HeaderAction}</View>
         <View className={styles.headerCoverImg} />
         <View className={styles.headerContent}>
           <Icon name='present-fill' size={16} color={COLOR_VARIABLES.COLOR_RED} />
