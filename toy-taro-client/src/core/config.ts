@@ -90,7 +90,7 @@ const config = {
     model: LuckyDrawModel,
     sortValue: (a: LuckyDrawModel, b: LuckyDrawModel) => {
       return a.type === b.type
-        ? b.lastModifiedTime - a.lastModifiedTime // 相同 type 按时间降序
+        ? b.quantity - a.quantity // 相同 type 按券数降序
         : a.type === LUCKY_DRAW_TYPE.WHEEL
         ? -1
         : 1;

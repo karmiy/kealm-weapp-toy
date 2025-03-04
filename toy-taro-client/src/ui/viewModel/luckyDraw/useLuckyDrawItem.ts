@@ -16,14 +16,14 @@ const PRIZE_TYPE_MAP = {
 
 export function useLuckyDrawItem(props: Props) {
   const { id } = props;
-  const luckDrawModel = useStoreById(STORE_NAME.LUCKY_DRAW, id);
+  const luckyDrawModel = useStoreById(STORE_NAME.LUCKY_DRAW, id);
   const { prizeDict } = usePrizeList({ includeNone: true, includeLuckyDraw: false });
 
-  const luckDraw = useMemo(() => {
-    if (!luckDrawModel) {
+  const luckyDraw = useMemo(() => {
+    if (!luckyDrawModel) {
       return;
     }
-    const prizeItems = luckDrawModel.list.map(item => {
+    const prizeItems = luckyDrawModel.list.map(item => {
       const prizeId = item.prize_id;
       const prize = prizeDict.get(prizeId);
       const text = prize?.terseDesc ?? 'N/A';
@@ -48,15 +48,16 @@ export function useLuckyDrawItem(props: Props) {
     const levelPrizeGroups = groupByRange([...prizeItemsWithoutNone]);
 
     return {
-      ...luckDrawModel,
+      ...luckyDrawModel,
+      coverImageUrl: luckyDrawModel.coverImageUrl,
       prizes: prizeItems,
       levelPrizeItems,
       levelPrizeGroups,
     };
-  }, [luckDrawModel, prizeDict]);
+  }, [luckyDrawModel, prizeDict]);
 
   return {
-    luckDraw,
+    luckyDraw,
     isPreView: id === LUCK_DRAW_PREVIEW_ID,
   };
 }

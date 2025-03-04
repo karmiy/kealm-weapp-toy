@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { JsError, sleep } from '@shared/utils/utils';
 import { PrizeApiUpdateParams } from '../..//api';
 // import { UserStorageManager } from '../../base';
-import { COUPON_STATUS, PRIZE_TYPE, SERVER_ERROR_CODE } from '../../constants';
+import { PRIZE_TYPE, SERVER_ERROR_CODE } from '../../constants';
 import { PrizeEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';

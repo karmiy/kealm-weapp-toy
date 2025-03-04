@@ -92,9 +92,9 @@ export function LuckyWheel(props: LuckyWheelProps) {
           text: prize.text,
           range: prize.range,
         },
-        fonts: [{ text: prize.text, top: '25%' }],
+        fonts: [{ text: prize.text, top: '20%' }],
         background: prizeColors[index] ?? colors.a05,
-        imgs: [{ src: getImgSrc(prize.type), top: '50%', ...priceStyle }],
+        imgs: [{ src: getImgSrc(prize.type), top: '55%', ...priceStyle }],
       };
     });
   }, [_prizes, colors, priceStyle]);

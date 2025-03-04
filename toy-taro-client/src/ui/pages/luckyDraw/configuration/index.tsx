@@ -18,7 +18,7 @@ import {
   WhiteSpace,
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
-import { useLuckyDrawAction, usePrizeSelector } from '@ui/viewModel';
+import { useLuckyDrawAction, useLuckyDrawItem, usePrizeSelector } from '@ui/viewModel';
 import { PrizeItem, PrizeItemProps } from './components';
 import { LUCKY_DRAW_TYPE, LUCKY_DRAW_TYPE_LIST, MAX_PRIZE_COUNT } from './constants';
 import styles from './index.module.scss';
@@ -26,23 +26,45 @@ import styles from './index.module.scss';
 export default function () {
   const router = useRouter();
   const id = router.params.id;
-  const { createPreviewLuckyDraw } = useLuckyDrawAction();
+  const { luckyDraw } = useLuckyDrawItem({ id });
+  const {
+    createPreview,
+    isUpdateLoading,
+    handleUpdate,
+    handleDelete,
+    isDeleteLoading,
+    clearPreview,
+  } = useLuckyDrawAction();
   // 祈愿池封面
   const [pictures, setPictures] = useState<File[]>(() => {
-    return [];
-    // if (!product) {
-    //   return [];
-    // }
-    // return [{ url: product.coverImageUrl }];
+    if (!luckyDraw) {
+      return [];
+    }
+    return [{ url: luckyDraw.coverImageUrl }];
   });
   // 祈愿池名称
-  const [drawName, setDrawName] = useState('');
+  const [drawName, setDrawName] = useState(luckyDraw?.name ?? '');
 
   // 祈愿池奖品列表
-  const [prizeList, setPrizeList] = useState<Array<PrizeItemProps>>([]);
+  const [prizeList, setPrizeList] = useState<Array<PrizeItemProps>>(() => {
+    return (
+      luckyDraw?.list.map(item => ({
+        id: item.prize_id,
+        range: item.range,
+      })) ?? []
+    );
+  });
 
   // 祈愿池类型
-  const [drawTypeIndex, setDrawTypeIndex] = useState<number>();
+  const [drawType, setDrawType] = useState(luckyDraw?.type);
+  const drawTypeIndex = useMemo(() => {
+    if (!drawType) {
+      return;
+    }
+    const index = LUCKY_DRAW_TYPE_LIST.findIndex(item => item.value === drawType);
+    return index === -1 ? undefined : index;
+  }, [drawType]);
+  // const [drawTypeIndex, setDrawTypeIndex] = useState<number>();
   const handleDrawTypeChange = useCallback(
     (index: number) => {
       const nextType = LUCKY_DRAW_TYPE_LIST[index].value;
@@ -53,19 +75,13 @@ export default function () {
           title: `该祈愿池奖品不能超过 ${maxCount} 个，请先删除多余的奖品`,
           icon: 'none',
         });
-        setDrawTypeIndex(drawTypeIndex);
+        setDrawType(drawType);
         return;
       }
-      setDrawTypeIndex(index);
+      setDrawType(nextType);
     },
-    [drawTypeIndex, prizeList.length],
+    [drawType, prizeList.length],
   );
-  const drawType = useMemo(() => {
-    if (isNil(drawTypeIndex)) {
-      return;
-    }
-    return LUCKY_DRAW_TYPE_LIST[drawTypeIndex].value;
-  }, [drawTypeIndex]);
   const drawTypeTip = useMemo(() => {
     if (isNil(drawType)) {
       return;
@@ -83,7 +99,7 @@ export default function () {
   }, [drawType]);
 
   // 祈愿券数量
-  const [drawQuantity, setDrawQuantity] = useState('');
+  const [drawQuantity, setDrawQuantity] = useState(luckyDraw?.quantity.toString() ?? '');
 
   // 奖品编辑弹框
   const [showEditModal, setShowEditModal] = useState(false);
@@ -201,7 +217,7 @@ export default function () {
   );
 
   const handlePreview = useCallback(() => {
-    createPreviewLuckyDraw({
+    createPreview({
       coverImage: pictures[0]?.url,
       name: drawName,
       type: drawType,
@@ -213,17 +229,34 @@ export default function () {
         };
       }),
     });
-  }, [createPreviewLuckyDraw, drawName, drawQuantity, drawType, prizeList, pictures]);
+  }, [createPreview, drawName, drawQuantity, drawType, prizeList, pictures]);
 
   const handleDeleteLuckyDraw = useCallback(async () => {
     if (!id) {
       return;
     }
-    // await handleDelete({
-    //   id,
-    //   onSuccess: () => navigateBack(),
-    // });
-  }, [id]);
+    await handleDelete({
+      id,
+      onSuccess: () => navigateBack(),
+    });
+  }, [handleDelete, id]);
+
+  const handleSave = useCallback(() => {
+    handleUpdate({
+      id,
+      coverImage: pictures[0]?.url,
+      name: drawName,
+      type: drawType,
+      quantity: Number(drawQuantity),
+      list: prizeList.map(item => {
+        return {
+          prize_id: item.id,
+          range: item.range ?? 0,
+        };
+      }),
+      onSuccess: () => navigateBack(),
+    });
+  }, [drawName, drawQuantity, drawType, handleUpdate, id, pictures, prizeList]);
 
   return (
     <Layout type='card'>
@@ -339,7 +372,14 @@ export default function () {
           );
         })}
       </SortableList>
-      <Button width='100%' type='primary' size='large'>
+      <Button
+        width='100%'
+        type='primary'
+        size='large'
+        disabled={isUpdateLoading}
+        loading={isUpdateLoading}
+        onClick={handleSave}
+      >
         保存
       </Button>
       {id ? (
@@ -349,8 +389,7 @@ export default function () {
             width='100%'
             type='plain'
             size='large'
-            // disabled={isActionLoading}
-            // loading={isActionLoading && currentActionId === PRODUCT_ACTION_ID.DELETE_PRODUCT}
+            disabled={isDeleteLoading}
             onClick={handleDeleteLuckyDraw}
           >
             删除

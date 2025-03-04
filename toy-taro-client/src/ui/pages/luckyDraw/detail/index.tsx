@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { Text, View } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
+import clsx from 'clsx';
 import { LUCKY_DRAW_TYPE } from '@core';
 import { LuckyGrid, LuckyWheel, SafeAreaBar, StatusView } from '@ui/components';
-import { useLuckyDrawItem } from '@ui/viewModel';
+import { useLuckyDrawItem, useUserInfo } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 const LEVEL_TITLES = ['SSR', 'SR', 'R'];
@@ -11,19 +12,20 @@ const LEVEL_TITLES = ['SSR', 'SR', 'R'];
 export default function () {
   const router = useRouter();
   const luckyDrawId = router.params.id;
-  const { luckDraw } = useLuckyDrawItem({
+  const { luckyDraw } = useLuckyDrawItem({
     id: luckyDrawId,
   });
+  const { drawTicket } = useUserInfo();
 
   const LuckyCanvas = useMemo(() => {
-    if (!luckDraw) {
+    if (!luckyDraw) {
       return <StatusView type='empty' size='fill' />;
     }
-    if (luckDraw.type === LUCKY_DRAW_TYPE.WHEEL) {
+    if (luckyDraw.type === LUCKY_DRAW_TYPE.WHEEL) {
       return (
         <LuckyWheel
           width={300}
-          prizes={luckDraw.prizes}
+          prizes={luckyDraw.prizes}
           onEnd={(id, text) => {
             // showToast({
             //   title: `恭喜你获得${text}`,
@@ -32,11 +34,11 @@ export default function () {
         />
       );
     }
-    if (luckDraw.type === LUCKY_DRAW_TYPE.GRID) {
+    if (luckyDraw.type === LUCKY_DRAW_TYPE.GRID) {
       return (
         <LuckyGrid
           width={300}
-          prizes={luckDraw.prizes}
+          prizes={luckyDraw.prizes}
           onEnd={(id, text) => {
             // showToast({
             //   title: `恭喜你获得${text}`,
@@ -46,19 +48,19 @@ export default function () {
       );
     }
     return null;
-  }, [luckDraw]);
+  }, [luckyDraw]);
 
   const LuckyRule = useMemo(() => {
-    if (!luckDraw) {
+    if (!luckyDraw) {
       return null;
     }
 
-    const levelGroups = luckDraw.levelPrizeGroups.slice(0, 3);
+    const levelGroups = luckyDraw.levelPrizeGroups.slice(0, 3);
     return (
       <View className={styles.ruleWrapper}>
         <View className={styles.title}>祈愿信息</View>
         <View className={styles.rule}>
-          1.每次祈愿消耗 <Text className={styles.highlight}>{luckDraw.quantity}</Text> 张祈愿券
+          1.每次祈愿消耗 <Text className={styles.highlight}>{luckyDraw.quantity}</Text> 张祈愿券
         </View>
         <View className={styles.rule}>
           <Text>2.祈愿池奖品: </Text>
@@ -82,13 +84,13 @@ export default function () {
         <View className={styles.rule}>3.祈愿后奖品将自动发放至您的账户中</View>
       </View>
     );
-  }, [luckDraw]);
+  }, [luckyDraw]);
 
   return (
     <View className={styles.wrapper}>
       <View className={styles.drawWrapper}>
-        <View className={styles.header}>{luckDraw?.name ?? '幸运祈愿池'}</View>
-        <View className={styles.secondary}>我的祈愿券：3张</View>
+        <View className={styles.header}>{luckyDraw?.name ?? '幸运祈愿池'}</View>
+        <View className={styles.secondary}>我的祈愿券：{drawTicket}张</View>
         <View className={styles.luckyWrapper}>
           {LuckyCanvas}
           {/* <LuckyWheel
