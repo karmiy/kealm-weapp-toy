@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { LuckyGrid as BaseLuckyGrid } from '@lucky-canvas/taro/react';
 import { lightenColor } from '@shared/utils/color';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
-import { Prize } from '../types';
+import { LuckyRef, Prize } from '../types';
 import { useLuckyAction } from '../useLuckyAction';
 import { generateBoundaryCoords, generateSpiralCoords, getImgSrc, pxGetter } from '../utils';
 
@@ -11,8 +11,12 @@ interface LuckyGridProps {
   width?: number;
   spinDuration?: number;
   disabled?: boolean;
+  disabledInnerAction?: boolean;
   prizes?: Array<Prize>;
-  onEnd?: (id: string, text: string) => void;
+  beforeStart?: () => boolean;
+  onStart?: () => void;
+  onEnd?: (info: { id: string; text: string; index: number }) => void;
+  onError?: () => void;
 }
 
 interface PrizeConfig {
@@ -130,14 +134,18 @@ const getLayoutConfig = (prizeCount: number) => {
   return layoutConfigMap.get(config[0])!;
 };
 
-export function LuckyGrid(props: LuckyGridProps) {
+export const LuckyGrid = forwardRef<LuckyRef, LuckyGridProps>((props, ref) => {
   const {
     canvasId,
     width = 300,
     spinDuration = 5000,
     disabled = false,
+    disabledInnerAction = false,
     prizes: _prizes = [],
+    beforeStart,
+    onStart: _onStart,
     onEnd: _onEnd,
+    onError,
   } = props;
   const px = useMemo(() => pxGetter(width), [width]);
   const colors = useMemo(() => getColors(COLOR_VARIABLES.COLOR_RED), []);
@@ -174,6 +182,7 @@ export function LuckyGrid(props: LuckyGridProps) {
           id: prize.id,
           text: prize.text,
           range: prize.range,
+          index,
         },
         ...position,
         imgs: [{ src: getImgSrc(prize.type), width: img.width, height: img.height, top: img.top }],
@@ -203,16 +212,25 @@ export function LuckyGrid(props: LuckyGridProps) {
     ];
   }, [layoutConfig]);
 
-  const { onStart, onEnd, ref } = useLuckyAction({
+  const {
+    onStart,
+    onEnd,
+    ref: luckRef,
+  } = useLuckyAction({
     disabled,
+    disabledInnerAction,
     spinDuration,
     prizes,
+    beforeStart,
+    onStart: _onStart,
     onEnd: _onEnd,
+    onError,
+    outerRef: ref,
   });
 
   return (
     <BaseLuckyGrid
-      ref={ref}
+      ref={luckRef}
       canvasId={canvasId}
       width={width}
       height={height}
@@ -228,4 +246,4 @@ export function LuckyGrid(props: LuckyGridProps) {
       onEnd={onEnd}
     />
   );
-}
+});
