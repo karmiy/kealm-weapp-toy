@@ -27,14 +27,8 @@ export default function () {
   const router = useRouter();
   const id = router.params.id;
   const { luckyDraw } = useLuckyDrawItem({ id });
-  const {
-    createPreview,
-    isUpdateLoading,
-    handleUpdate,
-    handleDelete,
-    isDeleteLoading,
-    clearPreview,
-  } = useLuckyDrawAction();
+  const { createPreview, isUpdateLoading, handleUpdate, handleDelete, isDeleteLoading } =
+    useLuckyDrawAction();
   // 祈愿池封面
   const [pictures, setPictures] = useState<File[]>(() => {
     if (!luckyDraw) {

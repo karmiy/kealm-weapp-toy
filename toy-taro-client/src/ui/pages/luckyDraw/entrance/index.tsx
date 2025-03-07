@@ -18,9 +18,9 @@ export default function () {
   }, [allList]);
   const { clearPreview } = useLuckyDrawAction();
 
-  useDidShow(() => {
-    clearPreview({});
-  });
+  // useDidShow(() => {
+  //   clearPreview({});
+  // });
 
   const HeaderAction = useMemo(() => {
     if (!isAdmin) {

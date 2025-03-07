@@ -33,4 +33,12 @@ export class LuckyDrawApi {
       data: { id },
     });
   }
+
+  @mock({ name: MOCK_API_NAME.START_LUCKY_DRAW })
+  static async startLuckyDraw(id: string): Promise<{ prize_id: string; index: number }> {
+    return httpRequest.post<{ prize_id: string; index: number }>({
+      url: '/luckyDraw/startLuckyDraw',
+      data: { id },
+    });
+  }
 }

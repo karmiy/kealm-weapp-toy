@@ -41,6 +41,7 @@ class StoreManager<
   private _idListSubscriptions = new Map<STORE_NAME, Set<() => void>>();
   private _idSubscriptions = new Map<STORE_NAME, Map<string, Set<() => void>>>();
   private _loadingSubscriptions = new Map<STORE_NAME, Set<() => void>>();
+  private _isLoaded = false;
 
   private get _logger() {
     return Logger.getLogger('[StoreManager]');
@@ -59,6 +60,7 @@ class StoreManager<
       }
       this._multiStores.set(modelName, new Map());
     });
+    this._isLoaded = true;
   }
 
   dispose() {
@@ -71,6 +73,11 @@ class StoreManager<
     this._idListSubscriptions.clear();
     this._idSubscriptions.clear();
     this._loadingSubscriptions.clear();
+    this._isLoaded = false;
+  }
+
+  getHasLoaded() {
+    return this._isLoaded;
   }
 
   refresh<T extends STORE_NAME>(

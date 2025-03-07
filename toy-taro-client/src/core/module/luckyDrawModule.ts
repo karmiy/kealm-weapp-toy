@@ -1,7 +1,8 @@
 // import { LuckyDrawApi } from '../api';
+import { eventCenter } from '@tarojs/taro';
 import { LuckyDrawApi } from '../api';
 import { AbstractModule } from '../base';
-import { LUCK_DRAW_PREVIEW_ID, MODULE_NAME, STORE_NAME } from '../constants';
+import { EVENT_KEYS, LUCK_DRAW_PREVIEW_ID, MODULE_NAME, STORE_NAME } from '../constants';
 import { LuckyDrawEntity } from '../entity';
 import { storeManager } from '../storeManager';
 import { LuckyDrawUpdateParams } from '../types';
@@ -88,6 +89,19 @@ export class LuckyDrawModule extends AbstractModule {
       });
     } catch (error) {
       this._logger.info('updateLuckyDraw error', error.message);
+      throw error;
+    }
+  }
+
+  async startLuckyDraw(id: string) {
+    try {
+      this._logger.info('startLuckyDraw', id);
+      const result = await LuckyDrawApi.startLuckyDraw(id);
+      this._logger.info('startLuckyDraw success', result);
+      eventCenter.trigger(EVENT_KEYS.user.SYNC_USER_INFO);
+      return result;
+    } catch (error) {
+      this._logger.info('startLuckyDraw error', error.message);
       throw error;
     }
   }

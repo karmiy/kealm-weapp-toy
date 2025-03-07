@@ -1,6 +1,6 @@
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { PRIZE_TYPE, PrizeUpdateParams, sdk } from '@core';
-import { useAction } from '../base';
+import { BLOCK_ACTION_MARK, useAction } from '../base';
 
 export function usePrizeAction() {
   const [handleUpdatePrize, isUpdateLoading] = useAction(
@@ -10,31 +10,31 @@ export function usePrizeAction() {
         showToast({
           title: '请输入奖品类型',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (type === PRIZE_TYPE.POINTS && !points) {
         showToast({
           title: '请输入奖品积分',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (type === PRIZE_TYPE.COUPON && !couponId) {
         showToast({
           title: '请选择优惠券',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (type === PRIZE_TYPE.LUCKY_DRAW && !drawCount) {
         showToast({
           title: '请输入祈愿券数量',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (type === PRIZE_TYPE.NONE && !text) {
         showToast({
           title: '请输入无奖品时的提示信息',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       await sdk.modules.prize.updatePrize({
         id,
@@ -66,7 +66,7 @@ export function usePrizeAction() {
         content: '确定要删除吗？',
       });
       if (!feedback) {
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       await sdk.modules.prize.deletePrize(id);
     },
@@ -88,7 +88,7 @@ export function usePrizeAction() {
     async (params: { ids: string[] }) => {
       const { ids } = params;
       if (ids.length < 2) {
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       await sdk.modules.prize.sortPrize(ids);
     },

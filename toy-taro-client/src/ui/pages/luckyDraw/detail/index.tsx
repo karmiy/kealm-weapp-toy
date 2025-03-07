@@ -1,21 +1,80 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, View } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
 import clsx from 'clsx';
+import { showToast } from '@shared/utils/operateFeedback';
 import { LUCKY_DRAW_TYPE } from '@core';
-import { LuckyGrid, LuckyWheel, SafeAreaBar, StatusView } from '@ui/components';
-import { useLuckyDrawItem, useUserInfo } from '@ui/viewModel';
+import { LuckyGrid, LuckyRef, LuckyWheel, SafeAreaBar, StatusView } from '@ui/components';
+import { useLuckyDrawAction, useLuckyDrawItem, usePrizeList, useUserInfo } from '@ui/viewModel';
 import styles from './index.module.scss';
 
 const LEVEL_TITLES = ['SSR', 'SR', 'R'];
 
+const SPIN_DURATION = 3000;
+
 export default function () {
   const router = useRouter();
+  const luckyDrawRef = useRef<LuckyRef>(null);
   const luckyDrawId = router.params.id;
-  const { luckyDraw } = useLuckyDrawItem({
+  const { prizeDict } = usePrizeList();
+  const { handleStart, isStartLoading } = useLuckyDrawAction();
+  const { luckyDraw, isPreView } = useLuckyDrawItem({
     id: luckyDrawId,
   });
   const { drawTicket } = useUserInfo();
+
+  const beforeStart = useCallback(() => {
+    if (!luckyDraw) {
+      showToast({
+        title: '祈愿池获取异常',
+      });
+      return false;
+    }
+    if (drawTicket < luckyDraw.quantity) {
+      showToast({
+        title: '祈愿券不足',
+      });
+      return false;
+    }
+    if (isStartLoading) {
+      return false;
+    }
+    return true;
+  }, [drawTicket, isStartLoading, luckyDraw]);
+
+  const onStart = useCallback(() => {
+    if (isPreView) {
+      return;
+    }
+    handleStart({
+      id: luckyDrawId,
+      onSuccess: async value => {
+        luckyDrawRef.current?.play();
+
+        await new Promise(resolve => setTimeout(resolve, SPIN_DURATION));
+        luckyDrawRef.current?.stop(value.index);
+
+        const prize = prizeDict.get(value.prize_id);
+        const title = prize?.detailDesc ?? '祈愿成功';
+        showToast({
+          title,
+        });
+      },
+    });
+  }, [handleStart, luckyDrawId, prizeDict, isPreView]);
+
+  const onEnd = useCallback(
+    ({ id, index }: { id: string; index: number }) => {
+      if (!isPreView) {
+        return;
+      }
+      const prize = prizeDict.get(id);
+      showToast({
+        title: prize?.detailDesc ?? '祈愿成功',
+      });
+    },
+    [prizeDict, isPreView],
+  );
 
   const LuckyCanvas = useMemo(() => {
     if (!luckyDraw) {
@@ -26,11 +85,10 @@ export default function () {
         <LuckyWheel
           width={300}
           prizes={luckyDraw.prizes}
-          onEnd={(id, text) => {
-            // showToast({
-            //   title: `恭喜你获得${text}`,
-            // });
-          }}
+          beforeStart={beforeStart}
+          onStart={onStart}
+          onEnd={onEnd}
+          disabledInnerAction={!isPreView}
         />
       );
     }
@@ -39,16 +97,15 @@ export default function () {
         <LuckyGrid
           width={300}
           prizes={luckyDraw.prizes}
-          onEnd={(id, text) => {
-            // showToast({
-            //   title: `恭喜你获得${text}`,
-            // });
-          }}
+          beforeStart={beforeStart}
+          onStart={onStart}
+          onEnd={onEnd}
+          disabledInnerAction={!isPreView}
         />
       );
     }
     return null;
-  }, [luckyDraw]);
+  }, [luckyDraw, beforeStart, onStart, onEnd, isPreView]);
 
   const LuckyRule = useMemo(() => {
     if (!luckyDraw) {
@@ -93,8 +150,24 @@ export default function () {
         <View className={styles.secondary}>我的祈愿券：{drawTicket}张</View>
         <View className={styles.luckyWrapper}>
           {LuckyCanvas}
-          {/* <LuckyWheel
+          {/* <LuckyGrid
+            ref={luckyDrawRef}
             width={300}
+            beforeStart={() => {
+              // showToast({
+              //   title: '禁止祈愿',
+              // });
+              return true;
+            }}
+            disabledInnerAction
+            onStart={() => {
+              console.log('[test] onStart');
+              luckyDrawRef.current?.play();
+
+              setTimeout(() => {
+                luckyDrawRef.current?.stop(9);
+              }, 5000);
+            }}
             prizes={[
               { id: '1', text: '1积分', type: 'points', range: 12 },
               { id: '2', text: '3积分', type: 'points', range: 7 },
@@ -107,7 +180,8 @@ export default function () {
               { id: '9', text: '谢谢惠顾', type: 'none', range: 12 },
               { id: '10', text: '1积分', type: 'points', range: 12 },
             ]}
-            onEnd={(id, text) => {
+            onEnd={({ id, text, index }) => {
+              console.log('[test] onEnd id', id, text, index);
               // showToast({
               //   title: `恭喜你获得${text}`,
               // });

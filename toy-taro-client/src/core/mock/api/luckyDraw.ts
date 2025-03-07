@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { JsError, sleep } from '@shared/utils/utils';
 import { LuckyDrawApiUpdateParams } from '../../api';
+import { UserStorageManager } from '../../base';
 // import { UserStorageManager } from '../../base';
 import { LUCKY_DRAW_TYPE, PRIZE_TYPE, SERVER_ERROR_CODE } from '../../constants';
 import { LuckyDrawEntity } from '../../entity';
@@ -108,5 +109,30 @@ export const mockLuckyDrawApi = {
       mockGetLuckyDrawListApiCache.update([...luckyDrawList, entity]);
     }
     return Promise.resolve(entity);
+  },
+  [MOCK_API_NAME.START_LUCKY_DRAW]: async (
+    id: string,
+  ): Promise<{ prize_id: string; index: number }> => {
+    await sleep(1000);
+    const throwError = Math.random() <= 0.4;
+    if (throwError) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '祈愿失败，请联系管理员'));
+    }
+    const luckyDrawList = await mockLuckyDrawApi.GET_LUCKY_DRAW_LIST();
+    const luckyDraw = luckyDrawList.find(item => item.id === id);
+    if (!luckyDraw) {
+      return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '祈愿失败，抽奖不存在'));
+    }
+    const index = faker.number.int({ min: 0, max: luckyDraw.list.length - 1 });
+    const item = luckyDraw.list[index];
+    const userInfo = UserStorageManager.getInstance().getUserInfo();
+    if (userInfo && userInfo.draw_ticket) {
+      const newUserInfo = {
+        ...userInfo,
+        draw_ticket: userInfo.draw_ticket - luckyDraw.quantity,
+      };
+      UserStorageManager.getInstance().setUserInfo(newUserInfo);
+    }
+    return Promise.resolve({ prize_id: item.prize_id, index });
   },
 };
