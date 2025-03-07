@@ -46,7 +46,7 @@ export class OrderModule extends AbstractModule {
       });
       storeManager.emitDelete(STORE_NAME.PRODUCT_SHOP_CART, shopCartIds);
       couponId &&
-        storeManager.emitUpdate(STORE_NAME.COUPON, {
+        storeManager.emitUpdate(STORE_NAME.USER_COUPON, {
           partials: [
             {
               id: couponId,
