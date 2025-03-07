@@ -113,7 +113,7 @@ export const mockLuckyDrawApi = {
   [MOCK_API_NAME.START_LUCKY_DRAW]: async (
     id: string,
   ): Promise<{ prize_id: string; index: number }> => {
-    await sleep(1000);
+    await sleep(100);
     const throwError = Math.random() <= 0.4;
     if (throwError) {
       return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '祈愿失败，请联系管理员'));

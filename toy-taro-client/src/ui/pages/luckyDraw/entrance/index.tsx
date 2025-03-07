@@ -24,15 +24,16 @@ export default function () {
 
   const HeaderAction = useMemo(() => {
     if (!isAdmin) {
-      return (
-        <View
-          className={styles.action}
-          onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_HISTORY })}
-        >
-          我的祈愿记录
-          <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />
-        </View>
-      );
+      return null;
+      // return (
+      //   <View
+      //     className={styles.action}
+      //     onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_HISTORY })}
+      //   >
+      //     我的祈愿记录
+      //     <Icon name='arrow-right' color={COLOR_VARIABLES.COLOR_RED} />
+      //   </View>
+      // );
     }
     return (
       <View

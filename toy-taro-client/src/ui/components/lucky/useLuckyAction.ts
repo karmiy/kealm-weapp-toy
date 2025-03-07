@@ -45,15 +45,14 @@ export function useLuckyAction(props: Props) {
   }, [disabled, prizes.length, beforeStart]);
 
   useImperativeHandle(outerRef, () => ({
-    play: () => {
-      if (!checkStartPermission()) return;
+    play: (checkPermission?: boolean) => {
+      if (checkPermission && !checkStartPermission()) return;
 
       isSpinning.current = true;
       myLucky.current?.play();
     },
     stop: (index: number) => {
       myLucky.current?.stop(index);
-      isSpinning.current = false;
     },
   }));
 
@@ -68,11 +67,11 @@ export function useLuckyAction(props: Props) {
     await sleep(spinDuration);
     const index = weightedRandomIndex(prizes.map(prize => ({ range: prize.__local.range })));
     myLucky.current?.stop(index);
-    isSpinning.current = false;
   }, [checkStartPermission, _onStart, spinDuration, prizes, disabledInnerAction]);
 
   const onEnd = useCallback(
     (prize: Prize) => {
+      isSpinning.current = false;
       if (!prize.__local) {
         showToast({
           title: '抽奖过程中出现异常，请联系管理员',

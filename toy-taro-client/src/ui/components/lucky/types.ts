@@ -6,6 +6,6 @@ export interface Prize {
 }
 
 export interface LuckyRef {
-  play: () => void;
+  play: (checkPermission?: boolean) => void;
   stop: (index: number) => void;
 }

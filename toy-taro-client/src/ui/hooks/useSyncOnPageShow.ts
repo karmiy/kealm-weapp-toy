@@ -25,6 +25,7 @@ const syncContext = {
   syncUserInfo: () => sdk.modules.user.getUserInfo(),
   syncContactList: () => sdk.modules.user.syncContactList(),
   syncPrizeList: () => sdk.modules.prize.syncPrizeList(),
+  syncLuckyDrawList: () => sdk.modules.luckyDraw.syncLuckyDrawList(),
 };
 const syncApi = Object.keys(syncContext).reduce((acc, key) => {
   const api = debounceWithPromise(
@@ -116,6 +117,20 @@ export function useSyncOnPageShow(options?: {
             break;
           case PAGE_ID.PRIZE_MANAGE:
             await Promise.all([api.syncPrizeList(), api.syncCouponList()]);
+            break;
+          case PAGE_ID.LUCKY_DRAW:
+            await Promise.all([api.syncLuckyDrawList(), api.syncUserInfo()]);
+            break;
+          case PAGE_ID.LUCKY_DRAW_CONFIGURATION:
+            await Promise.all([api.syncPrizeList(), api.syncCouponList()]);
+            break;
+          case PAGE_ID.LUCKY_DRAW_CONFIGURATION:
+            await Promise.all([
+              api.syncLuckyDrawList(),
+              api.syncPrizeList(),
+              api.syncCouponList(),
+              api.syncUserInfo(),
+            ]);
             break;
           default:
             break;

@@ -148,7 +148,6 @@ export function useLuckyDrawAction() {
 
   const [handleDelete, isDeleteLoading] = useAction(
     async (params: { id: string }) => {
-      console.log('[test] handleDelete?', params);
       const { id } = params;
       const feedback = await showModal({
         content: '确定要删除吗？',

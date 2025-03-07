@@ -3,7 +3,7 @@ import { Text, View } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
 import clsx from 'clsx';
 import { showToast } from '@shared/utils/operateFeedback';
-import { LUCKY_DRAW_TYPE } from '@core';
+import { LUCKY_DRAW_TYPE, PRIZE_TYPE } from '@core';
 import { LuckyGrid, LuckyRef, LuckyWheel, SafeAreaBar, StatusView } from '@ui/components';
 import { useLuckyDrawAction, useLuckyDrawItem, usePrizeList, useUserInfo } from '@ui/viewModel';
 import styles from './index.module.scss';
@@ -16,7 +16,7 @@ export default function () {
   const router = useRouter();
   const luckyDrawRef = useRef<LuckyRef>(null);
   const luckyDrawId = router.params.id;
-  const { prizeDict } = usePrizeList();
+  const { prizeDict } = usePrizeList({ includeLuckyDraw: false, includeNone: true });
   const { handleStart, isStartLoading } = useLuckyDrawAction();
   const { luckyDraw, isPreView } = useLuckyDrawItem({
     id: luckyDrawId,
@@ -42,6 +42,22 @@ export default function () {
     return true;
   }, [drawTicket, isStartLoading, luckyDraw]);
 
+  const showSuccessToast = useCallback(
+    (id: string) => {
+      const prize = prizeDict.get(id);
+      if (!prize) {
+        showToast({
+          title: '祈愿成功',
+        });
+        return;
+      }
+      showToast({
+        title: `${prize.type === PRIZE_TYPE.NONE ? '' : '恭喜获得:'} ${prize.detailDesc}`,
+      });
+    },
+    [prizeDict],
+  );
+
   const onStart = useCallback(() => {
     if (isPreView) {
       return;
@@ -53,27 +69,15 @@ export default function () {
 
         await new Promise(resolve => setTimeout(resolve, SPIN_DURATION));
         luckyDrawRef.current?.stop(value.index);
-
-        const prize = prizeDict.get(value.prize_id);
-        const title = prize?.detailDesc ?? '祈愿成功';
-        showToast({
-          title,
-        });
       },
     });
-  }, [handleStart, luckyDrawId, prizeDict, isPreView]);
+  }, [handleStart, luckyDrawId, isPreView]);
 
   const onEnd = useCallback(
     ({ id, index }: { id: string; index: number }) => {
-      if (!isPreView) {
-        return;
-      }
-      const prize = prizeDict.get(id);
-      showToast({
-        title: prize?.detailDesc ?? '祈愿成功',
-      });
+      showSuccessToast(id);
     },
-    [prizeDict, isPreView],
+    [showSuccessToast],
   );
 
   const LuckyCanvas = useMemo(() => {
@@ -83,6 +87,7 @@ export default function () {
     if (luckyDraw.type === LUCKY_DRAW_TYPE.WHEEL) {
       return (
         <LuckyWheel
+          ref={luckyDrawRef}
           width={300}
           prizes={luckyDraw.prizes}
           beforeStart={beforeStart}
@@ -95,6 +100,7 @@ export default function () {
     if (luckyDraw.type === LUCKY_DRAW_TYPE.GRID) {
       return (
         <LuckyGrid
+          ref={luckyDrawRef}
           width={300}
           prizes={luckyDraw.prizes}
           beforeStart={beforeStart}
@@ -130,7 +136,7 @@ export default function () {
                 {group.map((item, idx) => {
                   return (
                     <View key={`${item.id}_${idx}`} className={styles.listItem}>
-                      <Text className={styles.highlight}>{item.shortDesc}</Text>
+                      <Text className={styles.highlight}>{item.detailDesc}</Text>
                     </View>
                   );
                 })}

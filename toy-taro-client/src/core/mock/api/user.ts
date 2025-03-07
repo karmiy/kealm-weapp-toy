@@ -8,7 +8,7 @@ import { createMockApiCache } from '../utils';
 
 export const mockUserApi = {
   [MOCK_API_NAME.GET_USER_INFO]: async (): Promise<UserEntity> => {
-    await sleep(1000);
+    await sleep(100);
     const cacheUserInfo = UserStorageManager.getInstance().getUserInfo();
     if (cacheUserInfo) {
       return cacheUserInfo;
@@ -21,7 +21,7 @@ export const mockUserApi = {
       avatarUrl: 'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/login-cover-image.png',
       role,
       score: role === ROLE.ADMIN ? undefined : faker.number.int({ min: 1, max: 100 }),
-      draw_ticket: role === ROLE.ADMIN ? 1000 : faker.number.int({ min: 1, max: 10 }),
+      draw_ticket: role === ROLE.ADMIN ? 1000 : faker.number.int({ min: 100, max: 1000 }),
     };
   },
   [MOCK_API_NAME.USER_LOGIN]: async (): Promise<{ token: string }> => {

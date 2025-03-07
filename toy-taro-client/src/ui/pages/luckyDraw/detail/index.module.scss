@@ -52,17 +52,17 @@
       font-size: px(12);
       color: $--text-color-secondary;
 
+      .highlight {
+        color: $--color-red;
+        font-weight: bold;
+      }
+
       .listItem {
         position: relative;
         display: flex;
         flex-direction: column;
         // line-height: px(20);
         padding-left: px(16);
-
-        .highlight {
-          color: $--color-red;
-          font-weight: bold;
-        }
 
         text {
           font-size: px(12);

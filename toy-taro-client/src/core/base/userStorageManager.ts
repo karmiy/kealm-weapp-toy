@@ -44,7 +44,6 @@ export class UserStorageManager extends Singleton {
   }
 
   setUserInfo(user: UserEntity) {
-    console.trace('[test] ...........setUserInfo', user);
     setStorageSync(this._userStorageKey, user);
   }
 

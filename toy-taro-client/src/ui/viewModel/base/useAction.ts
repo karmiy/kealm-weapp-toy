@@ -33,10 +33,9 @@ export function useAction<A extends (...args: any[]) => Promise<unknown> | unkno
           setIsLoading(false);
           return;
         }
-        console.log('[test] ...........onSuccess', result);
+        setIsLoading(false);
         await options?.onSuccess?.(result);
         onSuccess?.(result);
-        setIsLoading(false);
       } catch (error) {
         await options?.onError?.(error);
         onError?.(error);
