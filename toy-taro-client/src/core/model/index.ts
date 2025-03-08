@@ -11,3 +11,4 @@ export * from './taskCategory';
 export * from './order';
 export * from './checkIn';
 export * from './prize';
+export * from './luckyDraw';

@@ -1,18 +1,22 @@
-import { useMemo } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { LuckyWheel as BaseLuckyWheel } from '@lucky-canvas/taro/react';
 import { lightenColor } from '@shared/utils/color';
 import { COLOR_VARIABLES } from '@shared/utils/constants';
-import { Prize } from '../types';
+import { LuckyRef, Prize } from '../types';
 import { useLuckyAction } from '../useLuckyAction';
-import { getImgSrc, pxGetter } from '../utils';
+import { generateWheelColors, getImgSrc, pxGetter } from '../utils';
 
 interface LuckyWheelProps {
   canvasId?: string;
   width?: number;
+  disabledInnerAction?: boolean;
   spinDuration?: number;
   disabled?: boolean;
   prizes?: Array<Prize>;
-  onEnd?: (id: string, text: string) => void;
+  beforeStart?: () => boolean;
+  onStart?: () => void;
+  onEnd?: (info: { id: string; text: string; index: number }) => void;
+  onError?: () => void;
 }
 
 const getColors = (baseColor: string) => {
@@ -21,17 +25,22 @@ const getColors = (baseColor: string) => {
     a02: lightenColor(baseColor, 0.5),
     a03: lightenColor(baseColor, 0.3),
     a04: lightenColor(baseColor, 0.1),
+    a05: COLOR_VARIABLES.COLOR_WHITE,
   };
 };
 
-export function LuckyWheel(props: LuckyWheelProps) {
+export const LuckyWheel = forwardRef<LuckyRef, LuckyWheelProps>((props, ref) => {
   const {
     canvasId,
     width = 300,
     prizes: _prizes = [],
     spinDuration = 3000,
     disabled = false,
+    disabledInnerAction = false,
+    beforeStart,
+    onStart: _onStart,
     onEnd: _onEnd,
+    onError,
   } = props;
   const px = useMemo(() => pxGetter(width), [width]);
   const colors = useMemo(() => getColors(COLOR_VARIABLES.COLOR_RED), []);
@@ -83,30 +92,41 @@ export function LuckyWheel(props: LuckyWheelProps) {
     ];
   }, [colors, px]);
   const prizes = useMemo(() => {
+    const prizeColors = generateWheelColors(_prizes.length, [colors.a03, colors.a04, colors.a05]);
     return _prizes.map((prize, index) => {
       return {
         __local: {
           id: prize.id,
           text: prize.text,
           range: prize.range,
+          index,
         },
-        fonts: [{ text: prize.text, top: '25%' }],
-        background: index % 2 === 0 ? colors.a03 : colors.a04,
-        imgs: [{ src: getImgSrc(prize.type), top: '50%', ...priceStyle }],
+        fonts: [{ text: prize.text, top: '20%' }],
+        background: prizeColors[index] ?? colors.a05,
+        imgs: [{ src: getImgSrc(prize.type), top: '55%', ...priceStyle }],
       };
     });
   }, [_prizes, colors, priceStyle]);
 
-  const { onStart, onEnd, ref } = useLuckyAction({
+  const {
+    onStart,
+    onEnd,
+    ref: luckRef,
+  } = useLuckyAction({
     disabled,
+    disabledInnerAction,
     spinDuration,
     prizes,
+    beforeStart,
+    onStart: _onStart,
     onEnd: _onEnd,
+    onError,
+    outerRef: ref,
   });
 
   return (
     <BaseLuckyWheel
-      ref={ref}
+      ref={luckRef}
       canvasId={canvasId}
       width={width}
       height={width}
@@ -118,4 +138,4 @@ export function LuckyWheel(props: LuckyWheelProps) {
       onEnd={onEnd}
     />
   );
-}
+});

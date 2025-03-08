@@ -6,3 +6,4 @@ export * from './task';
 export * from './checkIn';
 export * from './order';
 export * from './prize';
+export * from './luckyDraw';

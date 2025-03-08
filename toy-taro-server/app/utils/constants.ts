@@ -34,11 +34,13 @@ export enum FILE_SOURCE_TYPE {
 export enum FILE_MODULE_NAME {
   USER = "user",
   PRODUCT = "product",
+  LUCKY_DRAW = "lucky_draw",
 }
 
 export enum FILE_NAME_PREFIX {
   USER_AVATAR = "user-avatar",
   PRODUCT_COVER = "product-cover-image",
+  LUCKY_DRAW_COVER = "lucky-draw-cover-image",
 }
 
 // ------------------------------ coupon ------------------------------
@@ -95,4 +97,11 @@ export enum PRIZE_TYPE {
   POINTS = "POINTS",
   COUPON = "COUPON",
   LUCKY_DRAW = "LUCKY_DRAW",
+  NONE = "NONE",
+}
+
+// ----------------------lucky draw--------------------------------
+export enum LUCKY_DRAW_TYPE {
+  WHEEL = "WHEEL",
+  GRID = "GRID",
 }

@@ -27,10 +27,11 @@ type CommonCouponInfo = Pick<
   | 'expirationTip'
   | 'detailTip'
   | 'shortTip'
+  | 'terseTip'
 >;
 
 type ActiveCoupon = CommonCouponInfo & {
-  type: 'selectable' | 'unselectable';
+  type: 'active';
   originalType: COUPON_TYPE;
   selectable: boolean;
   discountScore: number;
@@ -47,7 +48,7 @@ type ExpiredCoupon = CommonCouponInfo & {
 };
 
 type AllCoupon = CommonCouponInfo & {
-  type: 'selectable' | 'used' | 'expired';
+  type: 'active' | 'used' | 'expired';
   originalType: COUPON_TYPE;
 };
 
@@ -139,7 +140,7 @@ export function useUserCouponList(props?: Props) {
         ...coupon,
         ...userCoupon,
         ...getNormalCouponInfo(coupon),
-        type: discountInfo.enabled ? ('selectable' as const) : ('unselectable' as const),
+        type: 'active' as const,
         originalType: coupon.type,
         selectable: discountInfo.enabled,
         discountScore: discountInfo.score,
@@ -196,7 +197,7 @@ export function useUserCouponList(props?: Props) {
         status === COUPON_STATUS.ACTIVE
           ? coupon.isExpired
             ? ('expired' as const)
-            : ('selectable' as const)
+            : ('active' as const)
           : ('used' as const);
       list.push({
         ...coupon,

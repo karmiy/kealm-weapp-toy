@@ -17,6 +17,9 @@ export class PrizeModel {
   sortValue: number;
 
   @observable
+  text?: string;
+
+  @observable
   createTime: number;
 
   @observable
@@ -24,13 +27,23 @@ export class PrizeModel {
 
   constructor(entity: PrizeEntity) {
     makeObserver(this);
-    const { id, type, points, coupon_id, draw_count, sort_value, create_time, last_modified_time } =
-      entity;
+    const {
+      id,
+      type,
+      points,
+      coupon_id,
+      draw_count,
+      text,
+      sort_value,
+      create_time,
+      last_modified_time,
+    } = entity;
     this.id = id;
     this.type = type;
     this.points = points;
     this.couponId = coupon_id;
     this.drawCount = draw_count;
+    this.text = text;
     this.sortValue = sort_value;
     this.createTime = create_time;
     this.lastModifiedTime = last_modified_time;
@@ -47,6 +60,9 @@ export class PrizeModel {
     if (this.type === PRIZE_TYPE.LUCKY_DRAW) {
       return '祈愿券奖励';
     }
-    return '谢谢惠顾';
+    if (this.type === PRIZE_TYPE.NONE) {
+      return '无奖励';
+    }
+    return '无奖励';
   }
 }

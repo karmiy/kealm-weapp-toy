@@ -9,5 +9,6 @@ export function useUserInfo() {
   return {
     isAdmin,
     score: user?.availableScore ?? 0,
+    drawTicket: user?.availableDrawTicket ?? 0,
   };
 }

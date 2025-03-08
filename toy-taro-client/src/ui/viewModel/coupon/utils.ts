@@ -10,5 +10,7 @@ export const getNormalCouponInfo = (coupon: CouponModel) => {
     expirationTip: coupon.expirationTip,
     detailTip: coupon.detailTip,
     shortTip: coupon.shortTip,
+    terseTip: coupon.terseTip,
+    isExpired: coupon.isExpired,
   };
 };

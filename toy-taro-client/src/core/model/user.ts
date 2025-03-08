@@ -66,6 +66,7 @@ export class UserModel {
       avatarUrl: this.avatarUrl,
       role: this.role,
       score: this.score,
+      draw_ticket: this.drawTicket,
     };
   }
 }

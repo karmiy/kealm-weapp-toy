@@ -7,6 +7,7 @@ export interface PrizeModel {
   coupon_id?: string;
   points?: number;
   draw_count?: number;
+  text?: string;
   sort_value: number;
   create_time: Date;
   last_modified_time: Date;
@@ -16,7 +17,7 @@ export interface PrizeModel {
 }
 
 export default (app: Application) => {
-  const { DATE, INTEGER, TINYINT, ENUM } = app.Sequelize;
+  const { DATE, INTEGER, TINYINT, ENUM, STRING } = app.Sequelize;
 
   const Prize = app.model.define("prize", {
     id: {
@@ -28,7 +29,12 @@ export default (app: Application) => {
       },
     },
     type: {
-      type: ENUM(PRIZE_TYPE.POINTS, PRIZE_TYPE.COUPON, PRIZE_TYPE.LUCKY_DRAW),
+      type: ENUM(
+        PRIZE_TYPE.POINTS,
+        PRIZE_TYPE.COUPON,
+        PRIZE_TYPE.LUCKY_DRAW,
+        PRIZE_TYPE.NONE
+      ),
       defaultValue: PRIZE_TYPE.POINTS,
     },
     coupon_id: {
@@ -43,6 +49,9 @@ export default (app: Application) => {
     },
     draw_count: {
       type: INTEGER,
+    },
+    text: {
+      type: STRING(255),
     },
     sort_value: {
       type: INTEGER,

@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '配置祈愿池',
+  navigationBarTitleText: '祈愿池配置',
   disableScroll: true,
 });

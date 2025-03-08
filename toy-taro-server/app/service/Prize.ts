@@ -194,6 +194,9 @@ export default class Prize extends Service {
           new JsError(SERVER_CODE.BAD_REQUEST, "奖品不存在")
         );
       }
+      if (prize.type === PRIZE_TYPE.NONE) {
+        return;
+      }
       const user = await ctx.service.user.findUserById(userId);
       if (prize.type === PRIZE_TYPE.POINTS) {
         const addedScore = prize.points ?? 0;

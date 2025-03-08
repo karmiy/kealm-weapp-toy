@@ -1,15 +1,16 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { View } from '@tarojs/components';
+import { navigateBack, useRouter } from '@tarojs/taro';
 import isNil from 'lodash/isNil';
-import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
+import type { File } from 'taro-ui/types/image-picker';
+import { PAGE_ID } from '@shared/utils/constants';
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
 import { sleep } from '@shared/utils/utils';
 import {
   Button,
-  CheckButton,
   FloatLayout,
-  Icon,
+  ImagePicker,
   Input,
   PickerSelector,
   SortableItem,
@@ -17,20 +18,47 @@ import {
   WhiteSpace,
 } from '@ui/components';
 import { FormItem, Layout } from '@ui/container';
-import { useCouponList } from '@ui/viewModel';
+import { useLuckyDrawAction, useLuckyDrawItem, usePrizeSelector } from '@ui/viewModel';
 import { PrizeItem, PrizeItemProps } from './components';
-import { LUCKY_DRAW_TYPE, LUCKY_DRAW_TYPE_LIST, MAX_PRIZE_COUNT, PRIZE_TYPE } from './constants';
+import { LUCKY_DRAW_TYPE, LUCKY_DRAW_TYPE_LIST, MAX_PRIZE_COUNT } from './constants';
 import styles from './index.module.scss';
 
 export default function () {
+  const router = useRouter();
+  const id = router.params.id;
+  const { luckyDraw } = useLuckyDrawItem({ id });
+  const { createPreview, isUpdateLoading, handleUpdate, handleDelete, isDeleteLoading } =
+    useLuckyDrawAction();
+  // 祈愿池封面
+  const [pictures, setPictures] = useState<File[]>(() => {
+    if (!luckyDraw) {
+      return [];
+    }
+    return [{ url: luckyDraw.coverImageUrl }];
+  });
   // 祈愿池名称
-  const [drawName, setDrawName] = useState('');
+  const [drawName, setDrawName] = useState(luckyDraw?.name ?? '');
 
   // 祈愿池奖品列表
-  const [prizeList, setPrizeList] = useState<Array<PrizeItemProps & { id?: string }>>([]);
+  const [prizeList, setPrizeList] = useState<Array<PrizeItemProps>>(() => {
+    return (
+      luckyDraw?.list.map(item => ({
+        id: item.prize_id,
+        range: item.range,
+      })) ?? []
+    );
+  });
 
   // 祈愿池类型
-  const [drawTypeIndex, setDrawTypeIndex] = useState<number>();
+  const [drawType, setDrawType] = useState(luckyDraw?.type);
+  const drawTypeIndex = useMemo(() => {
+    if (!drawType) {
+      return;
+    }
+    const index = LUCKY_DRAW_TYPE_LIST.findIndex(item => item.value === drawType);
+    return index === -1 ? undefined : index;
+  }, [drawType]);
+  // const [drawTypeIndex, setDrawTypeIndex] = useState<number>();
   const handleDrawTypeChange = useCallback(
     (index: number) => {
       const nextType = LUCKY_DRAW_TYPE_LIST[index].value;
@@ -41,19 +69,13 @@ export default function () {
           title: `该祈愿池奖品不能超过 ${maxCount} 个，请先删除多余的奖品`,
           icon: 'none',
         });
-        setDrawTypeIndex(drawTypeIndex);
+        setDrawType(drawType);
         return;
       }
-      setDrawTypeIndex(index);
+      setDrawType(nextType);
     },
-    [drawTypeIndex, prizeList.length],
+    [drawType, prizeList.length],
   );
-  const drawType = useMemo(() => {
-    if (isNil(drawTypeIndex)) {
-      return;
-    }
-    return LUCKY_DRAW_TYPE_LIST[drawTypeIndex].value;
-  }, [drawTypeIndex]);
   const drawTypeTip = useMemo(() => {
     if (isNil(drawType)) {
       return;
@@ -71,7 +93,7 @@ export default function () {
   }, [drawType]);
 
   // 祈愿券数量
-  const [drawQuantity, setDrawQuantity] = useState('');
+  const [drawQuantity, setDrawQuantity] = useState(luckyDraw?.quantity.toString() ?? '');
 
   // 奖品编辑弹框
   const [showEditModal, setShowEditModal] = useState(false);
@@ -83,20 +105,11 @@ export default function () {
     editedPrizeRef.current.index = index;
   }, []);
   // 奖品类型
-  const [prizeType, setPrizeType] = useState(PRIZE_TYPE.POINTS);
-
-  // 奖品编辑弹框 - 选择 - 积分
-  const [pointsValue, setPointsValue] = useState('');
-  // 奖品编辑弹框 - 选择 - 优惠券
-  const { activeCoupons } = useCouponList();
-  const [couponId, setCouponId] = useState<string>();
-  const couponIndex = useMemo(() => {
-    if (!couponId) {
-      return;
-    }
-    const index = activeCoupons.findIndex(item => item.id === couponId);
-    return index === -1 ? undefined : index;
-  }, [couponId, activeCoupons]);
+  // 奖品编辑弹框 - 选择 - 奖品
+  const { prizeId, setPrizeId, PrizeSelector } = usePrizeSelector({
+    includeNone: true,
+    includeLuckyDraw: false,
+  });
 
   // 奖品编辑弹框 - 奖品权重
   const [prizeRange, setPrizeRange] = useState<string>('');
@@ -108,37 +121,20 @@ export default function () {
     if (!Number(prizeRange)) {
       return true;
     }
-    if (prizeType === PRIZE_TYPE.NONE) {
-      return false;
-    }
-    if (prizeType === PRIZE_TYPE.POINTS) {
-      return !Number(pointsValue);
-    }
-    if (prizeType === PRIZE_TYPE.COUPON) {
-      return !couponId;
-    }
-  }, [prizeRange, prizeType, pointsValue, couponId]);
+    return !prizeId;
+  }, [prizeId, prizeRange]);
 
-  const handleSelectPrizeType = useCallback((type: PRIZE_TYPE, checked: boolean) => {
-    if (!checked) {
-      return;
-    }
-    setPrizeType(type);
-  }, []);
-
-  const handleEditCoupon = useCallback(() => {
+  const handleGoToEditPrize = useCallback(() => {
     navigateToPage({
-      pageName: PAGE_ID.COUPON,
+      pageName: PAGE_ID.PRIZE_MANAGE,
     });
   }, []);
 
   const clearEditModel = useCallback(() => {
     setEditedPrizeIndex();
-    setCouponId(undefined);
-    setPointsValue('');
-    setPrizeType(PRIZE_TYPE.POINTS);
+    setPrizeId(undefined);
     setPrizeRange('');
-  }, [setEditedPrizeIndex]);
+  }, [setEditedPrizeIndex, setPrizeId]);
 
   const handleCloseEditModal = useCallback(async () => {
     setShowEditModal(false);
@@ -153,48 +149,41 @@ export default function () {
 
   const handleSavePrize = useCallback(() => {
     const editIndex = getEditedPrizeIndex();
+    if (!prizeId) {
+      showToast({
+        title: '奖品不能为空',
+      });
+      return;
+    }
     setPrizeList(prev => {
       if (isNil(editIndex)) {
         return [
           {
-            type: prizeType,
-            points: Number(pointsValue),
-            couponId,
+            id: prizeId,
             range: Number(prizeRange),
           },
           ...prev,
         ];
       }
       const prevPrize = { ...prev[editIndex] };
-      prevPrize.type = prizeType;
-      prevPrize.points = Number(pointsValue);
-      prevPrize.couponId = couponId;
+      prevPrize.id = prizeId;
       prevPrize.range = Number(prizeRange);
       const newArray = [...prev];
       newArray.splice(editIndex, 1, prevPrize);
       return newArray;
     });
     handleCloseEditModal();
-  }, [couponId, getEditedPrizeIndex, handleCloseEditModal, pointsValue, prizeRange, prizeType]);
+  }, [getEditedPrizeIndex, handleCloseEditModal, prizeId, prizeRange]);
 
   const handleEditPrize = useCallback(
     (index: number) => {
       setEditedPrizeIndex(index);
       const prize = prizeList[index];
-      const { type, points, couponId: prizeCouponId } = prize;
-      if (type === PRIZE_TYPE.POINTS) {
-        setPointsValue(points?.toString() ?? '');
-        setPrizeType(PRIZE_TYPE.POINTS);
-      } else if (type === PRIZE_TYPE.COUPON) {
-        setCouponId(prizeCouponId);
-        setPrizeType(PRIZE_TYPE.COUPON);
-      } else if (type === PRIZE_TYPE.NONE) {
-        setPrizeType(PRIZE_TYPE.NONE);
-      }
+      setPrizeId(prize.id);
       setPrizeRange(prize.range?.toString() ?? '');
       setShowEditModal(true);
     },
-    [prizeList, setEditedPrizeIndex],
+    [prizeList, setEditedPrizeIndex, setPrizeId],
   );
 
   const handleDeletePrize = useCallback(async (index: number) => {
@@ -221,8 +210,60 @@ export default function () {
     [prizeList],
   );
 
+  const handlePreview = useCallback(() => {
+    createPreview({
+      coverImage: pictures[0]?.url,
+      name: drawName,
+      type: drawType,
+      quantity: Number(drawQuantity),
+      list: prizeList.map(item => {
+        return {
+          prize_id: item.id,
+          range: item.range ?? 0,
+        };
+      }),
+    });
+  }, [createPreview, drawName, drawQuantity, drawType, prizeList, pictures]);
+
+  const handleDeleteLuckyDraw = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+    await handleDelete({
+      id,
+      onSuccess: () => navigateBack(),
+    });
+  }, [handleDelete, id]);
+
+  const handleSave = useCallback(() => {
+    handleUpdate({
+      id,
+      coverImage: pictures[0]?.url,
+      name: drawName,
+      type: drawType,
+      quantity: Number(drawQuantity),
+      list: prizeList.map(item => {
+        return {
+          prize_id: item.id,
+          range: item.range ?? 0,
+        };
+      }),
+      onSuccess: () => navigateBack(),
+    });
+  }, [drawName, drawQuantity, drawType, handleUpdate, id, pictures, prizeList]);
+
   return (
     <Layout type='card'>
+      <FormItem title='祈愿池封面' required>
+        <ImagePicker
+          count={1}
+          showAddBtn={!pictures.length}
+          files={pictures}
+          onChange={e => {
+            setPictures(e);
+          }}
+        />
+      </FormItem>
       <FormItem title='祈愿池名称' required>
         <Input
           placeholder='请输入祈愿池名称'
@@ -264,59 +305,29 @@ export default function () {
             onClick={handleAddPrize}
             disabled={prizeList.length >= maxPrizeCount}
           >
-            添加奖品
+            添加奖品({prizeList.length})
           </Button>
           <WhiteSpace isVertical={false} size='small' />
-          <Button type='primary' icon='present' size='small' disabled={!prizeList.length}>
+          <Button
+            type='primary'
+            icon='present'
+            size='small'
+            disabled={!prizeList.length}
+            onClick={handlePreview}
+          >
             预览祈愿池
           </Button>
         </View>
         <WhiteSpace size='small' />
         <FloatLayout visible={showEditModal} onClose={handleCloseEditModal}>
           <View className={styles.editModalWrapper}>
-            <FormItem title='奖品类型' required>
-              <View className={styles.checkButtonWrapper}>
-                <CheckButton
-                  label='积分'
-                  checked={prizeType === PRIZE_TYPE.POINTS}
-                  onChange={v => handleSelectPrizeType(PRIZE_TYPE.POINTS, v)}
-                />
-                <WhiteSpace isVertical={false} size='medium' />
-                <CheckButton
-                  label='优惠券'
-                  checked={prizeType === PRIZE_TYPE.COUPON}
-                  onChange={v => handleSelectPrizeType(PRIZE_TYPE.COUPON, v)}
-                />
-                <View className={styles.editCoupon} onClick={handleEditCoupon}>
-                  <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
-                </View>
-                <WhiteSpace isVertical={false} size='medium' />
-                <CheckButton
-                  label='谢谢惠顾'
-                  checked={prizeType === PRIZE_TYPE.NONE}
-                  onChange={v => handleSelectPrizeType(PRIZE_TYPE.NONE, v)}
-                />
-              </View>
-              <WhiteSpace size='small' />
-              {prizeType === PRIZE_TYPE.POINTS ? (
-                <Input
-                  type='number'
-                  placeholder='请输入奖品积分'
-                  value={pointsValue}
-                  onInput={e => setPointsValue(e.detail.value)}
-                />
-              ) : null}
-              {prizeType === PRIZE_TYPE.COUPON ? (
-                <PickerSelector
-                  placeholder='请选择优惠券'
-                  type='select'
-                  mode='selector'
-                  range={activeCoupons}
-                  rangeKey='detailTip'
-                  onChange={e => setCouponId(activeCoupons[Number(e.detail.value)]?.id)}
-                  value={couponIndex}
-                />
-              ) : null}
+            <FormItem
+              title='奖品配置'
+              required
+              showSettingEntrance
+              onSettingClick={handleGoToEditPrize}
+            >
+              {PrizeSelector}
               <WhiteSpace size='small' />
               <Input
                 type='number'
@@ -343,7 +354,7 @@ export default function () {
       <SortableList onSortEnd={handleSortEnd}>
         {prizeList.map((item, index) => {
           return (
-            <SortableItem key={item.id ?? index} index={index}>
+            <SortableItem key={`${item.id}_${index}`} index={index}>
               <PrizeItem
                 {...item}
                 totalRange={totalRange}
@@ -355,9 +366,30 @@ export default function () {
           );
         })}
       </SortableList>
-      <Button width='100%' type='primary' size='large'>
+      <Button
+        width='100%'
+        type='primary'
+        size='large'
+        disabled={isUpdateLoading}
+        loading={isUpdateLoading}
+        onClick={handleSave}
+      >
         保存
       </Button>
+      {id ? (
+        <>
+          <WhiteSpace size='medium' />
+          <Button
+            width='100%'
+            type='plain'
+            size='large'
+            disabled={isDeleteLoading}
+            onClick={handleDeleteLuckyDraw}
+          >
+            删除
+          </Button>
+        </>
+      ) : null}
     </Layout>
   );
 }

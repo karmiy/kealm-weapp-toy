@@ -53,6 +53,7 @@ export class UserModule extends AbstractModule {
         }
       }
       const userInfo = await UserApi.getUserInfo();
+      this._logger.info('getUserInfo', userInfo);
       storeManager.emitUpdate(STORE_NAME.USER, {
         entities: [userInfo],
       });

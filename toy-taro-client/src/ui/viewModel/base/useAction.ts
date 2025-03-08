@@ -1,36 +1,41 @@
 import { useState } from 'react';
 import { useConsistentFunc } from '@ui/hooks';
 
-export function useAction<T>(
-  action: (params: T) => Promise<unknown> | unknown,
-  options?: {
-    onSuccess?: () => void | Promise<void>;
-    onError?: (error: Error) => void | Promise<void>;
-  },
+export const BLOCK_ACTION_MARK = '__LOCAL_USE_ACTION_BLOCK_ACTION_MARK' as const;
+
+type ActionResult<A extends (params: any) => Promise<unknown> | unknown> = Exclude<
+  Awaited<ReturnType<A>>,
+  '__LOCAL_USE_ACTION_BLOCK_ACTION_MARK'
+>;
+
+type Options<A extends (params: any) => Promise<unknown> | unknown> = {
+  onSuccess?: (value: ActionResult<A>) => unknown | Promise<unknown>;
+  onError?: (error: Error) => unknown | Promise<unknown>;
+};
+
+export function useAction<A extends (...args: any[]) => Promise<unknown> | unknown>(
+  action: A,
+  options?: Options<A>,
 ) {
+  type T = Parameters<A>[0] extends undefined ? never : Parameters<A>[0];
   const [isLoading, setIsLoading] = useState(false);
 
   const actionHandler = useConsistentFunc(
-    async (
-      params: T & {
-        onSuccess?: () => void;
-        onError?: (error: Error) => void;
-      },
-    ) => {
+    async (params: T extends undefined ? Options<A> : T & Options<A>) => {
       const { onSuccess, onError, ...rest } = params;
       try {
         if (isLoading) {
           return;
         }
         setIsLoading(true);
-        const result = await action(rest as T);
-        if (result === false) {
+        const result = (await action(rest as T)) as ActionResult<A>;
+        if (result === BLOCK_ACTION_MARK) {
           setIsLoading(false);
           return;
         }
-        await options?.onSuccess?.();
-        onSuccess?.();
         setIsLoading(false);
+        await options?.onSuccess?.(result);
+        onSuccess?.(result);
       } catch (error) {
         await options?.onError?.(error);
         onError?.(error);

@@ -35,7 +35,6 @@
 
   .luckyWrapper {
     width: px(300);
-    height: px(300);
   }
 
   .ruleWrapper {
@@ -61,14 +60,19 @@
       .listItem {
         position: relative;
         display: flex;
-        padding-left: px(24);
+        flex-direction: column;
+        // line-height: px(20);
+        padding-left: px(16);
+
+        text {
+          font-size: px(12);
+        }
 
         &::before {
           content: '';
           position: absolute;
-          left: px(16);
-          top: 50%;
-          transform: translateY(-50%);
+          left: px(8);
+          top: px(8);
           width: px(4);
           height: px(4);
           background-color: $--text-color-base;

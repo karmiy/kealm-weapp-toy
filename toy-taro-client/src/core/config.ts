@@ -1,8 +1,9 @@
-import { HANDLER_TYPE, STORE_NAME } from './constants';
+import { HANDLER_TYPE, LUCKY_DRAW_TYPE, STORE_NAME } from './constants';
 import {
   CheckInModel,
   ContactModel,
   CouponModel,
+  LuckyDrawModel,
   OrderModel,
   PrizeModel,
   ProductCategoryModel,
@@ -83,6 +84,17 @@ const config = {
     type: HANDLER_TYPE.MULTIPLE as const,
     model: PrizeModel,
     sortValue: (a: PrizeModel, b: PrizeModel) => b.sortValue - a.sortValue,
+  },
+  [STORE_NAME.LUCKY_DRAW]: {
+    type: HANDLER_TYPE.MULTIPLE as const,
+    model: LuckyDrawModel,
+    sortValue: (a: LuckyDrawModel, b: LuckyDrawModel) => {
+      return a.type === b.type
+        ? b.quantity - a.quantity // 相同 type 按券数降序
+        : a.type === LUCKY_DRAW_TYPE.WHEEL
+        ? -1
+        : 1;
+    },
   },
 };
 

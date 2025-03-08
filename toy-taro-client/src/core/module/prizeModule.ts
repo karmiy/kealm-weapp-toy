@@ -33,7 +33,7 @@ export class PrizeModule extends AbstractModule {
 
   async updatePrize(prize: PrizeUpdateParams) {
     try {
-      const { id, couponId, points, drawCount, type } = prize;
+      const { id, couponId, points, drawCount, text, type } = prize;
       this._logger.info('updatePrize', prize);
       const entity = await PrizeApi.updatePrize({
         id,
@@ -41,6 +41,7 @@ export class PrizeModule extends AbstractModule {
         coupon_id: couponId,
         points,
         draw_count: drawCount,
+        text,
       });
       this._logger.info('updatePrize success', entity);
       storeManager.emitUpdate(STORE_NAME.PRIZE, {

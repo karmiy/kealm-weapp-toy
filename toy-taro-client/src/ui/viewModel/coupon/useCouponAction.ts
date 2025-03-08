@@ -1,6 +1,6 @@
 import { showModal, showToast } from '@shared/utils/operateFeedback';
 import { COUPON_VALIDITY_TIME_TYPE, CouponUpdateParams, sdk } from '@core';
-import { useAction } from '../base';
+import { BLOCK_ACTION_MARK, useAction } from '../base';
 
 export function useCouponAction() {
   const [handleUpdate, isUpdateLoading] = useAction(
@@ -26,49 +26,49 @@ export function useCouponAction() {
         showToast({
           title: '请输入优惠券名称',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (!type) {
         showToast({
           title: '请选择优惠券类型',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (!value) {
         showToast({
           title: '请输入满减/打折金额',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (!minimumOrderValue) {
         showToast({
           title: '请输入最低使用门槛',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (!validityTimeType) {
         showToast({
           title: '请选择有效期',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.DATE_RANGE && (!startTime || !endTime)) {
         showToast({
           title: '请选择有效起止时间',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.DATE_LIST && !dates?.length) {
         showToast({
           title: '请选择至少一个有效日期',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       if (validityTimeType === COUPON_VALIDITY_TIME_TYPE.WEEKLY && !days?.length) {
         showToast({
           title: '请选择至少一个有效星期',
         });
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       await sdk.modules.coupon.updateCoupon({
         id,
@@ -104,7 +104,7 @@ export function useCouponAction() {
         content: '确定要删除吗？',
       });
       if (!feedback) {
-        return false;
+        return BLOCK_ACTION_MARK;
       }
       await sdk.modules.coupon.deleteCoupon(id);
     },

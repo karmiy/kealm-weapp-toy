@@ -11,7 +11,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-lucky-cover.png');
+    background-image: url('https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/demo/demo-lucky-cover-default.png');
   }
 
   .content {
@@ -31,6 +31,8 @@
       .tip {
         font-size: px(14);
         color: $--color-red;
+        flex-shrink: 0;
+        margin-left: px(4);
       }
     }
   }

@@ -16,6 +16,10 @@
     }
   }
 
+  &.isGray {
+    background-color: $--fill-body;
+  }
+
   .sortIconWrapper {
     flex-shrink: 0;
   }

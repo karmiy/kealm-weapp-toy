@@ -7,9 +7,10 @@ import {
     TaskModule,
     UserModule,
     PrizeModule,
+    LuckyDrawModule,
   } from './module';
 import { HANDLER_TYPE, COUPON_VALIDITY_TIME_TYPE, PRIZE_TYPE } from './constants';
-import { CouponModel, TaskModel, ProductModel } from './model';
+import { CouponModel, TaskModel, ProductModel, LuckyDrawModel } from './model';
 
  // ----------------------storeManager--------------------------------
 export type ConfigModels = {
@@ -45,6 +46,7 @@ export type SingleStoreNames = {
     order: OrderModule;
     checkIn: CheckInModule;
     prize: PrizeModule;
+    luckyDraw: LuckyDrawModule;
 };
 
 export type ISDK = {
@@ -76,8 +78,8 @@ export type CouponUpdateParams = Pick<
 
  // ----------------------task--------------------------------
 export type TaskUpdateParams = Pick<
-TaskModel,
-'name' | 'desc' | 'type' | 'categoryId' | 'difficulty'
+  TaskModel,
+  'name' | 'desc' | 'type' | 'categoryId' | 'difficulty'
 > & { 
   id?: string;
   prizeId: string;
@@ -90,4 +92,13 @@ export type PrizeUpdateParams = {
     couponId?: string;
     points?: number;
     drawCount?: number;
+    text?: string;
 }
+
+// ----------------------luckyDraw--------------------------------
+export type LuckyDrawUpdateParams = Pick<
+  LuckyDrawModel,
+  'type' | 'coverImage' | 'name' | 'quantity' | 'list'
+> & { 
+    id?: string;
+ };

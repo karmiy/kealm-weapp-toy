@@ -3,13 +3,14 @@ import { Text, View } from '@tarojs/components';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 
-type CouponItemType = 'selectable' | 'unselectable' | 'used' | 'expired';
+type CouponItemType = 'active' | 'used' | 'expired';
 
 export type CouponRenderAction = (id: string, type: CouponItemType) => React.ReactNode;
 
 export interface CouponItemProps {
   id: string;
   type?: CouponItemType;
+  selectable?: boolean;
   discountTip: string;
   conditionTip: string;
   name: string;
@@ -23,7 +24,8 @@ export interface CouponItemProps {
 const CouponItem = (props: CouponItemProps) => {
   const {
     id,
-    type = 'selectable',
+    type = 'active',
+    selectable = true,
     discountTip,
     conditionTip,
     name,
@@ -35,7 +37,7 @@ const CouponItem = (props: CouponItemProps) => {
   } = props;
 
   const handleClick = () => {
-    if (type !== 'selectable') {
+    if (!selectable) {
       return;
     }
     onClick?.(id);
@@ -49,7 +51,7 @@ const CouponItem = (props: CouponItemProps) => {
     <View
       className={clsx(styles.wrapper, {
         [styles.isSelected]: selected,
-        [styles.isUnSelectable]: type === 'unselectable',
+        [styles.isUnSelectable]: !selectable,
         [styles.isUsed]: type === 'used',
         [styles.isExpired]: type === 'expired',
         [styles.isCustomAction]: !!renderAction,
