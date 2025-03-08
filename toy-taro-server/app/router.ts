@@ -117,4 +117,22 @@ export default (app: Application) => {
   router.post(getPath("/prize/updatePrize"), controller.prize.updatePrize);
   router.post(getPath("/prize/sortPrize"), controller.prize.sortPrize);
   router.post(getPath("/prize/grantReward"), controller.prize.grantReward);
+
+  // luckyDraw
+  router.get(
+    getPath("/luckyDraw/getLuckyDrawList"),
+    controller.luckyDraw.getLuckyDrawList
+  );
+  router.post(
+    getPath("/luckyDraw/updateLuckyDraw"),
+    controller.luckyDraw.updateLuckyDraw
+  );
+  router.post(
+    getPath("/luckyDraw/deleteLuckyDraw"),
+    controller.luckyDraw.deleteLuckyDraw
+  );
+  router.post(
+    getPath("/luckyDraw/startLuckyDraw"),
+    controller.luckyDraw.startLuckyDraw
+  );
 };
