@@ -13,9 +13,9 @@ import styles from './index.module.scss';
 export function CouponAdminPage() {
   const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
   const loading = useStoreLoadingStatus(STORE_NAME.COUPON);
-  const { activeCoupons } = useCouponList();
+  const { allCouponModels } = useCouponList();
   const couponList = useMemo(() => {
-    return activeCoupons.map(coupon => {
+    return allCouponModels.map(coupon => {
       return {
         ...coupon,
         discountTip: coupon.discountTip,
@@ -24,10 +24,10 @@ export function CouponAdminPage() {
         expirationTip: coupon.expirationTip,
         detailTip: coupon.detailTip,
         shortTip: coupon.shortTip,
-        type: 'selectable' as const,
+        type: coupon.isExpired ? ('expired' as const) : ('active' as const),
       };
     });
-  }, [activeCoupons]);
+  }, [allCouponModels]);
   const { handleDelete } = useCouponAction();
 
   const handleManageCoupon = useCallback((id?: string) => {
@@ -41,14 +41,10 @@ export function CouponAdminPage() {
     (id, type) => {
       return (
         <View className={styles.itemAction}>
-          {type !== 'expired' ? (
-            <>
-              <View onClick={() => handleManageCoupon(id)}>
-                <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
-              </View>
-              <WhiteSpace size='small' isVertical={false} />
-            </>
-          ) : null}
+          <View onClick={() => handleManageCoupon(id)}>
+            <Icon name='edit' color={COLOR_VARIABLES.COLOR_RED} />
+          </View>
+          <WhiteSpace size='small' isVertical={false} />
           <View onClick={() => handleDelete({ id })}>
             <Icon name='delete' />
           </View>
@@ -75,7 +71,7 @@ export function CouponAdminPage() {
               新增
             </View>
           </View>
-          <StatusWrapper loading={loading} count={activeCoupons.length} size='flex'>
+          <StatusWrapper loading={loading} count={couponList.length} size='flex'>
             <CouponList list={couponList} renderAction={renderAction} />
           </StatusWrapper>
         </View>

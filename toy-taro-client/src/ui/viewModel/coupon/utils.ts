@@ -11,5 +11,6 @@ export const getNormalCouponInfo = (coupon: CouponModel) => {
     detailTip: coupon.detailTip,
     shortTip: coupon.shortTip,
     terseTip: coupon.terseTip,
+    isExpired: coupon.isExpired,
   };
 };
