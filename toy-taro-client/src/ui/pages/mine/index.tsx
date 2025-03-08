@@ -140,19 +140,7 @@ function Mine() {
               <Icon name='arrow-right' size={14} />
             </View>
           ) : null}
-          {isAdmin ? (
-            <View
-              className={styles.menuItem}
-              onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW })}
-            >
-              <View className={styles.title}>
-                <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-                <Text>祈愿广场</Text>
-              </View>
-              <Icon name='arrow-right' size={14} />
-            </View>
-          ) : null}
-          {/* <View
+          <View
             className={styles.menuItem}
             onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW })}
           >
@@ -162,16 +150,6 @@ function Mine() {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
-          <View
-            className={styles.menuItem}
-            onClick={() => navigateToPage({ pageName: PAGE_ID.LUCKY_DRAW_CONFIGURATION })}
-          >
-            <View className={styles.title}>
-              <Icon name='present' size={14} color={COLOR_VARIABLES.COLOR_RED} />
-              <Text>祈愿池管理</Text>
-            </View>
-            <Icon name='arrow-right' size={14} />
-          </View> */}
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>

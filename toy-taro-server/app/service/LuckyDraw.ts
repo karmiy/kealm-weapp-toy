@@ -5,6 +5,7 @@ import { SERVER_CODE } from "../utils/constants";
 import { LuckyDrawModel } from "../model/luckyDraw";
 import { LuckyDrawHistoryModel } from "../model/luckyDrawHistory";
 import { QueryFields, QueryWhere } from "../utils/types";
+import { weightedRandomIndex } from "../utils/luckyDrawHelper";
 
 const logger = Logger.getLogger("[LuckyDrawService]");
 
@@ -169,6 +170,63 @@ export default class LuckyDraw extends Service {
           SERVER_CODE.INTERNAL_SERVER_ERROR,
           `${fields.id ? "更新" : "创建"}失败`
         )
+      );
+    }
+  }
+
+  public async startDraw(params: { id: string; userId: string }) {
+    try {
+      const { ctx } = this;
+      const { id, userId } = params;
+
+      // 1. 查询祈愿池
+      const luckyDraw = await this.findLuckyDraw({
+        id,
+      });
+      if (!luckyDraw) {
+        return Promise.reject(
+          new JsError(SERVER_CODE.BAD_REQUEST, "祈愿池不存在")
+        );
+      }
+
+      // 2. 查询用户祈愿券
+      const user = await ctx.service.user.findUserById(userId);
+      if (user.draw_ticket < luckyDraw.quantity) {
+        return Promise.reject(
+          new JsError(SERVER_CODE.BAD_REQUEST, "祈愿券不足")
+        );
+      }
+
+      // 3. 抽奖
+      const { list } = luckyDraw;
+      const index = weightedRandomIndex(list);
+      const prize_id = list[index].prize_id;
+
+      // 4. 扣除祈愿券
+      await ctx.service.user.updateUserById(userId, {
+        draw_ticket: user.draw_ticket - luckyDraw.quantity,
+      });
+
+      // 5. 发放奖励
+      await ctx.service.prize.grantReward({
+        id: prize_id,
+        userId,
+      });
+
+      // 6. 记录祈愿历史
+      await this.upsertLuckyDrawHistory({
+        prize_id,
+        user_id: userId,
+      });
+
+      return {
+        prize_id,
+        index,
+      };
+    } catch (error) {
+      logger.tag("[startDraw]").error("error", error);
+      return Promise.reject(
+        new JsError(SERVER_CODE.INTERNAL_SERVER_ERROR, "祈愿失败")
       );
     }
   }

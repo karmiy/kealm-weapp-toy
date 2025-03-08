@@ -21,7 +21,10 @@ export class LuckyDrawApi {
   static async updateLuckyDraw(luckyDraw: LuckyDrawApiUpdateParams): Promise<LuckyDrawEntity> {
     return httpRequest.postFormDataFile<LuckyDrawEntity>({
       url: '/luckyDraw/updateLuckyDraw',
-      data: luckyDraw,
+      data: {
+        ...luckyDraw,
+        list: JSON.stringify(luckyDraw.list),
+      },
       filePath: luckyDraw.cover_image,
     });
   }

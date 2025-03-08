@@ -9,7 +9,6 @@ import {
   FILE_MODULE_NAME,
   FILE_NAME_PREFIX,
 } from "../utils/constants";
-import { weightedRandomIndex } from "../utils/luckyDrawHelper";
 
 const logger = Logger.getLogger("[LuckyDrawController]");
 
@@ -116,7 +115,7 @@ export default class LuckyDrawController extends Controller {
 
       let parsedList: Array<{ prize_id: string; range: number }>;
       try {
-        parsedList = JSON.parse(list);
+        parsedList = Array.isArray(list) ? list : JSON.parse(list);
         if (!Array.isArray(parsedList)) {
           throw new Error("奖品列表必须是数组");
         }
@@ -239,39 +238,13 @@ export default class LuckyDrawController extends Controller {
         return;
       }
 
-      const luckyDrawModel = await ctx.service.luckyDraw.findLuckyDraw({
+      const result = await ctx.service.luckyDraw.startDraw({
         id,
-      });
-
-      if (!luckyDrawModel) {
-        ctx.responseFail({
-          code: SERVER_CODE.BAD_REQUEST,
-          message: "祈愿池不存在",
-        });
-        return;
-      }
-
-      const { list } = luckyDrawModel;
-      const index = weightedRandomIndex(list);
-      const prize_id = list[index].prize_id;
-
-      // 发放奖励
-      await ctx.service.prize.grantReward({
-        id: prize_id,
         userId,
       });
 
-      // 记录祈愿历史
-      await ctx.service.luckyDraw.upsertLuckyDrawHistory({
-        prize_id,
-        user_id: userId,
-      });
-
       ctx.responseSuccess({
-        data: {
-          prize_id,
-          index,
-        },
+        data: result,
       });
     } catch (error) {
       const jsError = ctx.toJsError(error);

@@ -17,6 +17,7 @@ export default class PrizeController extends Controller {
         coupon_id: model.coupon_id,
         points: model.points,
         draw_count: model.draw_count,
+        text: model.text,
         sort_value: model.sort_value,
         create_time: model.create_time.getTime(),
         last_modified_time: model.last_modified_time.getTime(),
@@ -39,9 +40,10 @@ export default class PrizeController extends Controller {
         points?: number;
         coupon_id?: string;
         draw_count?: number;
+        text?: string;
       }>();
 
-      const { id, type, points, coupon_id, draw_count } = params;
+      const { id, type, points, coupon_id, draw_count, text } = params;
 
       logger.tag("[updatePrize]").info(params);
 
@@ -54,9 +56,12 @@ export default class PrizeController extends Controller {
       }
 
       if (
-        ![PRIZE_TYPE.POINTS, PRIZE_TYPE.COUPON, PRIZE_TYPE.LUCKY_DRAW].includes(
-          type
-        )
+        ![
+          PRIZE_TYPE.POINTS,
+          PRIZE_TYPE.COUPON,
+          PRIZE_TYPE.LUCKY_DRAW,
+          PRIZE_TYPE.NONE,
+        ].includes(type)
       ) {
         ctx.responseFail({
           code: SERVER_CODE.BAD_REQUEST,
@@ -103,6 +108,14 @@ export default class PrizeController extends Controller {
         return;
       }
 
+      if (type === PRIZE_TYPE.NONE && !text) {
+        ctx.responseFail({
+          code: SERVER_CODE.BAD_REQUEST,
+          message: "描述不能为空",
+        });
+        return;
+      }
+
       const prevPrizeModel = id
         ? await ctx.service.prize.findPrize({ id })
         : undefined;
@@ -125,6 +138,7 @@ export default class PrizeController extends Controller {
         points: type === PRIZE_TYPE.POINTS ? points : null,
         coupon_id: type === PRIZE_TYPE.COUPON ? coupon_id : null,
         draw_count: type === PRIZE_TYPE.LUCKY_DRAW ? draw_count : null,
+        text: type === PRIZE_TYPE.NONE ? text : null,
         user_id: !id ? userId : undefined,
         sort_value: sortValue,
       });
@@ -176,7 +190,6 @@ export default class PrizeController extends Controller {
 
   public async deletePrize() {
     const { ctx } = this;
-    // const { groupId } = ctx.getUserInfo();
     try {
       const { id } = ctx.getParams<{ id: string }>();
       if (!id) {
@@ -207,6 +220,20 @@ export default class PrizeController extends Controller {
         });
         return;
       }
+
+      // 检查祈愿池列表中是否包含该奖品
+      const luckyDrawList = await ctx.service.luckyDraw.getLuckyDrawList();
+      const occupiedLuckyDraw = luckyDrawList.find((luckyDraw) =>
+        luckyDraw.list.some((item) => item.prize_id === id)
+      );
+      if (occupiedLuckyDraw) {
+        ctx.responseFail({
+          code: SERVER_CODE.BAD_REQUEST,
+          message: `无法删除，祈愿池《${occupiedLuckyDraw.name}》正在占用`,
+        });
+        return;
+      }
+
       await ctx.service.prize.deletePrize(id);
       ctx.responseSuccess({
         message: "删除成功",

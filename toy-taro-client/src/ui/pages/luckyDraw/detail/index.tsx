@@ -21,9 +21,12 @@ export default function () {
   const { luckyDraw, isPreView } = useLuckyDrawItem({
     id: luckyDrawId,
   });
-  const { drawTicket } = useUserInfo();
+  const { isAdmin, drawTicket } = useUserInfo();
 
   const beforeStart = useCallback(() => {
+    if (isAdmin) {
+      return true;
+    }
     if (!luckyDraw) {
       showToast({
         title: '祈愿池获取异常',
@@ -40,7 +43,7 @@ export default function () {
       return false;
     }
     return true;
-  }, [drawTicket, isStartLoading, luckyDraw]);
+  }, [drawTicket, isStartLoading, luckyDraw, isAdmin]);
 
   const showSuccessToast = useCallback(
     (id: string) => {

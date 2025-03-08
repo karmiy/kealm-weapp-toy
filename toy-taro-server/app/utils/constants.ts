@@ -97,6 +97,7 @@ export enum PRIZE_TYPE {
   POINTS = "POINTS",
   COUPON = "COUPON",
   LUCKY_DRAW = "LUCKY_DRAW",
+  NONE = "NONE",
 }
 
 // ----------------------lucky draw--------------------------------

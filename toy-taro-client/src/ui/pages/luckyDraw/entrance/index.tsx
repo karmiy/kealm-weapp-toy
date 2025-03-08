@@ -6,11 +6,21 @@ import { navigateToPage } from '@shared/utils/router';
 import { LUCK_DRAW_PREVIEW_ID, STORE_NAME } from '@core';
 import { Icon, WhiteSpace } from '@ui/components';
 import { Layout } from '@ui/container';
+import { useSyncOnPageShow } from '@ui/hooks';
 import { useLuckyDrawAction, useStoreList, useUserInfo } from '@ui/viewModel';
 import { DrawItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const scrollViewProps = useMemo(() => {
+    return {
+      refresherEnabled: true,
+      refresherTriggered,
+      refresherBackground: COLOR_VARIABLES.FILL_BODY,
+      onRefresherRefresh: handleRefresh,
+    };
+  }, [handleRefresh, refresherTriggered]);
   const { isAdmin, drawTicket } = useUserInfo();
   const allList = useStoreList(STORE_NAME.LUCKY_DRAW);
   const list = useMemo(() => {
@@ -47,7 +57,7 @@ export default function () {
   }, [isAdmin]);
 
   return (
-    <Layout type='plain' className={styles.wrapper}>
+    <Layout type='plain' className={styles.wrapper} scrollViewProps={scrollViewProps}>
       <View className={styles.header}>
         <View className={styles.prizeListEntrance}>{HeaderAction}</View>
         <View className={styles.headerCoverImg} />
