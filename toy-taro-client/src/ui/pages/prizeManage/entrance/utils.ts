@@ -6,13 +6,9 @@ export function getRangeItems<T>(list: T[], range: [number, number]): T[] {
   const clampedEnd = Math.max(0, Math.min(end, list.length - 1));
 
   // 确定区间的起点和终点
-  const isAscending = clampedStart <= clampedEnd;
-  const actualStart = isAscending ? clampedStart : clampedEnd;
-  const actualEnd = isAscending ? clampedEnd : clampedStart;
+  const actualStart = Math.min(clampedStart, clampedEnd);
+  const actualEnd = Math.max(clampedStart, clampedEnd);
 
   // 提取区间内的项
-  const items = list.slice(actualStart, actualEnd + 1);
-
-  // 如果区间是降序，则反转结果
-  return isAscending ? items : items.reverse();
+  return list.slice(actualStart, actualEnd + 1);
 }
