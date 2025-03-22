@@ -102,6 +102,36 @@ export class CheckInModel {
     };
   }
 
+  @computed
+  get cumulativeCheckInDays() {
+    return this.sortedDays.length;
+  }
+
+  @computed
+  get streakCheckInDays() {
+    const sortedDays = this.sortedDays;
+    if (sortedDays.length === 0) {
+      return 0;
+    }
+
+    let maxStreak = 1;
+    let currentStreak = 1;
+
+    for (let i = 1; i < sortedDays.length; i++) {
+      // 如果当前数字与前一个数字连续
+      if (sortedDays[i] === sortedDays[i - 1] + 1) {
+        currentStreak++;
+      } else {
+        // 如果不是连续的，重置当前连续数字的计数
+        currentStreak = 1;
+      }
+
+      // 更新最大连续数
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+    return maxStreak;
+  }
+
   getStreakCheckInStatus(n: number) {
     const sortedDays = this.sortedDays;
 

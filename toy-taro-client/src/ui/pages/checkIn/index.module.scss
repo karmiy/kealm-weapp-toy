@@ -15,6 +15,12 @@
       justify-content: space-between;
       align-items: center;
 
+      .infoWrapper {
+        display: flex;
+        align-items: center;
+        gap: px(8);
+      }
+
       .info {
         display: flex;
         flex-direction: column;
@@ -24,7 +30,7 @@
 
         .day {
           color: $--color-red;
-          font-size: px(21);
+          font-size: px(18);
           margin-top: px(4);
         }
       }

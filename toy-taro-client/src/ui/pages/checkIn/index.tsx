@@ -22,9 +22,15 @@ export default function () {
     <ScrollView scrollY className={styles.wrapper}>
       <View className={styles.checkInRecord}>
         <View className={styles.header}>
-          <View className={styles.info}>
-            <Text>已签到</Text>
-            <Text className={styles.day}>{checkInInfo?.days.length ?? 0}天</Text>
+          <View className={styles.infoWrapper}>
+            <View className={styles.info}>
+              <Text>累计签到</Text>
+              <Text className={styles.day}>{checkInInfo?.cumulativeCheckInDays ?? 0}天</Text>
+            </View>
+            <View className={styles.info}>
+              <Text>连续签到</Text>
+              <Text className={styles.day}>{checkInInfo?.streakCheckInDays ?? 0}天</Text>
+            </View>
           </View>
           <Button
             className={styles.checkInBtn}
