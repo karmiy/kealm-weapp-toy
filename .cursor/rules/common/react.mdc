@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: react standards
+globs: .tsx,.jsx
+alwaysApply: false
+---
+# React-Related Standards
+- 遵循 Airbnb 的 React/JSX 风格指南。
+- 使用函数组件和 Hooks，而不是类组件。
+- 组件名称使用 PascalCase（例如：UserProfile）。
+- Props 接口应命名为：interface ComponentNameProps，而不是简单的 interface Props。
+- 事件处理函数的命名应遵循 handle + 动作 的模式（例如：handleClick）。
+- 自定义 Hooks 必须以 use 开头。
+
+
+

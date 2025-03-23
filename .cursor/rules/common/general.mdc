@@ -1,0 +1,28 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: general coding standards
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Tech Stack
+- **前端**
+    - 项目代码：toy-taro-client
+    - 技术栈：React + Taro + TypeScript + Scss
+- **后端**
+    - 项目代码：toy-taro-server
+    - 技术栈：Egg + Typescript
+
+# General Coding Standards
+- 使用 ESLint 作为代码风格指导工具
+- 变量和函数名使用 camelCase（驼峰命名法），类名使用 PascalCase（帕斯卡命名法）。
+
+# Error Handling
+- 使用 try...catch 进行异常处理。
+- 使用 Promise 或 async/await 处理异步操作。
+- catch 时需要使用 logger.info 打印 error
+

@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: performance standards
+globs: *.tsx,*.ts,*.js,*.jsx
+alwaysApply: false
+---
+# Performance Optimization Guidelines
+- 确保在组件销毁时移除监听器，例如 `eventCenter.on/off`、`storeManager.subscribeById/unsubscribeById`。
+
+# React Component
+1. Rendering Optimization
+   - 验证高成本计算和事件回调中 `useMemo`/`useCallback` 的使用。
+   - 检查是否将内联对象/函数作为 props 传递
+
+2. List and DOM Operations
+   - 确保列表渲染使用唯一且稳定的 `key` 属性。

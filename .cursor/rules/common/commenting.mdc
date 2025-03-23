@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: commenting standards
+globs: 
+alwaysApply: false
+---
+# Commenting Practices
+- 对复杂逻辑添加必要的注释说明
+- 在一些特殊操作时添加必要的注释说明
+- 在一些 Hack code 时添加必要的注释说明

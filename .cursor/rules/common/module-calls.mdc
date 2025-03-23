@@ -1,0 +1,77 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: module call restrictions
+globs: *.tsx,*.ts,*.jsx,*.js,*.scss
+alwaysApply: false
+---
+# Module Call Constraints
+
+## toy-taro-client
+前端分为 3 大模块
+- toy-taro-client/src/core
+    - description: core 数据层，提供 sdk 接口给 ui 层使用，项目的数据加载、请求、管理都在 core 层
+    - module import
+        - standard: `import ... from '@core'`
+        - scope: 允许 toy-taro-client/src/ui 中任何 UI 引入
+- toy-taro-client/src/ui
+    - description: 项目 UI 视图层模块
+    - module import
+        - scope: 只允许在 ui 内根据下述 subfolder rule 引入，不可被 toy-taro-client/src 中 core、shared 引入
+    - subfolder
+        - components
+            - description: 项目核心复用的 UI 组件库，如 Button 组件
+            - module import
+                - standard: `import ... from '@ui/components'`
+                - scope: 允许 toy-taro-client/src/ui 中的 container、pages 引入
+        - container
+            - description: 项目复用的 UI 业务组件，如 PrizeItem 是奖品 item 业务组件
+            - module import
+                - standard: `import ... from '@ui/container'`
+                - scope: 允许 toy-taro-client/src/ui 中的 pages 引入
+        - controller
+            - description: UI 的数据管理控制器，如 productLimitedTimeOfferController 管理限时特惠商品的数据库
+            - module import
+                - standard: `import ... from '@ui/controller'`
+                - scope: 允许 toy-taro-client/src/ui 中的 viewModel 引入
+        - hoc
+            - description: react 高阶业务组件
+            - module import
+                - standard: `import ... from '@ui/hoc'`
+                - scope: 允许 toy-taro-client/src/ui 中的 pages、container、components 引入
+        - hooks
+            - description: 通用的 React UI hooks，如 useDebounceFunc
+            - module import
+                - standard: `import ... from '@ui/hooks'`
+                - score: 允许 toy-taro-client/src/ui 中的 pages、container、components、viewModel 引入
+        - images
+            - description: 小程序 tarbar 配置的图片
+            - score: 只允许放置在小程序 app.config.ts 中配置 tarbar 的图片，不可 import
+        - manager
+            - description: UI 业务的一些管理器，如 previewImageManager 是管理图片预览的工具
+            - module import
+                - standard: `import ... from '@ui/manager'`
+                - score: 允许 toy-taro-client/src/ui 中的 pages、container、viewModel 引入
+        - pages
+            - description: UI 页面，与小程序 app.config.ts 里的 pages 与 subPackages 挂钩
+            - module import
+                - score: 不允许 import
+        - styles
+            - description: Scss 中的 var、function、mixins 等
+            - module import
+                - standard: `@import '@ui/styles/index.scss'`
+                - score: 允许 toy-taro-client/src/ui 中 *.scss 引入
+
+- toy-taro-client/src/shared
+    - description: common 的工具，如 date.ts 里包含日期计算等
+    - module import
+        - standard: `import ... from '@shared/utils/...'`
+        - scope: 允许 toy-taro-client/src 中 core、ui 任何地方引入
+
+## toy-taro-server
+常规 egg 项目，module calls 规范遵循 egg
+
+

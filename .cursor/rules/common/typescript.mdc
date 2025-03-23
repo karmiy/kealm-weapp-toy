@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: typescript standards
+globs: *.tsx,*.ts,*.js,*.jsx
+alwaysApply: false
+---
+## General-Types
+- **Message**: 不要使用 Number、String、Boolean、Symbol 或 Object 类型。应使用 number、string、boolean 或 symbol。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `keyword`
+  - Value: `Number`, `String`, `Boolean`, `Symbol`, `Object`
+
+## Generics
+- **Message**: 避免使用未使用其类型参数的泛型类型。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `generic`
+  - Parameters: []
+
+## Any-Type
+- **Message**: 除非是从 JavaScript 迁移代码，否则不要使用 any 类型。一般来说 Generics 都可以定义出类型，如果确实为不确定类型，请使用 unknown。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `keyword`
+  - Value: `any`
+
+## Callback-Return-Type
+- **Message**: 对于返回值将被忽略的回调函数，请使用 void 类型。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `function`
+  - ReturnType: `any`
+
+## Optional-Parameters-In-Callbacks
+- **Message**: 除非绝对必要，否则不要在回调函数中使用可选参数。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `function`
+  - Parameters: `[{"optional": true}]`
+
+## Function-Overload-Ordering
+- **Message**: 不要将更通用的重载放在更具体的重载之前。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `function`
+  - Overloads: `general-before-specific`
+
+## Use-Optional-Parameters
+- **Message**: 如果多个重载具有相同的返回类型，请使用可选参数代替。
+- **Enabled**: true
+- **Pattern**:
+  - Type: `function`
+  - Overloads: `same-return-type`
