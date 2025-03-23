@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for StoreManager in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# StoreManager
+[storeManager.ts](mdc:toy-taro-client/src/core/storeManager.ts) 用于将 server app 返回的 entity 转换为 model，并对这些数据进行集中统一管理，提供给 UI 层使用。
+
+---
+
+## Key Principles
+1. **配置管理**：
+   - `storeManager` 会读取 [config.ts](mdc:toy-taro-client/src/core/config.ts) 里的配置，理解如何管理 model。
+     - **storeName**：model 在 [constants.ts](mdc:toy-taro-client/src/core/constants.ts) 中对应的 `STORE_NAME`，`storeManager` 中每个 `storeName` 都有一个 store 来管理对应的 model 数据。
+     - **model**：配置的 model。
+     - **type**：model 在 store 中如何存储数据：
+       - `HANDLER_TYPE.MULTIPLE`：以 Array 列表来存储这个 model，列表里每一个 model 实例都有自己的 id。
+       - `HANDLER_TYPE.SINGLE`：model 在 store 中只有一个实例，更新即替换，例如 `user`。
+     - **sortValue**：仅对 `HANDLER_TYPE.MULTIPLE` 类型的 model 有效，代表如何排序，通常使用 `lastModifiedTime`。
+2. **挂载与暴露**：
+   - `storeManager` 挂载在 [sdk.ts](mdc:toy-taro-client/src/core/sdk.ts) 中，通过 `sdk` 暴露 `storeManager` 给 UI 层使用。
+3. **API 接口**：
+   - `storeManager` 暴露给 UI 和 `core/module` 的 API 包括：
+     - **refresh**：刷新指定 `storeName` 的 store 数据，直接替换列表/单例，通常在 `core/module` 的 `sync` API 使用。
+     - **get**：获取指定 `storeName` 的 store 数据。
+     - **getById**：获取指定 id 的 model 数据。
+     - **getIds**：获取指定 `storeName` 中 store 的 id 列表。
+     - **getSortIds**：获取指定 `storeName` 中 store 的 id 列表，列表经过 `sortValue` 配置排序。
+     - **getSortList**：获取指定 `storeName` 经过 `sortValue` 排序后的列表。
+     - **subscribe/unsubscribe**：订阅/取消订阅指定 `storeName` 的数据变化，只要 store 中任何一个数据发生变化都会触发。
+     - **subscribeIdList/unsubscribeIdList**：订阅/取消订阅指定 `storeName` 的 `sortIds` 变化。
+     - **subscribeById/unsubscribeById**：订阅/取消订阅指定 id 的 model 数据内容变化。
+     - **emitUpdate**：更新指定 store 数据，`payload.entities` 代表要替换更新/新增的 entity list，`payload.partials` 代表部分更新已存在的 model，通常在 `core/module` 获取到 entity 数据后更新使用。
+     - **emitDelete**：指定删除某个 store 下的 id list。
+     - **startLoading/stopLoading**：通常配合 `refresh` 管理 store 的更新状态。
+     - **getLoadingStatus**：获取 loading 状态。
+     - **subscribeLoading/unsubscribeLoading**：订阅/取消订阅 store 的 loading 状态。
+4. **数据变化通知**：
+   - `storeManager` 的 API 通常通过 `subscribeXXX` 的订阅接口通知数据变化，而不是响应式的。
+

@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Entity in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Entity
+`toy-taro-client/src/core/entity` 用于定义 server app 返回的数据类型。
+
+## Key Principles
+1. **文件组织**：
+   - 每个业务在 `entity` 文件夹下有自己的文件，例如 `coupon.ts`。
+2. **Entity 的作用**：
+   - Entity 代表与 server app 后端交互时接口返回的数据类型。
+   - 生命周期在 core 层数据被使用，通常不被 ui 层直接使用。
+3. **使用场景**：
+   - **Mock 数据**：在 `toy-taro-client/src/core/mock/api` 中使用，作为 mock 接口返回的类型。
+   - **API 返回值**：在 `toy-taro-client/src/core/api` 中作为 API 的返回值类型。
+4. *与 Model 的关系**：
+   - 每一个 `toy-taro-client/src/core/entity/*` 都对应着一个 `toy-taro-client/src/core/model/*`。
+   - Model 的定义遵循 [model.mdc](mdc:.cursor/rules/client/model.mdc) 规范。
+5. *属性字段定义**：
+   - `entity` 的属性字段应该遵循下划线命名，如 `start_time`
+   - 枚举的字段应该在 [constants.ts](mdc:toy-taro-client/src/core/constants.ts) 中定义枚举，如 `COUPON_STATUS`
+   - `entity` 通常都需要 `create_time`、`last_modified_time` 字段，且类型为 `number` 时间戳
+

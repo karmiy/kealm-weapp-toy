@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for ViewModel in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# ViewModel
+
+在每一个业务中，`ViewModel` 负责完成数据之间的交互。
+`ViewModel` 负责管理 `UI` 层的数据，提供 `hook` 接口给 `ui/pages`、`ui/container` 等使用
+
+---
+
+## Key Principles
+1. **统一管理**：
+   - 所有的 `ViewModel` 统一放在 `ui/viewModel` 目录下管理。
+2. **基于 React Hook**：
+   - `ViewModel` 通常是一个 React Hook，命名格式为 `useXXX`。
+3. **功能职责划分**：
+   - 根据功能职责划分 `ViewModel`：
+      - 每个功能（如 coupon）都在 `ui/viewModel` 下有独立的文件夹管理
+      - 获取列表数据的 Hook 命名为 `useXXXList`。
+      - 层接口的 Hook 命名为 `useXXXAction`。
+4. **数据组装**：
+   - `ViewModel` 可以直接从 `sdk.storeManager` 组装业务 model 数组。
+   - 也可以在 `ui/controller` 中进行数据加工，`ViewModel` 再从 `controller` 中获取数据。
+5. **Action 职责**：
+   - 对于负责 `action` 的 `ViewModel`，必须使用 [useAction.ts](mdc:toy-taro-client/src/ui/viewModel/base/useAction.ts) 来统一管理与 core 层 SDK 的交互。
+   - 规范 `toast` 提示、错误处理等行为。

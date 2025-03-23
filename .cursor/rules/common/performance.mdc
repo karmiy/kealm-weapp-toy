@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 ---
-description: performance standards
+description: Performance standards
 globs: *.tsx,*.ts,*.js,*.jsx
 alwaysApply: false
 ---

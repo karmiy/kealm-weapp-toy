@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 ---
-description: 代码生成
+description: Coding Guidelines
 globs: 
 alwaysApply: false
 ---
@@ -16,7 +16,6 @@ alwaysApply: false
 
 ## Coding Standards
 ### General Required
-- 关于模块之间的 import，遵循 [module-calls.mdc](mdc:.cursor/rules/common/module-calls.mdc)
 - follow 通用的 coding 标准 [general.mdc](mdc:.cursor/rules/common/general.mdc)
 - follow react 的 coding 标准 [react.mdc](mdc:.cursor/rules/common/react.mdc)
 - follow typescript 的 coding 标准 [typescript.mdc](mdc:.cursor/rules/common/typescript.mdc)
@@ -24,4 +23,20 @@ alwaysApply: false
 - follow [commenting.mdc](mdc:.cursor/rules/common/commenting.mdc) 写清楚有用的注释
 - 评估代码结构的清晰度：确保代码逻辑清晰、易于理解，避免过度复杂的嵌套或冗余代码
 - 遵循模块化和分层设计：将代码拆分为独立的模块和层次，确保功能分离、职责单一，便于维护和扩
-- 性能至关重要，遵循性能指南：参考 [performance.mdc](mdc:.cursor/rules/common/performance.mdc) 中的性能优化建议，确保代码高效运行，避免不必要的资源消耗。
+- 性能至关重要，遵循性能指南：参考 [performance.mdc](mdc:.cursor/rules/common/performance.mdc) 中的性能优化建议，确保代码高效运行，避免不必要的资源消耗
+
+### Client Required
+- client app 中模块使用、职责划分标准遵循 [module-calls.mdc](mdc:.cursor/rules/client/module-calls.mdc)
+- follow shared 模块的标准 [shared.mdc](mdc:.cursor/rules/client/shared.mdc)
+- logger 日志打印遵循 [logger.mdc](mdc:.cursor/rules/client/logger.mdc)
+- client ui 视图层
+    - styles 样式标准遵循 [styles.mdc](mdc:.cursor/rules/client/styles.mdc)
+    - 新增 page 标准遵循 [pages.mdc](mdc:.cursor/rules/client/pages.mdc)
+    - 下拉刷新的实现标准遵循 [pullDownRefresh.mdc](mdc:.cursor/rules/client/pullDownRefresh.mdc)
+    - viewModel 的管理与使用标准遵循 [viewModel.mdc](mdc:.cursor/rules/client/viewModel.mdc) 
+- client core 数据层
+    - 与 server app 交互的 api 标准遵循 [api.mdc](mdc:.cursor/rules/client/api.mdc)
+    - mock 数据标准遵循 [mock.mdc](mdc:.cursor/rules/client/mock.mdc)
+    - 数据流的实现标准遵循 [entity.mdc](mdc:.cursor/rules/client/entity.mdc), [model.mdc](mdc:.cursor/rules/client/model.mdc), [storeManager.mdc](mdc:.cursor/rules/client/storeManager.mdc)
+    - module 接口的实现标准遵循 [module.mdc](mdc:.cursor/rules/client/module.mdc)
+

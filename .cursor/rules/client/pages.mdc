@@ -1,0 +1,118 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Pages in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Page
+
+## How to Add a New Page
+当需要给小程序新增页面时，请遵循以下步骤：
+
+1. **配置 `@app.config.ts`**：
+   - 在 [app.config.ts](mdc:toy-taro-client/src/app.config.ts) 中新增 `subPackages` 配置。
+
+2. **新增页面 ID**：
+   - 在 [constants.ts](mdc:toy-taro-client/src/shared/utils/constants.ts) 中的 `PAGE_ID` 新增页面 ID。
+
+3. **页面文件夹结构**：
+   - 如果页面可以根据职能划分放在同一个 `ui/pages/[pageName]` 文件夹下，可以进一步划分为 `pages/[functionName]/[pageName]`。
+     - 示例：`pages/productManage`（商品管理）下可以有 `entrance`（入口页面）和 `categoryManage`（分类管理页面），路径为 `pages/productManage/entrance` 和 `pages/productManage/categoryManage`。
+
+4. **路由映射**：
+   - 如果新增的页面属于 `pages/[functionName]/[pageName]` 形式（如 `ui/pages/productManage/entrance`），需要在 [router.ts](mdc:toy-taro-client/src/shared/utils/router.ts) 中的 `pagePathMap` 新增映射关系。
+
+5. **页面文件结构**：
+   - 新建的页面内包含以下文件：
+     - **Required**：
+       - `index.tsx`：页面视图。
+       - `index.modules.scss`：页面样式。
+       - `index.config.ts`：小程序页面配置。
+     - **Optional**：
+       - `components`：页面拆分的组件。
+       - `constants`：仅用于页面的常量或枚举。
+
+### [Required] `index.tsx`
+编写页面视图。
+
+```tsx
+// 不需要 pageName
+export default function () {
+    // 页面逻辑
+    return (
+        <div className={styles.wrapper}>
+            {/* 页面内容 */}
+        </div>
+    );
+}
+```
+
+### [Required]index.modules.scss
+编写页面样式。
+
+- 页面的根样式名称为 wrapper，内部子元素的样式名称可以根据功能命名，如 container、content 等。
+- 样式编写遵循 [styles.mdc](mdc:.cursor/rules/client/styles.mdc) 规范。
+
+```scss
+@import '@ui/styles/index.scss';
+
+.wrapper {
+    // 页面根样式
+    .container {
+        // 子元素样式
+    }
+}
+```
+
+### [Required]index.config.ts
+小程序页面配置
+- `navigationBarTitleText`：页面顶部导航栏名称。
+- `disableScroll`： 在 client app 中通常设置为 true。
+
+```ts
+export default definePageConfig({
+    navigationBarTitleText: '页面标题',
+    disableScroll: true,
+});
+```
+
+### [Optional]components
+- 当需要将页面拆分为多个组件时，请将组件放在页面下的 `components` 文件夹中。
+- 组件名称根据其功能命名，通常为 `pageFunction`。例如，在 `task` 页面中的 item 组件命名为 `taskItem`。
+- 组件中的 `props` 应命名为 `componentNameProps`。例如：`export interface PrizeItemProps`。
+- components 文件夹下需要有 index.ts 文件，统一导出每个组件：
+```ts
+export * from './taskItem';
+export * from './taskList';
+```
+- 如果拆分的组件可能被其他页面复用，考虑将其放在 `ui/container` 中。
+
+## Example Folder Structure
+
+```
+ui/pages/
+├── productManage/
+│   ├── entrance/
+│   │   ├── index.tsx
+│   │   ├── index.modules.scss
+│   │   ├── index.config.ts
+│   │   ├── components/
+│   │   │   ├── taskItem.tsx
+│   │   │   ├── taskList.tsx
+│   │   │   └── index.ts
+│   │   └── constants.ts
+│   └── categoryManage/
+│       ├── index.tsx
+│       ├── index.modules.scss
+│       ├── index.config.ts
+│       └── components/
+│           ├── categoryItem.tsx
+│           └── index.ts
+```
+
+

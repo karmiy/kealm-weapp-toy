@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Implementing Pull-to-Refresh in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Pull-to-Refresh
+
+## Page Coding
+
+实现下拉刷新功能时，需要先判断页面属于哪种类型：
+
+### 1. [app.config.ts](mdc:toy-taro-client/src/app.config.ts) 主入口 tabBar 页面
+- **页面配置 `index.config.ts`**：
+  - 关闭 `disableScroll`。
+  - 开启 `enablePullDownRefresh`，并定义拖拽后小程序暴露的底色。
+
+```ts
+// index.config.ts
+export default definePageConfig({
+  navigationBarTitleText: '我的',
+  // disableScroll: true, // 关闭 disableScroll
+  enablePullDownRefresh: true, // 开启下拉刷新
+  backgroundTextStyle: 'dark',
+  backgroundColor: '#FF69B4', // 下拉时头部看到的颜色
+  backgroundColorBottom: '#F4F4F4', // iOS 下拉超出内容时的背景色
+  backgroundColorContent: '#F4F4F4', // 内容区域背景色（包括 tabBar）
+});
+```
+
+- 页面逻辑 `index.tsx`：
+  - 使用 `useSyncOnPageShow`，并配置 `enablePagePullDownRefresh` 为 `true`。
+```ts
+// index.tsx
+export default function() {
+  useSyncOnPageShow({ enablePagePullDownRefresh: true }); // useSyncOnPageShow 需要配置 enablePagePullDownRefresh
+}
+```
+
+### 2. 非 tabBar 主页面**
+- 配置 `index.config.ts`：
+  - 开启 `disableScroll`。
+```ts
+export default definePageConfig({
+  navigationBarTitleText: '分类管理',
+  disableScroll: true,
+});
+```
+
+- 页面逻辑 `index.tsx`：
+  - 使用 `useSyncOnPageShow`，无需配置 `enablePagePullDownRefresh`。
+  - 使用 `handleRefresh` 和 `refresherTriggered` 配合 `ScrollView` 实现下拉刷新。
+
+```tsx
+// index.tsx
+export default function() {
+  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+
+  return (
+    <ScrollView
+      scrollY
+      className={styles.scrollView}
+      refresherEnabled
+      refresherTriggered={refresherTriggered}
+      onRefresherRefresh={handleRefresh}
+      refresherBackground={COLOR_VARIABLES.FILL_BODY}
+    >
+      {/* 页面内容 */}
+    </ScrollView/>
+  )
+}
+```
+
+## useSyncOnPageShow Coding
+[useSyncOnPageShow.ts](mdc:toy-taro-client/src/ui/hooks/useSyncOnPageShow.ts) 实现了在下拉刷新与页面进入时的数据同步。
+
+### Basic Usage
+例如进入 PrizeManage 页面 需要请求 core 层 sdk 的 syncPrizeList 和 syncCouponList
+
+1、检查 `syncContext`：
+  - 确保 `syncContext` 中包含所需的 SDK API。如果没有，请补充。
+2、配置 `handleSync`：
+  - 在 [constants.ts](mdc:toy-taro-client/src/shared/utils/constants.ts) 中找到页面的 `PAGE_ID`。
+  - 在 `handleSync` 的 `switch case` 中配置需要请求的接口。
+
+```ts
+case PAGE_ID.PRIZE_MANAGE:
+  await Promise.all([api.syncPrizeList(), api.syncCouponList()]); // 配置需要请求的接口
+  break;
+```
+
+

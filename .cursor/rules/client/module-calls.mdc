@@ -1,0 +1,84 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Module Call Restrictions in Client App
+globs: *.tsx,*.ts,*.jsx,*.js,*.scss
+alwaysApply: false
+---
+# Module Call Constraints
+
+客户端应用分为 3 大模块：
+
+## 1. `toy-taro-client/src/core`
+- **Description**: 核心数据层，提供 SDK 接口给 UI 层使用。项目的数据加载、请求、管理都在 core 层。
+- **Module Import Rules**:
+  - **Standard**: `import ... from '@core'`
+  - **Scope**: 
+    - 允许 `toy-taro-client/src/ui` 中的任何 UI 模块引入。
+    - 允许被引入 `sdk、constants 常量枚举、types` 等，不允许直接访问 `core/module` 模块，数据核心交互都通过 `sdk` 获取与操作
+
+## 2. `toy-taro-client/src/ui`
+- **Description**: 项目 UI 视图层模块。
+- **Module Import Rules**:
+  - **Scope**: 只允许在 `ui` 内部根据子文件夹规则引入，不可被 `toy-taro-client/src` 中的 `core` 和 `shared` 引入。
+- **Subfolder Rules**:
+
+  ### `components`
+  - **Description**: 项目核心复用的 UI 组件库，例如 `Button` 组件。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/components'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `container` 和 `pages` 引入。
+
+  ### `container`
+  - **Description**: 项目复用的 UI 业务组件，例如 `PrizeItem` 是奖品 item 业务组件。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/container'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `pages` 引入。
+
+  ### `controller`
+  - **Description**: UI 的数据管理控制器，例如 `productLimitedTimeOfferController` 管理限时特惠商品的数据。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/controller'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `viewModel` 引入。
+
+  ### `hoc`
+  - **Description**: React 高阶业务组件。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/hoc'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `pages`、`container`、`components` 引入。
+
+  ### `hooks`
+  - **Description**: 通用的 React UI hooks，例如 `useDebounceFunc`。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/hooks'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `pages`、`container`、`components`、`viewModel` 引入。
+
+  ### `images`
+  - **Description**: 小程序 tabbar 配置的图片。
+  - **Scope**: 只允许放置在小程序 [app.config.ts](mdc:toy-taro-client/src/app.config.ts) 中配置 tabbar 的图。
+
+  ### `manager`
+  - **Description**: UI 业务的一些管理器，例如 `previewImageManager` 是管理图片预览的工具。
+  - **Module Import Rules**:
+    - **Standard**: `import ... from '@ui/manager'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `pages`、`container`、`viewModel` 引入。
+
+  ### `pages`
+  - **Description**: UI 页面，与小程序 [app.config.ts](mdc:toy-taro-client/src/app.config.ts) 里的 `pages` 和 `subPack **Module Import Rules**:
+    - **Scope**: 不允许被 `import`。
+
+  ### `styles`
+  - **Description**: Scss 中的变量（`var`）、函数（`function`）、混合（`mixins`）等。
+  - **Module Import Rules**:
+    - **Standard**: `@import '@ui/styles/index.scss'`
+    - **Scope**: 允许 `toy-taro-client/src/ui` 中的 `*.scss` 文件引入。
+
+## 3. `toy-taro-client/src/shared`
+- **Description**: 通用的工具，例如 `date.ts` 包含日期计算等。
+- **Module Import Rules**:
+  - **Standard**: `import ... from '@shared/utils/...'`
+  - **Scope**: 允许 `toy-taro-client/src` 中的 `core` 和 `ui` 任何地方引入。
+

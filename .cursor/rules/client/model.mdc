@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Model in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Model
+`toy-taro-client/src/core/model` 用于将 server app 接口返回的 entity（遵循 [entity.mdc](mdc:.cursor/rules/client/entity.mdc)）转换为 UI 需要的 model 结构。
+
+## Key Principles
+1. **文件组织**：
+   - 每个业务在 `model` 文件夹下有自己的文件，例如 `coupon.ts`。
+2. **Observer 模式**：
+   - Model 需要在 `constructor` 中执行 `makeObserver(this)`，以确保其字段的响应式特性。
+3. **Entity 与 Model 的映射**：
+   - 每一个 `toy-taro-client/src/core/entity/*` 都对应着一个 `toy-taro-client/src/core/model/*`。
+4. **命名规范**：
+   - Model 的变量名一般采用驼峰命名法，例如 `createTime`。
+5. **字段映射规则**：
+   - **下划线转驼峰**：通常需要**严格遵守下划线转驼峰规则**。例如，entity 中的 `create_time` 在 model 中映射为 `createTime`。
+   - **嵌套字段**：如果 entity 的字段存在嵌套，则**不需要遵守下划线转驼峰规则**。例如，entity 中 `list: Array<{ is_claimed: boolean }>` 在 model 中保留原结构。
+6. **响应式字段**：
+   - 如果 model 中的字段会发生变化并需要响应，通常需要加上 `@observable` 装饰器。
+7. **计算属性**：
+   - 可以使用 `@computed` 强化 model 的能力。当一个通用的数据需要经过一系列计算时，可以在 model 中使用 `@computed` 为该计算结果添加一个 `getter` 属性。
+8. **封装 Action**：
+   - Model 中可以添加函数，封装该 model 的通用 action。
+9. **集成 storeManager**：
+   - model 需要被配置在 [config.ts](mdc:toy-taro-client/src/core/config.ts) 中，storeManager 会根据配置，将 entity 转换为 model 统一管理

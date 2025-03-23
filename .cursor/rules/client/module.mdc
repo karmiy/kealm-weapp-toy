@@ -1,0 +1,39 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Module in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Module
+`toy-taro-client/src/core/module` 用于定义每个 module 暴露给 UI 层的 API 接口。
+
+## Key Principles
+1. **文件组织**：
+   - 每个 module 在 `toy-taro-client/src/core/module` 中都有一个对应的文件，命名格式为 `[moduleModule]`，例如 `couponModule`。
+2. **模块名称定义**：
+   - 每个 module 需要在 [constants.ts](mdc:toy-taro-client/src/core/constants.ts) 中定义对应的 `MODULE_NAME`，并提供 `moduleName` 接口。
+3. **类型加载**：
+   - module 需要被 [types.ts](mdc:toy-taro-client/src/core/types.ts) 中的 `type Modules` 使用，以确保 `sdk.modules` 的全部类型被正确加载。
+4. **模块配置**：
+   - module 需要被 [sdk.ts](mdc:toy-taro-client/src/core/sdk.ts) 中的 `modulesConfig` 使用，以确保 module 被正确地加载（`load`）和卸载（`unload`）。
+5. **模块优先级**：
+   - [sdk.ts](mdc:toy-taro-client/src/core/sdk.ts) 中的 `modulesConfig` 定义了 module 的优先级：
+     - **MODULE_WEIGHT.HIGH**：需要被优先加载的重要数据，通常是被其他模块依赖的通用数据，例如 `userModule`。
+     - **MODULE_WEIGHT.NORMAL**：没有被其他模块依赖，但 app 加载后需要用到相关数据的 module。
+     - **MODULE_WEIGHT.LOW**：没有被其他模块依赖，且 app 加载后也不需要立即用到数据的 module。
+6. **生命周期方法**：
+   - module 需要包含 `onLoad` 和 `onUnload` 接口，当 module 初始化或卸载时会自动执行：
+     - `onLoad`：通常包含功能的初始化数据获取或数据监听，例如功能列表的请求、`eventCenter.on`。
+     - `onUnload`：通常用于数据的卸载、监听移除，例如 `eventCenter.off`，需要确保性能，防止内存泄漏。
+7. **同步类型 API**：
+   - 同步类型的 API（如 `syncCouponList`）需要通过 `storeManager` 的 `startLoading` 和 `stopLoading` 事件来同步数据的加载状态。
+8. **Action 类型 API**：
+   - Action 类型的接口需要使用 `try-catch` 捕获异常，并通过 `this._logger` 打印日志。
+
+
+## Example Structure

@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Mock in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Mock
+`toy-taro-client/src/core/mock` 用于在 server app 尚未实现接口时，client app 对接口请求进行 mock。
+
+## Key Principles
+1. **API
+   - 通常情况下，在开发新功能阶段，应将 [mock.ts](mdc:toy-taro-client/src/core/mock/mock.ts) 中的 `DEFAULT_ENABLE_MOCK` 设置为 `true`，使所有接口都走 mock。
+   - 如果只希望某个特定接口走 mock，则在 `toy-taro-client/src/core/api` 中的接口上开启 `@mock({ name: true })`。
+2. **新增 Mock API**：
+   - 新增的 mock API 需要在 [constants.ts](mdc:toy-taro-client/src/core/mock/constants.ts) 中新增 `MOCK_API_NAME`。
+   - 如果是新模块，应在 `MOCK_API_NAME` 中添加新模块的注释。
+3. **注册 Mock API**：
+   - 在 [mock.ts](mdc:toy-taro-client/src/core/mock/mock.ts) 中 import 新增的 mock API，并将其加入 `mockApis` 中。
+4. **Mock 函数实现**：
+   - 如果新 API 属于已有模块，则在 `toy-taro-client/src/core/mock/api` 下找到对应模块文件，实现 mock 函数。
+   - 如果新 API 属于新模块，则在 `toy-taro-client/src/core/mock/api` 下新建模块文件。
+5. **Mock 数据生成**：
+   - 使用 `@faker-js/faker` 生成 mock 数据。
+   - 导出的 mock API 应遵循命名规范，例如 `mockModuleApi`（如 `mockLuckyDrawApi`）。
+6. **模拟请求延迟**：
+   - 使用 `await sleep(1000)` 模拟接口请求时间。
+7. **模拟错误**：
+   - 使用 `Math.random() <= 0.4` 模拟接口错误，并返回 `JsError`，错误码使用 `SERVER_ERROR_CODE`。
+     - 示例：`return Promise.reject(new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '更新失败，请联系管理员'))`。
+8. **用户数据**：
+   - 当前登录用户的数据从 `UserStorageManager` 获取。
+9. **数据缓存**：
+   - 对于期望多次请求返回同一份数据的场景（如抽奖池列表），使用 `createMockApiCache`。
+   - 如果需要更新数据，使用 `createMockApiCache` 返回的 `update` 接口。
+

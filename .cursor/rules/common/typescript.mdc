@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 ---
-description: typescript standards
+description: Typescript standards
 globs: *.tsx,*.ts,*.js,*.jsx
 alwaysApply: false
 ---

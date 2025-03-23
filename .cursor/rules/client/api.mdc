@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for API in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# API
+`toy-taro-client/src/core/api` 用于管理后端接口实现。
+
+## Key Principles
+1. **文件组织**：
+   - 每个业务在 `api` 文件夹下有自己的文件，例如 `coupon.ts`。
+2. **Class + Static 实现**：
+   - API 以 `class` + `static` 的方式实现。
+   - Class 命名规范为 `[ModuleApi]`，例Api`。
+3. **API 命名规范**：
+   - 每个 API 的命名应清晰反映其功能，例如 `updateXXX`、`deleteXXX`。
+4. **Mock 装饰器**：
+   - 每个 API 都需要挂载 `@mock` 装饰器，使用规范遵循 [mock.mdc](mdc:.cursor/rules/client/mock.mdc)。
+5. **请求 URL**：
+   - 每个 API 的请求 URL，`base` 路径应为 `moduleName`，例如 `/coupon/getUserCouponList`。
+6. **返回值泛型**：
+   - 使用 `httpRequest.get/post` 时，应加上准确的返回值泛型，例如 `return httpRequest.get<UserCouponEntity[]>(...)`。
+7. **文件上传**
+   - 使用 `httpRequest.postFormDataFile` 实现文件上传
+   - `postFormDataFile` 是 `formData` 格式，参数会被转为 `string`，所以当参数为 `Array` 等数据时应该使用 `JSON.stringify` 转换格式

@@ -1,0 +1,36 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Logger in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Logger
+[logger.ts](mdc:toy-taro-client/src/shared/utils/logger.ts) 是 client app 中用于打印日志的工具类，可以被 client app 中的任意文件引入并使用。
+
+## How to Use
+```typescript
+import { Logger } from '@shared/utils/logger';
+
+// getLogger 的 tagName 可以是 className、hooksName 等，根据使用者名称决定
+const logger = Logger.getLogger('[tagName]');
+
+class A {
+    add() {
+        try {
+            logger.info('xxx'); // 打印信息日志
+        } catch (error) {
+            logger.error('xxx'); // 打印错误日志
+        }
+    }
+
+    delete() {
+        // 如果需要，可以添加特殊的 tag name
+        logger.tag('[delete]').info('xxx'); // 打印带特殊标签的信息日志
+    }
+}
+```

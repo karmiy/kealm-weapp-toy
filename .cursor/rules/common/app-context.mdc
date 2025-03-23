@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 ---
-description: 微信小程序项目 - 小孩玩具兑换与任务管理
+description: App context
 globs: *.tsx,*.ts,*.js,*.jsx
 alwaysApply: false
 ---
@@ -12,6 +12,7 @@ alwaysApply: false
 # Project introduction
 - 这是一个基于微信小程序的项目。
 - 项目主要用于管理小孩玩具兑换和任务发布。
+- app 分为前端 toy-taro-client(简称 client app) 与后端 toy-taro-server(简称 server app)
 
 ## Core functions
 1. **任务管理**：

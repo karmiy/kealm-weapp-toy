@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Styles in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Styles
+
+## Global Style Tools
+`client app` 中的 `ui/styles` 定义了一些全局样式工具：
+
+- [var.scss](mdc:toy-taro-client/src/ui/styles/var.scss) 定义了可以在 `*.scss` 中使用的颜色等 SCSS 变量。
+- [function.scss](mdc:toy-taro-client/src/ui/styles/function.scss) 定义了可以在 `*.scss` 中使用的函数，例如 `px`。
+- [mixins.scss](mdc:toy-taro-client/src/ui/styles/mixins.scss) 定义了可以在 `*.scss` 中使用的 mixin，例如 `single-line-ellipsis`。
+- **避免重复代码**：公共样式能力应提取到全局样式工具中。
+
+
+## Style File
+- **文件名**：`client app` 中的样式文件应统一命名为 `index.module.scss`。
+- **编码规范**：样式编写遵循 SCSS 规范。
+- **使用全局样式工具**：每个样式文件都应通过 `@import '@ui/styles/index.scss';` 引入，以确保可以使用全局样式工具。
+- **className 命名规则**：
+  - `ui/pages` 中的页面样式，根元素的 className 应命名为 `.wrapper`。
+  - `ui/container` 和 `ui/components` 中的组件样式，根元素的 className 应命名为 `.componentNameWrapper`，例如 `formItemWrapper`。
+- **颜色使用**：不能直接使用自定义颜色（如 `#121212`、`rgba(255, 255, 255, 0.5)`），所有颜色都应使用 [var.scss](mdc:toy-taro-client/src/ui/styles/var.scss) 中的变量，例如 `$--fill-body`。
+- **字体大小**：不能直接使用 `16px`，所有字体大小都应使用 [function.scss](mdc:toy-taro-client/src/ui/styles/function.scss) 中的 `px` 函数，例如 `px(16)`。
+
+
+## Basic Usage
+```scss
+@import '@ui/styles/index.scss';
+
+.wrapper {
+  height: 100%;
+  background-color: $--fill-body; // 使用全局样式工具中的变量
+
+  @include single-line-ellipsis; // 使用全局样式工具中的 mixin
+
+  .content {
+    font-size: px(16); // 使用全局样式工具中的函数
+  }
+}
+

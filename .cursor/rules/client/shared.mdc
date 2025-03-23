@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Standard for Shared Utils in Client App
+globs: *.js, *.tsx, *.ts, *.jsx
+alwaysApply: false
+---
+
+# Coding
+
+## General Coding
+
+- 如果需要编写的函数（function）、常量（constants）等是全局通用的，请将其放在 `shared/utils` 模块中。
+- 根据功能类型划分 `shared/utils` 中的文件。例如，与日期相关的函数放在 `date.ts` 中。对于不在现有文件中的新类型，可以新建文件。
+- 常量和 TypeScript 的 `enum` 应放在 `utils/constants.ts` 中。
+- `utils/icon.ts` 中的 `useGlobalIconFont` 函数是用于编译 iconfont 的固定函数，不可修改。

@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 ---
-description: commenting standards
+description: Commenting standards
 globs: 
 alwaysApply: false
 ---
