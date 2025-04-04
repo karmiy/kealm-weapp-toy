@@ -46,7 +46,7 @@ export function useTaskFlowGroup(props: Props) {
       return flowId;
     }
 
-    if (taskType === TASK_TYPE.TIMED || taskType === TASK_TYPE.INSTANT) {
+    if (taskType === TASK_TYPE.PHASE || taskType === TASK_TYPE.INSTANT) {
       return taskFlowIds[0];
     }
   }, [taskFlowIds, taskType]);

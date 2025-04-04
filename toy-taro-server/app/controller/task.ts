@@ -235,7 +235,7 @@ export default class TaskController extends Controller {
         ![
           TASK_TYPE.DAILY,
           TASK_TYPE.WEEKLY,
-          TASK_TYPE.TIMED,
+          TASK_TYPE.PHASE,
           TASK_TYPE.INSTANT,
         ].includes(type)
       ) {

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { PAGE_ID } from '@shared/utils/constants';
 import { showToast } from '@shared/utils/operateFeedback';
 import { navigateToPage } from '@shared/utils/router';
-import { STORE_NAME } from '@core';
+import { STORE_NAME, TASK_TYPE } from '@core';
 import { Button } from '@ui/components';
 import { TaskCard } from '@ui/container';
 import {
@@ -52,7 +52,8 @@ const TaskItem = (props: TaskItemProps) => {
 
   const difficulty = task.difficulty;
   const isPendingApprove = taskFlow?.isPendingApproval ?? false;
-  const isFinished = taskFlow?.isFinished ?? false;
+  const isPhaseTask = task.type === TASK_TYPE.PHASE;
+  const isFinished = !isPhaseTask && (taskFlow?.isFinished ?? false);
 
   return (
     <TaskCard

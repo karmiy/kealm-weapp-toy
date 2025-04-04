@@ -38,7 +38,7 @@ export default (app: Application) => {
       type: ENUM(
         TASK_TYPE.DAILY,
         TASK_TYPE.WEEKLY,
-        TASK_TYPE.TIMED,
+        TASK_TYPE.PHASE,
         TASK_TYPE.INSTANT
       ),
       defaultValue: TASK_TYPE.DAILY,

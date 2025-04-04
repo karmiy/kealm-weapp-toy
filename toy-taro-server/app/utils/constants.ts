@@ -64,7 +64,7 @@ export enum COUPON_VALIDITY_TIME_TYPE {
 export enum TASK_TYPE {
   DAILY = "DAILY",
   WEEKLY = "WEEKLY",
-  TIMED = "TIMED",
+  PHASE = "PHASE",
   INSTANT = "INSTANT",
 }
 

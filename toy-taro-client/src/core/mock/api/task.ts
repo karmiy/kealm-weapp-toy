@@ -80,7 +80,7 @@ const mockGetTaskListApiCache = createMockApiCache(async (): Promise<TaskEntity[
         type: faker.helpers.arrayElement([
           TASK_TYPE.DAILY,
           TASK_TYPE.WEEKLY,
-          TASK_TYPE.TIMED,
+          TASK_TYPE.PHASE,
           TASK_TYPE.INSTANT,
         ]),
         category_id: faker.helpers.arrayElement(categoryIds),
