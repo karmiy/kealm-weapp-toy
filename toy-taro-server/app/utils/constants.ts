@@ -65,7 +65,7 @@ export enum TASK_TYPE {
   DAILY = "DAILY",
   WEEKLY = "WEEKLY",
   TIMED = "TIMED",
-  CHALLENGE = "CHALLENGE",
+  INSTANT = "INSTANT",
 }
 
 export enum TASK_STATUS {

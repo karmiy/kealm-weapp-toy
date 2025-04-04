@@ -93,7 +93,7 @@ export enum TASK_TYPE {
     DAILY = 'DAILY',
     WEEKLY = 'WEEKLY',
     TIMED = 'TIMED',
-    CHALLENGE = 'CHALLENGE',
+    INSTANT = 'INSTANT',
 }
 
 export enum TASK_STATUS {
@@ -106,7 +106,7 @@ export const TASK_TYPE_LABEL = {
     [TASK_TYPE.DAILY]: '每日任务',
     [TASK_TYPE.WEEKLY]: '每周任务',
     [TASK_TYPE.TIMED]: '限时任务',
-    [TASK_TYPE.CHALLENGE]: '挑战任务',
+    [TASK_TYPE.INSTANT]: '即时任务',
 };
 
 
@@ -124,8 +124,8 @@ export const TASK_TYPE_LIST = [
       label: TASK_TYPE_LABEL[TASK_TYPE.TIMED],
     },
     {
-      type: TASK_TYPE.CHALLENGE,
-      label: TASK_TYPE_LABEL[TASK_TYPE.CHALLENGE],
+      type: TASK_TYPE.INSTANT,
+      label: TASK_TYPE_LABEL[TASK_TYPE.INSTANT],
     },
 ];
 

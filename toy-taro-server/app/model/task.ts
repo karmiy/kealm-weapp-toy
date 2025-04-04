@@ -39,7 +39,7 @@ export default (app: Application) => {
         TASK_TYPE.DAILY,
         TASK_TYPE.WEEKLY,
         TASK_TYPE.TIMED,
-        TASK_TYPE.CHALLENGE
+        TASK_TYPE.INSTANT
       ),
       defaultValue: TASK_TYPE.DAILY,
     },
