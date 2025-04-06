@@ -30,6 +30,13 @@ export class CouponApi {
     });
   }
 
+  @mock({ name: MOCK_API_NAME.GET_GROUP_USER_COUPON_LIST })
+  static async getGroupUserCouponList(): Promise<UserCouponEntity[]> {
+    return httpRequest.get<UserCouponEntity[]>({
+      url: '/coupon/getGroupUserCouponList',
+    });
+  }
+
   @mock({ name: MOCK_API_NAME.DELETE_COUPON })
   static async deleteCoupon(id: string): Promise<void> {
     return httpRequest.post<void>({

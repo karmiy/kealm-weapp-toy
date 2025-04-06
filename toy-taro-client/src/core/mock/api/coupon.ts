@@ -7,11 +7,13 @@ import {
   COUPON_STATUS,
   COUPON_TYPE,
   COUPON_VALIDITY_TIME_TYPE,
+  ROLE,
   SERVER_ERROR_CODE,
 } from '../../constants';
 import { CouponEntity, CouponValidityTime, UserCouponEntity } from '../../entity';
 import { MOCK_API_NAME } from '../constants';
 import { createMockApiCache } from '../utils';
+import { mockUserApi } from './user';
 
 const COUPON_THEMES = [
   '节日特惠券',
@@ -126,6 +128,46 @@ export const mockCouponApi = {
           count: faker.number.int({ min: 16, max: 36 }),
         },
       );
+    },
+  ),
+  [MOCK_API_NAME.GET_GROUP_USER_COUPON_LIST]: createMockApiCache(
+    async (): Promise<UserCouponEntity[]> => {
+      await sleep(100);
+      const couponList = await mockCouponApi[MOCK_API_NAME.GET_COUPON_LIST]();
+      const isAdmin = UserStorageManager.getInstance().isAdmin;
+
+      if (!isAdmin) {
+        return Promise.reject(
+          new JsError(SERVER_ERROR_CODE.SERVER_ERROR, '非管理员无法查看群组用户优惠券'),
+        );
+      }
+
+      // Get contact list from user mock API
+      const contactList = await mockUserApi[MOCK_API_NAME.GET_CONTACT_LIST]();
+
+      // Generate coupons for each contact
+      const result: UserCouponEntity[] = [];
+
+      for (const contact of contactList) {
+        // Skip admin contacts
+        if (contact.role === ROLE.ADMIN) continue;
+
+        // Generate 1-3 coupons for each user
+        const userCouponCount = faker.number.int({ min: 1, max: 3 });
+
+        for (let i = 0; i < userCouponCount; i++) {
+          result.push({
+            id: faker.string.uuid(),
+            coupon_id: faker.helpers.arrayElement(couponList.map(item => item.id)),
+            user_id: contact.id,
+            create_time: faker.date.recent().getTime(),
+            last_modified_time: faker.date.recent().getTime(),
+            status: faker.helpers.arrayElement([COUPON_STATUS.ACTIVE, COUPON_STATUS.USED]),
+          });
+        }
+      }
+
+      return result;
     },
   ),
   [MOCK_API_NAME.DELETE_COUPON]: async (id: string): Promise<void> => {

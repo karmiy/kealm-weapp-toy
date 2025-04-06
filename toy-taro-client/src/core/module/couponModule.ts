@@ -1,5 +1,5 @@
 import { CouponApi } from '../api';
-import { AbstractModule } from '../base';
+import { AbstractModule, UserStorageManager } from '../base';
 import { MODULE_NAME, STORE_NAME } from '../constants';
 import { storeManager } from '../storeManager';
 import { CouponUpdateParams } from '../types';
@@ -23,7 +23,10 @@ export class CouponModule extends AbstractModule {
 
   async syncUserCouponList() {
     storeManager.startLoading(STORE_NAME.USER_COUPON);
-    const userCouponList = await CouponApi.getUserCouponList();
+    const isAdmin = UserStorageManager.getInstance().isAdmin;
+    const userCouponList = !isAdmin
+      ? await CouponApi.getUserCouponList()
+      : await CouponApi.getGroupUserCouponList();
     storeManager.refresh(STORE_NAME.USER_COUPON, userCouponList);
     storeManager.stopLoading(STORE_NAME.USER_COUPON);
   }
