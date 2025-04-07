@@ -2,6 +2,7 @@ import type { Config } from './config';
 import {
     CheckInModule,
     CouponModule,
+    DisciplineModule,
     OrderModule,
     ProductModule,
     TaskModule,
@@ -47,6 +48,7 @@ export type SingleStoreNames = {
     checkIn: CheckInModule;
     prize: PrizeModule;
     luckyDraw: LuckyDrawModule;
+    discipline: DisciplineModule;
 };
 
 export type ISDK = {

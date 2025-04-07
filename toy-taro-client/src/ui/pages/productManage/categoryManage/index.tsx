@@ -1,6 +1,5 @@
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { View } from '@tarojs/components';
-import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { STORE_NAME } from '@core';
 import { FloatLayout } from '@ui/components';
 import { ConfigListPanel } from '@ui/container';
@@ -10,15 +9,7 @@ import { CategoryForm } from './components';
 import styles from './index.module.scss';
 
 export default function () {
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
-  const scrollViewProps = useMemo(() => {
-    return {
-      refresherEnabled: true,
-      refresherTriggered,
-      refresherBackground: COLOR_VARIABLES.FILL_BODY,
-      onRefresherRefresh: handleRefresh,
-    };
-  }, [handleRefresh, refresherTriggered]);
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string>();
   const productCategoryList = useStoreList(STORE_NAME.PRODUCT_CATEGORY);
@@ -56,7 +47,7 @@ export default function () {
         addButtonText='新增分类'
         list={productCategoryList}
         renderContent={renderContent}
-        scrollViewProps={scrollViewProps}
+        scrollViewProps={scrollViewRefreshProps}
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}

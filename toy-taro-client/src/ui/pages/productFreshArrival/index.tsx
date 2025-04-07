@@ -1,9 +1,6 @@
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, Text, View } from '@tarojs/components';
-import { useRouter } from '@tarojs/taro';
+import { Fragment, useCallback, useMemo } from 'react';
+import { ScrollView, View } from '@tarojs/components';
 import { format, startOfToday } from 'date-fns';
-import { AtSearchBar } from 'taro-ui';
-import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { ProductModel, STORE_NAME } from '@core';
 import { IconButton, SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
 import { ProductCard } from '@ui/container';
@@ -13,7 +10,7 @@ import styles from './index.module.scss';
 
 export default function () {
   const { isAdmin } = useUserInfo();
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const filterFunc = useCallback((item: ProductModel) => {
     // 近 7 天
     const sevenDaysAgo = new Date(startOfToday().getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -32,14 +29,7 @@ export default function () {
     <View className={styles.productSearchWrapper}>
       <View className={styles.list}>
         <StatusWrapper loading={loading} loadingIgnoreCount count={products.length} size='fill'>
-          <ScrollView
-            scrollY
-            className={styles.scrollView}
-            refresherEnabled
-            refresherTriggered={refresherTriggered}
-            onRefresherRefresh={handleRefresh}
-            refresherBackground={COLOR_VARIABLES.FILL_BODY}
-          >
+          <ScrollView scrollY className={styles.scrollView} {...scrollViewRefreshProps}>
             <View className={styles.container}>
               {products.map(product => {
                 const {

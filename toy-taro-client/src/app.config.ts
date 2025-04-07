@@ -97,12 +97,12 @@ export default defineAppConfig({
       pages: ['entrance/index'],
     },
     {
-      root: 'ui/pages/punishment/',
+      root: 'ui/pages/discipline/',
       pages: ['manage/index'],
     },
   ],
   // entryPagePath: 'ui/pages/luckyDraw/entrance/index',
   // entryPagePath: 'ui/pages/mine/index',
   // entryPagePath: 'ui/pages/prizeManage/entrance/index',
-  entryPagePath: 'ui/pages/punishment/manage/index',
+  entryPagePath: 'ui/pages/discipline/manage/index',
 });

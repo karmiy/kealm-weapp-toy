@@ -6,3 +6,4 @@ export { OrderModule } from './orderModule';
 export { CheckInModule } from './checkInModule';
 export { PrizeModule } from './prizeModule';
 export { LuckyDrawModule } from './luckyDrawModule';
+export { DisciplineModule } from './disciplineModule';

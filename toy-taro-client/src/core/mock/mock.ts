@@ -1,6 +1,7 @@
 import {
   mockCheckInApi,
   mockCouponApi,
+  mockDisciplineApi,
   mockLuckyDrawApi,
   mockOrderApi,
   mockPrizeApi,
@@ -20,6 +21,7 @@ const mockApis: Record<MOCK_API_NAME, (...args: any[]) => unknown> = Object.assi
   mockCheckInApi,
   mockPrizeApi,
   mockLuckyDrawApi,
+  mockDisciplineApi,
 );
 
 const DEFAULT_ENABLE_MOCK = true;

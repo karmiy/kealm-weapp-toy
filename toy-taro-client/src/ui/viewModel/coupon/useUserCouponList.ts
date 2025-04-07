@@ -29,7 +29,7 @@ type CommonCouponInfo = Pick<
   | 'detailTip'
   | 'shortTip'
   | 'terseTip'
->;
+> & { plainCouponId: string };
 
 type ActiveCoupon = CommonCouponInfo & {
   type: 'active';
