@@ -105,3 +105,9 @@ export enum LUCKY_DRAW_TYPE {
   WHEEL = "WHEEL",
   GRID = "GRID",
 }
+
+// ----------------------discipline--------------------------------
+export enum DISCIPLINE_TYPE {
+  PUNISHMENT = "PUNISHMENT",
+  REWARD = "REWARD",
+}

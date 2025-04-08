@@ -135,4 +135,14 @@ export default (app: Application) => {
     getPath("/luckyDraw/startLuckyDraw"),
     controller.luckyDraw.startLuckyDraw
   );
+
+  // discipline
+  router.post(
+    getPath("/discipline/createDiscipline"),
+    controller.discipline.createDiscipline
+  );
+  router.get(
+    getPath("/discipline/getDisciplineList"),
+    controller.discipline.getDisciplineList
+  );
 };
