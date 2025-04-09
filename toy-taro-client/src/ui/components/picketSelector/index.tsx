@@ -22,6 +22,7 @@ const PickerSelector = (props: PickerSelectorProps) => {
     onClick: _onClick,
     onCancel: _onCancel,
     onChange: _onChange,
+    disabled,
     ...pickerProps
   } = props;
   const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +80,9 @@ const PickerSelector = (props: PickerSelectorProps) => {
   };
 
   const onClick = (e: ITouchEvent) => {
+    if (disabled) {
+      return;
+    }
     setIsOpen(true);
     _onClick?.(e);
   };
@@ -89,7 +93,13 @@ const PickerSelector = (props: PickerSelectorProps) => {
   };
 
   return (
-    <Picker {...pickerProps} onChange={onChange} onClick={onClick} onCancel={onCancel}>
+    <Picker
+      {...pickerProps}
+      disabled={disabled}
+      onChange={onChange}
+      onClick={onClick}
+      onCancel={onCancel}
+    >
       <View className={clsx(styles.pickerSelectorWrapper, inputClassName)}>
         <Input
           className={styles.input}

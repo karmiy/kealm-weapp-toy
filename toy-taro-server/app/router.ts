@@ -58,6 +58,10 @@ export default (app: Application) => {
   );
   router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
   router.get(
+    getPath("/coupon/getGroupUserCouponList"),
+    controller.coupon.getGroupUserCouponList
+  );
+  router.get(
     getPath("/coupon/getUserCouponList"),
     controller.coupon.getUserCouponList
   );
@@ -134,5 +138,15 @@ export default (app: Application) => {
   router.post(
     getPath("/luckyDraw/startLuckyDraw"),
     controller.luckyDraw.startLuckyDraw
+  );
+
+  // discipline
+  router.post(
+    getPath("/discipline/createDiscipline"),
+    controller.discipline.createDiscipline
+  );
+  router.get(
+    getPath("/discipline/getDisciplineList"),
+    controller.discipline.getDisciplineList
   );
 };

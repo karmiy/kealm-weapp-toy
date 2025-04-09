@@ -5,6 +5,7 @@ import { httpRequest } from './httpRequest';
 import {
   CheckInModule,
   CouponModule,
+  DisciplineModule,
   LuckyDrawModule,
   OrderModule,
   PrizeModule,
@@ -59,6 +60,11 @@ const modulesConfig: Array<{
     weight: MODULE_WEIGHT.NORMAL,
     module: LuckyDrawModule,
     alias: 'luckyDraw',
+  },
+  {
+    weight: MODULE_WEIGHT.NORMAL,
+    module: DisciplineModule,
+    alias: 'discipline',
   },
 ];
 

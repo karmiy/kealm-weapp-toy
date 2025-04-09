@@ -12,15 +12,7 @@ import { DrawItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
-  const scrollViewProps = useMemo(() => {
-    return {
-      refresherEnabled: true,
-      refresherTriggered,
-      refresherBackground: COLOR_VARIABLES.FILL_BODY,
-      onRefresherRefresh: handleRefresh,
-    };
-  }, [handleRefresh, refresherTriggered]);
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const { isAdmin, drawTicket } = useUserInfo();
   const allList = useStoreList(STORE_NAME.LUCKY_DRAW);
   const list = useMemo(() => {
@@ -57,7 +49,7 @@ export default function () {
   }, [isAdmin]);
 
   return (
-    <Layout type='plain' className={styles.wrapper} scrollViewProps={scrollViewProps}>
+    <Layout type='plain' className={styles.wrapper} scrollViewProps={scrollViewRefreshProps}>
       <View className={styles.header}>
         <View className={styles.prizeListEntrance}>{HeaderAction}</View>
         <View className={styles.headerCoverImg} />

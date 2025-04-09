@@ -150,6 +150,18 @@ function Mine() {
             </View>
             <Icon name='arrow-right' size={14} />
           </View>
+          {isAdmin ? (
+            <View
+              className={styles.menuItem}
+              onClick={() => navigateToPage({ pageName: PAGE_ID.DISCIPLINE_MANAGE })}
+            >
+              <View className={styles.title}>
+                <Icon name='discipline' size={14} color={COLOR_VARIABLES.COLOR_RED} />
+                <Text>公正小屋</Text>
+              </View>
+              <Icon name='arrow-right' size={14} />
+            </View>
+          ) : null}
         </View>
         <WhiteSpace size='medium' />
         <View className={styles.menuList}>

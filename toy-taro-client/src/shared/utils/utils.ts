@@ -22,6 +22,13 @@ export function asyncWrapper<T>(promise: Promise<T>) {
 
 export const sleep = (duration = 1000) => new Promise(r => setTimeout(r, duration));
 
+export async function executeAtLeast<T>(fn: () => Promise<T> | T, duration: number): Promise<T> {
+  const minTimePromise = new Promise<void>(resolve => setTimeout(resolve, duration));
+  const fnPromise = Promise.resolve(fn());
+  const [result] = await Promise.all([fnPromise, minTimePromise]);
+  return result;
+}
+
 export const uuid = () => Math.random().toString(36).slice(2);
 
 export const createSpecClassName = (cls: string) => `${cls}_${uuid()}`;

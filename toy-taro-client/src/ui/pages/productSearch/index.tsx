@@ -2,7 +2,6 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
 import { AtSearchBar } from 'taro-ui';
-import { COLOR_VARIABLES } from '@shared/utils/constants';
 import { ProductModel, STORE_NAME } from '@core';
 import { IconButton, SafeAreaBar, StatusWrapper, WhiteSpace } from '@ui/components';
 import { ProductCard } from '@ui/container';
@@ -13,7 +12,7 @@ import styles from './index.module.scss';
 export default function () {
   const router = useRouter();
   const { isAdmin } = useUserInfo();
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const [searchValue, setSearchValue] = useState(router.params.searchValue ?? '');
   const [filterValue, setFilterValue] = useState(searchValue);
   const filterFunc = useCallback(
@@ -50,14 +49,7 @@ export default function () {
       </View>
       <View className={styles.list}>
         <StatusWrapper loading={loading} loadingIgnoreCount count={products.length} size='fill'>
-          <ScrollView
-            scrollY
-            className={styles.scrollView}
-            refresherEnabled
-            refresherTriggered={refresherTriggered}
-            onRefresherRefresh={handleRefresh}
-            refresherBackground={COLOR_VARIABLES.FILL_BODY}
-          >
+          <ScrollView scrollY className={styles.scrollView} {...scrollViewRefreshProps}>
             <View className={styles.container}>
               {products.map(product => {
                 const {

@@ -9,6 +9,21 @@ interface Props {
   includeLuckyDraw?: boolean;
 }
 
+export interface ActivePrize {
+  detailDesc: string;
+  shortDesc: string;
+  terseDesc: string;
+  id: string;
+  type: PRIZE_TYPE;
+  points?: number;
+  couponId?: string;
+  drawCount?: number;
+  sortValue: number;
+  text?: string;
+  createTime: number;
+  lastModifiedTime: number;
+}
+
 export function usePrizeList(props?: Props) {
   const { includeNone = false, includeLuckyDraw = true } = props ?? {};
   const { couponDict } = useCouponList();

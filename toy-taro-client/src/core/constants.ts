@@ -29,6 +29,7 @@ export enum MODULE_NAME {
     CHECK_IN = 'CheckInModule',
     PRIZE = 'PrizeModule',
     LUCKY_DRAW = 'LuckyDrawModule',
+    DISCIPLINE = 'DisciplineModule',
 }
 
 export enum MODULE_WEIGHT {
@@ -164,3 +165,9 @@ export enum LUCKY_DRAW_TYPE {
 }
 
 export const LUCK_DRAW_PREVIEW_ID = 'LUCK_DRAW_PREVIEW_ID';
+
+// ----------------------discipline--------------------------------
+export enum DISCIPLINE_TYPE {
+    PUNISHMENT = 'PUNISHMENT',
+    REWARD = 'REWARD',
+}

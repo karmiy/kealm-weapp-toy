@@ -11,7 +11,7 @@ import { useCouponAction, useCouponList, useStoreLoadingStatus } from '@ui/viewM
 import styles from './index.module.scss';
 
 export function CouponAdminPage() {
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const loading = useStoreLoadingStatus(STORE_NAME.COUPON);
   const { allCouponModels } = useCouponList();
   const couponList = useMemo(() => {
@@ -56,14 +56,7 @@ export function CouponAdminPage() {
 
   return (
     <View className={styles.wrapper}>
-      <ScrollView
-        scrollY
-        className={styles.scrollView}
-        refresherEnabled
-        refresherTriggered={refresherTriggered}
-        onRefresherRefresh={handleRefresh}
-        refresherBackground={COLOR_VARIABLES.FILL_BODY}
-      >
+      <ScrollView scrollY className={styles.scrollView} {...scrollViewRefreshProps}>
         <View className={styles.container}>
           <View className={styles.header}>
             <View className={styles.action} onClick={() => handleManageCoupon()}>

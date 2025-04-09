@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { stopPullDownRefresh, useDidShow, usePullDownRefresh } from '@tarojs/taro';
-import { PAGE_ID } from '@shared/utils/constants';
+import { COLOR_VARIABLES, PAGE_ID } from '@shared/utils/constants';
 import { Logger } from '@shared/utils/logger';
 import { showToast } from '@shared/utils/operateFeedback';
 import { getCurrentPageId } from '@shared/utils/router';
@@ -132,6 +132,14 @@ export function useSyncOnPageShow(options?: {
               api.syncUserInfo(),
             ]);
             break;
+          case PAGE_ID.DISCIPLINE_MANAGE:
+            await Promise.all([
+              api.syncPrizeList(),
+              api.syncUserCouponList(),
+              api.syncCouponList(),
+              api.syncContactList(),
+            ]);
+            break;
           default:
             break;
         }
@@ -211,5 +219,14 @@ export function useSyncOnPageShow(options?: {
     setRefresherTriggered(false);
   }, [handleSync, refreshMinDuration]);
 
-  return { handleSync, handleRefresh, refresherTriggered };
+  const scrollViewRefreshProps = useMemo(() => {
+    return {
+      refresherEnabled: true,
+      refresherTriggered,
+      refresherBackground: COLOR_VARIABLES.FILL_BODY,
+      onRefresherRefresh: handleRefresh,
+    };
+  }, [handleRefresh, refresherTriggered]);
+
+  return { handleSync, handleRefresh, refresherTriggered, scrollViewRefreshProps };
 }

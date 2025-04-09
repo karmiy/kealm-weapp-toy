@@ -45,7 +45,10 @@ export const mockUserApi = {
         const role = Math.random() > 0.5 ? ROLE.ADMIN : ROLE.USER;
         return {
           id: faker.string.ulid(),
-          name: role === ROLE.ADMIN ? 'Little Sheep Susie' : '洪以妍',
+          name:
+            role === ROLE.ADMIN
+              ? 'Little Sheep Susie'
+              : `洪以妍-${faker.number.int({ min: 1, max: 100 })}`,
           avatarUrl:
             'https://gitee.com/karmiy/static/raw/master/weapp-toy/imgs/login-cover-image.png',
           role,

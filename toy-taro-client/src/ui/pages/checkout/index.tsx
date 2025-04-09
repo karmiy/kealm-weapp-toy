@@ -9,7 +9,7 @@ import { FormItem, ProductItem } from './components';
 import styles from './index.module.scss';
 
 export default function () {
-  const { handleRefresh, refresherTriggered } = useSyncOnPageShow();
+  const { scrollViewRefreshProps } = useSyncOnPageShow();
   const { checkedIds, totalScore } = useProductShopCart({
     enableCheckIds: true,
     enableTotalScore: true,
@@ -49,14 +49,7 @@ export default function () {
   return (
     <View className={styles.wrapper}>
       <View className={styles.detail}>
-        <ScrollView
-          scrollY
-          className={styles.scrollView}
-          refresherEnabled
-          refresherTriggered={refresherTriggered}
-          onRefresherRefresh={handleRefresh}
-          refresherBackground={COLOR_VARIABLES.FILL_BODY}
-        >
+        <ScrollView scrollY className={styles.scrollView} {...scrollViewRefreshProps}>
           <View className={styles.container}>
             <View className={styles.area}>
               {checkedIds.map((id, index) => {

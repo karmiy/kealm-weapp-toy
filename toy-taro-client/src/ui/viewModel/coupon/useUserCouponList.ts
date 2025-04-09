@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { reaction } from '@shared/utils/observer';
-import { COUPON_STATUS, COUPON_TYPE, CouponModel, sdk, STORE_NAME } from '@core';
+import { COUPON_STATUS, COUPON_TYPE, CouponModel, sdk, STORE_NAME, UserCouponModel } from '@core';
 import { UserCouponController } from '@ui/controller';
 import { useStoreByIds } from '../base';
 import { getNormalCouponInfo } from './utils';
@@ -11,6 +11,7 @@ interface Props {
   enableExpiredIds?: boolean;
   enableAllIds?: boolean;
   orderScore?: number;
+  userId?: string;
 }
 
 type CommonCouponInfo = Pick<
@@ -28,7 +29,7 @@ type CommonCouponInfo = Pick<
   | 'detailTip'
   | 'shortTip'
   | 'terseTip'
->;
+> & { plainCouponId: string };
 
 type ActiveCoupon = CommonCouponInfo & {
   type: 'active';
@@ -59,6 +60,7 @@ export function useUserCouponList(props?: Props) {
     enableExpiredIds = false,
     enableAllIds = false,
     orderScore,
+    userId,
   } = props ?? {};
   const [activeCouponIds, setActiveCouponIds] = useState<string[]>([]);
   const [usedCouponIds, setUsedCouponIds] = useState<string[]>([]);
@@ -125,9 +127,19 @@ export function useUserCouponList(props?: Props) {
     return () => disposer();
   }, [enableAllIds]);
 
+  const filterUserCoupon = useCallback(
+    (list: UserCouponModel[]) => {
+      if (!userId) {
+        return list;
+      }
+      return list.filter(item => item.userId === userId);
+    },
+    [userId],
+  );
+
   const activeCoupons = useMemo(() => {
     const list: ActiveCoupon[] = [];
-    activeCouponModels.forEach(userCoupon => {
+    filterUserCoupon(activeCouponModels).forEach(userCoupon => {
       const coupon = sdk.storeManager.getById(STORE_NAME.COUPON, userCoupon.couponId);
       if (!coupon) {
         return;
@@ -147,11 +159,11 @@ export function useUserCouponList(props?: Props) {
       });
     });
     return list;
-  }, [activeCouponModels, orderScore]);
+  }, [activeCouponModels, orderScore, filterUserCoupon]);
 
   const usedCoupons = useMemo(() => {
     const list: UsedCoupon[] = [];
-    usedCouponModels.forEach(userCoupon => {
+    filterUserCoupon(usedCouponModels).forEach(userCoupon => {
       const coupon = sdk.storeManager.getById(STORE_NAME.COUPON, userCoupon.couponId);
       if (!coupon) {
         return;
@@ -165,11 +177,11 @@ export function useUserCouponList(props?: Props) {
       });
     });
     return list;
-  }, [usedCouponModels]);
+  }, [usedCouponModels, filterUserCoupon]);
 
   const expiredCoupons = useMemo(() => {
     const list: ExpiredCoupon[] = [];
-    expiredCouponModels.forEach(userCoupon => {
+    filterUserCoupon(expiredCouponModels).forEach(userCoupon => {
       const coupon = sdk.storeManager.getById(STORE_NAME.COUPON, userCoupon.couponId);
       if (!coupon) {
         return;
@@ -183,11 +195,11 @@ export function useUserCouponList(props?: Props) {
       });
     });
     return list;
-  }, [expiredCouponModels]);
+  }, [expiredCouponModels, filterUserCoupon]);
 
   const allCoupons = useMemo(() => {
     const list: AllCoupon[] = [];
-    allCouponModels.forEach(userCoupon => {
+    filterUserCoupon(allCouponModels).forEach(userCoupon => {
       const coupon = sdk.storeManager.getById(STORE_NAME.COUPON, userCoupon.couponId);
       if (!coupon) {
         return;
@@ -208,7 +220,7 @@ export function useUserCouponList(props?: Props) {
       });
     });
     return list;
-  }, [allCouponModels]);
+  }, [allCouponModels, filterUserCoupon]);
 
   const couponDict = useMemo(() => {
     const dict = new Map<string, (typeof allCoupons)[number]>();
