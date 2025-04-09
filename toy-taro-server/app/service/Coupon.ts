@@ -178,14 +178,15 @@ export default class Coupon extends Service {
     return coupons as any as CouponModel[];
   }
 
-  async getUserCouponListWithCoupon() {
+  async getUserCouponListWithCoupon(params?: { userId?: string }) {
+    const { userId } = params ?? {};
     const { ctx } = this;
-    const { groupId, userId } = ctx.getUserInfo();
+    const { groupId } = ctx.getUserInfo();
 
     const coupons = await ctx.model.UserCoupon.findAll({
       // raw: true,
       where: {
-        user_id: userId,
+        ...(userId ? { user_id: userId } : {}),
         group_id: groupId,
         is_deleted: 0,
       },

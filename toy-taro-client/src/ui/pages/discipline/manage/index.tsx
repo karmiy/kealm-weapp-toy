@@ -80,7 +80,6 @@ export default function () {
   const handleDisciplineTypeChange = useCallback(
     (type: DISCIPLINE_TYPE) => {
       setDisciplineType(type);
-      setUserId(undefined);
       setPrizeId(undefined);
       setReason('');
     },
@@ -110,9 +109,9 @@ export default function () {
 
   return (
     <Layout type='card' scrollViewProps={scrollViewRefreshProps}>
-      <FormItem title='操作类型' required>
+      <FormItem title='类型' required>
         <PickerSelector
-          placeholder='请选择操作类型'
+          placeholder='请选择类型'
           type='select'
           mode='selector'
           range={DISCIPLINE_TYPE_LIST}

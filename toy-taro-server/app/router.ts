@@ -58,6 +58,10 @@ export default (app: Application) => {
   );
   router.get(getPath("/coupon/getCouponList"), controller.coupon.getCouponList);
   router.get(
+    getPath("/coupon/getGroupUserCouponList"),
+    controller.coupon.getGroupUserCouponList
+  );
+  router.get(
     getPath("/coupon/getUserCouponList"),
     controller.coupon.getUserCouponList
   );

@@ -1,4 +1,5 @@
 import { showToast } from '@shared/utils/operateFeedback';
+import { executeAtLeast } from '@shared/utils/utils';
 import { DISCIPLINE_TYPE, sdk } from '@core';
 import { BLOCK_ACTION_MARK, useAction } from '../base';
 
@@ -40,12 +41,16 @@ export function useDisciplineAction() {
         return BLOCK_ACTION_MARK;
       }
 
-      return await sdk.modules.discipline.createDiscipline({
-        userId,
-        prizeId,
-        type,
-        reason,
-      });
+      return executeAtLeast(
+        () =>
+          sdk.modules.discipline.createDiscipline({
+            userId,
+            prizeId,
+            type,
+            reason,
+          }),
+        1000,
+      );
     },
     {
       onSuccess: async () => {

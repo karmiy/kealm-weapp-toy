@@ -466,9 +466,43 @@ export default class CouponController extends Controller {
 
   public async getUserCouponList() {
     const { ctx } = this;
-    const { isAdmin } = ctx.getUserInfo();
+    const { isAdmin, userId } = ctx.getUserInfo();
     try {
       logger.tag("[getUserCouponList]").info("isAdmin", isAdmin);
+
+      const list = await ctx.service.coupon.getUserCouponListWithCoupon({
+        userId,
+      });
+
+      const entities = await Promise.all(
+        list.map((item) => this._userCouponModelToEntity(item))
+      );
+
+      ctx.responseSuccess({
+        data: entities,
+      });
+    } catch (error) {
+      const jsError = ctx.toJsError(error);
+      ctx.responseFail({
+        code: jsError.code,
+        message: jsError?.message,
+      });
+    }
+  }
+
+  public async getGroupUserCouponList() {
+    const { ctx } = this;
+    const { isAdmin } = ctx.getUserInfo();
+    try {
+      logger.tag("[getGroupUserCouponList]").info("isAdmin", isAdmin);
+
+      if (!isAdmin) {
+        ctx.responseFail({
+          code: SERVER_CODE.BAD_REQUEST,
+          message: "不具备查询权限",
+        });
+        return;
+      }
 
       const list = await ctx.service.coupon.getUserCouponListWithCoupon();
 

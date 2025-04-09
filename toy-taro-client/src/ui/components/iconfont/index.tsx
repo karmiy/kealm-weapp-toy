@@ -3,7 +3,7 @@
 
 import React, { FunctionComponent } from 'react';
 
-export type IconNames = 'sort' | 'present' | 'present-fill' | 'task' | 'delete' | 'product' | 'edit' | 'loading' | 'empty' | 'exchange-record' | 'coupon' | 'star-fill' | 'star' | 'close' | 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
+export type IconNames = 'discipline' | 'sort' | 'present' | 'present-fill' | 'task' | 'delete' | 'product' | 'edit' | 'loading' | 'empty' | 'exchange-record' | 'coupon' | 'star-fill' | 'star' | 'close' | 'arrow-up' | 'arrow-down' | 'arrow-right' | 'arrow-left' | 'uncheck' | 'check' | 'add' | 'minus' | 'cart-add-fill' | 'check-in';
 
 export interface IconProps {
   name: IconNames;
